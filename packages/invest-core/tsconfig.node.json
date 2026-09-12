@@ -1,0 +1,22 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "allowImportingTsExtensions": false,
+    "allowJs": false,
+    "checkJs": false,
+    "noEmit": false,
+    "noEmitOnError": true,
+    "declaration": false,
+    "sourceMap": false,
+    "outDir": "dist/node",
+    "rootDir": "src"
+  },
+  "files": [
+    "src/app/config.ts",
+    "src/markdown/tableWrap.ts",
+    "src/helpers/text.ts"
+  ]
+}

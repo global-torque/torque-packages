@@ -1,0 +1,5 @@
+.fixture-imported {
+  --fixture-imported-byte-contract: 'Vite must include these imported bytes';
+  background: rebeccapurple;
+  color: white;
+}

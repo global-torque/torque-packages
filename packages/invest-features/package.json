@@ -1,0 +1,73 @@
+{
+  "name": "@webdevelop-pro/invest-features",
+  "private": false,
+  "version": "0.2.0",
+  "description": "Reusable investment feature ViewModels, components, and provider adapters.",
+  "license": "MIT",
+  "engines": { "node": ">=22.12.0" },
+  "packageManager": "pnpm@10.34.5",
+  "sideEffects": ["**/*.vue", "**/*.css", "**/*.scss"],
+  "type": "module",
+  "scripts": {
+    "typecheck": "vue-tsc --noEmit -p tsconfig.json",
+    "test:run": "NODE_OPTIONS=\"${NODE_OPTIONS:+$NODE_OPTIONS }--no-experimental-webstorage\" vitest run"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./accreditation": "./src/accreditation.ts",
+    "./auth": "./src/auth.ts",
+    "./dashboard": "./src/dashboard.ts",
+    "./kyc": "./src/kyc.ts",
+    "./lifecycle": "./src/lifecycle/installFeatureLifecycle.ts",
+    "./notifications": "./src/notifications.ts",
+    "./notifications/model": "./src/notifications/model.ts",
+    "./offers": "./src/offers.ts",
+    "./profiles": "./src/profiles.ts",
+    "./wallet": "./src/wallet.ts"
+  },
+  "dependencies": {
+    "@global-torque/ui-kit": "0.1.4",
+    "@global-torque/ui-primitives": "0.1.3",
+    "@lucide/vue": "^1.23.0",
+    "@types/markdown-it": "^14.1.2",
+    "@vueuse/core": "^14.2.1",
+    "@vueuse/integrations": "^14.2.1",
+    "@webdevelop-pro/domain-types": "workspace:*",
+    "@webdevelop-pro/invest-core": "workspace:*",
+    "@webdevelop-pro/invest-data": "workspace:*",
+    "@webdevelop-pro/invest-runtime": "workspace:*",
+    "@webdevelop-pro/invest-widgets": "workspace:*",
+    "ajv": "^8.17.1",
+    "markdown-it": "^14.3.0",
+    "uuid": "^14.0.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.5",
+    "@vue/test-utils": "^2.4.11",
+    "typescript": "^6.0.2",
+    "vite": "^8.1.3",
+    "vite-svg-loader": "^5.1.0",
+    "vitest": "catalog:",
+    "pinia": "^3.0.4",
+    "sass": "^1.101.0",
+    "vitepress": "^1.6.4",
+    "vue": "^3.5.39",
+    "vue-router": "^5.1.0"
+  },
+  "peerDependencies": {
+    "pinia": "^3.0.4",
+    "sass": "^1.101.0",
+    "vitepress": "^1.6.4",
+    "vue": "^3.5.39",
+    "vue-router": "^5.1.0"
+  },
+  "files": ["src", "README.md", "LICENSE", "NOTICE.md", "CHANGELOG.md", "SECURITY.md", "SUPPORT.md", "vite.config.ts", "vitest.config.ts", "vitest.setup.ts"],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/global-torque/torque-packages.git",
+    "directory": "packages/invest-features"
+  },
+  "homepage": "https://github.com/global-torque/torque-packages#readme",
+  "bugs": { "url": "https://github.com/global-torque/torque-packages/issues" },
+  "publishConfig": { "access": "public", "provenance": true, "tag": "latest" }
+}

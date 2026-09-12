@@ -1,0 +1,13 @@
+@use '@global-torque/ui-kit/styles/mixins' as *;
+
+.is--tags-inline{
+    display: flex;
+    align-content: center;
+    gap: 12px;
+    align-self: stretch;
+    flex-wrap: wrap;
+}
+
+.is--tags-inline + *{
+    margin-top: 20px;
+}

@@ -1,0 +1,69 @@
+diff --git a/components.d.ts b/components.d.ts
+index 005fd669f4bc00b0dbb10ad20c6d7d21abe0daf0..b15d5d3154febdce10024e6c89bf1978744b8b43 100644
+--- a/components.d.ts
++++ b/components.d.ts
+@@ -17,9 +17,6 @@ export { Timeline } from './components/timeline';
+ export { Sankey } from './components/sankey';
+ export { Area } from './components/area';
+ export { TopoJSONMap } from './components/topojson-map';
+-export { LeafletMap } from './components/leaflet-map';
+-export { MapLibreArcticDark, MapLibreArcticLight } from './components/leaflet-map/renderer/map-style';
+-export { LeafletFlowMap } from './components/leaflet-flow-map';
+ export { ChordDiagram } from './components/chord-diagram';
+ export { Graph } from './components/graph';
+ export { VisControls } from './components/vis-controls';
+@@ -48,8 +45,6 @@ export type { SankeyConfigInterface } from './components/sankey/config';
+ export type { AreaConfigInterface } from './components/area/config';
+ export type { TopoJSONMapConfigInterface } from './components/topojson-map/config';
+ export type { TopoJSONMapPieDatum, TopoJSONMapPointShape, TopoJSONMapPointStyle, TopoJSONMapPointStyles, TopoJSONMapPoint, TopoJSONMapPointDatum, TopoJSONMapClusterDatum, MapPointLabelPosition, MapData, MapFeature, } from './components/topojson-map/types';
+-export type { LeafletMapConfigInterface } from './components/leaflet-map/config';
+-export type { LeafletFlowMapConfigInterface } from './components/leaflet-flow-map/config';
+ export type { ChordDiagramConfigInterface } from './components/chord-diagram/config';
+ export type { GraphConfigInterface } from './components/graph/config';
+ export type { VisControlsConfigInterface } from './components/vis-controls/config';
+diff --git a/components.js b/components.js
+index 129c12355ca288ae0a614998cf7a010f79876777..8bcbbf5236d9f604a1f6489090cde4a3fc05f5da 100644
+--- a/components.js
++++ b/components.js
+@@ -15,9 +15,6 @@ export { Timeline } from './components/timeline/index.js';
+ export { Sankey } from './components/sankey/index.js';
+ export { Area } from './components/area/index.js';
+ export { TopoJSONMap } from './components/topojson-map/index.js';
+-export { LeafletMap } from './components/leaflet-map/index.js';
+-export { MapLibreArcticDark, MapLibreArcticLight } from './components/leaflet-map/renderer/map-style.js';
+-export { LeafletFlowMap } from './components/leaflet-flow-map/index.js';
+ export { ChordDiagram } from './components/chord-diagram/index.js';
+ export { Graph } from './components/graph/index.js';
+ export { VisControls } from './components/vis-controls/index.js';
+@@ -32,4 +29,3 @@ export { Treemap } from './components/treemap/index.js';
+ export { DONUT_HALF_ANGLE_RANGES, DONUT_HALF_ANGLE_RANGE_BOTTOM, DONUT_HALF_ANGLE_RANGE_LEFT, DONUT_HALF_ANGLE_RANGE_RIGHT, DONUT_HALF_ANGLE_RANGE_TOP } from './components/donut/constants.js';
+ 
+ // Core
+-//# sourceMappingURL=components.js.map
+diff --git a/index.js b/index.js
+index 63f54d7e7993fcba12085a02d62e76462e5cd281..b1d74dba6c9f773591aa227bab374d32c8fd8627 100644
+--- a/index.js
++++ b/index.js
+@@ -25,9 +25,6 @@ export { Timeline } from './components/timeline/index.js';
+ export { Sankey } from './components/sankey/index.js';
+ export { Area } from './components/area/index.js';
+ export { TopoJSONMap } from './components/topojson-map/index.js';
+-export { LeafletMap } from './components/leaflet-map/index.js';
+-export { MapLibreArcticDark, MapLibreArcticLight } from './components/leaflet-map/renderer/map-style.js';
+-export { LeafletFlowMap } from './components/leaflet-flow-map/index.js';
+ export { ChordDiagram } from './components/chord-diagram/index.js';
+ export { Graph } from './components/graph/index.js';
+ export { VisControls } from './components/vis-controls/index.js';
+@@ -56,7 +53,6 @@ export { Direction } from './types/direction.js';
+ export { AxisType } from './components/axis/types.js';
+ export { ChordLabelAlignment } from './components/chord-diagram/types.js';
+ export { MapPointLabelPosition, MapProjection, MapProjectionKind, TopoJSONMapPointShape } from './components/topojson-map/types.js';
+-export { LeafletMapPointShape, LeafletMapRenderer } from './components/leaflet-map/types.js';
+ export { GraphFitViewAlignment, GraphLayoutType, GraphLinkArrowStyle, GraphLinkStyle, GraphNodeSelectionHighlightMode, GraphNodeShape } from './components/graph/types.js';
+ export { SankeyEnterTransitionType, SankeyExitTransitionType, SankeyLayout, SankeyNodeAlign, SankeySubLabelPlacement, SankeyZoomMode, SankeyZoomOrigin } from './components/sankey/types.js';
+ export { VisControlsOrientation } from './components/vis-controls/types.js';
+@@ -78,4 +74,3 @@ export { getDataLatLngBounds } from './utils/map.js';
+ export { cssvar, getCssVarNames, injectGlobalCssVariables, isDarkThemeEnabled } from './utils/style.js';
+ export { darkThemeCssSelectors } from './utils/theme.js';
+ export { getHTMLTransform } from './utils/html.js';
+-//# sourceMappingURL=index.js.map

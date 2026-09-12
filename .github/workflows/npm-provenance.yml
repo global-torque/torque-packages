@@ -1,0 +1,110 @@
+name: Framework npm provenance identity
+
+on:
+  workflow_dispatch:
+    inputs:
+      candidate_run_id:
+        description: CI run containing the retained exact candidate artifact
+        required: true
+        type: string
+      candidate:
+        description: Candidate version in the retained receipt
+        required: true
+        type: string
+        default: 0.2.0
+      release_tag:
+        description: Published immutable framework release tag carrying the exact candidate
+        required: true
+        type: string
+        default: framework-v0.2.0
+
+permissions:
+  contents: read
+
+jobs:
+  attest:
+    runs-on: ubuntu-24.04
+    permissions:
+      actions: read
+      contents: read
+      attestations: write
+      artifact-metadata: write
+      id-token: write
+    strategy:
+      matrix:
+        package: [domain-types, invest-core, invest-data, invest-runtime, invest-widgets, invest-features, invest-shell]
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: '24.14.0'
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131
+        with:
+          name: torque-framework-candidate-${{ inputs.candidate }}
+          path: artifacts
+          run-id: ${{ inputs.candidate_run_id }}
+          github-token: ${{ github.token }}
+      - name: Verify the immutable release and successful candidate run
+        env:
+          CANDIDATE_RUN_ID: ${{ inputs.candidate_run_id }}
+          CANDIDATE: ${{ inputs.candidate }}
+          RELEASE_TAG: ${{ inputs.release_tag }}
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/verify-provenance-context.mjs artifacts/candidate-receipt.json "$CANDIDATE_RUN_ID" "$RELEASE_TAG" "$GITHUB_REPOSITORY" "$RUNNER_TEMP/framework-provenance-context.json"
+      - name: Verify every immutable release asset byte
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          release_assets="$RUNNER_TEMP/framework-release-assets"
+          mkdir -p "$release_assets"
+          while IFS=$'\t' read -r asset_name asset_id; do
+            test -n "$asset_name"
+            case "$asset_name" in */*|'') exit 1 ;; esac
+            gh api --header 'Accept: application/octet-stream' \
+              "/repos/${GITHUB_REPOSITORY}/releases/assets/$asset_id" > "$release_assets/$asset_name"
+          done < <(jq -r '.release.assets[] | [.name, .id] | @tsv' "$RUNNER_TEMP/framework-provenance-context.json")
+          while IFS= read -r asset_name; do
+            cmp "artifacts/$asset_name" "$release_assets/$asset_name"
+          done < <(jq -r '.expectedAssets[]' "$RUNNER_TEMP/framework-provenance-context.json")
+      - name: Verify the exact retained archive
+        id: subject
+        env:
+          CANDIDATE: ${{ inputs.candidate }}
+          PACKAGE: ${{ matrix.package }}
+          CANDIDATE_RUN_ID: ${{ inputs.candidate_run_id }}
+          RELEASE_TAG: ${{ inputs.release_tag }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          node scripts/verify-release-bundle.mjs artifacts/candidate-receipt.json
+          archive="artifacts/webdevelop-pro-${PACKAGE}-${CANDIDATE}.tgz"
+          test -f "$archive"
+          release_assets="$RUNNER_TEMP/framework-release-assets"
+          for asset in "$(basename "$archive")" "$(basename "$archive").manifest.json" "$(basename "$archive").sha512" candidate-receipt.json; do
+            test -f "$release_assets/$asset"
+          done
+          source_sha=$(jq -er '.sourceRevision | select(test("^[a-f0-9]{40}$"))' "$RUNNER_TEMP/framework-provenance-context.json")
+          digest="sha512:$(sha512sum "$archive" | cut -d ' ' -f 1)"
+          printf 'digest=%s\n' "$digest" >> "$GITHUB_OUTPUT"
+          printf 'name=pkg:npm/%%40webdevelop-pro/%s@%s\n' "$PACKAGE" "$CANDIDATE" >> "$GITHUB_OUTPUT"
+          gh attestation verify "$archive" --repo "$GITHUB_REPOSITORY" \
+            --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/release.yml" \
+            --signer-digest "$source_sha" --source-digest "$source_sha" \
+            --source-ref "refs/tags/$RELEASE_TAG" --deny-self-hosted-runners --format json > original-provenance.json
+          jq -e 'type == "array" and length > 0 and all(.[]; (.attestation | type == "object") and (.verificationResult | type == "object"))' original-provenance.json >/dev/null
+      - name: Sign exact npm identity
+        id: npm
+        uses: actions/attest@f7c74d28b9d84cb8768d0b8ca14a4bac6ef463e6
+        with:
+          subject-name: ${{ steps.subject.outputs.name }}
+          subject-digest: ${{ steps.subject.outputs.digest }}
+      - name: Retain signed identity bundle
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: npm-provenance-${{ matrix.package }}-${{ inputs.candidate }}
+          path: ${{ steps.npm.outputs.bundle-path }}
+          retention-days: 90
+          if-no-files-found: error

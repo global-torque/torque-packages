@@ -1,0 +1,72 @@
+p{
+  color: var(--ui-color-text-secondary, #343A40);
+  opacity: 0.9;
+}
+
+// SPACINGS
+.with-default-distance{
+    p + p{
+        margin-top: 16px;
+    }
+
+    h2 + p,
+    .is--h2__title + p{
+        margin-top: 24px;
+    }
+
+    h3 + p,
+    .is--h3__title + p{
+        margin-top: 20px;
+    }
+
+    h4 + p,
+    .is--h4__title + p{
+        margin-top: 12px;
+    }
+
+    .is--subheading-1 + p{
+        margin-top: 32px;
+    }
+
+    .is--subheading-2 + p{
+        margin-top: 24px;
+    }
+
+    ul + p,
+    ol + p{
+        margin-top: 16px;
+    }
+}
+
+p.with-default-distance + p.with-default-distance{
+        margin-top: 16px;
+    }
+
+h2 + p.with-default-distance,
+.is--h2__title + p.with-default-distance{
+        margin-top: 24px;
+    }
+
+h3 + p.with-default-distance,
+.is--h3__title + p.with-default-distance{
+        margin-top: 20px;
+    }
+
+h4 + p.with-default-distance,
+.is--h4__title + p.with-default-distance{
+        margin-top: 12px;
+    }
+
+.is--subheading-1 + p.with-default-distance{
+        margin-top: 32px;
+    }
+
+
+.is--subheading-2 + p.with-default-distance{
+        margin-top: 24px;
+    }
+
+ul + p.with-default-distance,
+ol + p.with-default-distance{
+        margin-top: 16px;
+    }

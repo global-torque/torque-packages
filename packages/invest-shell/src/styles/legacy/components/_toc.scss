@@ -1,0 +1,23 @@
+
+
+.toc-list {
+    padding-left: 0;
+    list-style: none;
+
+    li + li{
+      margin-top: 8px;
+    }
+}
+
+.toc-link {
+    // text-decoration: none;
+      display: flex;
+}
+
+.toc-level-3 {
+  padding-left: 15px;
+}
+
+.toc-level-4 {
+  padding-left: 20px;
+}

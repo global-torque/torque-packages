@@ -1,0 +1,17 @@
+
+@use '@global-torque/ui-kit/styles/mixins' as *;
+@use './_transitions';
+
+@forward '_reset';
+@forward '_fonts';
+@forward 'components';
+@forward '_global';
+@forward '_layout';
+@forward '_pwa';
+
+// components
+//yarn add radix-vue
+
+// The colour partial also emits the `.is--color-*` / `.is--background-*` utilities; they load last so they
+// win over the typography rules, as they did when additionalData re-emitted them after every component.
+@use './_colour-utilities';

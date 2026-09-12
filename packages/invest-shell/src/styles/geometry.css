@@ -1,0 +1,31 @@
+/* Investor-surface geometry (both brands): the legacy control and table
+   metrics of the invest surface, set on the ui-primitives geometry tokens
+   (packages/ui-primitives/src/styles/theme.css). Brand palette, font and
+   radius keep coming from the preset. Values only. */
+:root {
+  --spacing-control-sm: 2rem;
+  --spacing-control-md: 2.5rem;
+  --spacing-control-lg: 3rem;
+  --font-weight-control: 700;
+  --text-control-sm: 0.75rem;
+  --text-control-sm--line-height: 1rem;
+  --text-control-lg: 1rem;
+  --text-control-lg--line-height: 1.625rem;
+  --text-control: 1rem;
+  --text-control--line-height: 1.625rem;
+  --spacing-table-cell: 1rem;
+  --text-table: 1rem;
+  --text-table--line-height: 1.625rem;
+  --text-table-head: 0.875rem;
+  --text-table-head--line-height: 1.3125rem;
+  --font-weight-table-head: 800;
+  --color-table-head-foreground: var(--muted-foreground);
+  --color-control-background: var(--muted);
+  --color-text-soft: var(--foreground);
+  --color-label-foreground: var(--muted-foreground);
+  --color-badge-foreground: var(--muted-foreground);
+  --color-field-error: var(--destructive);
+  --color-status-success: var(--chart-2);
+  --color-status-warning: var(--chart-3);
+  --color-status-info: var(--chart-4);
+}

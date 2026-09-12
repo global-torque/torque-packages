@@ -1,0 +1,28 @@
+
+img, picture{
+  max-width: 100%;
+  display: block;
+}
+
+
+// SPACINGS
+.with-default-distance
+  img,
+  picture {
+    margin-top: 60px;
+  }
+
+  p img,
+  p picture{
+    margin-top: 40px;
+  }
+
+img.with-default-distance,
+picture.with-default-distance{
+  margin-top: 60px;
+}
+
+p img.with-default-distance,
+p picture.with-default-distance{
+  margin-top: 40px;
+}

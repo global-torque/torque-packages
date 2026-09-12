@@ -1,0 +1,116 @@
+@use '@global-torque/ui-kit/styles/mixins' as *;
+
+@media (display-mode: standalone) {
+  // Remove scroll bounce when the app launches outside of the browser chrome
+  html, body {
+    overscroll-behavior: none;
+  }
+}
+
+@mixin pwa-scope($root: false) {
+  // Share PWA-specific behavior across standalone display modes and forced PWA wrappers
+  @media (display-mode: standalone), (display-mode: fullscreen), (display-mode: minimal-ui) {
+    @content;
+  }
+
+  @if $root {
+    html.pwa-mobile,
+    body.pwa-mobile {
+      @content;
+    }
+  }
+
+ @else {
+    html.pwa-mobile &,
+    body.pwa-mobile & {
+      @content;
+    }
+  }
+}
+
+@media (display-mode: standalone), (display-mode: fullscreen), (display-mode: minimal-ui) {
+  // Default to smooth scrolling when navigating within the PWA shell
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+html.pwa-mobile {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  // Respect OS accessibility settings by disabling smooth scrolling animations
+  html.pwa-mobile {
+    scroll-behavior: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) and (display-mode: standalone),
+  (prefers-reduced-motion: reduce) and (display-mode: fullscreen),
+  (prefers-reduced-motion: reduce) and (display-mode: minimal-ui) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+@include pwa-scope($root: true) {
+
+  // Mirror native app interaction defaults when the PWA skin is active
+  html, body {
+    overscroll-behavior: none;
+  }
+
+  a,
+  button,
+  [role="button"],
+  input[type="button"],
+  input[type="submit"],
+  label,
+  select {
+    touch-action: manipulation;
+
+    // Reduce accidental long-press behaviors that conflict with app patterns
+    /* stylelint-disable-next-line property-no-vendor-prefix */
+    -webkit-user-select: none;
+    user-select: none;
+    /* stylelint-disable-next-line property-no-vendor-prefix */
+    -webkit-touch-callout: none;
+  }
+
+  .is--pwa-allow-pan {
+    // Re-enable panning gestures for elements that need standard scroll behavior
+    touch-action: pan-x pan-y !important;
+  }
+
+  // Hide the blue tap highlight that breaks the native feel on iOS
+  a, button, input, textarea {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  // Prevent accidental selection on structural navigation elements
+  button, a, nav, header, footer, .menu, .toolbar {
+    user-select: none;
+  }
+
+  // Allow articles and text blocks to retain copy/paste behavior
+  .article, .content, .text, p, h1, h2, h3, h4, h5, h6 {
+    user-select: text;
+  }
+
+  button,
+  .nav a,
+  .menu-item,
+  .icon-button {
+    user-select: none;
+  }
+}
+
+@media (display-mode: standalone), (display-mode: fullscreen), (display-mode: minimal-ui) {
+  // Fallback for environments that ignore mixins but respect display-mode queries
+  a, button, [role="button"], input[type="button"], input[type="submit"], label, select {
+    touch-action: manipulation;
+  }
+
+  a, button { -webkit-tap-highlight-color: transparent; }
+}

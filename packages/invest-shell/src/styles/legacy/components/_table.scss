@@ -1,0 +1,97 @@
+@use '@global-torque/ui-kit/styles/mixins' as *;
+
+.v-table__wrap {
+    width: 100%;
+    overflow: auto;
+    padding: var(--ui-investor-table-wrapper-padding, 0);
+
+    td:not([data-slot]) {
+        color: var(--ui-color-text-secondary, #343A40);
+    }
+
+    tbody > tr:not([data-slot]) {
+        border-top-color: var(--ui-color-border-subtle, var(--border));
+
+        &:hover {
+            background-color: var(--ui-color-canvas, var(--muted));
+        }
+    }
+}
+
+table{
+    border-spacing: 0;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+thead,
+tbody{
+    width: 100%;
+}
+
+th:not([data-slot]){
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 21px;
+    color: var(--muted-foreground);
+    text-align: left;
+    padding: 16px;
+    gap: 2px;
+    flex: 1 0 0;
+}
+
+
+tbody{
+    tr{
+        border-top: 1px solid var(--border);
+        cursor: default;
+        transition: all 0.3s ease;
+
+        &:hover{
+            background-color: var(--muted);
+        }
+    }
+}
+
+td:not([data-slot]){
+    padding: 16px;
+    flex: 1 0 0;
+    color: #343A40;
+}
+
+
+.is--table-cell{
+    display: flex;
+    padding: 16px;
+    align-items: center;
+    gap: 16px;
+}
+
+.is--table-not-found{
+    border-top: 1px solid var(--border);
+    justify-content: center;
+    width: 100%;
+}
+
+td.is--small{
+    font-size: 12px !important;
+    line-height: 18px !important;
+    font-weight: 500 !important;
+}
+
+th.is--small-2{
+    font-size: 12px !important;
+    font-weight: 800 !important;
+    line-height: 18px !important;
+}
+
+// SPACINGS
+.with-default-distance table:not(:first-child),
+table:not(:first-child).with-default-distance{
+    margin-top: 60px;
+}
+
+.with-default-distance table:not(:last-child),
+table:not(:last-child).with-default-distance{
+    margin-bottom: 60px;
+}

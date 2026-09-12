@@ -1,0 +1,14 @@
+export { default as ArrowLeftIcon } from './images/arrow-left.svg?component';
+export { default as ChevronRightIcon } from './images/chevron-right.svg?component';
+export { default as ChevronDownIcon } from './images/chevron-down.svg?component';
+export { default as ContactMenuIcon } from './images/message.svg?component';
+export { default as EarnMenuIcon } from './images/menu_common/percent.svg?component';
+export { default as FaqMenuIcon } from './images/menu_common/faq.svg?component';
+export { default as HelpMenuIcon } from './images/menu_common/help.svg?component';
+export { default as HomeMenuIcon } from './images/menu_common/home.svg?component';
+export { default as InvestmentMenuIcon } from './images/menu_common/investments.svg?component';
+export { default as ResourceCenterMenuIcon } from './images/menu_common/crypto2.svg?component';
+export { default as LogoutMenuIcon } from './images/menu_common/logout.svg?component';
+export { default as PortfolioMenuIcon } from './images/menu_common/portfolio.svg?component';
+export { default as UserMenuIcon } from './images/menu_common/user.svg?component';
+export { default as WalletMenuIcon } from './images/menu_common/wallet.svg?component';

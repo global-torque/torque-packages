@@ -1,0 +1,118 @@
+@use '@global-torque/ui-kit/styles/mixins' as *;
+
+ol {
+    list-style: decimal;
+    padding-left: 23px;
+    color: var(--ui-color-text-secondary, #343A40);
+}
+
+ul {
+    list-style: disc;
+    padding-left: 23px;
+    color: var(--ui-color-text-secondary, #343A40);
+}
+
+li {
+    color: inherit;
+}
+
+// SPACINGS
+.with-default-distance{
+    h2 + ol, h2 + ul,
+    .is--h2__title + ol,
+    .is--h2__title + ul{
+        margin-top: 24px;
+    }
+
+    h3 + ul,
+    .is--h3__title + ul{
+        margin-top: 20px;
+    }
+
+    ul,
+    ol,
+    ul + *,
+    ol + *{
+        margin-top: 15px;
+    }
+
+    li + li{
+        margin-top: 7px;
+    }
+
+    .is--container li + li{
+        margin-top: 5px;
+    }
+}
+
+h2 + ol.with-default-distance, h2 + ul.with-default-distance,
+.is--h2__title + ol.with-default-distance,
+.is--h2__title + ul.with-default-distance{
+    margin-top: 24px;
+}
+
+h3 + ul.with-default-distance,
+.is--h3__title + ul.with-default-distance{
+    margin-top: 20px;
+}
+
+ul.with-default-distance,
+ol.with-default-distance{
+    margin-top: 25px;
+}
+
+li.with-default-distance + li.with-default-distance{
+    margin-top: 7px;
+}
+
+.is--container li.with-default-distance + li.with-default-distance{
+    margin-top: 5px;
+}
+
+// ENS SPACINGS
+
+.is--list-pointers{
+    ul{
+        width: 100%;
+        padding-left: 0;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 17px 30px;
+
+        @media screen and (width <= 768px){
+            grid-template-columns: repeat(1, minmax(0, 1fr));
+            gap: 16px;
+        }
+    }
+
+    li{
+        width: 100%;
+        display: flex;
+        margin: 0;
+        padding: 12px 0;
+        align-items: center;
+        gap: 10px;
+        color: inherit;
+        border-bottom: 1px solid var(--ui-color-text-muted, #495057);
+    }
+
+    li + li{
+        margin-top: 0;
+    }
+}
+
+.is--two-col-grid{
+    li:nth-child(2){
+        margin-top: 0;
+    }
+}
+
+.is--list-default {
+    ul li {
+        border: none !important;
+    }
+
+    li + li{
+        margin-top: 8px !important;
+    }
+}

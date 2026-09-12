@@ -1,0 +1,140 @@
+@use '@global-torque/ui-kit/styles/mixins' as *;
+
+// Element default in Tailwind's `base` layer: a primitive rendered as a link
+// (`<Button as="a">`, `RouterLink`) keeps its utilities; plain anchors keep this.
+@layer base {
+  a:not([data-slot="button"]) {
+    font-weight: 800;
+    font-size: inherit;
+    line-height: inherit;
+    text-decoration: underline;
+    transition: 0.3s all  ease-in-out;
+    color: var(--primary);
+    cursor: pointer;
+
+    &:hover{
+      text-decoration: none;
+    }
+  }
+}
+
+.is--link-1{
+  font-weight: 800;
+  font-size: 16px;
+  line-height: 26px;
+  text-decoration: underline;
+  transition: 0.3s all  ease-in-out;
+  color: var(--primary);
+  cursor: pointer;
+
+  &:hover{
+    text-decoration: none;
+    }
+}
+
+.is--link-2{
+font-weight: 800;
+  font-size: 12px;
+  line-height: 18px;
+  text-decoration: underline;
+  transition: 0.3s all  ease-in-out;
+  color: var(--primary);
+  cursor: pointer;
+
+  &:hover{
+    text-decoration: none;
+}
+}
+
+.is--link-regular{
+font-weight: 800;
+  font-size: 14px;
+  line-height: 21px;
+  text-decoration: underline;
+  transition: 0.3s all  ease-in-out;
+  color: var(--primary);
+  cursor: pointer;
+
+  &:hover{
+    text-decoration: none;
+}
+}
+
+
+.is--small{
+    a, .is--link-1, .is--link-2{
+        font-size: inherit;
+        line-height: inherit;
+    }
+}
+
+
+.dotted{
+    text-decoration-style: dashed;
+    text-decoration-line: underline;
+    cursor: pointer;
+    transition: all 0.8s ease;
+    color: inherit;
+    margin: 0;
+
+    &:hover{
+        text-decoration-line: none;
+        background-image: linear-gradient(to bottom, var(--ui-link-highlight-background, #444fe520) 0%, var(--ui-link-highlight-background, #444fe520) 100%);
+        background-size: 100% 100%;
+    }
+}
+
+a.is--active {
+    color: var(--primary) !important;
+}
+
+h1, h2, h3, h4, h5, h6,
+.is--h1__title,
+.is--h2__title,
+.is--h3__title,
+.is--h4__title,
+.is--h5__title,
+.is--h6__title {
+    a{
+        text-decoration: none;
+        color: inherit;
+    }
+}
+
+
+// SPACING
+.with-default-distance{
+    // a + *:not(br){
+    //     margin-top: 12px;
+    // }
+
+    h2 + a,
+    .is--h2__title + a:not(.v-button){
+        margin-top: 12px;
+    }
+
+    .is--subheading-1 + a:not(.v-button){
+        margin-top: 12px;
+    }
+
+    .is--subheading-2 + a:not(.v-button){
+        margin-top: 8px;
+    }
+}
+
+a.with-default-distance + *:not(br){
+        margin-top: 12px;
+    }
+
+h2 + a.with-default-distance,
+.is--h2__title + a:not(.v-button).with-default-distance{
+    margin-top: 12px;
+}
+
+.is--subheading-1 + a:not(.v-button).with-default-distance{
+    margin-top: 12px;
+}
+
+.is--subheading-2 + a:not(.v-button).with-default-distance{
+    margin-top: 8px;
+}

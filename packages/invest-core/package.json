@@ -1,0 +1,95 @@
+{
+  "name": "@webdevelop-pro/invest-core",
+  "private": false,
+  "version": "0.2.0",
+  "description": "Pure investment policy, calculations, formatters, and schema helpers.",
+  "license": "MIT",
+  "engines": { "node": ">=22.12.0" },
+  "packageManager": "pnpm@10.34.5",
+  "sideEffects": false,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test:run": "vitest run",
+    "build:node": "tsc -p tsconfig.node.json"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./app/config": {
+      "types": "./src/app/config.ts",
+      "node": "./dist/node/app/config.js",
+      "default": "./src/app/config.ts"
+    },
+    "./analytics/analyticsBody": "./src/analytics/analyticsBody.ts",
+    "./accreditation/status": "./src/accreditation/status.ts",
+    "./decimal/canonicalDecimal": "./src/decimal/canonicalDecimal.ts",
+    "./evm/walletInfo": "./src/evm/walletInfo.ts",
+    "./formatting/dateTime": "./src/formatting/dateTime.ts",
+    "./formatting/buildInfo": "./src/formatting/buildInfo.ts",
+    "./formatting/display": "./src/formatting/display.ts",
+    "./filer/documentFormatter": "./src/filer/documentFormatter.ts",
+    "./filer/publicImage": "./src/filer/publicImage.ts",
+    "./investment/status": "./src/investment/status.ts",
+    "./investment/rawAmount": "./src/investment/rawAmount.ts",
+    "./kyc/kycAlert": "./src/kyc/kycAlert.ts",
+    "./kyc/status": "./src/kyc/status.ts",
+    "./kyc/thirdPartyScreen": "./src/kyc/thirdPartyScreen.ts",
+    "./offer/metrics": "./src/offer/metrics.ts",
+    "./offer/formatter": "./src/offer/formatter.ts",
+    "./onboarding/intents": "./src/onboarding/intents.ts",
+    "./notifications/shareFields": "./src/notifications/shareFields.ts",
+    "./profiles/formatting": "./src/profiles/formatting.ts",
+    "./profiles/avatarInitial": "./src/profiles/avatarInitial.ts",
+    "./repository/formatterCache": "./src/repository/formatterCache.ts",
+    "./wallet/auth": "./src/wallet/auth.ts",
+    "./wallet/operationPresentation": "./src/wallet/operationPresentation.ts",
+    "./wallet/setupError": "./src/wallet/setupError.ts",
+    "./helpers/general": "./src/helpers/general.ts",
+    "./markdown/tableWrap": {
+      "types": "./src/markdown/tableWrap.ts",
+      "node": "./dist/node/markdown/tableWrap.js",
+      "default": "./src/markdown/tableWrap.ts"
+    },
+    "./helpers/currency": "./src/helpers/currency.ts",
+    "./helpers/numberFormatter": "./src/helpers/numberFormatter.ts",
+    "./helpers/text": {
+      "types": "./src/helpers/text.ts",
+      "node": "./dist/node/helpers/text.js",
+      "default": "./src/helpers/text.ts"
+    },
+    "./helpers/arrays": "./src/helpers/arrays.ts",
+    "./helpers/model": "./src/helpers/model.ts",
+    "./helpers/formatters/formatToDate": "./src/helpers/formatters/formatToDate.ts",
+    "./helpers/formatters/formatToNumber": "./src/helpers/formatters/formatToNumber.ts",
+    "./helpers/formatters/formatToPhone": "./src/helpers/formatters/formatToPhone.ts",
+    "./form-validation": "./src/form-validation/index.ts",
+    "./form-validation/ajv": "./src/form-validation/ajv.ts",
+    "./form-validation/constants": "./src/form-validation/constants.ts",
+    "./form-validation/general": "./src/form-validation/general.ts",
+    "./form-validation/rules": "./src/form-validation/rules.ts",
+    "./form-validation/investment": "./src/form-validation/investment.ts"
+  },
+  "dependencies": {
+    "@types/lodash": "^4.17.24",
+    "@types/markdown-it": "^14.1.2",
+    "@webdevelop-pro/domain-types": "workspace:*",
+    "ajv": "^8.20.0",
+    "ajv-errors": "^3.0.0",
+    "ajv-formats": "^3.0.1",
+    "lodash": "^4.18.1",
+    "markdown-it": "^14.3.0"
+  },
+  "devDependencies": {
+    "typescript": "^6.0.2",
+    "vitest": "catalog:"
+  },
+  "files": ["src", "dist/node/app/config.js", "dist/node/markdown/tableWrap.js", "dist/node/helpers/text.js", "README.md", "LICENSE", "NOTICE.md", "CHANGELOG.md", "SECURITY.md", "SUPPORT.md"],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/global-torque/torque-packages.git",
+    "directory": "packages/invest-core"
+  },
+  "homepage": "https://github.com/global-torque/torque-packages#readme",
+  "bugs": { "url": "https://github.com/global-torque/torque-packages/issues" },
+  "publishConfig": { "access": "public", "provenance": true, "tag": "latest" }
+}

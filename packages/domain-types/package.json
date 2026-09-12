@@ -1,0 +1,52 @@
+{
+  "name": "@webdevelop-pro/domain-types",
+  "private": false,
+  "version": "0.2.0",
+  "description": "Pure investment domain contracts for the Torque framework.",
+  "license": "MIT",
+  "engines": { "node": ">=22.12.0" },
+  "packageManager": "pnpm@10.34.5",
+  "sideEffects": false,
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test:run": "node --test"
+  },
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./accreditationTypes": "./src/accreditationTypes.ts",
+    "./authConstants": "./src/authConstants.ts",
+    "./authTypes": "./src/authTypes.ts",
+    "./analyticsTypes": "./src/analyticsTypes.ts",
+    "./blogTypes": "./src/blogTypes.ts",
+    "./dashboardTypes": "./src/dashboardTypes.ts",
+    "./distributionsTypes": "./src/distributionsTypes.ts",
+    "./esignTypes": "./src/esignTypes.ts",
+    "./evmTypes": "./src/evmTypes.ts",
+    "./filerTypes": "./src/filerTypes.ts",
+    "./investmentTypes": "./src/investmentTypes.ts",
+    "./kycTypes": "./src/kycTypes.ts",
+    "./notificationsTypes": "./src/notificationsTypes.ts",
+    "./onboardingTypes": "./src/onboardingTypes.ts",
+    "./offerTypes": "./src/offerTypes.ts",
+    "./offerCardTypes": "./src/offerCardTypes.ts",
+    "./contentTypes": "./src/contentTypes.ts",
+    "./profilesTypes": "./src/profilesTypes.ts",
+    "./profileTypes": "./src/profileTypes.ts",
+    "./vaultTypes": "./src/vaultTypes.ts",
+    "./settingsTypes": "./src/settingsTypes.ts",
+    "./walletTypes": "./src/walletTypes.ts"
+  },
+  "files": ["src", "README.md", "LICENSE", "NOTICE.md", "CHANGELOG.md", "SECURITY.md", "SUPPORT.md"],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/global-torque/torque-packages.git",
+    "directory": "packages/domain-types"
+  },
+  "homepage": "https://github.com/global-torque/torque-packages#readme",
+  "bugs": { "url": "https://github.com/global-torque/torque-packages/issues" },
+  "publishConfig": { "access": "public", "provenance": true, "tag": "latest" },
+  "devDependencies": {
+    "typescript": "catalog:"
+  }
+}

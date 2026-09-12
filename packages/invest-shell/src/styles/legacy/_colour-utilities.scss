@@ -1,0 +1,270 @@
+// Legacy Sass names resolve at runtime; default values preserve the original palette.
+$primary: var(--ui-color-accent, #004FFF);
+$primary-dark: var(--ui-color-accent-strong, #0042D4);
+$primary-light: var(--ui-color-subtle, #F0F4FF);
+
+$secondary: var(--color-status-success, var(--ui-color-positive-accent, #3DDC97));
+$secondary-dark: var(--ui-color-positive, #36BE83);
+$secondary-light: var(--ui-color-positive-background, #D9FFEE);
+
+$red: var(--ui-color-negative-accent, #FF7070);
+$red-dark: var(--ui-color-negative, #FF3B3B);
+$red-light: var(--ui-color-negative-background, #FFF1F1);
+
+$purple: var(--ui-color-highlight, #6F3DFD);
+$purple-dark: var(--ui-color-highlight-strong, #5014D0);
+$purple-light: var(--ui-color-highlight-background, #F8F5FF);
+
+$yellow: var(--ui-color-warning-accent, #FFC24D);
+$yellow-dark: var(--ui-color-warning, #F1AF32);
+$yellow-light: var(--ui-color-warning-background, #FFF7E8);
+
+$white: var(--ui-color-surface, #fff);
+$gray-10: var(--ui-color-canvas, #F8F9FA);
+$gray-20: var(--ui-color-border-subtle, #E9ECEF);
+$gray-30: var(--ui-color-border-muted, #DEE2E6);
+$gray-40: var(--ui-color-border, #CED4DA);
+$gray-50: var(--ui-color-text-disabled, #ADB5BD);
+$gray-60: var(--ui-color-text-subtle, #6C757D);
+$gray-70: var(--ui-color-text-muted, #495057);
+$gray-80: var(--ui-color-text-secondary, #343A40);
+$gray-90: var(--ui-color-surface-inverse-muted, #1A202D);
+$black: var(--ui-color-text, #12161F);
+$black-2: var(--ui-color-text-neutral, #333);
+
+$gradient-blue: var(--ui-background-brand-gradient, linear-gradient(
+  107deg,
+  rgb(0 66 212 / 95%) -11.26%,
+  rgb(1 47 150 / 95%) 8.01%,
+  rgb(1 33 102 / 95%) 42.66%,
+  rgb(2 22 67 / 95%) 99.14%
+));
+
+
+.is--background-primary{
+  background-color: $primary;
+}
+
+.is--background-primary-dark{
+  background-color: $primary-dark;
+}
+
+.is--background-primary-light{
+  background-color: $primary-light;
+}
+
+.is--background-secondary{
+  background-color: $secondary;
+}
+
+.is--background-secondary-dark{
+  background-color: $secondary-dark;
+}
+
+.is--background-secondary-light{
+  background-color: $secondary-light;
+}
+
+.is--background-red{
+  background-color: $red;
+}
+
+.is--background-red-dark{
+  background-color: $red-dark;
+}
+
+.is--background-red-light{
+  background-color: $red-light;
+}
+
+.is--background-purple{
+  background-color: $purple;
+}
+
+.is--background-purple-dark{
+  background-color: $purple-dark;
+}
+
+.is--background-purple-light{
+  background-color: $purple-light;
+}
+
+.is--background-yellow{
+  background-color: $yellow;
+}
+
+.is--background-yellow-dark{
+  background-color: $yellow-dark;
+}
+
+.is--background-yellow-light{
+  background-color: $yellow-light;
+}
+
+.is--background-black{
+  background-color: var(--ui-color-surface-inverse, #12161f);
+}
+
+.is--background-white{
+  background-color: $white;
+}
+
+
+.is--background-gray-10{
+  background-color: $gray-10;
+}
+
+.is--background-gray-20{
+  background-color: $gray-20;
+}
+
+.is--background-gray-30{
+  background-color: $gray-30;
+}
+
+.is--background-gray-40{
+  background-color: $gray-40;
+}
+
+.is--background-gray-50{
+  background-color: $gray-50;
+}
+
+.is--background-gray-60{
+  background-color: $gray-60;
+}
+
+.is--background-gray-70{
+  background-color: $gray-70;
+}
+
+.is--background-gray-80{
+  background-color: $gray-80;
+}
+
+.is--background-gray-90{
+  background-color: $gray-90;
+}
+
+// COLORS
+.is--color-primary{
+  color: $primary;
+}
+
+.is--color-primary-dark{
+  color: $primary-dark;
+}
+
+.is--color-primary-light{
+  color: $primary-light;
+}
+
+.is--color-secondary{
+  color: $secondary;
+}
+
+.is--color-secondary-dark{
+  color: $secondary-dark;
+}
+
+.is--color-secondary-light{
+  color: $secondary-light;
+}
+
+.is--color-red{
+  color: $red;
+}
+
+.is--color-red-dark{
+  color: $red-dark;
+}
+
+.is--color-red-light{
+  color: $red-light;
+}
+
+.is--color-purple{
+  color: $purple;
+}
+
+.is--color-purple-dark{
+  color: $purple-dark;
+}
+
+.is--color-purple-light{
+  color: $purple-light;
+}
+
+.is--color-yellow{
+  color: $yellow;
+}
+
+.is--color-yellow-dark{
+  color: $yellow-dark;
+}
+
+.is--color-yellow-light{
+  color: $yellow-light;
+}
+
+.is--color-black{
+  color: $black;
+}
+
+.is--color-white{
+  color: var(--ui-color-text-inverse, #fff);
+}
+
+
+.is--color-gray-10{
+  color: $gray-10;
+}
+
+.is--color-gray-20{
+  color: $gray-20;
+}
+
+.is--color-gray-30{
+  color: $gray-30;
+}
+
+.is--color-gray-40{
+  color: $gray-40;
+}
+
+.is--color-gray-50{
+  color: $gray-50;
+}
+
+.is--color-gray-60{
+  color: $gray-60;
+}
+
+.is--color-gray-70{
+  color: $gray-70;
+}
+
+.is--color-gray-80{
+  color: $gray-80;
+}
+
+.is--color-gray-90{
+  color: $gray-90;
+}
+
+[class*="is--color"] p:not([class*="is--color"]),
+[class*="is--color"] li:not([class*="is--color"]),
+[class*="is--color"] a:not([class*="is--color"]){
+    color: inherit;
+  }
+
+
+:root {
+    --vis-tooltip-background-color: var(--ui-color-canvas);
+    --vis-primary-color: var(--ui-chart-primary-hsl, 221 100% 50%);
+    --vis-secondary-color: var(--ui-chart-secondary-hsl, 154 69% 55%);
+    --vis-text-color: var(--ui-chart-text-hsl, 210 10% 23%);
+    --vis-area-stroke: var(--ui-chart-primary-hsl, 221 100% 50%);
+    --vis-dark-area-stroke: var(--ui-chart-primary-hsl, 221 100% 50%);
+    --stroke: var(--ui-color-canvas);
+}

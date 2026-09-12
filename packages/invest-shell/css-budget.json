@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 3,
+  "entries": [
+    "src/styles/geometry.css",
+    "src/styles/components.css",
+    "src/styles/index.scss"
+  ],
+  "measurement": "Unminified aggregate of all CSS assets emitted by a write-free production Vite build of the three public shell stylesheet entries in app import order, resolving Sass and CSS imports.",
+  "scope": "Includes resolved imports. Excludes app styles, Vue SFC styles, and app Tailwind/design-token generation; this is not an application bundle budget.",
+  "history": {
+    "retiredDimensionGenerators": {
+      "scope": "Historical legacy entry only",
+      "entry": "src/styles/legacy/index.scss",
+      "rawBytes": 2046641,
+      "gzipBytes": 117521,
+      "generatedSelectorOccurrences": 28638
+    },
+    "previousLegacyEntry": {
+      "entry": "src/styles/legacy/index.scss",
+      "current": {
+        "rawBytes": 69041,
+        "gzipBytes": 12333,
+        "generatedSelectorOccurrences": 0,
+        "sha256": "f9733cca4766e67e4cf43a46a07ca99cdd5e9eca6ba2951ed5467df792b81aab"
+      },
+      "maximum": {
+        "rawBytes": 69291,
+        "gzipBytes": 12383,
+        "generatedSelectorOccurrences": 0
+      }
+    },
+    "targetPublicAggregate": {
+      "sourceCommit": "83908133611512faa4a3f15f8d60ee11fad496d8",
+      "rawBytes": 70708,
+      "gzipBytes": 13798,
+      "generatedSelectorOccurrences": 0,
+      "sha256": "6b926c92328fd35a3e8639fe0c6e2a0faeb4df8445930a3bd6df7eb9754a8a5e"
+    }
+  },
+  "current": {
+    "rawBytes": 94981,
+    "gzipBytes": 17846,
+    "generatedSelectorOccurrences": 0,
+    "sha256": "18ee2c857edef81d886c1bec493c479d1428f5a84a86e4b98b25c5c84136d731"
+  },
+  "referenceToolchain": {
+    "node": "v24.14.0",
+    "zlib": "1.3.1-e00f703",
+    "vite": "8.1.3",
+    "pnpm": "10.34.5"
+  },
+  "maximum": {
+    "rawBytes": 95231,
+    "gzipBytes": 17896,
+    "generatedSelectorOccurrences": 0
+  }
+}

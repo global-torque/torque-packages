@@ -1,0 +1,95 @@
+// markdown - it
+// spacing
+.custom-block + *{
+  margin-top: 40px;
+
+  @media screen and (width <= 768px){
+    margin-top: 60px;
+  }
+}
+
+* + .custom-block{
+  margin-top: 40px;
+
+  @media screen and (width <= 768px){
+    margin-top: 60px;
+  }
+}
+// end spacing
+
+.custom-block{
+  padding: 12px 20px;
+}
+
+.custom-block.info{
+  border-left: 2px solid #0042D4;
+  background: var(--accent);
+}
+
+.custom-block.note{
+  border-left: 2px solid #6F3DFD;
+  background: #F8F5FF;
+}
+
+.custom-block.tip{
+  border-left: 2px solid #ADB5BD;
+  background: var(--border);
+}
+
+.custom-block.important{
+  border-left: 2px solid var(--color-status-success, var(--secondary));
+  background: #D9FFEE;
+}
+
+.custom-block.warning{
+  border-left: 2px solid #FFC24D;
+  background: #FFF7E8;
+}
+
+.custom-block.danger{
+  border-left: 2px solid #FF7070;
+  background: #FFF1F1;
+}
+
+.custom-block.caution{
+  border-left: 2px solid #FF7070;
+  background: #FFF1F1;
+}
+
+.custom-block.details{
+  border-left: 2px solid #ADB5BD;
+  background: var(--border);
+}
+
+// merged into the single .custom-block-title block below
+
+.custom-block p + p{
+  margin: 8px 0;
+}
+
+.custom-block.details summary{
+  margin: 0 0 8px;
+  font-weight: 700;
+  cursor: pointer;
+  user-select: none;
+}
+
+.custom-block.details summary + p{
+  margin: 8px 0;
+}
+    
+.custom-block-title{
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 26px;
+}
+
+.custom-block div[class*='language-'] code{
+  font-weight: 400;
+  background-color: transparent;
+}
+
+
+.custom-block .vp-code-group .tabs{
+  margin: 0;
+}

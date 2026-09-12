@@ -1,0 +1,85 @@
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Outer calendar frame -->
+  <rect
+    x="2"
+    y="3"
+    width="12"
+    height="11"
+    rx="1.5"
+    stroke="currentColor"
+    stroke-width="1"
+  />
+
+  <!-- Top binding bars -->
+  <path
+    d="M5 2V4"
+    stroke="currentColor"
+    stroke-width="1"
+    stroke-linecap="round"
+  />
+  <path
+    d="M11 2V4"
+    stroke="currentColor"
+    stroke-width="1"
+    stroke-linecap="round"
+  />
+
+  <!-- Header separator -->
+  <path
+    d="M3 6H13"
+    stroke="currentColor"
+    stroke-width="0.9"
+    stroke-linecap="round"
+  />
+
+  <!-- Day grid (outline only, no fill) -->
+  <rect
+    x="4.5"
+    y="7.5"
+    width="1"
+    height="1"
+    stroke="currentColor"
+    stroke-width="0.6"
+  />
+  <rect
+    x="7.5"
+    y="7.5"
+    width="1"
+    height="1"
+    stroke="currentColor"
+    stroke-width="0.6"
+  />
+  <rect
+    x="10.5"
+    y="7.5"
+    width="1"
+    height="1"
+    stroke="currentColor"
+    stroke-width="0.6"
+  />
+
+  <rect
+    x="4.5"
+    y="10.5"
+    width="1"
+    height="1"
+    stroke="currentColor"
+    stroke-width="0.6"
+  />
+  <rect
+    x="7.5"
+    y="10.5"
+    width="1"
+    height="1"
+    stroke="currentColor"
+    stroke-width="0.6"
+  />
+  <rect
+    x="10.5"
+    y="10.5"
+    width="1"
+    height="1"
+    stroke="currentColor"
+    stroke-width="0.6"
+  />
+</svg>

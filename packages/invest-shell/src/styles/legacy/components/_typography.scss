@@ -1,0 +1,303 @@
+@use "@global-torque/ui-kit/styles/mixins" as *;
+
+h1 {
+  font-weight: 900;
+  color: inherit;
+  font-size: 50px;
+  line-height: 64px;
+  font-style: normal;
+
+  @media screen and (width <= 767px) {
+    font-size: 38px;
+    line-height: 57px;
+  }
+}
+
+h2 {
+  font-weight: 900;
+  color: inherit;
+  font-size: 36px;
+  line-height: 54px;
+  font-style: normal;
+
+  @media screen and (width <= 767px) {
+    font-size: 28px;
+    line-height: 42px;
+  }
+}
+
+h3 {
+  font-weight: 900;
+  color: inherit;
+  font-size: 24px;
+  line-height: 36px;
+  font-style: normal;
+}
+
+h4 {
+  font-weight: 800;
+  color: inherit;
+  font-size: 20px;
+  line-height: 30px;
+  font-style: normal;
+}
+
+h5 {
+  font-weight: 800;
+  color: inherit;
+  font-size: 16px;
+  line-height: 24px;
+  font-style: normal;
+}
+
+h6 {
+  font-weight: 800;
+  color: inherit;
+  font-size: 14px;
+  line-height: 21px;
+  font-style: normal;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  // padding: 0;
+  margin: 0;
+  border: 0;
+  position: relative;
+}
+
+// H - titles by class
+.is--h1__title {
+  @extend h1;
+}
+
+.is--h2__title {
+  @extend h2;
+}
+
+.is--h3__title {
+  @extend h3;
+}
+
+.is--h4__title {
+  @extend h4;
+}
+
+.is--h5__title {
+  @extend h5;
+}
+
+.is--h6__title {
+  @extend h6;
+}
+
+// extra classes
+.is--display {
+  font-weight: 900;
+  font-size: 100px;
+  line-height: 100px;
+  font-style: normal;
+}
+
+.is--subheading-2 {
+  font-weight: 350;
+  font-size: 20px;
+  line-height: 30px;
+  font-style: normal;
+}
+
+.is--subheading-1 {
+  font-weight: 350;
+  font-size: 24px;
+  line-height: 36px;
+  font-style: normal;
+
+  @media screen and (width <= 767px) {
+    font-size: 20px;
+    line-height: 30px;
+  }
+}
+
+.is--body {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 26px;
+  font-style: normal;
+}
+
+.is--body-italic {
+  @extend .is--body;
+
+  font-style: italic;
+}
+
+.is--small {
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.is--small-2 {
+  font-weight: 800;
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.header-anchor {
+  &:hover::before {
+    opacity: 1;
+  }
+}
+
+.header-anchor::before {
+  content: "#";
+  position: absolute;
+  left: -0.7em;
+  opacity: 0;
+}
+
+// SPACINGS
+.with-default-distance {
+  // h1:not(:first-child),
+  // h2:not(:first-child),
+  // h3:not(:first-child),
+  // h4:not(:first-child),
+  // h5:not(:first-child),
+  // h6:not(:first-child),
+  // .is--h1__title:not(:first-child),
+  // .is--h2__title:not(:first-child),
+  // .is--h3__title:not(:first-child),
+  // .is--h4__title:not(:first-child),
+  // .is--h5__title:not(:first-child),
+  // .is--h6__title:not(:first-child) {
+  //   margin-top: 40px;
+  // }
+
+  *:not(hr) + h2:not(:first-child),
+  *:not(hr) + .is--h2__title:not(:first-child) {
+    margin-top: 40px;
+  }
+
+
+  * + h3,
+  * + .is--h3__title {
+    margin-top: 24px;
+  }
+
+  * + h4,
+  * + .is--h4__title {
+    margin-top: 22px;
+  }
+
+
+  h1 + *,
+  .is--h1__title + * {
+    margin-top: 12px;
+  }
+
+  // h2 + *,
+  // .is--h2__title + *,
+  // h3 + *,
+  // .is--h3__title + * {
+  //   margin-top: 8px;
+  // }
+
+  h4 + *,
+  .is--h4__title + *,
+  h5 + *,
+  .is--h5__title + *,
+  h6 + *,
+  .is--h6__title + * {
+    margin-top: 4px;
+  }
+
+  h2 + .is--subheading-1,
+  .is--h2__title + .is--subheading-1 {
+    margin-top: 12px;
+  }
+
+  h2 + .is--subheading-2,
+  .is--h2__title + .is--subheading-2,
+  h3 + .is--subheading-2,
+  .is--h3__title + .is--subheading-2 {
+    margin-top: 8px;
+  }
+
+  .is--subheading-1 + *:not(section) {
+    margin-top: 30px;
+  }
+
+  .is--subheading-2 + * {
+    margin-top: 30px;
+  }
+
+  .v-badge + h1,
+  .v-badge + .is--h1__title {
+    margin-top: 12px;
+  }
+}
+
+h1.with-default-distance + *,
+.is--h1__title.with-default-distance + * {
+  margin-top: 12px;
+}
+
+h2.with-default-distance + *,
+.is--h2__title.with-default-distance + *,
+h3.with-default-distance + *,
+.is--h3__title.with-default-distance + * {
+  margin-top: 8px;
+}
+
+h4.with-default-distance + *,
+.is--h4__title.with-default-distance + *,
+h5.with-default-distance + *,
+.is--h5__title.with-default-distance + *,
+h6.with-default-distance + *,
+.is--h6__title.with-default-distance + * {
+  margin-top: 4px;
+}
+
+h2.with-default-distance + .is--subheading-1,
+.is--h2__title.with-default-distance + .is--subheading-1 {
+  margin-top: 12px;
+}
+
+h2.with-default-distance + .is--subheading-2,
+.is--h2__title.with-default-distance + .is--subheading-2,
+h3.with-default-distance + .is--subheading-2,
+.is--h3__title.with-default-distance + .is--subheading-2 {
+  margin-top: 8px;
+}
+
+.is--subheading-1.with-default-distance + *:not(section) {
+  margin-top: 30px;
+}
+
+.is--subheading-2.with-default-distance + * {
+  margin-top: 30px;
+}
+
+* + h1.with-default-distance,
+* + h2.with-default-distance,
+* + h3.with-default-distance,
+* + h4.with-default-distance,
+* + h5.with-default-distance,
+* + h6.with-default-distance,
+* + .is--h1__title.with-default-distance,
+* + .is--h2__title.with-default-distance,
+* + .is--h3__title.with-default-distance,
+* + .is--h4__title.with-default-distance,
+* + .is--h5__title.with-default-distance,
+* + .is--h6__title.with-default-distance {
+  margin-top: 30px;
+}
+
+.v-tag + h1.with-default-distance,
+.v-tag + .is--h1__title.with-default-distance {
+  margin-top: 12px;
+}

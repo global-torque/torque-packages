@@ -1,0 +1,70 @@
+@use '@global-torque/ui-kit/styles/mixins' as *;
+    
+    
+    
+blockquote,
+q {
+    // border: 1px solid var(--border);
+    border-radius: 2px;
+    background: var(--muted);
+    display: flex;
+    padding: 82.6px 40px 40px;
+    align-items: flex-start;
+    gap: 12px;
+    align-self: stretch;
+    position: relative;
+    margin-top: 60px;
+    font-size: 24px;
+    font-weight: 350;
+    line-height: 36px;
+    flex-direction: column; 
+    color: #333;
+
+    p {
+        font-style: italic;
+        margin: 0;
+
+        & + * {
+            margin-top: 0;
+        }
+    }
+
+    strong {
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 800;
+        line-height: 26px;
+    }
+
+    &::before{
+        content: "";
+        position: absolute;
+        left: 40px;
+        top: 40px;
+        width: 32px;
+        height: 22.6px;
+        z-index: 0;
+        border: none;
+        background-size: cover;
+    }
+
+    *{
+        z-index: 1;
+    }
+}
+
+.with-default-distance blockquote,
+.with-default-distance q,
+blockquote.with-default-distance,
+q.with-default-distance {
+  margin: 24px auto;
+}
+
+.with-default-distance {
+    blockquote,
+    q {
+        p + p {
+            margin-top: 0;
+        }
+    }
+}

@@ -1,0 +1,326 @@
+// code
+//     border: 1px solid var(--border)
+//     background: var(--muted)
+//     display: flex
+//     padding: 20px
+//     align-items: flex-start
+//     gap: 28px
+//     align-self: stretch
+//     margin-bottom: 20px
+//     position: relative
+
+:not(pre) > code{
+  padding: 0 5px;
+  display: inline-block;
+  margin: 0;
+  background-color: var(--muted);
+}
+
+
+a > code{
+  color: var(--foreground);
+}
+
+
+a:hover > code{
+    color: var(--primary);
+}
+
+pre > code{
+    display: block;
+
+    a{
+      margin: 0 !important;
+    }
+}
+
+
+h1 > code,
+h2 > code,
+h3 > code,
+h4 > code{
+    font-size: 0.9em;
+}
+
+
+div[class*='language-'],
+.vp-block{
+    position: relative;
+    margin: 16px 0;
+    overflow-x: auto;
+    transition: background-color 0.5s;
+    max-width: 100%;
+}
+
+
+@media (width >= 640px){
+  div[class*='language-'],
+  .vp-block{
+      margin-top: 40px;
+      margin-left: 0;
+      margin-right: 0;
+
+      & + *{
+        margin-top: 40px;
+      }
+    }
+}
+    
+
+
+
+
+[class*='language-'] pre,
+[class*='language-'] code{
+    /* rtl:ignore */
+    direction: ltr;
+
+    /* rtl:ignore */
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    overflow-wrap: normal;
+    tab-size: 4;
+    hyphens: none;
+}
+
+
+[class*='language-'] pre{
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    border: 1px solid var(--border);
+    background: var(--muted);
+    overflow-x: auto;
+}
+
+
+[class*='language-'] code{
+    display: block;
+    width: fit-content;
+    min-width: 100%;
+    border: none;
+    transition: color 0.5s;
+    margin-bottom: 0;
+    padding: 10px;
+}
+
+
+[class*='language-'] code .highlighted{
+    background-color: var(--accent);
+    transition: background-color 0.5s;
+    margin: 0 -24px;
+    padding: 0 24px;
+    width: calc(100% + 2 * 24px);
+    display: inline-block;
+}
+
+
+[class*='language-'] code .highlighted.error{
+    background-color: #FF7070;
+}
+
+
+[class*='language-'] code .highlighted.warning{
+    background-color: #FFC24D;
+}
+
+
+[class*='language-'] code .diff{
+    transition: background-color 0.5s;
+    margin: 0 -24px;
+    padding: 0 24px;
+    width: calc(100% + 2 * 24px);
+    display: inline-block;
+}
+
+
+[class*='language-'] code .diff::before{
+    position: absolute;
+    left: 10px;
+}
+
+
+[class*='language-'] .has-focused-lines .line:not(.has-focus){
+    filter: blur(0.095rem);
+    opacity: 0.7;
+    transition: filter 0.35s, opacity 0.35s;
+}
+
+
+[class*='language-']:hover .has-focused-lines .line:not(.has-focus){
+    filter: blur(0);
+    opacity: 1;
+}
+
+
+[class*='language-'] code .diff.remove{
+    background-color: #FF7070;
+    opacity: 0.7;
+}
+
+
+[class*='language-'] code .diff.remove::before{
+    content: '-';
+    color: #FF7070;
+}
+
+
+[class*='language-'] code .diff.add{
+    background-color: var(--color-status-success, var(--secondary));
+}
+
+
+[class*='language-'] code .diff.add::before{
+    content: '+';
+    color: var(--color-status-success, var(--secondary));
+}
+
+
+div[class*='language-'].line-numbers-mode{
+    /* rtl:ignore */
+    padding-left: 32px;
+}
+
+
+.line-numbers-wrapper{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+
+    /* rtl:ignore */
+    left: 0;
+    z-index: 3;
+
+    /* rtl:ignore */
+    border-right: 1px solid var(--primary);
+    padding-top: 20px;
+    width: 32px;
+    text-align: center;
+    transition: border-color 0.5s, color 0.5s;
+}
+
+
+[class*='language-'] > button.copy{
+    /* rtl:ignore */
+    direction: ltr;
+    position: absolute;
+    top: 12px;
+
+    /* rtl:ignore */
+    right: 12px;
+    z-index: 3;
+    width: 40px;
+    height: 40px;
+    background-color: var(--muted);
+    opacity: 0;
+    cursor: pointer;
+    background-position: 50%;
+    background-size: 20px;
+    background-repeat: no-repeat;
+    transition: border-color 0.25s, background-color 0.25s, opacity 0.25s;
+}
+
+
+[class*='language-'] > button.copy:focus,
+[class*='language-'] > button.copy:hover{
+    opacity: 1;
+}
+
+
+
+
+[class*='language-'] > span.lang{
+    position: absolute;
+    top: 2px;
+    right: 8px;
+    z-index: 2;
+    font-size: 12px;
+    transition: color 0.4s, opacity 0.4s;
+}
+
+
+[class*='language-']:hover > button.copy + span.lang,
+[class*='language-'] > button.copy:focus + span.lang{
+    opacity: 0;
+}
+
+
+.vp-code-group{
+    margin-top: 16px;
+}
+  
+
+.vp-code-group .tabs{
+    position: relative;
+    display: flex;
+    margin-right: -24px;
+    margin-left: -24px;
+    padding: 4px;
+    background-color: var(--border);
+    overflow: auto hidden;
+    border-radius: 2px;
+}
+  
+
+@media (width >= 640px){
+    .vp-code-group .tabs{
+      margin-right: 0;
+      margin-left: 0;
+    }
+}
+    
+  
+
+.vp-code-group .tabs input{
+    position: fixed;
+    opacity: 0;
+    pointer-events: none;
+}
+  
+
+.vp-code-group .tabs label{
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px solid transparent;
+    font-size: 12px;
+    font-weight: 800;
+    padding: 3px 12px;
+    color: var(--muted-foreground);
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all 0.25s;
+}
+  
+
+.vp-code-group label:hover{
+    color: var(--foreground);
+}
+  
+
+.vp-code-group input:checked + label{
+    color: var(--foreground);
+    background-color: var(--background);
+    box-shadow: 0 2px 5px 1px rgb(18 22 31 / 3%), 0 2px 3px -2px rgb(18 22 31 / 15%);
+}
+  
+
+.vp-code-group div[class*='language-'],
+.vp-block{
+    display: none;
+    margin-top: 0 !important;
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+}
+  
+
+.vp-code-group div[class*='language-'].active,
+.vp-block.active{
+    display: block;
+}
+  
+
+.vp-block{
+    padding: 20px 24px;
+}

@@ -1,0 +1,203 @@
+name: Framework package candidate
+
+on:
+  workflow_dispatch:
+    inputs:
+      candidate:
+        description: Candidate version to pack from the checked source
+        required: true
+        type: string
+        default: 0.2.0
+      ui_kit_transport_release_id:
+        description: Optional framework-repository draft release containing the verified UI Kit transport assets
+        required: false
+        type: string
+        default: ''
+      ui_kit_transport_tag:
+        description: Draft release tag carrying the verified UI Kit transport assets
+        required: false
+        type: string
+        default: ui-kit-transport-v0.1.4
+      ui_kit_source_run_id:
+        description: Successful hosted UI Kit release run represented by the transport bundle
+        required: false
+        type: string
+        default: '34708515017'
+      ui_kit_source_tag:
+        description: UI Kit source release tag represented by the transport bundle
+        required: false
+        type: string
+        default: ui-kit-v0.1.4
+
+permissions:
+  contents: read
+
+jobs:
+  candidate:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      attestations: write
+      artifact-metadata: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: '24.14.0'
+      - run: corepack enable && corepack prepare pnpm@10.34.5 --activate
+      - name: Verify release contract tests
+        env:
+          TMPDIR: ${{ runner.temp }}/torque-release-contracts
+        run: pnpm run test:release
+      - name: Download retained UI Kit transport from this repository
+        if: ${{ inputs.ui_kit_transport_release_id != '' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          UI_KIT_TRANSPORT_RELEASE_ID: ${{ inputs.ui_kit_transport_release_id }}
+          UI_KIT_TRANSPORT_TAG: ${{ inputs.ui_kit_transport_tag }}
+          UI_KIT_SOURCE_RUN_ID: ${{ inputs.ui_kit_source_run_id }}
+          UI_KIT_SOURCE_TAG: ${{ inputs.ui_kit_source_tag }}
+        run: |
+          set -euo pipefail
+          transport_dir="$RUNNER_TEMP/torque-ui-kit-transport"
+          mkdir -p "$transport_dir"
+          release_json="$transport_dir/release.json"
+          gh api "/repos/${GITHUB_REPOSITORY}/releases/${UI_KIT_TRANSPORT_RELEASE_ID}" > "$release_json"
+          test "$(jq -er '.draft' "$release_json")" = true
+          test "$(jq -er '.prerelease' "$release_json")" = false
+          test "$(jq -er '.tag_name' "$release_json")" = "$UI_KIT_TRANSPORT_TAG"
+          expected="$RUNNER_TEMP/torque-ui-kit-transport-expected.txt"
+          actual="$RUNNER_TEMP/torque-ui-kit-transport-actual.txt"
+          printf '%s\n' \
+            global-torque-ui-kit-0.1.4.tgz \
+            global-torque-ui-kit-0.1.4.tgz.manifest.json \
+            global-torque-ui-kit-0.1.4.tgz.sha512 \
+            selected-release.json \
+            original-provenance.json \
+            transport-receipt.json | sort > "$expected"
+          jq -r '.assets[]?.name' "$release_json" | sort > "$actual"
+          diff -u "$expected" "$actual"
+          while IFS= read -r asset; do
+            asset_id=$(jq -er --arg name "$asset" '.assets[] | select(.name == $name) | .id' "$release_json")
+            gh api --header 'Accept: application/octet-stream' \
+              "/repos/${GITHUB_REPOSITORY}/releases/assets/$asset_id" > "$transport_dir/$asset"
+          done < "$expected"
+          node scripts/verify-ui-kit-transport.mjs \
+            "$transport_dir" "$UI_KIT_SOURCE_RUN_ID" "$UI_KIT_SOURCE_TAG" \
+            "$transport_dir/original-provenance.json" \
+            "$RUNNER_TEMP/torque-ui-kit-transport-generated.json"
+          cmp "$transport_dir/transport-receipt.json" "$RUNNER_TEMP/torque-ui-kit-transport-generated.json"
+          ui_source_commit=$(jq -er '.sourceCommit | select(test("^[a-f0-9]{40}$"))' "$transport_dir/selected-release.json")
+          gh attestation verify "$transport_dir/global-torque-ui-kit-0.1.4.tgz" \
+            --bundle "$transport_dir/original-provenance.json" \
+            --repo global-torque/vue-ui \
+            --signer-workflow global-torque/vue-ui/.github/workflows/release.yml \
+            --signer-digest "$ui_source_commit" \
+            --source-digest "$ui_source_commit" \
+            --source-ref "refs/tags/$UI_KIT_SOURCE_TAG" \
+            --deny-self-hosted-runners \
+            --format json > "$RUNNER_TEMP/torque-ui-kit-attestation-verified.json"
+          ui_run_json="$RUNNER_TEMP/torque-ui-kit-source-run.json"
+          gh run view "$UI_KIT_SOURCE_RUN_ID" --repo global-torque/vue-ui \
+            --json status,conclusion,event,headBranch,headSha,workflowName > "$ui_run_json"
+          test "$(jq -er '.status' "$ui_run_json")" = completed
+          test "$(jq -er '.conclusion' "$ui_run_json")" = success
+          test "$(jq -er '.event' "$ui_run_json")" = push
+          test "$(jq -er '.headBranch' "$ui_run_json")" = "$UI_KIT_SOURCE_TAG"
+          test "$(jq -er '.headSha' "$ui_run_json")" = "$ui_source_commit"
+          test "$(jq -er '.workflowName' "$ui_run_json")" = 'Verified public UI artifacts'
+          {
+            printf 'UI_KIT_TRANSPORT_DIR=%s\n' "$transport_dir"
+            printf 'UI_KIT_TRANSPORT_RECEIPT=%s\n' "$transport_dir/transport-receipt.json"
+            printf 'UI_KIT_ORIGINAL_ATTESTATION=%s\n' "$transport_dir/original-provenance.json"
+          } >> "$GITHUB_ENV"
+      - name: Install checked dependency graph
+        env:
+          GH_TOKEN: ${{ github.token }}
+          UI_KIT_TRANSPORT_RELEASE_ID: ${{ inputs.ui_kit_transport_release_id }}
+        run: |
+          set -euo pipefail
+          source_status="$(git status --porcelain=v1)"
+          if [[ -n "$source_status" ]]; then
+            echo 'Target source checkout is not clean; refusing dependency installation' >&2
+            exit 1
+          fi
+          if [[ -n "$UI_KIT_TRANSPORT_RELEASE_ID" ]]; then
+            canonical_lock="$RUNNER_TEMP/torque-framework-pnpm-lock-canonical.yaml"
+            canonical_workspace="$RUNNER_TEMP/torque-framework-pnpm-workspace-canonical.yaml"
+            derived_lock="$RUNNER_TEMP/torque-framework-pnpm-lock-derived.yaml"
+            derived_workspace="$RUNNER_TEMP/torque-framework-pnpm-workspace-derived.yaml"
+            overlay_receipt="$RUNNER_TEMP/torque-framework-ui-kit-lock-overlay.json"
+            retained_overlay_dir="$RUNNER_TEMP/torque-framework-ui-kit-lock-overlay-files"
+            cp pnpm-lock.yaml "$canonical_lock"
+            cp pnpm-workspace.yaml "$canonical_workspace"
+            cp "$canonical_workspace" "$derived_workspace"
+            restore() {
+              cp "$canonical_lock" pnpm-lock.yaml
+              cp "$canonical_workspace" pnpm-workspace.yaml
+            }
+            trap restore EXIT
+            node scripts/prepare-ui-kit-overlay.mjs "$derived_workspace" "$UI_KIT_TRANSPORT_DIR/global-torque-ui-kit-0.1.4.tgz"
+            cp "$derived_workspace" pnpm-workspace.yaml
+            pnpm install --force --lockfile-only --no-frozen-lockfile --ignore-scripts
+            cp pnpm-lock.yaml "$derived_lock"
+            node scripts/verify-ui-kit-lock-overlay.mjs \
+              "$canonical_lock" "$derived_lock" "$UI_KIT_TRANSPORT_RECEIPT" "$overlay_receipt" \
+              "$canonical_workspace" "$derived_workspace"
+            mkdir -p "$retained_overlay_dir"
+            cp "$canonical_lock" "$retained_overlay_dir/pnpm-lock.canonical.yaml"
+            cp "$derived_lock" "$retained_overlay_dir/pnpm-lock.derived.yaml"
+            cp "$canonical_workspace" "$retained_overlay_dir/pnpm-workspace.canonical.yaml"
+            cp "$derived_workspace" "$retained_overlay_dir/pnpm-workspace.derived.yaml"
+            pnpm install --frozen-lockfile --ignore-scripts
+            restore
+            trap - EXIT
+            printf 'UI_KIT_LOCK_OVERLAY_RECEIPT=%s\n' "$overlay_receipt" >> "$GITHUB_ENV"
+            printf 'UI_KIT_LOCK_OVERLAY_DIR=%s\n' "$retained_overlay_dir" >> "$GITHUB_ENV"
+          else
+            pnpm install --frozen-lockfile --ignore-scripts
+          fi
+      - name: Verify source candidate and package contracts
+        env:
+          CANDIDATE: ${{ inputs.candidate }}
+        run: node scripts/verify-candidate.mjs "$CANDIDATE"
+      - name: Install Chromium for detached browser verification
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Audit the checked dependency graph
+        run: pnpm audit --audit-level=high
+      - name: Pack the exact candidate once
+        env:
+          CANDIDATE: ${{ inputs.candidate }}
+          REQUIRE_CLEAN_SOURCE: 'true'
+        run: pnpm run pack:candidate -- "$CANDIDATE"
+      - name: Verify detached npm and pnpm consumers
+        run: |
+          set -euo pipefail
+          if [[ -n "${UI_KIT_TRANSPORT_DIR:-}" ]]; then
+            CONSUMER_PACKAGE_MANAGERS=npm,pnpm node scripts/verify-archive-consumers.mjs \
+              artifacts "$UI_KIT_TRANSPORT_DIR/global-torque-ui-kit-0.1.4.tgz"
+          else
+            CONSUMER_PACKAGE_MANAGERS=npm,pnpm node scripts/verify-archive-consumers.mjs artifacts
+          fi
+      - name: Retain detached consumer verification evidence
+        if: ${{ always() }}
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        with:
+          name: torque-framework-consumer-evidence-${{ inputs.candidate }}
+          path: ${{ runner.temp }}/torque-framework-consumer-evidence/
+          if-no-files-found: warn
+          retention-days: 90
+      - name: Attest exact candidate archives
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6
+        with:
+          subject-path: artifacts/*.tgz
+      - name: Retain exact candidate and combined receipt
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        with:
+          name: torque-framework-candidate-${{ inputs.candidate }}
+          path: artifacts/
+          if-no-files-found: error
+          retention-days: 90

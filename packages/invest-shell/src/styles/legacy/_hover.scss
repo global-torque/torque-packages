@@ -1,0 +1,39 @@
+.is--hover-elevate-up{
+    transition: transform 0.3s ease;
+
+    &:hover{
+        transform: translateY(-2.5%);
+        transition: transform 0.3s ease;
+        will-change: transform;
+    }
+}
+
+.is--hover-visible-elevate-up-wrapper {// use on wrapper
+    * {
+        transition: all 0.3s ease;
+    }
+
+    &:hover{
+        .is--hover-visible-elevate-up-component{
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .is--hover-visible-elevate-up-content {// use on content that moves
+            transform: translateY(-10px);
+            transition: transform 0.3s ease;
+            will-change: transform;
+        }
+    }
+}
+
+
+.is--hover-visible-elevate-up-component {// use on element that appears
+    opacity: 0;
+    transform: translateY(30px);
+}
+    
+.is--hover-visible-elevate-up-content {// use on content that moves
+    transition: transform 0.3s ease;
+    will-change: transform;
+}

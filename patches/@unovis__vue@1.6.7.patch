@@ -1,0 +1,53 @@
+diff --git a/components.d.ts b/components.d.ts
+index ab0831fb7412da4f3eee38716b9d5d24df1fe2cc..8b2d00a39e6cb8c656bd430ffb22dd018b372b04 100644
+--- a/components.d.ts
++++ b/components.d.ts
+@@ -20,8 +20,6 @@ export { default as VisTopoJSONMap, VisTopoJSONMapSelectors } from './components
+ export { default as VisTreemap, VisTreemapSelectors } from './components/treemap/index';
+ export { default as VisTooltip, VisTooltipSelectors } from './components/tooltip/index';
+ export { default as VisAnnotations, VisAnnotationsSelectors } from './components/annotations/index';
+-export { default as VisLeafletMap, VisLeafletMapSelectors } from './html-components/leaflet-map/index';
+-export { default as VisLeafletFlowMap, VisLeafletFlowMapSelectors } from './html-components/leaflet-flow-map/index';
+ export { default as VisBulletLegend, VisBulletLegendSelectors } from './html-components/bullet-legend/index';
+ export { default as VisFlowLegend, VisFlowLegendSelectors } from './html-components/flow-legend/index';
+ export { default as VisRollingPinLegend, VisRollingPinLegendSelectors } from './html-components/rolling-pin-legend/index';
+diff --git a/index.cjs b/index.cjs
+index d3f069a0773d6920a1523cc18b821dabbe8117d8..a82acf2b9d05404a76ee98f31bb44821d0b45c68 100644
+--- a/index.cjs
++++ b/index.cjs
+@@ -1,3 +1,3 @@
+ (function(){"use strict";try{if(typeof document<"u"){var e=document.createElement("style");e.appendChild(document.createTextNode("[data-vis-bullet-legend],[data-vis-flow-legend]{display:block}[data-vis-leaflet-flow-map],[data-vis-leaflet-map]{display:block;position:relative}[data-vis-rolling-pin-legend]{display:block}.unovis-single-container,.unovis-xy-container{display:block;position:relative;width:100%}")),document.head.appendChild(e)}}catch(i){console.error("vite-plugin-css-injected-by-js",i)}})();
+-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const e=require("./components/annotations/index.cjs"),t=require("./components/area/index.cjs"),s=require("./components/axis/index.cjs"),r=require("./components/brush/index.cjs"),i=require("./html-components/bullet-legend/index.cjs");;const _=require("./components/chord-diagram/index.cjs"),u=require("./components/crosshair/index.cjs"),l=require("./components/donut/index.cjs"),n=require("./html-components/flow-legend/index.cjs");;const o=require("./components/free-brush/index.cjs"),c=require("./components/graph/index.cjs"),a=require("./components/grouped-bar/index.cjs"),p=require("./html-components/leaflet-flow-map/index.cjs");;const d=require("./html-components/leaflet-map/index.cjs");;const V=require("./components/line/index.cjs"),S=require("./components/nested-donut/index.cjs"),v=require("./components/plotband/index.cjs"),g=require("./components/plotline/index.cjs"),f=require("./html-components/rolling-pin-legend/index.cjs");;const q=require("./components/sankey/index.cjs"),y=require("./components/scatter/index.cjs"),m=require("./containers/single-container/index.cjs");;const x=require("./components/stacked-bar/index.cjs"),$=require("./components/timeline/index.cjs"),L=require("./components/tooltip/index.cjs"),h=require("./components/topojson-map/index.cjs"),B=require("./components/treemap/index.cjs"),M=require("./containers/xy-container/index.cjs");;const T=require("./components/xy-labels/index.cjs");exports.VisAnnotations=e.default;exports.VisAnnotationsSelectors=e.VisAnnotationsSelectors;exports.VisArea=t.default;exports.VisAreaSelectors=t.VisAreaSelectors;exports.VisAxis=s.default;exports.VisAxisSelectors=s.VisAxisSelectors;exports.VisBrush=r.default;exports.VisBrushSelectors=r.VisBrushSelectors;exports.VisBulletLegend=i.default;exports.VisBulletLegendSelectors=i.VisBulletLegendSelectors;exports.VisChordDiagram=_.default;exports.VisChordDiagramSelectors=_.VisChordDiagramSelectors;exports.VisCrosshair=u.default;exports.VisCrosshairSelectors=u.VisCrosshairSelectors;exports.VisDonut=l.default;exports.VisDonutSelectors=l.VisDonutSelectors;exports.VisFlowLegend=n.default;exports.VisFlowLegendSelectors=n.VisFlowLegendSelectors;exports.VisFreeBrush=o.default;exports.VisFreeBrushSelectors=o.VisFreeBrushSelectors;exports.VisGraph=c.default;exports.VisGraphSelectors=c.VisGraphSelectors;exports.VisGroupedBar=a.default;exports.VisGroupedBarSelectors=a.VisGroupedBarSelectors;exports.VisLeafletFlowMap=p.default;exports.VisLeafletFlowMapSelectors=p.VisLeafletFlowMapSelectors;exports.VisLeafletMap=d.default;exports.VisLeafletMapSelectors=d.VisLeafletMapSelectors;exports.VisLine=V.default;exports.VisLineSelectors=V.VisLineSelectors;exports.VisNestedDonut=S.default;exports.VisNestedDonutSelectors=S.VisNestedDonutSelectors;exports.VisPlotband=v.default;exports.VisPlotbandSelectors=v.VisPlotbandSelectors;exports.VisPlotline=g.default;exports.VisPlotlineSelectors=g.VisPlotlineSelectors;exports.VisRollingPinLegend=f.default;exports.VisRollingPinLegendSelectors=f.VisRollingPinLegendSelectors;exports.VisSankey=q.default;exports.VisSankeySelectors=q.VisSankeySelectors;exports.VisScatter=y.default;exports.VisScatterSelectors=y.VisScatterSelectors;exports.VisSingleContainer=m.default;exports.VisStackedBar=x.default;exports.VisStackedBarSelectors=x.VisStackedBarSelectors;exports.VisTimeline=$.default;exports.VisTimelineSelectors=$.VisTimelineSelectors;exports.VisTooltip=L.default;exports.VisTooltipSelectors=L.VisTooltipSelectors;exports.VisTopoJSONMap=h.default;exports.VisTopoJSONMapSelectors=h.VisTopoJSONMapSelectors;exports.VisTreemap=B.default;exports.VisTreemapSelectors=B.VisTreemapSelectors;exports.VisXYContainer=M.default;exports.VisXYLabels=T.default;exports.VisXYLabelsSelectors=T.VisXYLabelsSelectors;
+-//# sourceMappingURL=index.cjs.map
++"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const e=require("./components/annotations/index.cjs"),t=require("./components/area/index.cjs"),s=require("./components/axis/index.cjs"),r=require("./components/brush/index.cjs"),i=require("./html-components/bullet-legend/index.cjs");;const _=require("./components/chord-diagram/index.cjs"),u=require("./components/crosshair/index.cjs"),l=require("./components/donut/index.cjs"),n=require("./html-components/flow-legend/index.cjs");;const o=require("./components/free-brush/index.cjs"),c=require("./components/graph/index.cjs"),a=require("./components/grouped-bar/index.cjs");;;const V=require("./components/line/index.cjs"),S=require("./components/nested-donut/index.cjs"),v=require("./components/plotband/index.cjs"),g=require("./components/plotline/index.cjs"),f=require("./html-components/rolling-pin-legend/index.cjs");;const q=require("./components/sankey/index.cjs"),y=require("./components/scatter/index.cjs"),m=require("./containers/single-container/index.cjs");;const x=require("./components/stacked-bar/index.cjs"),$=require("./components/timeline/index.cjs"),L=require("./components/tooltip/index.cjs"),h=require("./components/topojson-map/index.cjs"),B=require("./components/treemap/index.cjs"),M=require("./containers/xy-container/index.cjs");;const T=require("./components/xy-labels/index.cjs");exports.VisAnnotations=e.default;exports.VisAnnotationsSelectors=e.VisAnnotationsSelectors;exports.VisArea=t.default;exports.VisAreaSelectors=t.VisAreaSelectors;exports.VisAxis=s.default;exports.VisAxisSelectors=s.VisAxisSelectors;exports.VisBrush=r.default;exports.VisBrushSelectors=r.VisBrushSelectors;exports.VisBulletLegend=i.default;exports.VisBulletLegendSelectors=i.VisBulletLegendSelectors;exports.VisChordDiagram=_.default;exports.VisChordDiagramSelectors=_.VisChordDiagramSelectors;exports.VisCrosshair=u.default;exports.VisCrosshairSelectors=u.VisCrosshairSelectors;exports.VisDonut=l.default;exports.VisDonutSelectors=l.VisDonutSelectors;exports.VisFlowLegend=n.default;exports.VisFlowLegendSelectors=n.VisFlowLegendSelectors;exports.VisFreeBrush=o.default;exports.VisFreeBrushSelectors=o.VisFreeBrushSelectors;exports.VisGraph=c.default;exports.VisGraphSelectors=c.VisGraphSelectors;exports.VisGroupedBar=a.default;exports.VisGroupedBarSelectors=a.VisGroupedBarSelectors;exports.VisLine=V.default;exports.VisLineSelectors=V.VisLineSelectors;exports.VisNestedDonut=S.default;exports.VisNestedDonutSelectors=S.VisNestedDonutSelectors;exports.VisPlotband=v.default;exports.VisPlotbandSelectors=v.VisPlotbandSelectors;exports.VisPlotline=g.default;exports.VisPlotlineSelectors=g.VisPlotlineSelectors;exports.VisRollingPinLegend=f.default;exports.VisRollingPinLegendSelectors=f.VisRollingPinLegendSelectors;exports.VisSankey=q.default;exports.VisSankeySelectors=q.VisSankeySelectors;exports.VisScatter=y.default;exports.VisScatterSelectors=y.VisScatterSelectors;exports.VisSingleContainer=m.default;exports.VisStackedBar=x.default;exports.VisStackedBarSelectors=x.VisStackedBarSelectors;exports.VisTimeline=$.default;exports.VisTimelineSelectors=$.VisTimelineSelectors;exports.VisTooltip=L.default;exports.VisTooltipSelectors=L.VisTooltipSelectors;exports.VisTopoJSONMap=h.default;exports.VisTopoJSONMapSelectors=h.VisTopoJSONMapSelectors;exports.VisTreemap=B.default;exports.VisTreemapSelectors=B.VisTreemapSelectors;exports.VisXYContainer=M.default;exports.VisXYLabels=T.default;exports.VisXYLabelsSelectors=T.VisXYLabelsSelectors;
++
+diff --git a/index.js b/index.js
+index 99d1469fce1ac8c9e8e782d2ec4022483c19dd96..11b9b5ba916a5774d33bc7857a2abc5a96ecfd17 100644
+--- a/index.js
++++ b/index.js
+@@ -13,9 +13,7 @@ import { default as N, VisFlowLegendSelectors as X } from "./html-components/flo
+ import { default as y, VisFreeBrushSelectors as J } from "./components/free-brush/index.js";
+ import { default as R, VisGraphSelectors as j } from "./components/graph/index.js";
+ import { default as v, VisGroupedBarSelectors as z } from "./components/grouped-bar/index.js";
+-import { default as H, VisLeafletFlowMapSelectors as I } from "./html-components/leaflet-flow-map/index.js";
+ 
+-import { default as Q, VisLeafletMapSelectors as U } from "./html-components/leaflet-map/index.js";
+ 
+ import { default as Z, VisLineSelectors as _ } from "./components/line/index.js";
+ import { default as ee, VisNestedDonutSelectors as se } from "./components/nested-donut/index.js";
+@@ -60,10 +58,6 @@ export {
+   j as VisGraphSelectors,
+   v as VisGroupedBar,
+   z as VisGroupedBarSelectors,
+-  H as VisLeafletFlowMap,
+-  I as VisLeafletFlowMapSelectors,
+-  Q as VisLeafletMap,
+-  U as VisLeafletMapSelectors,
+   Z as VisLine,
+   _ as VisLineSelectors,
+   ee as VisNestedDonut,
+@@ -93,4 +87,3 @@ export {
+   Je as VisXYLabels,
+   Oe as VisXYLabelsSelectors
+ };
+-//# sourceMappingURL=index.js.map

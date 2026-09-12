@@ -1,0 +1,56 @@
+.is--container{
+  width: 100%;
+  max-width: 1175px;
+  padding: 0 15px;
+  margin: 0 auto;
+}
+
+.is--flex-row{
+  display: flex;
+  align-items: stretch;
+  flex-direction: row;
+  align-self: stretch;
+  gap: 80px;
+
+  @media screen and (width <= 768px){
+    gap: 25px;
+    flex-direction: column;
+  }
+
+}
+
+.is--width-100{
+  width: 100%;
+  }
+
+.is--width-30{
+  width: 30%;
+
+  @media screen and (width <= 768px){
+    width: 100%;
+  }
+}
+
+.is--width-70{
+  width: 70%;
+
+  @media screen and (width <= 768px){
+    width: 100%;
+  }
+}
+
+.is--width-27{
+  width: 27%;
+
+  @media screen and (width <= 768px){
+    width: 100%;
+  }
+}
+
+.is--width-73{
+  width: 73%;
+
+  @media screen and (width <= 768px){
+    width: 100%;
+  }
+}
