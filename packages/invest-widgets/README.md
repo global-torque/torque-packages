@@ -105,7 +105,7 @@ The `socials` export contains neutral network metadata and standard share URL
 prefixes. Social icons and destinations are host-owned: hosts pass a typed
 `SocialLink[]` with the actual `icon` and `href` values to social link
 surfaces. The retired `./icons/social-login` export and its bundled marks are
-not part of public `0.2.0`; authentication and offer views receive required
+not part of public `0.2.1`; authentication and offer views receive required
 typed icon maps from their application owners. An empty host list renders no
 social anchors.
 

@@ -1,6 +1,6 @@
 # Framework asset inventory
 
-This is the source and rights inventory for framework candidate `0.2.0`.
+This is the source and rights inventory for framework candidate `0.2.1`.
 Counts cover regular asset files (`svg`, `webp`, raster images, and font
 files) under the seven framework packages.
 

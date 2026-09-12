@@ -7,7 +7,7 @@ on:
         description: Candidate version to pack from the checked source
         required: true
         type: string
-        default: 0.2.0
+        default: 0.2.1
       ui_kit_transport_release_id:
         description: Optional framework-repository draft release containing the verified UI Kit transport assets
         required: false
@@ -36,7 +36,9 @@ jobs:
   candidate:
     runs-on: ubuntu-24.04
     permissions:
-      contents: read
+      # Draft UI Kit transport assets are read from this repository with the
+      # repository token; GitHub requires contents: write for draft releases.
+      contents: write
       attestations: write
       artifact-metadata: write
       id-token: write
@@ -116,7 +118,6 @@ jobs:
           } >> "$GITHUB_ENV"
       - name: Install checked dependency graph
         env:
-          GH_TOKEN: ${{ github.token }}
           UI_KIT_TRANSPORT_RELEASE_ID: ${{ inputs.ui_kit_transport_release_id }}
         run: |
           set -euo pipefail

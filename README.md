@@ -4,12 +4,14 @@ This repository is the independent source workspace for the seven investment
 framework packages under the `@webdevelop-pro` namespace. The workspace root
 is private; each package is an independently reviewed MIT package candidate.
 
-The current candidate is `0.2.0` for all seven packages. It is source based:
+The current candidate is `0.2.1` for all seven packages. It is source based:
 published files contain the explicit `src` exports and the host application
 provides the Vue/Vite toolchain and singleton peers. The candidate is local and
 non-promotable until the primary maintainer completes the accepted release
 gates. Dispatch the candidate workflow from the matching
-`framework-v0.2.0` tag when producing attestations.
+`framework-v0.2.1` tag when producing attestations. The previously reviewed
+`framework-v0.2.0` source tag, commit, and failed-run diagnostics remain
+retained as history; no canonical `0.2.0` package artifacts were produced.
 
 The package graph is dependency first:
 
@@ -43,7 +45,8 @@ commit, hosted run, and raw Sigstore bundle (including `gh attestation verify
 lockfile, restores the canonical files, and keeps the framework manifest and
 lockfile pinned to public `0.1.4`.
 
-Detached npm and pnpm verification requires the checked Chromium installation:
+Detached npm and pnpm verification requires Chromium and its checked system
+dependencies:
 
 ```sh
 pnpm exec playwright install --with-deps chromium

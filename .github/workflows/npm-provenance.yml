@@ -11,12 +11,12 @@ on:
         description: Candidate version in the retained receipt
         required: true
         type: string
-        default: 0.2.0
+        default: 0.2.1
       release_tag:
         description: Published immutable framework release tag carrying the exact candidate
         required: true
         type: string
-        default: framework-v0.2.0
+        default: framework-v0.2.1
 
 permissions:
   contents: read

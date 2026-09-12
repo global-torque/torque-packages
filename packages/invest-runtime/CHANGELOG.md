@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.1 candidate
+
+- Reissued the framework candidate for fresh public-release validation; package APIs and runtime source remain unchanged.
+
 ## 0.2.0 candidate
 
 - Added the exact Node conditional output for the pure PWA policy helper.

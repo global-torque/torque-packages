@@ -1,6 +1,6 @@
 # Source and release reconciliation
 
-The `0.2.0` candidate is transferred from
+The `0.2.1` candidate is transferred from
 `global-torque/dashboard.webdevelop.biz@9f35aa0882b765e202538ce7c7d5e82eb1b452d3`.
 The seven framework packages are the only source owned by this repository.
 The exact package matrix, external pins, patch hashes, dependency order,
@@ -30,4 +30,7 @@ Candidate packing is dependency first. `pnpm run pack:candidate` packs each
 package once, computes SHA-512 and file inventories, and writes the combined
 receipt. A candidate directory is immutable for its version: a failed or
 changed candidate receives a new version. The local receipt and tarballs are
-test overlays only and are not a publication authorization.
+test overlays only and are not a publication authorization. The prior
+`framework-v0.2.0` source tag, commit, and failed-run diagnostic history remain
+retained as history; that run failed before installation, build, or packing,
+so no canonical `0.2.0` package artifacts or rollback proof exist.

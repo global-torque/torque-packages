@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.1 candidate
+
+- Reissued the framework candidate for fresh public-release validation; package APIs and runtime source remain unchanged.
+
 ## 0.2.0 candidate
 
 - Created the standalone seven-package framework workspace.
