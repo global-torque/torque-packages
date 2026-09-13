@@ -3,7 +3,7 @@
 import { computed, type Component } from 'vue';
 import { Avatar, AvatarFallback, AvatarImage } from '@global-torque/ui-primitives/avatar';
 import { Button } from '@global-torque/ui-primitives/button';
-import { SettingsMenuIcon as GearIcon } from '@webdevelop-pro/invest-widgets/icons';
+import { SettingsMenuIcon as GearIcon } from '@global-torque/invest-widgets/icons';
 import {
   ChevronRightIcon as ArrowRight,
   ContactMenuIcon as ContactIcon,
@@ -11,7 +11,7 @@ import {
   HelpMenuIcon as HelpIcon,
   LogoutMenuIcon as LogoutIcon,
   UserMenuIcon as UserIcon,
-} from '@webdevelop-pro/invest-widgets/icons/navigation';
+} from '@global-torque/invest-widgets/icons/navigation';
 
 const props = defineProps<{
   email?: string;

@@ -4,7 +4,7 @@ Domain-aware reusable Vue widgets for investment apps.
 
 ## Ownership
 
-`@webdevelop-pro/invest-widgets` owns reusable investment widgets that are not
+`@global-torque/invest-widgets` owns reusable investment widgets that are not
 route-level pages: accreditation and KYC alerts/buttons, notification sidebar
 entry points, profile switch menus, and wallet-auth presentation components.
 Widgets consume explicit providers for store, data, runtime, dialog, and
@@ -19,15 +19,15 @@ stays in this package and receives behavior only through explicit contracts.
 - `@global-torque/ui-kit` components, styles, and assets.
 - Explicit supported `@global-torque/ui-primitives` subpaths when a low-level
   generic contract is sufficient.
-- `@webdevelop-pro/invest-core` for pure domain presentation helpers.
+- `@global-torque/invest-core` for pure domain presentation helpers.
 - Stable `domain-types`, `invest-data`, or `invest-runtime` contracts only when
   a widget needs them through explicit props or provider types.
 
 ## Forbidden Dependencies
 
 - Apps, app aliases, app route tables, or route-level page components.
-- `@webdevelop-pro/invest-common`, `@webdevelop-pro/invest-features`, or
-  `@webdevelop-pro/invest-shell` production imports.
+- The retired common compatibility layer, `@global-torque/invest-features`, or
+  `@global-torque/invest-shell` production imports.
 - Direct `import.meta.env` reads.
 - Direct Pinia stores, Vue Router route constants, or router-owned navigation.
   Navigation is supplied by providers.
@@ -105,9 +105,20 @@ The `socials` export contains neutral network metadata and standard share URL
 prefixes. Social icons and destinations are host-owned: hosts pass a typed
 `SocialLink[]` with the actual `icon` and `href` values to social link
 surfaces. The retired `./icons/social-login` export and its bundled marks are
-not part of public `0.2.1`; authentication and offer views receive required
+not part of public `0.2.2`; authentication and offer views receive required
 typed icon maps from their application owners. An empty host list renders no
 social anchors.
+
+## Migration from curated widgets
+
+`@global-torque/invest-widgets@0.2.2` is the full framework widgets package
+owned and published from `global-torque/torque-packages`. It replaces the
+curated `@global-torque/invest-widgets@0.1.3` package previously published by
+`global-torque/vue-ui`; the two packages have different public APIs and are
+not drop-in compatible. Migrate to the framework subpaths documented above
+and provide the required widget providers and host-owned social links. The
+curated 0.1.3 release and its pinned consumers remain immutable historical
+compatibility evidence.
 
 ## Example
 
@@ -116,7 +127,7 @@ import { computed, ref } from 'vue';
 import {
   ProfileSwitchMenuList,
   setInvestWidgetProviders,
-} from '@webdevelop-pro/invest-widgets';
+} from '@global-torque/invest-widgets';
 
 setInvestWidgetProviders({
   profiles: {
@@ -136,6 +147,6 @@ setInvestWidgetProviders({
 ## Validation
 
 ```sh
-pnpm --filter @webdevelop-pro/invest-widgets exec vue-tsc --noEmit
-pnpm --filter @webdevelop-pro/invest-widgets exec vitest run
+pnpm --filter @global-torque/invest-widgets exec vue-tsc --noEmit
+pnpm --filter @global-torque/invest-widgets exec vitest run
 ```

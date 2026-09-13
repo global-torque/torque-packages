@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ChevronDown } from '@lucide/vue';
-import ChevronDownApproved from '@webdevelop-pro/invest-widgets/icons/images/chevron-down.svg?component';
+import ChevronDownApproved from '@global-torque/invest-widgets/icons/images/chevron-down.svg?component';
 import { Button } from '@global-torque/ui-primitives/button';
 import { VFormGroup, VFormInput, VFormSelect, VFormTextarea } from '@global-torque/ui-kit/form';
 import { contactUsSubjects, useContactUsForm } from './useContactUsForm';

@@ -9,7 +9,7 @@ const apiClient = vi.hoisted(() => ({
   post: vi.fn(),
 }));
 
-vi.mock('@webdevelop-pro/invest-data/service/dataClientConfig', () => ({
+vi.mock('@global-torque/invest-data/service/dataClientConfig', () => ({
   createInvestDataApiClient: () => apiClient,
 }));
 

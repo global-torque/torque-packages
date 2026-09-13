@@ -1,6 +1,6 @@
 {
-  "name": "@webdevelop-pro/torque-packages-workspace",
-  "version": "0.2.1",
+  "name": "@global-torque/torque-packages-workspace",
+  "version": "0.2.2",
   "private": true,
   "type": "module",
   "packageManager": "pnpm@10.34.5",
@@ -21,7 +21,7 @@
     "pack:candidate": "node scripts/pack-candidate.mjs",
     "check": "pnpm run verify-candidate && pnpm run typecheck && pnpm run test:run && pnpm run lint && pnpm run check:runtime-deps && pnpm run check:packlist",
     "release:verify": "node scripts/verify-release-bundle.mjs",
-    "build:node": "pnpm --filter @webdevelop-pro/invest-core run build:node && pnpm --filter @webdevelop-pro/invest-runtime run build:node"
+    "build:node": "pnpm --filter @global-torque/invest-core run build:node && pnpm --filter @global-torque/invest-runtime run build:node"
   },
   "devDependencies": {
     "@types/node": "^25.5.0",

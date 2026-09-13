@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@global-torque/ui-primitives/sheet';
-import ProfileSwitchMenuList from '@webdevelop-pro/invest-widgets/profiles/ProfileSwitchMenuList.vue';
+import ProfileSwitchMenuList from '@global-torque/invest-widgets/profiles/ProfileSwitchMenuList.vue';
 
 const open = defineModel<boolean>('open', { default: false });
 

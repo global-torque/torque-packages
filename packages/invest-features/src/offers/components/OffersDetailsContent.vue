@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { PropType, computed } from 'vue';
-import { IOfferFormatted } from '@webdevelop-pro/domain-types/offerTypes';
+import { IOfferFormatted } from '@global-torque/domain-types/offerTypes';
 import { TabsContent, TabsList, TabsTrigger } from '@global-torque/ui-primitives/tabs';
 import { VUrlSyncedTabs } from '@global-torque/ui-kit/url-synced-tabs';
 import OffersDocuments from './OffersDocuments.vue';

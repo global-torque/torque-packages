@@ -3,22 +3,22 @@ import {
   computed, nextTick, ref, toRaw,
 } from 'vue';
 import { acceptHMRUpdate, defineStore, storeToRefs } from 'pinia';
-import { navigateWithQueryParams } from '@webdevelop-pro/invest-runtime/navigation';
+import { navigateWithQueryParams } from '@global-torque/invest-runtime/navigation';
 import { getAuthLinks } from '../links.ts';
 import { useRepositoryAuth } from '../data/auth.repository.ts';
 import { useFormValidation } from '@global-torque/ui-kit/form-validation';
 import { JSONSchemaType } from 'ajv/dist/types/json-schema';
-import { composeInvestmentFormSchema, createInvestmentAjv, emailRule, errorMessageRule, passwordRule, prepareInvestmentFormData } from '@webdevelop-pro/invest-core/form-validation';
-import { useSessionStore } from '@webdevelop-pro/invest-runtime/session';
-import { SELFSERVICE } from '@webdevelop-pro/domain-types/authConstants';
-import { oryErrorHandling } from '@webdevelop-pro/invest-runtime/error/oryErrorHandling';
-import { oryResponseHandling } from '@webdevelop-pro/invest-runtime/error/oryResponseHandling';
-import { useSendAnalyticsEvent } from '@webdevelop-pro/invest-runtime/analytics/useSendAnalyticsEvent';
+import { composeInvestmentFormSchema, createInvestmentAjv, emailRule, errorMessageRule, passwordRule, prepareInvestmentFormData } from '@global-torque/invest-core/form-validation';
+import { useSessionStore } from '@global-torque/invest-runtime/session';
+import { SELFSERVICE } from '@global-torque/domain-types/authConstants';
+import { oryErrorHandling } from '@global-torque/invest-runtime/error/oryErrorHandling';
+import { oryResponseHandling } from '@global-torque/invest-runtime/error/oryResponseHandling';
+import { useSendAnalyticsEvent } from '@global-torque/invest-runtime/analytics/useSendAnalyticsEvent';
 import {
   shouldAutoAuthenticateDemoAccount,
   useDemoAccountAuth,
 } from '../composables/useDemoAccountAuth.ts';
-import { notifyNativePushAuthSuccess } from '@webdevelop-pro/invest-runtime/native-push';
+import { notifyNativePushAuthSuccess } from '@global-torque/invest-runtime/native-push';
 import {
   buildCanonicalInvitationPath,
   buildCanonicalInvitationUrl,

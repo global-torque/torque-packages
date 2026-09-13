@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import type { WalletAuthOperationIntent } from '@webdevelop-pro/invest-core/wallet/auth';
+import type { WalletAuthOperationIntent } from '@global-torque/invest-core/wallet/auth';
 import {
   buildWalletAuthExplorerLink,
   formatWalletAuthAddressValue,
   formatWalletAuthAssetValue,
   getWalletAuthExchangeTargetAssetAddress,
   shortenWalletAuthOperationText,
-} from '@webdevelop-pro/invest-core/wallet/operationPresentation';
+} from '@global-torque/invest-core/wallet/operationPresentation';
 
 const props = defineProps<{
   intent: WalletAuthOperationIntent;

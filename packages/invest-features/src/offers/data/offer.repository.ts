@@ -4,14 +4,14 @@ import {
   IOfferData,
   IOfferCommentsResponse,
   IOfferCommentPayload,
-} from '@webdevelop-pro/domain-types/offerTypes';
-import { useInvestApplicationContext } from '@webdevelop-pro/invest-runtime/application-context';
+} from '@global-torque/domain-types/offerTypes';
+import { useInvestApplicationContext } from '@global-torque/invest-runtime/application-context';
 import {
   executeSdkReadWithCompatibilityErrors,
   resolveCompatibilityServiceRequestUrl,
   validateOfferDetailCompatibilityResponse,
   validateOfferListCompatibilityEnvelope,
-} from '@webdevelop-pro/invest-data/migration/sdkReadCompatibility';
+} from '@global-torque/invest-data/migration/sdkReadCompatibility';
 import {
   applyOfflineHydrationMeta,
   createRepositoryStates,
@@ -20,13 +20,13 @@ import {
   type OptionsStateData,
 } from '../../modelState.ts';
 import { acceptHMRUpdate, defineStore } from 'pinia';
-import { OfferFormatter } from '@webdevelop-pro/invest-core/offer/formatter';
-import { buildPublicFilerImageUrl } from '@webdevelop-pro/invest-data/filer';
+import { OfferFormatter } from '@global-torque/invest-core/offer/formatter';
+import { buildPublicFilerImageUrl } from '@global-torque/invest-data/filer';
 import defaultOfferImage from '../assets/default.svg?url';
-import { IOfferFormatted, IOffer as IOfferApp } from '@webdevelop-pro/domain-types/offerTypes';
-import { INotification } from '@webdevelop-pro/domain-types/notificationsTypes';
-import { createFormatterCache } from '@webdevelop-pro/invest-core/repository/formatterCache';
-import { DEFAULT_OFFLINE_RESPONSE_SOURCE_HEADER } from '@webdevelop-pro/invest-data/service/apiClientHooks';
+import { IOfferFormatted, IOffer as IOfferApp } from '@global-torque/domain-types/offerTypes';
+import { INotification } from '@global-torque/domain-types/notificationsTypes';
+import { createFormatterCache } from '@global-torque/invest-core/repository/formatterCache';
+import { DEFAULT_OFFLINE_RESPONSE_SOURCE_HEADER } from '@global-torque/invest-data/service/apiClientHooks';
 
 type OfferStates = {
   getOffersState: IOfferData;

@@ -8,10 +8,10 @@ import {
 import { storeToRefs } from 'pinia';
 import { useRoute } from 'vitepress';
 import { useReactiveLocation } from '@global-torque/ui-kit/url-sync';
-import { useGlobalLoader } from '@webdevelop-pro/invest-runtime/loader';
-import type { VOfferCardData } from '@webdevelop-pro/domain-types/offerCardTypes';
+import { useGlobalLoader } from '@global-torque/invest-runtime/loader';
+import type { VOfferCardData } from '@global-torque/domain-types/offerCardTypes';
 import { useRepositoryOffer } from '../data/offer.repository.ts';
-import { reportOfflineReadError } from '@webdevelop-pro/invest-runtime/error/errorReporting';
+import { reportOfflineReadError } from '@global-torque/invest-runtime/error/errorReporting';
 
 type OffersPageFilter = 'new' | 'almost-funded' | '';
 type OffersPageOffer = VOfferCardData & {

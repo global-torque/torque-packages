@@ -3,7 +3,7 @@ import {
   type Ref,
 } from 'vue';
 import { useSendAnalyticsEvent } from '../analytics/useSendAnalyticsEvent.ts';
-import type { AnalyticsEventType } from '@webdevelop-pro/domain-types/analyticsTypes';
+import type { AnalyticsEventType } from '@global-torque/domain-types/analyticsTypes';
 import type { InstallPromptOutcome, InstallPromptState } from './usePwaInstallPrompt.ts';
 
 type MaybeError = unknown;

@@ -3,12 +3,12 @@ import {
   readonly,
   shallowRef,
 } from 'vue';
-import { formatKycThirdPartyScreen } from '@webdevelop-pro/invest-core/kyc/thirdPartyScreen';
+import { formatKycThirdPartyScreen } from '@global-torque/invest-core/kyc/thirdPartyScreen';
 import { useKycModel } from '../model/useKycModel.ts';
-import type { KycThirdPartyStatus } from '@webdevelop-pro/invest-core/kyc/status';
-import { reportError } from '@webdevelop-pro/invest-runtime/error/errorReporting';
+import type { KycThirdPartyStatus } from '@global-torque/invest-core/kyc/status';
+import { reportError } from '@global-torque/invest-runtime/error/errorReporting';
 
-export type { KycThirdPartyStatus } from '@webdevelop-pro/invest-core/kyc/status';
+export type { KycThirdPartyStatus } from '@global-torque/invest-core/kyc/status';
 
 const getLinkToken = () => {
   if (typeof window === 'undefined') {

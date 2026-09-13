@@ -12,13 +12,13 @@ vi.mock('vitepress', () => ({
   useData: () => ({ frontmatter: ref({ slug: 'offers' }) }),
 }));
 
-vi.mock('@webdevelop-pro/invest-data/filer', () => ({
+vi.mock('@global-torque/invest-data/filer', () => ({
   buildPublicFilerImageSource: () => undefined,
   buildPublicFilerImageSrcset: () => undefined,
   buildPublicFilerImageUrl: () => undefined,
 }));
 
-vi.mock('@webdevelop-pro/invest-data/service/dataClientConfig', () => ({
+vi.mock('@global-torque/invest-data/service/dataClientConfig', () => ({
   getInvestDataAppLinks: () => ({ home: '/', offers: '/offers' }),
 }));
 
@@ -30,7 +30,7 @@ vi.mock('../logic/useOfferFilerFiles.ts', () => ({
   }),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/loader', () => ({
+vi.mock('@global-torque/invest-runtime/loader', () => ({
   useGlobalLoader: () => ({ hide: vi.fn() }),
 }));
 
@@ -38,7 +38,7 @@ vi.mock('@global-torque/ui-primitives/skeleton', () => ({
   Skeleton: { name: 'Skeleton', template: '<div data-testid="skeleton" />' },
 }));
 
-vi.mock('@webdevelop-pro/invest-widgets/navigation', () => ({
+vi.mock('@global-torque/invest-widgets/navigation', () => ({
   VBreadcrumbs: { name: 'VBreadcrumbs', template: '<nav data-testid="breadcrumbs" />' },
 }));
 
@@ -75,7 +75,7 @@ const SocialLinksStub = vi.hoisted(() => ({
   `,
 }));
 
-vi.mock('@webdevelop-pro/invest-widgets/socials', () => ({
+vi.mock('@global-torque/invest-widgets/socials', () => ({
   socials: {
     linkedin: { iconName: 'linkedin', name: 'LinkedIn' },
     facebook: { iconName: 'facebook', name: 'Facebook' },

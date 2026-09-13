@@ -3,8 +3,8 @@ import {
   computed, onMounted, onUnmounted, toRef,
 } from 'vue';
 import { storeToRefs } from 'pinia';
-import { useProfilesStore } from '@webdevelop-pro/invest-runtime/profiles';
-import { useDialogs } from '@webdevelop-pro/invest-runtime/dialogs';
+import { useProfilesStore } from '@global-torque/invest-runtime/profiles';
+import { useDialogs } from '@global-torque/invest-runtime/dialogs';
 import {
   urlContactUs,
   urlFaq,
@@ -15,9 +15,9 @@ import {
 } from '../navigation/links.ts';
 import VHeaderProfileOverlayPWA from './VHeaderProfileOverlayPWA.vue';
 import VHeaderProfileSwitchSidebarPWA from './VHeaderProfileSwitchSidebarPWA.vue';
-import { useProfileSwitchMenu } from '@webdevelop-pro/invest-widgets/profiles';
+import { useProfileSwitchMenu } from '@global-torque/invest-widgets/profiles';
 import { useHeaderUser } from '../components/VHeader/useHeaderUser.ts';
-import { getProfileAvatarInitial } from '@webdevelop-pro/invest-core/profiles/avatarInitial';
+import { getProfileAvatarInitial } from '@global-torque/invest-core/profiles/avatarInitial';
 import VAvatarIdentity from '../components/VAvatarIdentity.vue';
 import { usePwaProfilePanels } from './usePwaProfilePanels.ts';
 

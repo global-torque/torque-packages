@@ -7,9 +7,9 @@ import {
   getInvestDataClientConfig,
   setInvestDataClientConfig,
   type InvestDataClientConfig,
-} from '@webdevelop-pro/invest-data/service/dataClientConfig';
-import { PROFILE_TYPES } from '@webdevelop-pro/domain-types/profileTypes';
-import { InvestKycTypes } from '@webdevelop-pro/domain-types/kycTypes';
+} from '@global-torque/invest-data/service/dataClientConfig';
+import { PROFILE_TYPES } from '@global-torque/domain-types/profileTypes';
+import { InvestKycTypes } from '@global-torque/domain-types/kycTypes';
 import { useKycAlertViewModel } from '../useKycAlertViewModel.ts';
 
 const mockPush = vi.fn();
@@ -43,17 +43,17 @@ vi.mock('vue-router', () => ({
   useRoute: () => mockRoute,
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/dialogs', () => ({
+vi.mock('@global-torque/invest-runtime/dialogs', () => ({
   useDialogs: () => ({
     openContactUsDialog,
   }),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/profiles', () => ({
+vi.mock('@global-torque/invest-runtime/profiles', () => ({
   useProfilesStore: () => mockProfilesStore,
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/session', () => ({
+vi.mock('@global-torque/invest-runtime/session', () => ({
   useSessionStore: () => mockSessionStore,
 }));
 

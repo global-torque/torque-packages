@@ -13,13 +13,13 @@ const root = path.resolve(new URL('..', import.meta.url).pathname);
 const positionalArguments = process.argv.slice(2).filter(argument => argument !== '--');
 const artifacts = path.resolve(positionalArguments[0] ?? 'artifacts');
 const expectedPackages = [
-  '@webdevelop-pro/domain-types',
-  '@webdevelop-pro/invest-core',
-  '@webdevelop-pro/invest-data',
-  '@webdevelop-pro/invest-runtime',
-  '@webdevelop-pro/invest-widgets',
-  '@webdevelop-pro/invest-features',
-  '@webdevelop-pro/invest-shell',
+  '@global-torque/domain-types',
+  '@global-torque/invest-core',
+  '@global-torque/invest-data',
+  '@global-torque/invest-runtime',
+  '@global-torque/invest-widgets',
+  '@global-torque/invest-features',
+  '@global-torque/invest-shell',
 ];
 const packageManagers = (process.env.CONSUMER_PACKAGE_MANAGERS ?? 'npm,pnpm')
   .split(',')
@@ -29,10 +29,10 @@ fs.mkdirSync(process.env.TMPDIR ?? os.tmpdir(), { recursive: true });
 const digest = bytes => crypto.createHash('sha512').update(bytes).digest('hex');
 const integrity = bytes => `sha512-${crypto.createHash('sha512').update(bytes).digest('base64')}`;
 const nodeExportPackages = [
-  ['@webdevelop-pro/invest-core', 'app/config', 'dist/node/app/config.js'],
-  ['@webdevelop-pro/invest-core', 'markdown/tableWrap', 'dist/node/markdown/tableWrap.js'],
-  ['@webdevelop-pro/invest-core', 'helpers/text', 'dist/node/helpers/text.js'],
-  ['@webdevelop-pro/invest-runtime', 'pwa/pwaPolicy', 'dist/node/pwa/pwaPolicy.js'],
+  ['@global-torque/invest-core', 'app/config', 'dist/node/app/config.js'],
+  ['@global-torque/invest-core', 'markdown/tableWrap', 'dist/node/markdown/tableWrap.js'],
+  ['@global-torque/invest-core', 'helpers/text', 'dist/node/helpers/text.js'],
+  ['@global-torque/invest-runtime', 'pwa/pwaPolicy', 'dist/node/pwa/pwaPolicy.js'],
 ];
 
 if (!fs.existsSync(artifacts)) throw new Error(`Candidate artifact directory is missing: ${artifacts}`);
@@ -127,7 +127,7 @@ import svgLoader from 'vite-svg-loader';
 
 export default defineConfig({
   plugins: [vue(), svgLoader({ defaultImport: 'url' })],
-  ssr: { noExternal: [/^@webdevelop-pro\\//u, /^@global-torque\\//u] },
+  ssr: { noExternal: [/^@global-torque\\//u] },
 });
 `);
   fs.writeFileSync(path.join(consumer, 'tsconfig.json'), `${JSON.stringify({
@@ -156,14 +156,14 @@ declare module '*.svg?component' {
 }
 `);
   fs.writeFileSync(path.join(consumer, 'src/App.vue'), `<script setup lang="ts">
-import { isCanonicalDecimalString } from '@webdevelop-pro/invest-core/decimal/canonicalDecimal';
-import { stripHtmlAndMarkdown } from '@webdevelop-pro/invest-core/helpers/text';
-import { VFormAuthSocial } from '@webdevelop-pro/invest-features/auth';
-import { VLogo } from '@webdevelop-pro/invest-shell/components';
-import { VCardOffer } from '@webdevelop-pro/invest-widgets/offers';
+import { isCanonicalDecimalString } from '@global-torque/invest-core/decimal/canonicalDecimal';
+import { stripHtmlAndMarkdown } from '@global-torque/invest-core/helpers/text';
+import { VFormAuthSocial } from '@global-torque/invest-features/auth';
+import { VLogo } from '@global-torque/invest-shell/components';
+import { VCardOffer } from '@global-torque/invest-widgets/offers';
 import { defineComponent, h } from 'vue';
-import ChevronDownIcon from '@webdevelop-pro/invest-widgets/icons/images/chevron-down.svg?component';
-import chevronDownUrl from '@webdevelop-pro/invest-widgets/icons/images/chevron-down.svg';
+import ChevronDownIcon from '@global-torque/invest-widgets/icons/images/chevron-down.svg?component';
+import chevronDownUrl from '@global-torque/invest-widgets/icons/images/chevron-down.svg';
 
 const canonicalValue = isCanonicalDecimalString('12.5') ? '12.5' : 'invalid';
 const textValue = stripHtmlAndMarkdown('<strong>Plain</strong> **text**');
@@ -189,9 +189,9 @@ const socialIcons = {
   </main>
 </template>
 `);
-  fs.writeFileSync(path.join(consumer, 'src/main.ts'), `import '@webdevelop-pro/invest-shell/styles/geometry.css';
-import '@webdevelop-pro/invest-shell/styles/components.css';
-import '@webdevelop-pro/invest-shell/styles';
+  fs.writeFileSync(path.join(consumer, 'src/main.ts'), `import '@global-torque/invest-shell/styles/geometry.css';
+import '@global-torque/invest-shell/styles/components.css';
+import '@global-torque/invest-shell/styles';
 import { createApp } from 'vue';
 import App from './App.vue';
 
@@ -291,24 +291,24 @@ async function verifyNativeNode(consumer) {
   assert.equal(resolvedFiles.length, expectedNodeFiles.length, 'Native Node probe must resolve exactly four generated files');
   console.log(`native-node-paths-pass ${consumer}`);
 
-  const config = resolvedModules.get('@webdevelop-pro/invest-core/app/config');
+  const config = resolvedModules.get('@global-torque/invest-core/app/config');
   assert.equal(typeof config.createInvestAppConfigFromEnv, 'function');
   assert.throws(() => config.assertInvestRuntimeBrandConfig({}), /requires object runtime\.brand/u);
   const serialized = config.serializeStaticConfigForInlineScript({ html: '</script>' });
   assert(serialized.includes('\\u003c'), 'Static configuration serialization must escape opening script tags');
   assert(!serialized.includes('</script>'), 'Static configuration serialization must not emit a closing script tag');
 
-  const tableWrap = resolvedModules.get('@webdevelop-pro/invest-core/markdown/tableWrap');
-  const coreRequire = createRequire(requireFromConsumer.resolve('@webdevelop-pro/invest-core/app/config', { paths: [consumer] }));
+  const tableWrap = resolvedModules.get('@global-torque/invest-core/markdown/tableWrap');
+  const coreRequire = createRequire(requireFromConsumer.resolve('@global-torque/invest-core/app/config', { paths: [consumer] }));
   const MarkdownIt = coreRequire('markdown-it');
   const markdown = new (MarkdownIt.default ?? MarkdownIt)();
   tableWrap.default(markdown);
   assert.match(markdown.render('| A |\n| - |\n| B |'), /v-table__wrap/u, 'Node table wrapper did not render its public wrapper');
 
-  const text = resolvedModules.get('@webdevelop-pro/invest-core/helpers/text');
+  const text = resolvedModules.get('@global-torque/invest-core/helpers/text');
   assert.equal(text.stripHtmlAndMarkdown('<strong>Plain</strong> **text**'), 'Plain ');
 
-  const pwa = resolvedModules.get('@webdevelop-pro/invest-runtime/pwa/pwaPolicy');
+  const pwa = resolvedModules.get('@global-torque/invest-runtime/pwa/pwaPolicy');
   const policies = pwa.resolveOfflineDomainPolicies({
     FRONTEND_URL: 'https://site.example.test/',
     OFFER_URL: 'https://api.example.test/offer',

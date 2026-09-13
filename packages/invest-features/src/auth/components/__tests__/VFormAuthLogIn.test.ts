@@ -36,7 +36,7 @@ vi.mock('../../store/useLogin.ts', () => ({
   useLoginStore: () => loginStore,
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/loader', () => ({
+vi.mock('@global-torque/invest-runtime/loader', () => ({
   useGlobalLoader: () => globalLoaderStore,
 }));
 

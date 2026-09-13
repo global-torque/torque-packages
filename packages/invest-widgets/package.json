@@ -1,7 +1,7 @@
 {
-  "name": "@webdevelop-pro/invest-widgets",
+  "name": "@global-torque/invest-widgets",
   "private": false,
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Provider-driven reusable investment widgets and chart surfaces.",
   "license": "MIT",
   "engines": { "node": ">=22.12.0" },
@@ -51,8 +51,8 @@
     "@unovis/ts": "1.6.7",
     "@unovis/vue": "1.6.7",
     "@vueuse/core": "^14.2.1",
-    "@webdevelop-pro/domain-types": "workspace:*",
-    "@webdevelop-pro/invest-core": "workspace:*",
+    "@global-torque/domain-types": "workspace:*",
+    "@global-torque/invest-core": "workspace:*",
     "embla-carousel-autoplay": "^8.6.0",
     "embla-carousel-fade": "^8.6.0",
     "embla-carousel-vue": "^8.6.0"

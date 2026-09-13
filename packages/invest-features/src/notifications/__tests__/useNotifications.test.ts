@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
 import { nextTick, ref } from 'vue';
-import type { INotification } from '@webdevelop-pro/domain-types/notificationsTypes';
+import type { INotification } from '@global-torque/domain-types/notificationsTypes';
 
 const sdk = vi.hoisted(() => ({
   list: vi.fn(),
@@ -10,18 +10,18 @@ const sdk = vi.hoisted(() => ({
 }));
 const reportError = vi.hoisted(() => vi.fn());
 
-vi.mock('@webdevelop-pro/invest-runtime/application-context', () => ({
+vi.mock('@global-torque/invest-runtime/application-context', () => ({
   useInvestApplicationContext: () => ({
     createNotificationsSdkResource: () => sdk,
   }),
 }));
-vi.mock('@webdevelop-pro/invest-runtime/session', () => ({
+vi.mock('@global-torque/invest-runtime/session', () => ({
   useSessionStore: () => ({ userLoggedIn: ref(true) }),
 }));
 vi.mock('@global-torque/ui-kit/breakpoints', () => ({
   useBreakpoints: () => ({ isTablet: ref(false) }),
 }));
-vi.mock('@webdevelop-pro/invest-runtime/error/errorReporting', () => ({ reportError }));
+vi.mock('@global-torque/invest-runtime/error/errorReporting', () => ({ reportError }));
 vi.mock('../notificationFormatter.ts', () => ({
   NotificationFormatter: class {
     constructor(private readonly notification: INotification) {}

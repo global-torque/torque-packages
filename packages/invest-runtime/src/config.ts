@@ -2,7 +2,7 @@ import {
   createInvestAppLinks,
   type InvestAppConfig,
   type InvestAppLinkConfig,
-} from '@webdevelop-pro/invest-core/app/config';
+} from '@global-torque/invest-core/app/config';
 import type { PwaPolicyEnv } from './pwa/pwaPolicy.ts';
 
 export type InvestRuntimeLinks = ReturnType<typeof createInvestAppLinks>;

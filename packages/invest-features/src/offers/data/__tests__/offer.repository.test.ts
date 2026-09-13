@@ -1,12 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
-import type { IOffer } from '@webdevelop-pro/domain-types/offerTypes';
+import type { IOffer } from '@global-torque/domain-types/offerTypes';
 
 const apiGetMock = vi.hoisted(() => vi.fn());
 const apiPostMock = vi.hoisted(() => vi.fn());
 const apiOptionsMock = vi.hoisted(() => vi.fn());
 
-vi.mock('@webdevelop-pro/invest-runtime/application-context', () => ({
+vi.mock('@global-torque/invest-runtime/application-context', () => ({
   useInvestApplicationContext: () => ({
     dataClientConfig: {
       apiUrls: { offer: 'https://offer.example.test/' },
@@ -23,7 +23,7 @@ vi.mock('@webdevelop-pro/invest-runtime/application-context', () => ({
   }),
 }));
 
-vi.mock('@webdevelop-pro/invest-data/service/apiClient', () => ({
+vi.mock('@global-torque/invest-data/service/apiClient', () => ({
   ApiClient: class {
     get = apiGetMock;
   },

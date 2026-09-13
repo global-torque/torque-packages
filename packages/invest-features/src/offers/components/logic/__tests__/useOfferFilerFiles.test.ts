@@ -1,8 +1,8 @@
 import { flushPromises } from '@vue/test-utils';
 import { effectScope, reactive, ref } from 'vue';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import type { FilerAccess } from '@webdevelop-pro/domain-types/filerTypes';
-import type { IOfferFormatted } from '@webdevelop-pro/domain-types/offerTypes';
+import type { FilerAccess } from '@global-torque/domain-types/filerTypes';
+import type { IOfferFormatted } from '@global-torque/domain-types/offerTypes';
 import { useOfferFilerFiles } from '../useOfferFilerFiles.ts';
 
 const mocks = vi.hoisted(() => ({
@@ -12,7 +12,7 @@ const mocks = vi.hoisted(() => ({
   userLoggedIn: true,
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/filer', () => ({
+vi.mock('@global-torque/invest-runtime/filer', () => ({
   useFilerModel: () => ({
     objectInvalidationVersion: ref(0),
     fetchObjectTree: mocks.fetchObjectTree,
@@ -20,19 +20,19 @@ vi.mock('@webdevelop-pro/invest-runtime/filer', () => ({
   }),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/application-context', () => ({
+vi.mock('@global-torque/invest-runtime/application-context', () => ({
   useInvestApplicationContext: () => ({
     appConfig: { urls: { api: { filer: 'https://filer.example.test' } } },
   }),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/session', () => ({
+vi.mock('@global-torque/invest-runtime/session', () => ({
   useSessionStore: () => ({ userLoggedIn: ref(mocks.userLoggedIn) }),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/error/errorReporting', async (importOriginal) => {
+vi.mock('@global-torque/invest-runtime/error/errorReporting', async (importOriginal) => {
   const original = await importOriginal<
-    typeof import('@webdevelop-pro/invest-runtime/error/errorReporting')
+    typeof import('@global-torque/invest-runtime/error/errorReporting')
   >();
   return {
     ...original,

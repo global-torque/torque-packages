@@ -1,4 +1,4 @@
-import type { AnalyticsBody } from '@webdevelop-pro/domain-types/analyticsTypes';
+import type { AnalyticsBody } from '@global-torque/domain-types/analyticsTypes';
 
 const MUTATION_METHODS = new Set(['POST', 'PUT', 'PATCH', 'DELETE']);
 const REDACTED_VALUE = '[redacted]';

@@ -34,7 +34,7 @@ const hoisted = vi.hoisted(() => {
   };
 });
 
-vi.mock('@webdevelop-pro/invest-runtime/application-context', () => ({
+vi.mock('@global-torque/invest-runtime/application-context', () => ({
   useInvestApplicationContext: () => ({ appConfig: hoisted.appConfig }),
 }));
 
@@ -49,21 +49,21 @@ vi.mock('../../data/auth.repository.ts', () => ({
   }),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/session', () => ({
+vi.mock('@global-torque/invest-runtime/session', () => ({
   useSessionStore: () => ({
     updateSession: hoisted.mockUpdateSession,
   }),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/navigation', () => ({
+vi.mock('@global-torque/invest-runtime/navigation', () => ({
   navigateWithQueryParams: hoisted.navigateWithQueryParamsMock,
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/error/oryErrorHandling', () => ({
+vi.mock('@global-torque/invest-runtime/error/oryErrorHandling', () => ({
   oryErrorHandling: hoisted.oryErrorHandlingMock,
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/error/oryResponseHandling', () => ({
+vi.mock('@global-torque/invest-runtime/error/oryResponseHandling', () => ({
   oryResponseHandling: hoisted.oryResponseHandlingMock,
 }));
 

@@ -3,8 +3,8 @@ import {
 } from 'vitest';
 import { setActivePinia, createPinia } from 'pinia';
 import { useCookies } from '@vueuse/integrations/useCookies';
-import type { InvestAppConfig } from '@webdevelop-pro/invest-core/app/config';
-import { useSessionStore } from '@webdevelop-pro/invest-runtime/session';
+import type { InvestAppConfig } from '@global-torque/invest-core/app/config';
+import { useSessionStore } from '@global-torque/invest-runtime/session';
 import {
   resetInvestRuntimeConfigForTests,
   setInvestRuntimeConfig,

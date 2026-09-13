@@ -1,6 +1,6 @@
 import type {
   WalletOnboardingProfileType,
-} from '@webdevelop-pro/domain-types/onboardingTypes';
+} from '@global-torque/domain-types/onboardingTypes';
 
 export type UserInvitationKind = 'team' | 'investor';
 

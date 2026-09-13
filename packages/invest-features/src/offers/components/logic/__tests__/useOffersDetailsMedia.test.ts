@@ -1,11 +1,11 @@
 import { effectScope, ref } from 'vue';
 import { describe, expect, it, vi } from 'vitest';
-import type { IOfferFormatted } from '@webdevelop-pro/domain-types/offerTypes';
+import type { IOfferFormatted } from '@global-torque/domain-types/offerTypes';
 import { useOffersDetails } from '../useOffersDetails';
 
 vi.mock('vitepress', () => ({ useData: () => ({ frontmatter: ref({}) }) }));
-vi.mock('@webdevelop-pro/invest-data/service/dataClientConfig', () => ({ getInvestDataAppLinks: () => ({ home: '/', offers: '/offers' }) }));
-vi.mock('@webdevelop-pro/invest-widgets/socials', () => ({
+vi.mock('@global-torque/invest-data/service/dataClientConfig', () => ({ getInvestDataAppLinks: () => ({ home: '/', offers: '/offers' }) }));
+vi.mock('@global-torque/invest-widgets/socials', () => ({
   socials: {
     linkedin: { iconName: 'linkedin', name: 'LinkedIn', shareHref: 'https://linkedin.example/share?url=' },
     facebook: { iconName: 'facebook', name: 'Facebook', shareHref: 'https://facebook.example/share?u=' },
@@ -14,7 +14,7 @@ vi.mock('@webdevelop-pro/invest-widgets/socials', () => ({
     github: { iconName: 'github', name: 'Github' },
   },
 }));
-vi.mock('@webdevelop-pro/invest-data/filer', () => ({ buildPublicFilerImageSource: (id: number, options: { preferredSize: string }) => `/primary/${id}/${options.preferredSize}`, buildPublicFilerImageSrcset: () => '/small.jpg 400w, /big.jpg 900w', buildPublicFilerImageUrl: () => '/primary.jpg' }));
+vi.mock('@global-torque/invest-data/filer', () => ({ buildPublicFilerImageSource: (id: number, options: { preferredSize: string }) => `/primary/${id}/${options.preferredSize}`, buildPublicFilerImageSrcset: () => '/small.jpg 400w, /big.jpg 900w', buildPublicFilerImageUrl: () => '/primary.jpg' }));
 const publicMedia = ref<{ image: string }[]>([]);
 vi.mock('../useOfferFilerFiles', () => ({ useOfferFilerFiles: () => ({ mediaImages: publicMedia, filesLoading: ref(false), mediaReady: ref(true) }) }));
 

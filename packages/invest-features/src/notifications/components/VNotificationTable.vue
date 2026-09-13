@@ -2,13 +2,13 @@
 import { storeToRefs } from 'pinia';
 import { VFormInputSearch } from '@global-torque/ui-kit/form';
 import { Search, X } from '@lucide/vue';
-import FilterApproved from '@webdevelop-pro/invest-widgets/icons/images/filter.svg?component';
-import SearchApproved from '@webdevelop-pro/invest-widgets/icons/images/search.svg?component';
-import ClearApproved from '@webdevelop-pro/invest-widgets/icons/images/close.svg?component';
+import FilterApproved from '@global-torque/invest-widgets/icons/images/filter.svg?component';
+import SearchApproved from '@global-torque/invest-widgets/icons/images/search.svg?component';
+import ClearApproved from '@global-torque/invest-widgets/icons/images/close.svg?component';
 import { VFilter } from '@global-torque/ui-kit/filter';
 import { computed } from 'vue';
 import { Button } from '@global-torque/ui-primitives/button';
-import { CheckIcon } from '@webdevelop-pro/invest-widgets/icons';
+import { CheckIcon } from '@global-torque/invest-widgets/icons';
 import { TabsList, TabsTrigger } from '@global-torque/ui-primitives/tabs';
 import { VUrlSyncedTabs } from '@global-torque/ui-kit/url-synced-tabs';
 import { Table, TableBody, TableEmpty } from '@global-torque/ui-primitives/table';

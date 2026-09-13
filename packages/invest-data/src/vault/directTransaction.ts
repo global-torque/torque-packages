@@ -2,12 +2,12 @@ import type {
   VaultLifecycleOperation,
   VaultLifecycleStatus,
   VaultSigningPayload,
-} from '@webdevelop-pro/domain-types/vaultTypes';
+} from '@global-torque/domain-types/vaultTypes';
 import type {
   WalletDirectTransactionChain,
   WalletDirectTransactionRequest,
   WalletDirectTransactionResult,
-} from '@webdevelop-pro/invest-core/wallet/auth';
+} from '@global-torque/invest-core/wallet/auth';
 
 const STORAGE_PREFIX = 'invest:vault-direct-operation:';
 const ADDRESS_PATTERN = /^0x[0-9a-f]{40}$/i;

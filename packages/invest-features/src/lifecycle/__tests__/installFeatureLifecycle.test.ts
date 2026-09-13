@@ -6,7 +6,7 @@ import {
   requestLogout,
   runFullResetTargets,
   runProfileResetTargets,
-} from '@webdevelop-pro/invest-runtime/lifecycle';
+} from '@global-torque/invest-runtime/lifecycle';
 import {
   installInvestmentFeatureLifecycle,
   resetInvestmentFeatureLifecycleForTests,

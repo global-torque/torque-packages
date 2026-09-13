@@ -1,6 +1,6 @@
 import type {
   IAccreditedInvestor,
-} from '@webdevelop-pro/domain-types/profilesTypes';
+} from '@global-torque/domain-types/profilesTypes';
 
 export interface FormChild<TModel = Record<string, unknown>, TValidation = unknown> {
   isValid: boolean;

@@ -6,7 +6,7 @@ import {
   it,
   vi,
 } from 'vitest';
-import { formatKycThirdPartyScreen } from '@webdevelop-pro/invest-core/kyc/thirdPartyScreen';
+import { formatKycThirdPartyScreen } from '@global-torque/invest-core/kyc/thirdPartyScreen';
 import { useKycThirdParty } from '../useKycThirdParty.ts';
 
 const handlePlaidKycToken = vi.hoisted(() => vi.fn());
@@ -18,7 +18,7 @@ vi.mock('../../model/useKycModel.ts', () => ({
   }),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/error/errorReporting', () => ({
+vi.mock('@global-torque/invest-runtime/error/errorReporting', () => ({
   reportError: reportErrorMock,
 }));
 

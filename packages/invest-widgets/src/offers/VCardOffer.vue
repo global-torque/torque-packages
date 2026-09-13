@@ -6,7 +6,7 @@ import { computed } from 'vue';
 import VInfoSlot from '../info/VInfoSlot.vue';
 import { Skeleton } from '@global-torque/ui-primitives/skeleton';
 import { Card, CardContent } from '@global-torque/ui-primitives/card';
-import type { VOfferCardData } from '@webdevelop-pro/domain-types/offerCardTypes';
+import type { VOfferCardData } from '@global-torque/domain-types/offerCardTypes';
 import { badgeToneClass } from '@global-torque/ui-kit/badge-tone';
 
 interface InfoItem {

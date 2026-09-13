@@ -6,7 +6,7 @@ import type {
   FilerUploadResult,
   IFilerItem,
   IPostSignurlResponse,
-} from '@webdevelop-pro/domain-types/filerTypes';
+} from '@global-torque/domain-types/filerTypes';
 import { createInvestDataApiClient, getInvestDataApiUrl } from './service/dataClientConfig.ts';
 import {
   buildPublicFilerImageSource as buildCorePublicFilerImageSource,
@@ -14,7 +14,7 @@ import {
   buildPublicFilerImageUrl as buildCorePublicFilerImageUrl,
   type BuildPublicFilerImageSrcsetOptions,
   type PublicFilerImageSize,
-} from '@webdevelop-pro/invest-core/filer/publicImage';
+} from '@global-torque/invest-core/filer/publicImage';
 
 export {
   DEFAULT_PUBLIC_FILER_IMAGE_DIMENSIONS,
@@ -24,7 +24,7 @@ export {
   type BuildPublicFilerImageSrcsetOptions,
   type BuildPublicFilerImageUrlOptions,
   type PublicFilerImageSize,
-} from '@webdevelop-pro/invest-core/filer/publicImage';
+} from '@global-torque/invest-core/filer/publicImage';
 
 const UPLOAD_TIMEOUT_MS = 120_000;
 const FILER_API_PLACEHOLDER = '::filer-api::';

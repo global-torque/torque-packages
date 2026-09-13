@@ -3,7 +3,7 @@ import {
   VFormWalletAuthOtp,
   VWalletAuthOperationSummary,
   useVDialogWalletAuth,
-} from '@webdevelop-pro/invest-widgets/wallet';
+} from '@global-torque/invest-widgets/wallet';
 
 export {
   VDialogWalletAuth,
@@ -20,4 +20,4 @@ export type {
   WalletAuthOperationIntent,
   WalletAuthStep,
   WalletAuthWithdrawalOperationIntent,
-} from '@webdevelop-pro/invest-core/wallet/auth';
+} from '@global-torque/invest-core/wallet/auth';

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import type { FilerObjectTree } from '@webdevelop-pro/domain-types/filerTypes';
+import type { FilerObjectTree } from '@global-torque/domain-types/filerTypes';
 import { FilerFormatter } from '../documentFormatter.ts';
 
 describe('FilerFormatter', () => {

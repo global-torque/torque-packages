@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { formatToDate } from '@webdevelop-pro/invest-core/helpers/formatters/formatToDate';
+import { formatToDate } from '@global-torque/invest-core/helpers/formatters/formatToDate';
 import { PropType, ref } from 'vue';
 import { Badge } from '@global-torque/ui-primitives/badge';
 import { Button } from '@global-torque/ui-primitives/button';
-import { ArrowRightIcon } from '@webdevelop-pro/invest-widgets/icons';
+import { ArrowRightIcon } from '@global-torque/invest-widgets/icons';
 import { TableCell, TableRow } from '@global-torque/ui-primitives/table';
-import { IFormattedNotification } from '@webdevelop-pro/domain-types/notificationsTypes';
+import { IFormattedNotification } from '@global-torque/domain-types/notificationsTypes';
 import { useNotifications } from '../useNotifications.ts';
-import { reportError } from '@webdevelop-pro/invest-runtime/error/errorReporting';
+import { reportError } from '@global-torque/invest-runtime/error/errorReporting';
 import { Skeleton } from '@global-torque/ui-primitives/skeleton';
 import { badgeToneClass } from '@global-torque/ui-kit/badge-tone';
 

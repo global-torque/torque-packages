@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { setActivePinia, createPinia } from 'pinia';
 import { ref } from 'vue';
 import { useLoginStore } from '../useLogin.ts';
-import { navigateWithQueryParams } from '@webdevelop-pro/invest-runtime/navigation';
+import { navigateWithQueryParams } from '@global-torque/invest-runtime/navigation';
 import { rememberInvitationReturnForFlow } from '../../navigation/invitationReturn.ts';
 
 // Mock data
@@ -59,26 +59,26 @@ vi.mock('../../links.ts', () => ({
   }),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/session', () => ({
+vi.mock('@global-torque/invest-runtime/session', () => ({
   useSessionStore: () => ({ updateSession: updateSessionMock }),
 }));
 
 
-vi.mock('@webdevelop-pro/invest-runtime/navigation', () => ({
+vi.mock('@global-torque/invest-runtime/navigation', () => ({
   navigateWithQueryParams: vi.fn(),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/analytics/useSendAnalyticsEvent', () => ({
+vi.mock('@global-torque/invest-runtime/analytics/useSendAnalyticsEvent', () => ({
   useSendAnalyticsEvent: () => ({
     sendEvent: sendEventMock,
   }),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/error/oryResponseHandling', () => ({
+vi.mock('@global-torque/invest-runtime/error/oryResponseHandling', () => ({
   oryResponseHandling: vi.fn(),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/error/oryErrorHandling', () => ({
+vi.mock('@global-torque/invest-runtime/error/oryErrorHandling', () => ({
   oryErrorHandling: vi.fn().mockResolvedValue(undefined),
 }));
 

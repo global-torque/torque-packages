@@ -1,27 +1,27 @@
 <script setup lang="ts">
-import { IOfferFormatted } from '@webdevelop-pro/domain-types/offerTypes';
+import { IOfferFormatted } from '@global-torque/domain-types/offerTypes';
 import { PropType, computed, defineAsyncComponent, hydrateOnVisible } from 'vue';
 import type {
   SocialIconMap,
   SocialLink,
   SocialLinkDestination,
   SocialNetworkName,
-} from '@webdevelop-pro/invest-widgets/socials';
+} from '@global-torque/invest-widgets/socials';
 import { Skeleton } from '@global-torque/ui-primitives/skeleton';
 import OfferDetailsSide from './OffersDetailsSide.vue';
 import OffersDetailsContent from './OffersDetailsContent.vue';
 import { useOffersDetails } from './logic/useOffersDetails.ts';
 import OfferMediaGallery from './OfferMediaGallery.vue';
-import { useGlobalLoader } from '@webdevelop-pro/invest-runtime/loader';
+import { useGlobalLoader } from '@global-torque/invest-runtime/loader';
 import { badgeToneClass } from '@global-torque/ui-kit/badge-tone';
 
 const VBreadcrumbs = defineAsyncComponent({
-  loader: () => import('@webdevelop-pro/invest-widgets/navigation').then(mod => mod.VBreadcrumbs),
+  loader: () => import('@global-torque/invest-widgets/navigation').then(mod => mod.VBreadcrumbs),
   hydrate: hydrateOnVisible(),
 });
 
 const VSocialLinks = defineAsyncComponent({
-  loader: () => import('@webdevelop-pro/invest-widgets/socials').then(mod => mod.VSocialLinks),
+  loader: () => import('@global-torque/invest-widgets/socials').then(mod => mod.VSocialLinks),
 });
 
 const props = defineProps({

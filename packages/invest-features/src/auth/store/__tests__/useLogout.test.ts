@@ -5,10 +5,10 @@ import { setActivePinia, createPinia } from 'pinia';
 import { ref } from 'vue';
 import { useRepositoryAuth } from '../../data/auth.repository.ts';
 import { configureAuthNavigation } from '../../navigation.ts';
-import { resetAllData } from '@webdevelop-pro/invest-runtime/reset';
+import { resetAllData } from '@global-torque/invest-runtime/reset';
 import { useLogoutStore } from '../useLogout.ts';
-import { SELFSERVICE } from '@webdevelop-pro/domain-types/authConstants';
-import { navigateWithQueryParams } from '@webdevelop-pro/invest-runtime/navigation';
+import { SELFSERVICE } from '@global-torque/domain-types/authConstants';
+import { navigateWithQueryParams } from '@global-torque/invest-runtime/navigation';
 
 const { mockGlobalLoaderHide } = vi.hoisted(() => ({
   mockGlobalLoaderHide: vi.fn(),
@@ -19,26 +19,26 @@ vi.mock('../../data/auth.repository.ts', () => ({
   useRepositoryAuth: vi.fn(),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/loader', () => ({
+vi.mock('@global-torque/invest-runtime/loader', () => ({
   useGlobalLoader: vi.fn(() => ({
     show: vi.fn(),
     hide: mockGlobalLoaderHide,
   })),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/reset', () => ({
+vi.mock('@global-torque/invest-runtime/reset', () => ({
   resetAllData: vi.fn().mockResolvedValue(undefined),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/error/oryResponseHandling', () => ({
+vi.mock('@global-torque/invest-runtime/error/oryResponseHandling', () => ({
   oryResponseHandling: vi.fn(),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/error/oryErrorHandling', () => ({
+vi.mock('@global-torque/invest-runtime/error/oryErrorHandling', () => ({
   oryErrorHandling: vi.fn().mockResolvedValue(undefined),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/navigation', () => ({
+vi.mock('@global-torque/invest-runtime/navigation', () => ({
   navigateWithQueryParams: vi.fn(),
 }));
 

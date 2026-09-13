@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { useInvestApplicationContext } from '@webdevelop-pro/invest-runtime/application-context';
+import { useInvestApplicationContext } from '@global-torque/invest-runtime/application-context';
 import { computed, PropType } from 'vue';
-import { useDialogs } from '@webdevelop-pro/invest-runtime/dialogs';
+import { useDialogs } from '@global-torque/invest-runtime/dialogs';
 import { storeToRefs } from 'pinia';
 import {
   NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList,
 } from '@global-torque/ui-primitives/navigation-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@global-torque/ui-primitives/avatar';
-import NotificationsSidebarButton from '@webdevelop-pro/invest-widgets/notifications/VNotificationsSidebarButton.vue';
-import { LogoutMenuIcon as LogOutIcon } from '@webdevelop-pro/invest-widgets/icons/navigation';
+import NotificationsSidebarButton from '@global-torque/invest-widgets/notifications/VNotificationsSidebarButton.vue';
+import { LogoutMenuIcon as LogOutIcon } from '@global-torque/invest-widgets/icons/navigation';
 import type { MenuItem } from '../../navigation/types.ts';
 import { useHeaderUser } from './useHeaderUser.ts';
 import { UserIcon } from '@lucide/vue';

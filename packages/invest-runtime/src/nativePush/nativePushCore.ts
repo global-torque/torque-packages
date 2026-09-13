@@ -1,4 +1,4 @@
-import type { INotification } from '@webdevelop-pro/domain-types/notificationsTypes';
+import type { INotification } from '@global-torque/domain-types/notificationsTypes';
 
 export const NATIVE_PUSH_EXPLAINER_STATE_KEY = 'invest-pro:native-push:explainer-decision';
 export const NATIVE_PUSH_PERMISSION_STATE_KEY = 'invest-pro:native-push:permission-decision';

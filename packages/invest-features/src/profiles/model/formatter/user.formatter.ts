@@ -1,9 +1,9 @@
 import {
   formatProfileDateToShortMonthDateYear,
   formatProfileUserPhoneNumber,
-} from '@webdevelop-pro/invest-core/profiles/formatting';
-import { IUser, IProfileFormatted, IUserFormatted, IProfileIndividual } from '@webdevelop-pro/domain-types/profilesTypes';
-import { mapValidListItems } from '@webdevelop-pro/invest-runtime/repository/action-state';
+} from '@global-torque/invest-core/profiles/formatting';
+import { IUser, IProfileFormatted, IUserFormatted, IProfileIndividual } from '@global-torque/domain-types/profilesTypes';
+import { mapValidListItems } from '@global-torque/invest-runtime/repository/action-state';
 import { ProfileFormatter } from './profiles.formatter.ts';
 
 export const formatDateToShortMonthDateYear = formatProfileDateToShortMonthDateYear;

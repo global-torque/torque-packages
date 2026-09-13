@@ -3,8 +3,8 @@ import {
 } from 'vitest';
 import { setActivePinia, createPinia } from 'pinia';
 import { ref } from 'vue';
-import { useSessionStore } from '@webdevelop-pro/invest-runtime/session';
-import { SELFSERVICE } from '@webdevelop-pro/domain-types/authConstants';
+import { useSessionStore } from '@global-torque/invest-runtime/session';
+import { SELFSERVICE } from '@global-torque/domain-types/authConstants';
 import { useAuthenticatorStore } from '../useAuthenticator.ts';
 
 // Shared mocks
@@ -32,17 +32,17 @@ vi.mock('../../data/auth.repository.ts', () => ({
   useRepositoryAuth: vi.fn(() => mockAuthRepository),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/session', () => ({
+vi.mock('@global-torque/invest-runtime/session', () => ({
   useSessionStore: vi.fn(() => ({
     updateSession: mockUpdateSession,
   })),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/error/oryResponseHandling', () => ({
+vi.mock('@global-torque/invest-runtime/error/oryResponseHandling', () => ({
   oryResponseHandling: vi.fn(),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/error/oryErrorHandling', () => ({
+vi.mock('@global-torque/invest-runtime/error/oryErrorHandling', () => ({
   oryErrorHandling: vi.fn().mockResolvedValue(undefined),
 }));
 
@@ -85,7 +85,7 @@ vi.mock('@global-torque/ui-kit/form-validation', () => ({
 }));
 
 // Mock navigation
-vi.mock('@webdevelop-pro/invest-runtime/navigation', () => ({
+vi.mock('@global-torque/invest-runtime/navigation', () => ({
   navigateWithQueryParams: vi.fn().mockResolvedValue(undefined),
 }));
 

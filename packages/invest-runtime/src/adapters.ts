@@ -1,16 +1,16 @@
 import type { Ref } from 'vue';
-import type { ActionState } from '@webdevelop-pro/invest-data/repository';
-import type { IDistributionFormatted } from '@webdevelop-pro/domain-types/distributionsTypes';
-import type { INotification } from '@webdevelop-pro/domain-types/notificationsTypes';
-import type { IOfferData, IOfferFormatted } from '@webdevelop-pro/domain-types/offerTypes';
-import type { IInvestmentFormatted, IInvestUnconfirmed } from '@webdevelop-pro/domain-types/investmentTypes';
-import type { IAnalyticsEventRequest } from '@webdevelop-pro/domain-types/analyticsTypes';
-import type { ISession } from '@webdevelop-pro/domain-types/authTypes';
+import type { ActionState } from '@global-torque/invest-data/repository';
+import type { IDistributionFormatted } from '@global-torque/domain-types/distributionsTypes';
+import type { INotification } from '@global-torque/domain-types/notificationsTypes';
+import type { IOfferData, IOfferFormatted } from '@global-torque/domain-types/offerTypes';
+import type { IInvestmentFormatted, IInvestUnconfirmed } from '@global-torque/domain-types/investmentTypes';
+import type { IAnalyticsEventRequest } from '@global-torque/domain-types/analyticsTypes';
+import type { ISession } from '@global-torque/domain-types/authTypes';
 import type {
   IProfileData,
   IProfileFormatted,
   IUserFormatted,
-} from '@webdevelop-pro/domain-types/profilesTypes';
+} from '@global-torque/domain-types/profilesTypes';
 
 export type RuntimeInvestmentLike = {
   id?: string | number;

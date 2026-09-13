@@ -26,8 +26,8 @@ package exposes only framework-free clients and repository-state helpers.
 
 ## Allowed Dependencies
 
-- `@webdevelop-pro/domain-types` for DTO and analytics contracts.
-- `@webdevelop-pro/invest-core` for pure config/link contracts and helpers.
+- `@global-torque/domain-types` for DTO and analytics contracts.
+- `@global-torque/invest-core` for pure config/link contracts and helpers.
 - Browser fetch/Headers/Response types and injected runtime hooks.
 
 ## Forbidden Dependencies
@@ -70,7 +70,7 @@ package exposes only framework-free clients and repository-state helpers.
 import {
   createInvestDataApiClient,
   setInvestDataClientConfig,
-} from '@webdevelop-pro/invest-data/service/dataClientConfig';
+} from '@global-torque/invest-data/service/dataClientConfig';
 
 setInvestDataClientConfig({
   apiUrls: {

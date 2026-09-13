@@ -9,21 +9,21 @@ import { mount } from '@vue/test-utils';
 import { ref } from 'vue';
 import OffersDetailsSide from '../OffersDetailsSide.vue';
 
-vi.mock('@webdevelop-pro/invest-widgets/icons/images/share.svg', () => ({
+vi.mock('@global-torque/invest-widgets/icons/images/share.svg', () => ({
   default: {
     name: 'ShareIcon',
     template: '<span />',
   },
 }));
 
-vi.mock('@webdevelop-pro/invest-widgets/icons/images/file.svg', () => ({
+vi.mock('@global-torque/invest-widgets/icons/images/file.svg', () => ({
   default: {
     name: 'FileIcon',
     template: '<span />',
   },
 }));
 
-vi.mock('@webdevelop-pro/invest-widgets/icons/images/circle-info.svg', () => ({
+vi.mock('@global-torque/invest-widgets/icons/images/circle-info.svg', () => ({
   default: {
     name: 'InfoIcon',
     template: '<span />',
@@ -53,7 +53,7 @@ const openContactUsDialog = vi.fn();
 const assetAddress = '0x1111111111111111111111111111111111111111';
 const vaultAddress = '0x2222222222222222222222222222222222222222';
 
-vi.mock('@webdevelop-pro/invest-runtime/dialogs', () => ({
+vi.mock('@global-torque/invest-runtime/dialogs', () => ({
   useDialogs: () => ({
     openContactUsDialog,
   }),

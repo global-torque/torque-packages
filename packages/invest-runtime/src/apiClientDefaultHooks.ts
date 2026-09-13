@@ -1,4 +1,4 @@
-import { normalizeAnalyticsBodyForMethod } from '@webdevelop-pro/invest-core/analytics/analyticsBody';
+import { normalizeAnalyticsBodyForMethod } from '@global-torque/invest-core/analytics/analyticsBody';
 import {
   PWA_OFFLINE_LAST_SYNC_HEADER,
   PWA_OFFLINE_RESPONSE_SOURCE_HEADER,
@@ -17,7 +17,7 @@ import {
   resetApiClientHooks,
   type ApiClientHooks,
   type ApiClientOfflinePolicy,
-} from '@webdevelop-pro/invest-data/service/apiClientHooks';
+} from '@global-torque/invest-data/service/apiClientHooks';
 import {
   createPwaPolicyEnvFromInvestAppConfig,
   getInvestRuntimePwaPolicyEnv,

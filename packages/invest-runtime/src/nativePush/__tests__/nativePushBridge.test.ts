@@ -132,7 +132,7 @@ vi.mock("@capacitor/app", () => ({
   },
 }));
 
-vi.mock("@webdevelop-pro/invest-runtime/error/errorReporting", () => ({
+vi.mock("@global-torque/invest-runtime/error/errorReporting", () => ({
   reportError: hoisted.reportErrorMock,
 }));
 
@@ -220,9 +220,9 @@ async function importBridgeWithFreshConfig() {
 
   const pinia = await import("pinia");
   const runtimeAdapters =
-    await import("@webdevelop-pro/invest-runtime/adapters");
-  const runtimeConfig = await import("@webdevelop-pro/invest-runtime/config");
-  const session = await import("@webdevelop-pro/invest-runtime/session");
+    await import("@global-torque/invest-runtime/adapters");
+  const runtimeConfig = await import("@global-torque/invest-runtime/config");
+  const session = await import("@global-torque/invest-runtime/session");
 
   pinia.setActivePinia(pinia.createPinia());
   runtimeAdapters.resetInvestRuntimeAdaptersForTests();
@@ -233,7 +233,7 @@ async function importBridgeWithFreshConfig() {
     runtimeConfig.resetInvestRuntimeConfigForTests();
   };
 
-  const bridge = await import("@webdevelop-pro/invest-runtime/native-push");
+  const bridge = await import("@global-torque/invest-runtime/native-push");
   bridge.installNativePushBridge({
     subscribeDevice: hoisted.subscribeDeviceMock,
   });
@@ -260,7 +260,7 @@ async function importBridgeWithFreshConfig() {
 }
 
 function setUserApiUrl(
-  runtimeConfig: typeof import("@webdevelop-pro/invest-runtime/config"),
+  runtimeConfig: typeof import("@global-torque/invest-runtime/config"),
 ) {
   runtimeConfig.setInvestRuntimeConfig({
     env: "test",

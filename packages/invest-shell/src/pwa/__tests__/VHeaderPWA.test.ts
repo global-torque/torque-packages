@@ -14,10 +14,10 @@ const userLoggedIn = ref(false);
 const selectedUserProfileId = ref(0);
 const userState = ref({ loading: false });
 
-vi.mock('@webdevelop-pro/invest-runtime/session', () => ({
+vi.mock('@global-torque/invest-runtime/session', () => ({
   useSessionStore: () => ({ userLoggedIn }),
 }));
-vi.mock('@webdevelop-pro/invest-runtime/application-context', () => ({
+vi.mock('@global-torque/invest-runtime/application-context', () => ({
   useInvestApplicationContext: () => ({
     appConfig: {
       isStaticSite: false,
@@ -25,7 +25,7 @@ vi.mock('@webdevelop-pro/invest-runtime/application-context', () => ({
     },
   }),
 }));
-vi.mock('@webdevelop-pro/invest-runtime/adapters', () => ({
+vi.mock('@global-torque/invest-runtime/adapters', () => ({
   getRequiredInvestRuntimeAdapter: () => ({
     getStore: () => ({ getUserState: userState.value }),
   }),
@@ -48,7 +48,7 @@ vi.mock('pinia', async () => {
     },
   };
 });
-vi.mock('@webdevelop-pro/invest-runtime/profiles', () => ({
+vi.mock('@global-torque/invest-runtime/profiles', () => ({
   useProfilesStore: () => ({
     selectedUserProfileId,
   }),
@@ -58,7 +58,7 @@ vi.mock('@global-torque/ui-kit/breakpoints', () => ({
     isDesktopMD: ref(true),
   }),
 }));
-vi.mock('@webdevelop-pro/invest-runtime/navigation', () => ({
+vi.mock('@global-torque/invest-runtime/navigation', () => ({
   navigateWithQueryParams: vi.fn(),
 }));
 vi.mock('vue-router', () => ({

@@ -72,17 +72,17 @@ vi.mock('vitepress', () => ({
   useRoute: () => state.route,
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/loader', () => ({
+vi.mock('@global-torque/invest-runtime/loader', () => ({
   useGlobalLoader: () => ({
     hide: state.hideLoader,
   }),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/application-context', () => ({
+vi.mock('@global-torque/invest-runtime/application-context', () => ({
   useInvestApplicationContext: state.useInvestApplicationContext,
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/navigation', () => ({
+vi.mock('@global-torque/invest-runtime/navigation', () => ({
   navigateWithQueryParams: state.navigateWithQueryParams,
 }));
 
@@ -90,13 +90,13 @@ vi.mock('../../../../config/investmentConfig.ts', () => ({
   getInvestmentConfigValue: state.getInvestmentConfigValue,
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/session', () => ({
+vi.mock('@global-torque/invest-runtime/session', () => ({
   useSessionStore: () => ({
     userLoggedIn: state.userLoggedIn,
   }),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/profiles', () => ({
+vi.mock('@global-torque/invest-runtime/profiles', () => ({
   useProfilesStore: () => ({
     selectedUserProfileId: state.selectedUserProfileId,
     userProfiles: state.userProfiles,
@@ -104,7 +104,7 @@ vi.mock('@webdevelop-pro/invest-runtime/profiles', () => ({
   }),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/adapters', () => ({
+vi.mock('@global-torque/invest-runtime/adapters', () => ({
   getRequiredInvestRuntimeAdapter: (key: string) => {
     if (key !== 'investment') throw new Error(`Unexpected adapter: ${key}`);
     return {
@@ -122,7 +122,7 @@ vi.mock('../../data/offer.repository.ts', () => ({
   }),
 }));
 
-vi.mock('@webdevelop-pro/invest-core/offer/formatter', () => ({
+vi.mock('@global-torque/invest-core/offer/formatter', () => ({
   OfferFormatter: class {
     constructor(private readonly offer: Record<string, unknown>) {}
 
@@ -132,13 +132,13 @@ vi.mock('@webdevelop-pro/invest-core/offer/formatter', () => ({
   },
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/analytics/useSendAnalyticsEvent', () => ({
+vi.mock('@global-torque/invest-runtime/analytics/useSendAnalyticsEvent', () => ({
   useSendAnalyticsEvent: () => ({
     sendEvent: state.sendEvent,
   }),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/error/errorReporting', () => ({
+vi.mock('@global-torque/invest-runtime/error/errorReporting', () => ({
   reportError: state.reportError,
   reportOfflineReadError: state.reportOfflineReadError,
 }));

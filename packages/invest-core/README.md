@@ -1,4 +1,4 @@
-# @webdevelop-pro/invest-core
+# @global-torque/invest-core
 
 Pure investment-domain logic shared by apps and packages.
 
@@ -8,7 +8,7 @@ This package owns deterministic helpers, mappers, formatters, calculations, and 
 
 ## Allowed Dependencies
 
-- `@webdevelop-pro/domain-types`.
+- `@global-torque/domain-types`.
 - AJV, `ajv-errors`, `ajv-formats`, lodash, and markdown-it for the published
   investment validation and formatting helpers.
 - TypeScript and platform-standard value types.
@@ -16,7 +16,7 @@ This package owns deterministic helpers, mappers, formatters, calculations, and 
 ## Forbidden Dependencies
 
 - Vue, Pinia, Vue Router, or app packages.
-- `@webdevelop-pro/invest-common`, `@global-torque/ui-kit`, or `@global-torque/ui-primitives`.
+- The retired common compatibility layer, `@global-torque/ui-kit`, or `@global-torque/ui-primitives`.
 - Network clients, repositories, stores, route views, `import.meta.env`, or runtime singleton config.
 
 ## Public Exports
@@ -52,7 +52,7 @@ source based.
 ## Example
 
 ```ts
-import { buildPublicFilerImageUrl } from '@webdevelop-pro/invest-core/filer/publicImage';
+import { buildPublicFilerImageUrl } from '@global-torque/invest-core/filer/publicImage';
 
 const imageUrl = buildPublicFilerImageUrl(42, 'medium', {
   filerUrl: 'https://filer.example.com',
@@ -66,7 +66,7 @@ import {
   composeInvestmentFormSchema,
   createInvestmentAjv,
   prepareInvestmentFormData,
-} from '@webdevelop-pro/invest-core/form-validation';
+} from '@global-torque/invest-core/form-validation';
 
 const validationOptions = {
   createAjv: createInvestmentAjv,

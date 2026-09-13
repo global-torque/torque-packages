@@ -1,4 +1,4 @@
-import { useInvestApplicationContext } from '@webdevelop-pro/invest-runtime/application-context';
+import { useInvestApplicationContext } from '@global-torque/invest-runtime/application-context';
 
 export interface IPageData {
   seo_description?: string;

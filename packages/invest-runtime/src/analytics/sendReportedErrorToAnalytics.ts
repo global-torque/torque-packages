@@ -7,11 +7,11 @@ import {
   type IAnalyticsPromiseRejectionContext,
   type IAnalyticsRouteContext,
   type IAnalyticsMessage,
-} from '@webdevelop-pro/domain-types/analyticsTypes';
+} from '@global-torque/domain-types/analyticsTypes';
 import {
   normalizeAnalyticsBodyForMethod,
   sanitizeAnalyticsText,
-} from '@webdevelop-pro/invest-core/analytics/analyticsBody';
+} from '@global-torque/invest-core/analytics/analyticsBody';
 import { sanitizeText as sanitizeTransportText } from '@global-torque/client-error-handling/sanitize';
 import { createClientErrorPipeline } from '@global-torque/client-error-handling/pipeline';
 import type {

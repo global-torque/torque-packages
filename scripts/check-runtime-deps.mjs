@@ -3,8 +3,10 @@ import path from 'node:path';
 import { builtinModules } from 'node:module';
 
 const root = path.resolve(new URL('..', import.meta.url).pathname);
+const reconciliation = JSON.parse(fs.readFileSync(path.join(root, 'docs/source-reconciliation.json'), 'utf8'));
 const packages = fs.readdirSync(path.join(root, 'packages'), { withFileTypes: true }).filter(entry => entry.isDirectory());
 const packageNames = new Set(packages.map(entry => JSON.parse(fs.readFileSync(path.join(root, 'packages', entry.name, 'package.json'), 'utf8')).name));
+const externalPackageNames = new Set(Object.keys(reconciliation.externalPackages ?? {}));
 const failures = [];
 const bareImport = /(?:import|export)\s+(?:[^'";]*?\s+from\s+)?['"]([^'".][^'"]*)['"]|import\(\s*['"]([^'"]+)['"]\s*\)/gu;
 
@@ -35,13 +37,18 @@ for (const directory of packages) {
       const rootSpecifier = specifier.startsWith('@') ? specifier.split('/').slice(0, 2).join('/') : specifier.split('/')[0];
       if (builtinModules.includes(rootSpecifier) || rootSpecifier.startsWith('node:') || rootSpecifier === 'vite/client') continue;
       if (rootSpecifier === manifest.name) continue;
+      if (specifier.startsWith('@webdevelop-pro/')) {
+        failures.push(`${path.relative(root, file)}: forbidden old framework dependency ${specifier}`);
+        continue;
+      }
       const kind = typeOnly ? 'type dependency' : 'runtime dependency';
       if (packageNames.has(rootSpecifier) && !runtimeDeclared.has(rootSpecifier)) failures.push(`${path.relative(root, file)}: undeclared workspace dependency ${rootSpecifier}`);
       else if (!packageNames.has(rootSpecifier) && !runtimeDeclared.has(rootSpecifier)) failures.push(`${path.relative(root, file)}: undeclared ${kind} ${rootSpecifier}`);
     }
   }
   for (const [name, version] of Object.entries(manifest.dependencies ?? {})) {
-    if (name.startsWith('@webdevelop-pro/') && !packageNames.has(name)) failures.push(`${directory.name}: private dependency ${name} is not in the authorized seven-package workspace`);
+    if (name.startsWith('@webdevelop-pro/')) failures.push(`${directory.name}: forbidden old framework dependency ${name}`);
+    if (name.startsWith('@global-torque/') && !packageNames.has(name) && !externalPackageNames.has(name)) failures.push(`${directory.name}: unknown @global-torque dependency ${name}`);
     if (typeof version === 'string' && /^(workspace:|file:|link:|catalog:)/u.test(version) && !packageNames.has(name)) failures.push(`${directory.name}: external dependency ${name} uses ${version}`);
   }
 }

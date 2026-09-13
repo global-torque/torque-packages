@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { useInvestApplicationContext } from '@webdevelop-pro/invest-runtime/application-context';
+import { useInvestApplicationContext } from '@global-torque/invest-runtime/application-context';
 import { computed } from 'vue';
-import { useOfflineStatus } from '@webdevelop-pro/invest-runtime/pwa/useOfflineStatus';
-import { usePwaBannerDismissals } from '@webdevelop-pro/invest-runtime/pwa/usePwaBannerDismissals';
-import { usePwaOfflineDataStatus } from '@webdevelop-pro/invest-runtime/pwa/usePwaOfflineDataStatus';
-import { usePwaInstallPrompt } from '@webdevelop-pro/invest-runtime/pwa/usePwaInstallPrompt';
-import { usePwaStandalone } from '@webdevelop-pro/invest-runtime/pwa/usePwaStandalone';
-import { usePwaTelemetry } from '@webdevelop-pro/invest-runtime/pwa/usePwaTelemetry';
-import { usePwaUpdatePrompt } from '@webdevelop-pro/invest-runtime/pwa/usePwaUpdatePrompt';
+import { useOfflineStatus } from '@global-torque/invest-runtime/pwa/useOfflineStatus';
+import { usePwaBannerDismissals } from '@global-torque/invest-runtime/pwa/usePwaBannerDismissals';
+import { usePwaOfflineDataStatus } from '@global-torque/invest-runtime/pwa/usePwaOfflineDataStatus';
+import { usePwaInstallPrompt } from '@global-torque/invest-runtime/pwa/usePwaInstallPrompt';
+import { usePwaStandalone } from '@global-torque/invest-runtime/pwa/usePwaStandalone';
+import { usePwaTelemetry } from '@global-torque/invest-runtime/pwa/usePwaTelemetry';
+import { usePwaUpdatePrompt } from '@global-torque/invest-runtime/pwa/usePwaUpdatePrompt';
 import VOfflineStatusBanner from './VOfflineStatusBanner.vue';
 import VPwaInstallPrompt from './VPwaInstallPrompt.vue';
 import VPwaUpdatePrompt from './VPwaUpdatePrompt.vue';

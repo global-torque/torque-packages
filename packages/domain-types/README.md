@@ -1,4 +1,4 @@
-# @webdevelop-pro/domain-types
+# @global-torque/domain-types
 
 Pure investment-domain TypeScript contracts shared by apps and packages.
 
@@ -45,9 +45,9 @@ This package owns DTOs, status constants, request/response shapes, and data-shap
 ## Example
 
 ```ts
-import { PROFILE_TYPES, type ProfileType } from '@webdevelop-pro/domain-types';
-import { AnalyticsLogLevel, type IAnalyticsMessage } from '@webdevelop-pro/domain-types/analyticsTypes';
-import { InvestKycTypes, type IKycProfile } from '@webdevelop-pro/domain-types/kycTypes';
+import { PROFILE_TYPES, type ProfileType } from '@global-torque/domain-types';
+import { AnalyticsLogLevel, type IAnalyticsMessage } from '@global-torque/domain-types/analyticsTypes';
+import { InvestKycTypes, type IKycProfile } from '@global-torque/domain-types/kycTypes';
 
 function isEntityProfile(profileType: ProfileType) {
   return profileType === PROFILE_TYPES.ENTITY;

@@ -2,7 +2,7 @@ import {
   beforeEach, describe, expect, it, vi,
 } from 'vitest';
 import { ref } from 'vue';
-import { AccreditationTypes } from '@webdevelop-pro/domain-types/accreditationTypes';
+import { AccreditationTypes } from '@global-torque/domain-types/accreditationTypes';
 import { useAccreditationAlert } from '../useAccreditationAlert.ts';
 
 const selectedUserProfileData = ref<any>(null);
@@ -19,7 +19,7 @@ vi.mock('pinia', async () => {
   };
 });
 
-vi.mock('@webdevelop-pro/invest-runtime/profiles', () => ({
+vi.mock('@global-torque/invest-runtime/profiles', () => ({
   useProfilesStore: () => ({
     selectedUserProfileData,
     isSelectedProfileLoading,

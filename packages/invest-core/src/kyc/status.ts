@@ -1,7 +1,7 @@
-import { InvestKycTypes as InvestKycTypesValue } from '@webdevelop-pro/domain-types/kycTypes';
-import type { InvestKycTypes as InvestKycStatus } from '@webdevelop-pro/domain-types/kycTypes';
+import { InvestKycTypes as InvestKycTypesValue } from '@global-torque/domain-types/kycTypes';
+import type { InvestKycTypes as InvestKycStatus } from '@global-torque/domain-types/kycTypes';
 
-export { InvestKycTypes } from '@webdevelop-pro/domain-types/kycTypes';
+export { InvestKycTypes } from '@global-torque/domain-types/kycTypes';
 
 export type KycAlertVariant = 'error' | 'info';
 

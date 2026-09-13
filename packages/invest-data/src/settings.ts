@@ -1,8 +1,8 @@
-import type { ISession } from '@webdevelop-pro/domain-types/authTypes';
+import type { ISession } from '@global-torque/domain-types/authTypes';
 import type {
   IAuthFlow,
   ILogoutFlow,
-} from '@webdevelop-pro/domain-types/settingsTypes';
+} from '@global-torque/domain-types/settingsTypes';
 import { createInvestDataApiClient } from './service/dataClientConfig.ts';
 
 const getKratosClient = () => createInvestDataApiClient('kratos');

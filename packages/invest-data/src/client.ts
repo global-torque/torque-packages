@@ -1,5 +1,5 @@
-import type { InvestAppConfig, InvestAppApiUrls } from '@webdevelop-pro/invest-core/app/config';
-import { normalizeAnalyticsBodyForMethod } from '@webdevelop-pro/invest-core/analytics/analyticsBody';
+import type { InvestAppConfig, InvestAppApiUrls } from '@global-torque/invest-core/app/config';
+import { normalizeAnalyticsBodyForMethod } from '@global-torque/invest-core/analytics/analyticsBody';
 import { NetworkRequestError } from './service/handlers/networkRequestError.ts';
 import type { APIErrorData } from './service/handlers/apiError.ts';
 import {

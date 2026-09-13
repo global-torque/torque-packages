@@ -1,4 +1,4 @@
-import { useInvestApplicationContext } from '@webdevelop-pro/invest-runtime/application-context';
+import { useInvestApplicationContext } from '@global-torque/invest-runtime/application-context';
 import {
   computed,
   nextTick,
@@ -12,19 +12,19 @@ import {
 } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useRoute } from 'vitepress';
-import { useGlobalLoader } from '@webdevelop-pro/invest-runtime/loader';
-import { navigateWithQueryParams } from '@webdevelop-pro/invest-runtime/navigation';
-import { InvestStepTypes } from '@webdevelop-pro/domain-types/investmentTypes';
-import { useSessionStore } from '@webdevelop-pro/invest-runtime/session';
-import { useProfilesStore } from '@webdevelop-pro/invest-runtime/profiles';
+import { useGlobalLoader } from '@global-torque/invest-runtime/loader';
+import { navigateWithQueryParams } from '@global-torque/invest-runtime/navigation';
+import { InvestStepTypes } from '@global-torque/domain-types/investmentTypes';
+import { useSessionStore } from '@global-torque/invest-runtime/session';
+import { useProfilesStore } from '@global-torque/invest-runtime/profiles';
 import { useRepositoryOffer } from '../data/offer.repository.ts';
-import { OfferFormatter } from '@webdevelop-pro/invest-core/offer/formatter';
-import { buildPublicFilerImageUrl } from '@webdevelop-pro/invest-data/filer';
+import { OfferFormatter } from '@global-torque/invest-core/offer/formatter';
+import { buildPublicFilerImageUrl } from '@global-torque/invest-data/filer';
 import defaultOfferImage from '../assets/default.svg?url';
-import { getRequiredInvestRuntimeAdapter } from '@webdevelop-pro/invest-runtime/adapters';
-import type { IOffer, IOfferFormatted } from '@webdevelop-pro/domain-types/offerTypes';
-import { useSendAnalyticsEvent } from '@webdevelop-pro/invest-runtime/analytics/useSendAnalyticsEvent';
-import { reportError, reportOfflineReadError } from '@webdevelop-pro/invest-runtime/error/errorReporting';
+import { getRequiredInvestRuntimeAdapter } from '@global-torque/invest-runtime/adapters';
+import type { IOffer, IOfferFormatted } from '@global-torque/domain-types/offerTypes';
+import { useSendAnalyticsEvent } from '@global-torque/invest-runtime/analytics/useSendAnalyticsEvent';
+import { reportError, reportOfflineReadError } from '@global-torque/invest-runtime/error/errorReporting';
 
 type OfferPageParams = {
   slug?: string;

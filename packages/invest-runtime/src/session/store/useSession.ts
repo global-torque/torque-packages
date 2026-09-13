@@ -1,7 +1,7 @@
 import { computed, ref } from 'vue';
 import { acceptHMRUpdate, defineStore } from 'pinia';
 import { useCookies } from '@vueuse/integrations/useCookies';
-import type { ISession } from '@webdevelop-pro/domain-types/authTypes';
+import type { ISession } from '@global-torque/domain-types/authTypes';
 import { getInvestRuntimeConfig } from '../../config.ts';
 
 type SameSiteOption = 'none' | 'lax' | 'strict';

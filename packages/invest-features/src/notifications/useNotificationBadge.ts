@@ -3,7 +3,7 @@ import {
   onMounted,
 } from 'vue';
 import { storeToRefs } from 'pinia';
-import { useSessionStore } from '@webdevelop-pro/invest-runtime/session';
+import { useSessionStore } from '@global-torque/invest-runtime/session';
 import { useNotifications } from './useNotifications.ts';
 
 export type NotificationBadgePosition = 'absolute' | 'inline';

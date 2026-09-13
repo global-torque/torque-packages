@@ -5,14 +5,14 @@ import {
   buildPublicFilerImageSource,
   buildPublicFilerImageSrcset,
   buildPublicFilerImageUrl,
-} from '@webdevelop-pro/invest-data/filer';
-import type { IOfferFormatted } from '@webdevelop-pro/domain-types/offerTypes';
+} from '@global-torque/invest-data/filer';
+import type { IOfferFormatted } from '@global-torque/domain-types/offerTypes';
 import { useOfferFilerFiles } from './useOfferFilerFiles.ts';
-import { getInvestDataAppLinks } from '@webdevelop-pro/invest-data/service/dataClientConfig';
+import { getInvestDataAppLinks } from '@global-torque/invest-data/service/dataClientConfig';
 import {
   socials,
   type SocialLinkDestination,
-} from '@webdevelop-pro/invest-widgets/socials';
+} from '@global-torque/invest-widgets/socials';
 
 export function useOffersDetails(
   offerRef: Ref<IOfferFormatted | undefined>,

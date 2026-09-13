@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.2.1 candidate
+## 0.2.2 candidate
 
 - Reissued the framework candidate for fresh public-release validation; package APIs and runtime source remain unchanged.
 

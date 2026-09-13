@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed, ref, watch, type PropType } from 'vue';
-import type { IFilerItemFormatted } from '@webdevelop-pro/invest-core/filer/documentFormatter';
-import { VTableDocumentItem } from '@webdevelop-pro/invest-widgets/filer';
+import type { IFilerItemFormatted } from '@global-torque/invest-core/filer/documentFormatter';
+import { VTableDocumentItem } from '@global-torque/invest-widgets/filer';
 import { VFormInputSearch } from '@global-torque/ui-kit/form';
 import { Search, X } from '@lucide/vue';
-import SearchApproved from '@webdevelop-pro/invest-widgets/icons/images/search.svg?component';
-import ClearApproved from '@webdevelop-pro/invest-widgets/icons/images/close.svg?component';
+import SearchApproved from '@global-torque/invest-widgets/icons/images/search.svg?component';
+import ClearApproved from '@global-torque/invest-widgets/icons/images/close.svg?component';
 import { Table, TableBody, TableHead, TableHeader, TableRow } from '@global-torque/ui-primitives/table';
 import { TabsList, TabsTrigger } from '@global-torque/ui-primitives/tabs';
 import { VUrlSyncedTabs } from '@global-torque/ui-kit/url-synced-tabs';

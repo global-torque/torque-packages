@@ -3,22 +3,22 @@ import {
   watch,
 } from 'vue';
 import { acceptHMRUpdate, defineStore, storeToRefs } from 'pinia';
-import { useSessionStore } from '@webdevelop-pro/invest-runtime/session';
+import { useSessionStore } from '@global-torque/invest-runtime/session';
 import type {
   IFormattedNotification,
   INotification,
-} from '@webdevelop-pro/domain-types/notificationsTypes';
+} from '@global-torque/domain-types/notificationsTypes';
 import { useBreakpoints } from '@global-torque/ui-kit/breakpoints';
-import { reportError } from '@webdevelop-pro/invest-runtime/error/errorReporting';
-import { useInvestApplicationContext } from '@webdevelop-pro/invest-runtime/application-context';
-import { createFormatterCache } from '@webdevelop-pro/invest-core/repository/formatterCache';
-import { assertNotificationShareFields } from '@webdevelop-pro/invest-core/notifications/shareFields';
+import { reportError } from '@global-torque/invest-runtime/error/errorReporting';
+import { useInvestApplicationContext } from '@global-torque/invest-runtime/application-context';
+import { createFormatterCache } from '@global-torque/invest-core/repository/formatterCache';
+import { assertNotificationShareFields } from '@global-torque/invest-core/notifications/shareFields';
 import {
   createInitialActionState,
   type ActionState,
-} from '@webdevelop-pro/invest-data/repository';
+} from '@global-torque/invest-data/repository';
 import { NotificationFormatter } from './notificationFormatter.ts';
-import { getInvestDataAppLinks } from '@webdevelop-pro/invest-data/service/dataClientConfig';
+import { getInvestDataAppLinks } from '@global-torque/invest-data/service/dataClientConfig';
 
 export interface NotificationFilter {
   value: string;

@@ -1,7 +1,7 @@
 import { getCurrentScope, onScopeDispose, watch, type Ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useFilerModel } from './useFilerModel.ts';
-import type { FilerNotificationFields } from '@webdevelop-pro/domain-types/filerTypes';
+import type { FilerNotificationFields } from '@global-torque/domain-types/filerTypes';
 import { reportError } from '../error/errorReporting.ts';
 
 type BooleanRef = Readonly<Ref<boolean>>;

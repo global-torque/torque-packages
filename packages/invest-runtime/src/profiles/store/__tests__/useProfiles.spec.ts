@@ -2,16 +2,16 @@ import {
   describe, it, expect, beforeEach, afterEach, vi,
 } from 'vitest';
 import { setActivePinia, createPinia } from 'pinia';
-import { useSessionStore } from '@webdevelop-pro/invest-runtime/session';
+import { useSessionStore } from '@global-torque/invest-runtime/session';
 import { useCookies } from '@vueuse/integrations/useCookies';
 import { useRoute } from 'vue-router';
 import { ref, computed, reactive } from 'vue';
 import { useProfilesStore } from '../useProfiles.ts';
-import { resetAllProfileData } from '@webdevelop-pro/invest-runtime/reset';
+import { resetAllProfileData } from '@global-torque/invest-runtime/reset';
 import {
   clearDomainLifecycleHandlersForTests,
   registerLogoutRequestHandler,
-} from '@webdevelop-pro/invest-runtime/lifecycle';
+} from '@global-torque/invest-runtime/lifecycle';
 
 const { useRepositoryProfiles } = vi.hoisted(() => ({
   useRepositoryProfiles: vi.fn(),
@@ -40,7 +40,7 @@ vi.mock('@vueuse/integrations/useCookies', () => ({
   useCookies: vi.fn(),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/session', () => ({
+vi.mock('@global-torque/invest-runtime/session', () => ({
   useSessionStore: vi.fn(),
   cookiesOptions: (expires?: Date) => ({
     path: '/',
@@ -58,7 +58,7 @@ vi.mock('../../../applicationContext.ts', () => ({
   useInvestApplicationContext: () => ({ appConfig }),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/reset', () => ({
+vi.mock('@global-torque/invest-runtime/reset', () => ({
   resetAllProfileData: vi.fn(),
 }));
 

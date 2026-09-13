@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import { useGlobalAlert } from '@webdevelop-pro/invest-runtime/global-alert';
+import { useGlobalAlert } from '@global-torque/invest-runtime/global-alert';
 import { Alert, AlertDescription, AlertTitle } from '@global-torque/ui-primitives/alert';
 import { CircleAlert, CircleCheck, Info, TriangleAlert } from '@lucide/vue';
 import { computed } from 'vue';

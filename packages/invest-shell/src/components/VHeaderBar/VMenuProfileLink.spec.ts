@@ -15,7 +15,7 @@ vi.mock('@lucide/vue', () => ({
   },
 }))
 
-vi.mock('@webdevelop-pro/invest-runtime/navigation', () => ({
+vi.mock('@global-torque/invest-runtime/navigation', () => ({
   navigateWithQueryParams: hoisted.navigateWithQueryParams,
 }))
 

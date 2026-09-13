@@ -1,6 +1,6 @@
 # Source and release reconciliation
 
-The `0.2.1` candidate is transferred from
+The `0.2.2` candidate is transferred from
 `global-torque/dashboard.webdevelop.biz@9f35aa0882b765e202538ce7c7d5e82eb1b452d3`.
 The seven framework packages are the only source owned by this repository.
 The exact package matrix, external pins, patch hashes, dependency order,

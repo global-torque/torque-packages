@@ -42,7 +42,7 @@ vi.mock('vitepress', () => ({
   useRoute: () => state.route,
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/loader', () => ({
+vi.mock('@global-torque/invest-runtime/loader', () => ({
   useGlobalLoader: () => ({
     hide: state.hideLoader,
   }),
@@ -63,7 +63,7 @@ vi.mock('../../data/offer.repository.ts', () => ({
   }),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/error/errorReporting', () => ({
+vi.mock('@global-torque/invest-runtime/error/errorReporting', () => ({
   reportOfflineReadError: state.reportOfflineReadError,
 }));
 

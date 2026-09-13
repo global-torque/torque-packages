@@ -2,7 +2,7 @@ import {
   FundingTypes,
   InvestFundingStatuses,
   InvestmentStatuses,
-} from '@webdevelop-pro/domain-types/investmentTypes';
+} from '@global-torque/domain-types/investmentTypes';
 
 export type InvestmentFundingClickabilityInput = {
   fundingType?: FundingTypes | string | null;

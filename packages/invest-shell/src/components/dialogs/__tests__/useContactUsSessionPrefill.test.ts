@@ -1,8 +1,8 @@
 import { flushPromises, mount } from '@vue/test-utils';
 import { defineComponent, h, reactive } from 'vue';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import type { ISession } from '@webdevelop-pro/domain-types/authTypes';
-import type { IUserFormatted } from '@webdevelop-pro/domain-types/profilesTypes';
+import type { ISession } from '@global-torque/domain-types/authTypes';
+import type { IUserFormatted } from '@global-torque/domain-types/profilesTypes';
 import { useContactUsSessionPrefill } from '../useContactUsSessionPrefill';
 import VFormContactUs from '../VFormContactUs.vue';
 
@@ -10,8 +10,8 @@ const mocks = vi.hoisted(() => ({
   useSessionStore: vi.fn(),
   getStore: vi.fn(),
 }));
-vi.mock('@webdevelop-pro/invest-runtime/session', () => ({ useSessionStore: mocks.useSessionStore }));
-vi.mock('@webdevelop-pro/invest-runtime/adapters', () => ({
+vi.mock('@global-torque/invest-runtime/session', () => ({ useSessionStore: mocks.useSessionStore }));
+vi.mock('@global-torque/invest-runtime/adapters', () => ({
   getRequiredInvestRuntimeAdapter: () => ({ getStore: mocks.getStore }),
 }));
 

@@ -1,16 +1,16 @@
 {
-  "candidate": "0.2.1",
+  "candidate": "0.2.2",
   "targetRepository": "global-torque/torque-packages",
   "sourceOwner": "global-torque/dashboard.webdevelop.biz",
   "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3",
   "packages": [
-    { "name": "@webdevelop-pro/domain-types", "directory": "packages/domain-types", "version": "0.2.1", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 1 },
-    { "name": "@webdevelop-pro/invest-core", "directory": "packages/invest-core", "version": "0.2.1", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 2 },
-    { "name": "@webdevelop-pro/invest-data", "directory": "packages/invest-data", "version": "0.2.1", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 3 },
-    { "name": "@webdevelop-pro/invest-runtime", "directory": "packages/invest-runtime", "version": "0.2.1", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 4 },
-    { "name": "@webdevelop-pro/invest-widgets", "directory": "packages/invest-widgets", "version": "0.2.1", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 5 },
-    { "name": "@webdevelop-pro/invest-features", "directory": "packages/invest-features", "version": "0.2.1", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 6 },
-    { "name": "@webdevelop-pro/invest-shell", "directory": "packages/invest-shell", "version": "0.2.1", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 7 }
+    { "name": "@global-torque/domain-types", "directory": "packages/domain-types", "version": "0.2.2", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 1 },
+    { "name": "@global-torque/invest-core", "directory": "packages/invest-core", "version": "0.2.2", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 2 },
+    { "name": "@global-torque/invest-data", "directory": "packages/invest-data", "version": "0.2.2", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 3 },
+    { "name": "@global-torque/invest-runtime", "directory": "packages/invest-runtime", "version": "0.2.2", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 4 },
+    { "name": "@global-torque/invest-widgets", "directory": "packages/invest-widgets", "version": "0.2.2", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 5 },
+    { "name": "@global-torque/invest-features", "directory": "packages/invest-features", "version": "0.2.2", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 6 },
+    { "name": "@global-torque/invest-shell", "directory": "packages/invest-shell", "version": "0.2.2", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 7 }
   ],
   "nodeExports": {
     "conditionOrder": ["types", "node", "default"],
@@ -19,7 +19,7 @@
     "requiredOutputCount": 4,
     "tuples": [
       {
-        "package": "@webdevelop-pro/invest-core",
+        "package": "@global-torque/invest-core",
         "specifier": "./app/config",
         "source": "./src/app/config.ts",
         "types": "./src/app/config.ts",
@@ -27,7 +27,7 @@
         "default": "./src/app/config.ts"
       },
       {
-        "package": "@webdevelop-pro/invest-core",
+        "package": "@global-torque/invest-core",
         "specifier": "./markdown/tableWrap",
         "source": "./src/markdown/tableWrap.ts",
         "types": "./src/markdown/tableWrap.ts",
@@ -35,7 +35,7 @@
         "default": "./src/markdown/tableWrap.ts"
       },
       {
-        "package": "@webdevelop-pro/invest-core",
+        "package": "@global-torque/invest-core",
         "specifier": "./helpers/text",
         "source": "./src/helpers/text.ts",
         "types": "./src/helpers/text.ts",
@@ -43,7 +43,7 @@
         "default": "./src/helpers/text.ts"
       },
       {
-        "package": "@webdevelop-pro/invest-runtime",
+        "package": "@global-torque/invest-runtime",
         "specifier": "./pwa/pwaPolicy",
         "source": "./src/pwa/pwaPolicy.ts",
         "types": "./src/pwa/pwaPolicy.ts",
@@ -76,8 +76,8 @@
     "@global-torque/admin-toolkit": "0.2.0"
   },
   "patches": [
-    { "file": "patches/@unovis__ts@1.6.7.patch", "sha256": "3417f483ba9a7b124580467efc2defb0e23492a58ae3a6970f6a10beaa151630", "scope": "@webdevelop-pro/invest-widgets chart consumers" },
-    { "file": "patches/@unovis__vue@1.6.7.patch", "sha256": "5a989c693186e25ac38869492a688cc6c640c87682a0ea059771c32471e1a4c4", "scope": "@webdevelop-pro/invest-widgets chart consumers" }
+    { "file": "patches/@unovis__ts@1.6.7.patch", "sha256": "3417f483ba9a7b124580467efc2defb0e23492a58ae3a6970f6a10beaa151630", "scope": "@global-torque/invest-widgets chart consumers" },
+    { "file": "patches/@unovis__vue@1.6.7.patch", "sha256": "5a989c693186e25ac38869492a688cc6c640c87682a0ea059771c32471e1a4c4", "scope": "@global-torque/invest-widgets chart consumers" }
   ],
   "assetInventory": {
     "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3",
@@ -90,10 +90,10 @@
     "document": "docs/asset-inventory.md"
   },
   "compatibility": {
-    "internalWorkspaceLinks": "only among the seven packages in this repository during development; pnpm pack must rewrite them to 0.2.1",
+    "internalWorkspaceLinks": "only among the seven packages in this repository during development; pnpm pack must rewrite them to 0.2.2",
     "externalResolution": "installed public releases only; no source copies, file links, catalogs, or private registry references",
     "runtimeSingletons": ["vue", "pinia", "vue-router"],
-    "uiKit": "0.1.4 candidate is selected by vue-ui; primitives remain at 0.1.3; framework widgets are owned here at 0.2.1",
+    "uiKit": "0.1.4 candidate is selected by vue-ui; primitives remain at 0.1.3; framework widgets are owned here at 0.2.2",
     "rollout": "domain-types, invest-core, invest-data, invest-runtime, invest-widgets, invest-features, invest-shell; consumers install the complete receipt after all lower packages are available",
     "abortSignals": ["missing public artifact", "workspace or private dependency in packed manifest", "digest mismatch", "source or rights review failure", "runtime singleton duplication"],
     "recovery": "failed candidates receive a new version; retain prior package bytes, receipts, lockfiles, and application archives for no-recompile rollback"

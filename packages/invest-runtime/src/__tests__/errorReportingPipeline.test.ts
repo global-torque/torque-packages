@@ -12,7 +12,7 @@ import {
   setErrorReporter,
   setErrorUiReporter,
 } from '../error/errorReporting.ts';
-import { APIError } from '@webdevelop-pro/invest-data/service/handlers/apiError';
+import { APIError } from '@global-torque/invest-data/service/handlers/apiError';
 
 describe('runtime error reporting pipeline', () => {
   beforeEach(() => {

@@ -1,13 +1,13 @@
-import { useInvestApplicationContext } from '@webdevelop-pro/invest-runtime/application-context';
+import { useInvestApplicationContext } from '@global-torque/invest-runtime/application-context';
 import { computed, ref, type ComputedRef, type Ref } from 'vue';
 import { useRepositoryAuth } from '../data/auth.repository.ts';
-import { SELFSERVICE } from '@webdevelop-pro/domain-types/authConstants';
+import { SELFSERVICE } from '@global-torque/domain-types/authConstants';
 import { getAuthLinks } from '../links.ts';
-import { oryErrorHandling } from '@webdevelop-pro/invest-runtime/error/oryErrorHandling';
-import { oryResponseHandling } from '@webdevelop-pro/invest-runtime/error/oryResponseHandling';
-import { useSessionStore } from '@webdevelop-pro/invest-runtime/session';
-import { navigateWithQueryParams } from '@webdevelop-pro/invest-runtime/navigation';
-import { notifyNativePushAuthSuccess } from '@webdevelop-pro/invest-runtime/native-push';
+import { oryErrorHandling } from '@global-torque/invest-runtime/error/oryErrorHandling';
+import { oryResponseHandling } from '@global-torque/invest-runtime/error/oryResponseHandling';
+import { useSessionStore } from '@global-torque/invest-runtime/session';
+import { navigateWithQueryParams } from '@global-torque/invest-runtime/navigation';
+import { notifyNativePushAuthSuccess } from '@global-torque/invest-runtime/native-push';
 
 type DemoAccountCredentialsConfig = {
   email: string;

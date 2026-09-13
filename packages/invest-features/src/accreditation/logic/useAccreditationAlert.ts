@@ -1,8 +1,8 @@
 import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
-import { AccreditationTypes } from '@webdevelop-pro/domain-types/accreditationTypes';
-import { AccreditationAlerts } from '@webdevelop-pro/invest-core/accreditation/status';
-import { useProfilesStore } from '@webdevelop-pro/invest-runtime/profiles';
+import { AccreditationTypes } from '@global-torque/domain-types/accreditationTypes';
+import { AccreditationAlerts } from '@global-torque/invest-core/accreditation/status';
+import { useProfilesStore } from '@global-torque/invest-runtime/profiles';
 import { useAccreditationStatus } from '../store/useAccreditationStatus.ts';
 
 export function useAccreditationAlert() {

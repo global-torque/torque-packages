@@ -1,16 +1,16 @@
 <script setup lang="ts">
 // @ts-nocheck
-import { IOfferFormatted } from '@webdevelop-pro/domain-types/offerTypes';
+import { IOfferFormatted } from '@global-torque/domain-types/offerTypes';
 import { PropType, computed } from 'vue';
 import { Skeleton } from '@global-torque/ui-primitives/skeleton';
-import { ShareIcon as share, InfoIcon as infoIcon } from '@webdevelop-pro/invest-widgets/icons/action';
-import { FileIcon as file } from '@webdevelop-pro/invest-widgets/icons/file';
+import { ShareIcon as share, InfoIcon as infoIcon } from '@global-torque/invest-widgets/icons/action';
+import { FileIcon as file } from '@global-torque/invest-widgets/icons/file';
 import OffersDetailsBtn from './OffersDetailsBtn.vue';
 import { Progress } from '@global-torque/ui-primitives/progress';
 import { Button } from '@global-torque/ui-primitives/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@global-torque/ui-primitives/tooltip';
 import { useOffersDetailsSide } from './logic/useOffersDetailsSide.ts';
-import { useDialogs } from '@webdevelop-pro/invest-runtime/dialogs';
+import { useDialogs } from '@global-torque/invest-runtime/dialogs';
 
 const props = defineProps({
   offer: {

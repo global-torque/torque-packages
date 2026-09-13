@@ -10,12 +10,13 @@ import {
 } from './node-build-contract.mjs';
 
 const root = path.resolve(new URL('..', import.meta.url).pathname);
-const candidate = process.argv.slice(2).find(argument => argument !== '--') ?? '0.2.1';
+const candidate = process.argv.slice(2).find(argument => argument !== '--') ?? '0.2.2';
 const reconciliation = JSON.parse(fs.readFileSync(path.join(root, 'docs/source-reconciliation.json'), 'utf8'));
 if (candidate !== reconciliation.candidate) throw new Error(`Candidate ${candidate} is not the reviewed ${reconciliation.candidate}`);
 const targetRepository = reconciliation.targetRepository;
 const sourceRepository = reconciliation.sourceOwner;
 const expectedPackageNames = new Set(reconciliation.packages.map(entry => entry.name));
+const externalPackageNames = new Set(Object.keys(reconciliation.externalPackages ?? {}));
 const dependencySections = ['dependencies', 'optionalDependencies', 'peerDependencies'];
 const expectedOverlayFiles = [
   'pnpm-lock.canonical.yaml',
@@ -42,9 +43,8 @@ function assertPackedManifest(manifest, packageName) {
       if (typeof specifier !== 'string' || /^(workspace:|file:|link:|catalog:)/u.test(specifier)) {
         throw new Error(`Unresolved ${section} entry ${packageName}:${dependency}`);
       }
-      if (dependency.startsWith('@webdevelop-pro/') && !expectedPackageNames.has(dependency)) {
-        throw new Error(`Private package dependency ${packageName}:${dependency}`);
-      }
+      if (dependency.startsWith('@webdevelop-pro/')) throw new Error(`Forbidden old framework dependency ${packageName}:${dependency}`);
+      if (dependency.startsWith('@global-torque/') && !expectedPackageNames.has(dependency) && !externalPackageNames.has(dependency)) throw new Error(`Unknown @global-torque dependency ${packageName}:${dependency}`);
     }
   }
 }

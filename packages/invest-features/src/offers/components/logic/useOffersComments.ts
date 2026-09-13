@@ -1,6 +1,6 @@
 import { computed, onBeforeMount } from 'vue';
 import { storeToRefs } from 'pinia';
-import type { IOfferComment } from '@webdevelop-pro/domain-types/offerTypes';
+import type { IOfferComment } from '@global-torque/domain-types/offerTypes';
 import { useRepositoryOffer } from '../../data/offer.repository.ts';
 
 type UseOffersCommentsProps = {

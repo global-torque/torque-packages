@@ -1,5 +1,5 @@
 import type { InvestDataClient } from './client.ts';
-import type { IEvmWalletAuthorizeStartRequestBody } from '@webdevelop-pro/domain-types/evmTypes';
+import type { IEvmWalletAuthorizeStartRequestBody } from '@global-torque/domain-types/evmTypes';
 
 export type RegisterTurnkeyWalletRequest = {
   profile_id: number;

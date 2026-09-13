@@ -5,7 +5,7 @@ import {
   type SignupProfileType,
   type WalletOnboardingIntent,
   type WalletOnboardingProfileType,
-} from '@webdevelop-pro/domain-types/onboardingTypes';
+} from '@global-torque/domain-types/onboardingTypes';
 
 const SIGNUP_PROFILE_TYPE_SET = new Set<string>(SIGNUP_PROFILE_TYPES);
 const WALLET_PROFILE_TYPE_SET = new Set<string>(WALLET_ONBOARDING_PROFILE_TYPES);

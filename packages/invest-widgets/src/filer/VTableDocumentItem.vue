@@ -6,7 +6,7 @@ import {
   FileIcon as file,
 } from '../icons/file';
 import { TableCell, TableRow } from '@global-torque/ui-primitives/table';
-import { IFilerItemFormatted } from '@webdevelop-pro/invest-core/filer/documentFormatter';
+import { IFilerItemFormatted } from '@global-torque/invest-core/filer/documentFormatter';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@global-torque/ui-primitives/tooltip';
 import { badgeToneClass } from '@global-torque/ui-kit/badge-tone';
 

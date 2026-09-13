@@ -4,7 +4,7 @@ import {
 } from 'reka-ui';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@global-torque/ui-primitives/dropdown-menu';
 import { ChevronDown } from '@lucide/vue';
-import ChevronDownFilled from '@webdevelop-pro/invest-widgets/icons/images/chevron-down.svg?component';
+import ChevronDownFilled from '@global-torque/invest-widgets/icons/images/chevron-down.svg?component';
 import type { Component } from 'vue';
 import { PropType } from 'vue';
 

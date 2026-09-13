@@ -2,20 +2,20 @@ import {
   registerFullResetTarget,
   registerLogoutRequestHandler,
   registerProfileResetTarget,
-} from '@webdevelop-pro/invest-runtime/lifecycle';
-import { configureInvestRuntimeAdapters } from '@webdevelop-pro/invest-runtime/adapters';
+} from '@global-torque/invest-runtime/lifecycle';
+import { configureInvestRuntimeAdapters } from '@global-torque/invest-runtime/adapters';
 import { useLogoutStore } from '../auth/store/useLogout.ts';
 import {
   resetInvestWidgetProvidersForTests,
   setInvestWidgetProviders,
   type InvestWidgetProviders,
-} from '@webdevelop-pro/invest-widgets/providers';
+} from '@global-torque/invest-widgets/providers';
 import { storeToRefs } from 'pinia';
 import { useNotifications } from '../notifications/useNotifications.ts';
 import { NotificationFormatter } from '../notifications/notificationFormatter.ts';
 import VNotificationBadge from '../notifications/components/VNotificationBadge.vue';
 import VNotificationSidebar from '../notifications/components/VNotificationSidebar.vue';
-import { getInvestDataAppLinks } from '@webdevelop-pro/invest-data/service/dataClientConfig';
+import { getInvestDataAppLinks } from '@global-torque/invest-data/service/dataClientConfig';
 import { useAccreditationAlert } from '../accreditation/logic/useAccreditationAlert.ts';
 import { useAccreditationStatus } from '../accreditation/store/useAccreditationStatus.ts';
 import { useAccreditationModel } from '../accreditation/useAccreditationModel.ts';
@@ -23,9 +23,9 @@ import { useKycAlertViewModel } from '../kyc/logic/useKycAlertViewModel.ts';
 import { useKycModel } from '../kyc/model/useKycModel.ts';
 import { useRepositoryOffer } from '../offers/data/offer.repository.ts';
 import { useRepositoryProfiles } from '../profiles/model/profiles.repository.ts';
-import { useInvestApplicationContext } from '@webdevelop-pro/invest-runtime/application-context';
-import { useFilerModel } from '@webdevelop-pro/invest-runtime/filer';
-import { reportError } from '@webdevelop-pro/invest-runtime/error/errorReporting';
+import { useInvestApplicationContext } from '@global-torque/invest-runtime/application-context';
+import { useFilerModel } from '@global-torque/invest-runtime/filer';
+import { reportError } from '@global-torque/invest-runtime/error/errorReporting';
 
 let installed = false;
 

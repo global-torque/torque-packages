@@ -7,13 +7,13 @@ import { useRoute } from 'vue-router';
 import { cookiesOptions } from '../../session/store/useSession.ts';
 import { useCookies } from '@vueuse/integrations/useCookies';
 import { useSessionStore } from '../../session/store/useSession.ts';
-import { PROFILE_TYPES } from '@webdevelop-pro/domain-types';
+import { PROFILE_TYPES } from '@global-torque/domain-types';
 import { resetAllProfileData } from '../../resetAllData.ts';
 import { reportOfflineReadError } from '../../error/errorReporting.ts';
 import { shouldPreserveOfflineSession } from '../../session/offlineSession.ts';
 import { requestLogout } from '../../lifecycle/domainLifecycle.ts';
 import { getRequiredInvestRuntimeAdapter } from '../../adapters.ts';
-import type { INotification } from '@webdevelop-pro/domain-types/notificationsTypes';
+import type { INotification } from '@global-torque/domain-types/notificationsTypes';
 
 type InitProfilesOptions = {
   force?: boolean;

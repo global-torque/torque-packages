@@ -1,6 +1,6 @@
 import { toast } from 'vue-sonner';
 import { useGlobalAlert } from './../globalAlert/useGlobalAlert';
-import { OfflineRequestError } from '@webdevelop-pro/invest-data/service/handlers/offlineRequestError';
+import { OfflineRequestError } from '@global-torque/invest-data/service/handlers/offlineRequestError';
 import {
   getErrorUiReporter,
   getErrorReporter,

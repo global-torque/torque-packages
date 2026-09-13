@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Component } from 'vue';
 import type { ContactSubjectPosition, ContactUsSessionPrefill, ContactUsSubmit } from './useContactUsForm';
-import { useDialogs } from '@webdevelop-pro/invest-runtime/dialogs';
+import { useDialogs } from '@global-torque/invest-runtime/dialogs';
 import { storeToRefs } from 'pinia';
 
 const props = withDefaults(defineProps<{

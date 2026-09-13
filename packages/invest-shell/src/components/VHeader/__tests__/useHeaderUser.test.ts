@@ -33,7 +33,7 @@ const state = vi.hoisted(() => ({
   notificationFieldsState: { value: { data: undefined } },
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/application-context', () => ({
+vi.mock('@global-torque/invest-runtime/application-context', () => ({
   useInvestApplicationContext: () => ({
     appConfig: {
       urls: {
@@ -49,17 +49,17 @@ vi.mock('pinia', () => ({
   storeToRefs: state.storeToRefs,
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/session', () => ({
+vi.mock('@global-torque/invest-runtime/session', () => ({
   useSessionStore: state.useSessionStore,
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/adapters', () => ({
+vi.mock('@global-torque/invest-runtime/adapters', () => ({
   getRequiredInvestRuntimeAdapter: () => ({
     getStore: state.useRepositoryProfiles,
   }),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/filer', () => ({
+vi.mock('@global-torque/invest-runtime/filer', () => ({
   useFilerModel: () => ({
     notificationFieldsState: state.notificationFieldsState,
   }),

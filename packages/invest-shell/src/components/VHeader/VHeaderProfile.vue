@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useInvestApplicationContext } from '@webdevelop-pro/invest-runtime/application-context';
+import { useInvestApplicationContext } from '@global-torque/invest-runtime/application-context';
 import { computed, PropType, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 
@@ -7,15 +7,15 @@ import VDropdown from '../VDropdown.vue';
 import {
   DropdownMenuItem, DropdownMenuPortal, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger,
 } from '@global-torque/ui-primitives/dropdown-menu';
-import { useDialogs } from '@webdevelop-pro/invest-runtime/dialogs';
-import NotificationsSidebarButton from '@webdevelop-pro/invest-widgets/notifications/VNotificationsSidebarButton.vue';
-import { LogoutMenuIcon as LogOutIcon } from '@webdevelop-pro/invest-widgets/icons/navigation';
+import { useDialogs } from '@global-torque/invest-runtime/dialogs';
+import NotificationsSidebarButton from '@global-torque/invest-widgets/notifications/VNotificationsSidebarButton.vue';
+import { LogoutMenuIcon as LogOutIcon } from '@global-torque/invest-widgets/icons/navigation';
 import VAvatarIdentity from '../VAvatarIdentity.vue';
 import type { MenuItem } from '../../navigation/types.ts';
-import ProfileSwitchMenuList from '@webdevelop-pro/invest-widgets/profiles/ProfileSwitchMenuList.vue';
-import { useProfileSwitchMenu } from '@webdevelop-pro/invest-widgets/profiles';
+import ProfileSwitchMenuList from '@global-torque/invest-widgets/profiles/ProfileSwitchMenuList.vue';
+import { useProfileSwitchMenu } from '@global-torque/invest-widgets/profiles';
 import { useHeaderUser } from './useHeaderUser.ts';
-import { getProfileAvatarInitial } from '@webdevelop-pro/invest-core/profiles/avatarInitial';
+import { getProfileAvatarInitial } from '@global-torque/invest-core/profiles/avatarInitial';
 
 const isStaticSite = String(useInvestApplicationContext().appConfig.isStaticSite ?? '') ?? '';
 

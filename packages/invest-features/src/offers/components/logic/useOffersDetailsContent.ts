@@ -3,10 +3,10 @@ import {
   computed, onMounted, ref, type Ref,
 } from 'vue';
 import MarkdownIt from 'markdown-it';
-import tableWrap from '@webdevelop-pro/invest-core/markdown/tableWrap';
-import type { IOfferFormatted } from '@webdevelop-pro/domain-types/offerTypes';
+import tableWrap from '@global-torque/invest-core/markdown/tableWrap';
+import type { IOfferFormatted } from '@global-torque/domain-types/offerTypes';
 import { storeToRefs } from 'pinia';
-import { useSessionStore } from '@webdevelop-pro/invest-runtime/session';
+import { useSessionStore } from '@global-torque/invest-runtime/session';
 import { useRepositoryOffer } from '../../data/offer.repository.ts';
 import { useBreakpoints } from '@global-torque/ui-kit/breakpoints';
 import { useOfferFilerFiles } from './useOfferFilerFiles.ts';

@@ -1,13 +1,13 @@
 <script setup lang="ts">
 // @ts-nocheck
-import { useInvestApplicationContext } from '@webdevelop-pro/invest-runtime/application-context';
+import { useInvestApplicationContext } from '@global-torque/invest-runtime/application-context';
 import { computed } from 'vue';
 import type { Component } from 'vue';
 import { storeToRefs } from 'pinia';
 import { RouterLink } from 'vue-router';
 
-import { useProfilesStore } from '@webdevelop-pro/invest-runtime/profiles';
-import { useSessionStore } from '@webdevelop-pro/invest-runtime/session';
+import { useProfilesStore } from '@global-torque/invest-runtime/profiles';
+import { useSessionStore } from '@global-torque/invest-runtime/session';
 import {
   urlFaq,
   urlHome,
@@ -22,7 +22,7 @@ import {
   urlProfileTabWallet,
   urlProfileTabEarn,
 } from '../navigation/links.ts';
-import { useNotificationsSidebarWidget } from '@webdevelop-pro/invest-widgets/notifications';
+import { useNotificationsSidebarWidget } from '@global-torque/invest-widgets/notifications';
 
 import {
   EarnMenuIcon as EarnIcon,
@@ -32,7 +32,7 @@ import {
   InvestmentMenuIcon as InvestmentIcon,
   PortfolioMenuIcon as PortfolioIcon,
   WalletMenuIcon as WalletIcon,
-} from '@webdevelop-pro/invest-widgets/icons/navigation';
+} from '@global-torque/invest-widgets/icons/navigation';
 
 defineOptions({ name: 'PWAFooterMenu' });
 

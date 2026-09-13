@@ -12,7 +12,7 @@ import {
 } from 'vue';
 import VPwaStatusStack from '../VPwaStatusStack.vue';
 
-vi.mock('@webdevelop-pro/invest-runtime/application-context', () => ({
+vi.mock('@global-torque/invest-runtime/application-context', () => ({
   useInvestApplicationContext: () => ({
     appConfig: {
       build: {
@@ -36,13 +36,13 @@ const isShowingCachedContent = ref(false);
 const lastSyncedAt = ref<string | null>(null);
 const dismissOfflineBanner = vi.fn();
 
-vi.mock('@webdevelop-pro/invest-runtime/pwa/usePwaStandalone', () => ({
+vi.mock('@global-torque/invest-runtime/pwa/usePwaStandalone', () => ({
   usePwaStandalone: () => ({
     isStandalone,
   }),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/pwa/usePwaInstallPrompt', () => ({
+vi.mock('@global-torque/invest-runtime/pwa/usePwaInstallPrompt', () => ({
   usePwaInstallPrompt: () => ({
     canInstall,
     installState,
@@ -51,7 +51,7 @@ vi.mock('@webdevelop-pro/invest-runtime/pwa/usePwaInstallPrompt', () => ({
   }),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/pwa/usePwaUpdatePrompt', () => ({
+vi.mock('@global-torque/invest-runtime/pwa/usePwaUpdatePrompt', () => ({
   usePwaUpdatePrompt: () => ({
     isUpdateReady,
     isOfflineReady,
@@ -63,7 +63,7 @@ vi.mock('@webdevelop-pro/invest-runtime/pwa/usePwaUpdatePrompt', () => ({
   }),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/pwa/useOfflineStatus', () => ({
+vi.mock('@global-torque/invest-runtime/pwa/useOfflineStatus', () => ({
   useOfflineStatus: () => ({
     isOffline,
     isReconnected,
@@ -71,13 +71,13 @@ vi.mock('@webdevelop-pro/invest-runtime/pwa/useOfflineStatus', () => ({
   }),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/pwa/usePwaOfflineDataStatus', () => ({
+vi.mock('@global-torque/invest-runtime/pwa/usePwaOfflineDataStatus', () => ({
   usePwaOfflineDataStatus: () => ({
     lastSyncedAt,
   }),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/pwa/usePwaTelemetry', () => ({
+vi.mock('@global-torque/invest-runtime/pwa/usePwaTelemetry', () => ({
   usePwaTelemetry: () => ({
     handleInstall: vi.fn(),
     handleDismissInstall: vi.fn(),
@@ -87,7 +87,7 @@ vi.mock('@webdevelop-pro/invest-runtime/pwa/usePwaTelemetry', () => ({
   }),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/pwa/usePwaBannerDismissals', () => ({
+vi.mock('@global-torque/invest-runtime/pwa/usePwaBannerDismissals', () => ({
   usePwaBannerDismissals: () => ({
     isBannerVisible: computed(() => isOffline.value || isReconnected.value),
     dismissActiveBanner: dismissOfflineBanner,

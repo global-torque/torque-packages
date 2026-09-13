@@ -1,4 +1,4 @@
-import { useInvestApplicationContext } from '@webdevelop-pro/invest-runtime/application-context';
+import { useInvestApplicationContext } from '@global-torque/invest-runtime/application-context';
 
 type SameSiteOption = 'none' | 'lax' | 'strict';
 

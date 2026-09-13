@@ -1,9 +1,9 @@
 import { computed, type Ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useClipboard } from '@vueuse/core';
-import type { IOfferFormatted } from '@webdevelop-pro/domain-types/offerTypes';
+import type { IOfferFormatted } from '@global-torque/domain-types/offerTypes';
 import { useOfferFilerFiles } from './useOfferFilerFiles.ts';
-import { formatRawAmount } from '@webdevelop-pro/invest-core/investment/rawAmount';
+import { formatRawAmount } from '@global-torque/invest-core/investment/rawAmount';
 
 export interface ReadOnlyInfoItem {
   title?: string;

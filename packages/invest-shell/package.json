@@ -1,7 +1,7 @@
 {
-  "name": "@webdevelop-pro/invest-shell",
+  "name": "@global-torque/invest-shell",
   "private": false,
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Investment application shell components, navigation, runtime facades, and styles.",
   "license": "MIT",
   "engines": { "node": ">=22.12.0" },
@@ -31,10 +31,10 @@
     "@global-torque/ui-primitives": "0.1.3",
     "@lucide/vue": "^1.23.0",
     "@vueuse/core": "^14.2.1",
-    "@webdevelop-pro/domain-types": "workspace:*",
-    "@webdevelop-pro/invest-core": "workspace:*",
-    "@webdevelop-pro/invest-runtime": "workspace:*",
-    "@webdevelop-pro/invest-widgets": "workspace:*"
+    "@global-torque/domain-types": "workspace:*",
+    "@global-torque/invest-core": "workspace:*",
+    "@global-torque/invest-runtime": "workspace:*",
+    "@global-torque/invest-widgets": "workspace:*"
   },
   "devDependencies": {
     "@vue/server-renderer": "^3.5.39",

@@ -2,7 +2,7 @@
 
 Public feature API for app-owned investment routes.
 
-`@webdevelop-pro/invest-features` exposes reusable feature components,
+`@global-torque/invest-features` exposes reusable feature components,
 widgets, stores, composables, and contracts that route pages compose from
 `apps/dashboard` and `apps/invest`.
 
@@ -16,13 +16,13 @@ package has been retired.
 - Reusable domain-aware feature UI, stores, composables, and ViewModels may be
   exported here when apps need stable public entry points.
 - Extracted domain-aware widgets are re-exported from
-  `@webdevelop-pro/invest-widgets`; feature barrels should not reintroduce
+  `@global-torque/invest-widgets`; feature barrels should not reintroduce
   widget implementations.
 - App-specific route tables, layouts, redirects, and final page composition stay
   in the owning app.
 - Static/public route pages such as contact, terms, resource-center, KYC,
   authentication, and offer-detail views are app-owned; there is no
-  `@webdevelop-pro/invest-features/static` route-page facade.
+  `@global-torque/invest-features/static` route-page facade.
 
 ## Public Subpaths
 
@@ -39,7 +39,7 @@ package has been retired.
 - `./wallet`
 
 Widget exports in `./accreditation`, `./kyc`, `./notifications`, `./profiles`,
-and `./wallet` come from `@webdevelop-pro/invest-widgets`.
+and `./wallet` come from `@global-torque/invest-widgets`.
 
 ## Boundary Rules
 
@@ -58,5 +58,5 @@ and `./wallet` come from `@webdevelop-pro/invest-widgets`.
 import {
   DashboardSummary,
   DashboardTabTypes,
-} from '@webdevelop-pro/invest-features/dashboard';
+} from '@global-torque/invest-features/dashboard';
 ```

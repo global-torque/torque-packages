@@ -2,13 +2,13 @@
 import { ref } from 'vue';
 import { acceptHMRUpdate, defineStore, storeToRefs } from 'pinia';
 import { useRepositoryAuth } from '../data/auth.repository.ts';
-import { useGlobalLoader } from '@webdevelop-pro/invest-runtime/loader';
+import { useGlobalLoader } from '@global-torque/invest-runtime/loader';
 import { getAuthNavigation } from '../navigation.ts';
-import { resetAllData } from '@webdevelop-pro/invest-runtime/reset';
-import { SELFSERVICE } from '@webdevelop-pro/domain-types/authConstants';
-import { oryErrorHandling } from '@webdevelop-pro/invest-runtime/error/oryErrorHandling';
-import { oryResponseHandling } from '@webdevelop-pro/invest-runtime/error/oryResponseHandling';
-import { navigateWithQueryParams } from '@webdevelop-pro/invest-runtime/navigation';
+import { resetAllData } from '@global-torque/invest-runtime/reset';
+import { SELFSERVICE } from '@global-torque/domain-types/authConstants';
+import { oryErrorHandling } from '@global-torque/invest-runtime/error/oryErrorHandling';
+import { oryResponseHandling } from '@global-torque/invest-runtime/error/oryResponseHandling';
+import { navigateWithQueryParams } from '@global-torque/invest-runtime/navigation';
 
 type LogoutOptions = {
   redirectTo?: string;

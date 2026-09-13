@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { useInvestApplicationContext } from '@webdevelop-pro/invest-runtime/application-context';
+import { useInvestApplicationContext } from '@global-torque/invest-runtime/application-context';
 import {
   computed, defineAsyncComponent, hydrateOnVisible, onMounted, PropType, ref, type Component,
 } from 'vue';
 import { storeToRefs } from 'pinia';
 import { Skeleton } from '@global-torque/ui-primitives/skeleton';
-import { navigateWithQueryParams } from '@webdevelop-pro/invest-runtime/navigation';
+import { navigateWithQueryParams } from '@global-torque/invest-runtime/navigation';
 import {
   urlFaq,
   urlHome,
@@ -23,10 +23,10 @@ import {
 } from '../navigation/links.ts';
 import VHeaderAuthorized from '../components/VHeaderBar/VHeaderAuthorized.vue';
 import VHeaderGuest from '../components/VHeaderBar/VHeaderGuest.vue';
-import { ArrowLeftIcon as ArrowLeft } from '@webdevelop-pro/invest-widgets/icons/navigation';
+import { ArrowLeftIcon as ArrowLeft } from '@global-torque/invest-widgets/icons/navigation';
 import PwaLoginArrow from './assets/pwa-login-arrow.svg';
-import NotificationsSidebarButton from '@webdevelop-pro/invest-widgets/notifications/VNotificationsSidebarButton.vue';
-import { useProfilesStore } from '@webdevelop-pro/invest-runtime/profiles';
+import NotificationsSidebarButton from '@global-torque/invest-widgets/notifications/VNotificationsSidebarButton.vue';
+import { useProfilesStore } from '@global-torque/invest-runtime/profiles';
 import VLogo from '../components/VLogo.vue';
 import { Button } from '@global-torque/ui-primitives/button';
 import VSidebarTrigger from '../components/Sidebar07/components/VSidebarTrigger.vue';

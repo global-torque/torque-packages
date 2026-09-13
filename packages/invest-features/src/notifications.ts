@@ -1,7 +1,7 @@
 import {
   VNotificationsSidebarButton,
   useNotificationsSidebarWidget,
-} from '@webdevelop-pro/invest-widgets/notifications';
+} from '@global-torque/invest-widgets/notifications';
 import VNotificationTable from './notifications/components/VNotificationTable.vue';
 import { useNotifications } from './notifications/useNotifications.ts';
 

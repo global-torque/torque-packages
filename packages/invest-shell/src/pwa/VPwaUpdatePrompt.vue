@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import { Alert, AlertDescription, AlertTitle } from '@global-torque/ui-primitives/alert';
 import { Button } from '@global-torque/ui-primitives/button';
-import { formatBuildDisplay } from '@webdevelop-pro/invest-core/formatting/buildInfo';
+import { formatBuildDisplay } from '@global-torque/invest-core/formatting/buildInfo';
 import { Spinner } from '@global-torque/ui-primitives/spinner';
 import { CircleAlertIcon, CircleCheckIcon, InfoIcon } from '@lucide/vue';
 

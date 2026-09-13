@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { PropType, computed } from 'vue';
 import VComment from './VComment.vue';
-import { formatToDate } from '@webdevelop-pro/invest-core/helpers/formatters/formatToDate';
+import { formatToDate } from '@global-torque/invest-core/helpers/formatters/formatToDate';
 
 export interface IOfferComment {
   created_at: string;

@@ -5,13 +5,13 @@ import {
 } from 'vue';
 import { toast } from '@global-torque/ui-primitives/sonner';
 import VFormFooterSkeleton from './VFormFooterSkeleton.vue';
-import { useInvestApplicationContext } from '@webdevelop-pro/invest-runtime/application-context';
-import type { InvestStaticContactConfig } from '@webdevelop-pro/invest-core/app/config';
-import { resolveSocialList } from '@webdevelop-pro/invest-widgets/socials';
-import type { SocialLink } from '@webdevelop-pro/invest-widgets/socials';
+import { useInvestApplicationContext } from '@global-torque/invest-runtime/application-context';
+import type { InvestStaticContactConfig } from '@global-torque/invest-core/app/config';
+import { resolveSocialList } from '@global-torque/invest-widgets/socials';
+import type { SocialLink } from '@global-torque/invest-widgets/socials';
 
 const SocialLinks = defineAsyncComponent({
-  loader: () => import('@webdevelop-pro/invest-widgets/socials').then(mod => mod.VSocialLinks),
+  loader: () => import('@global-torque/invest-widgets/socials').then(mod => mod.VSocialLinks),
   hydrate: hydrateOnVisible(),
 });
 

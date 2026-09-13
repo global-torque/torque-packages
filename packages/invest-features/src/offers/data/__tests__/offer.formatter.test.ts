@@ -8,11 +8,11 @@ import {
 import {
   resetInvestDataClientConfig,
   setInvestDataClientConfig,
-} from '@webdevelop-pro/invest-data/service/dataClientConfig';
-import { OfferFormatter as CoreOfferFormatter } from '@webdevelop-pro/invest-core/offer/formatter';
-import { buildPublicFilerImageUrl } from '@webdevelop-pro/invest-data/filer';
+} from '@global-torque/invest-data/service/dataClientConfig';
+import { OfferFormatter as CoreOfferFormatter } from '@global-torque/invest-core/offer/formatter';
+import { buildPublicFilerImageUrl } from '@global-torque/invest-data/filer';
 import defaultOfferImage from '../../assets/default.svg?url';
-import type { IOffer } from '@webdevelop-pro/domain-types/offerTypes';
+import type { IOffer } from '@global-torque/domain-types/offerTypes';
 
 class OfferFormatter extends CoreOfferFormatter {
   constructor(offer?: IOffer) {

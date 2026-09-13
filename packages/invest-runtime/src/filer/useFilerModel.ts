@@ -6,13 +6,13 @@ import type {
   FilerNotificationFields,
   FilerObjectTree,
   FilerUploadResult,
-} from '@webdevelop-pro/domain-types/filerTypes';
+} from '@global-torque/domain-types/filerTypes';
 import {
   fetchObjectTree as requestObjectTree,
   parseFilerNotificationFields,
   uploadFilerFile,
-} from '@webdevelop-pro/invest-data/filer';
-import type { ActionState } from '@webdevelop-pro/invest-data/repository';
+} from '@global-torque/invest-data/filer';
+import type { ActionState } from '@global-torque/invest-data/repository';
 
 export type FilerObjectQueryState = ActionState<FilerObjectTree>;
 

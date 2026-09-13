@@ -1,13 +1,13 @@
 import {
   AccreditationTypes,
   type AccreditationTypes as AccreditationStatus,
-} from '@webdevelop-pro/domain-types/accreditationTypes';
+} from '@global-torque/domain-types/accreditationTypes';
 
 export {
   AccreditationTypes,
   type IAccreditation,
   type IAccreditationData,
-} from '@webdevelop-pro/domain-types/accreditationTypes';
+} from '@global-torque/domain-types/accreditationTypes';
 
 export interface ITextStatuses {
   text: string;

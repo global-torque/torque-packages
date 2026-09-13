@@ -1,4 +1,4 @@
-import type { AnalyticsBody } from '@webdevelop-pro/domain-types/analyticsTypes';
+import type { AnalyticsBody } from '@global-torque/domain-types/analyticsTypes';
 import type { APIErrorData } from './apiError.ts';
 
 export interface NetworkRequestErrorData {

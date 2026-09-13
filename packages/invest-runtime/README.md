@@ -2,7 +2,7 @@
 
 Browser runtime package for investment apps.
 
-This is the public `@webdevelop-pro/invest-runtime` package. It owns the
+This is the public `@global-torque/invest-runtime` package. It owns the
 shared browser/native lifecycle mechanisms described below; app-specific
 policy and feature models remain in their owning apps or feature packages. It
 is distinct from the public framework-free `@global-torque/sdk`, and there is
@@ -35,9 +35,9 @@ runtime PWA policy and registration bridge that a host can connect to
 
 ## Allowed Dependencies
 
-- `@webdevelop-pro/domain-types` for DTO contracts.
-- `@webdevelop-pro/invest-core` for pure config and analytics helpers.
-- `@webdevelop-pro/invest-data` for API-client hook/config installation.
+- `@global-torque/domain-types` for DTO contracts.
+- `@global-torque/invest-core` for pure config and analytics helpers.
+- `@global-torque/invest-data` for API-client hook/config installation.
 - `@global-torque/sdk` for context-owned direct service clients,
   explicit user-auth strategies, typed results/errors, and transport disposal.
 - Vue, Pinia, Vue Router types, VueUse browser utilities, Capacitor Firebase
@@ -86,8 +86,8 @@ their source behavior.
 
 ```ts
 import { createApp } from 'vue';
-import { installInvestRuntime } from '@webdevelop-pro/invest-runtime';
-import type { InvestAppConfig } from '@webdevelop-pro/invest-core/app/config';
+import { installInvestRuntime } from '@global-torque/invest-runtime';
+import type { InvestAppConfig } from '@global-torque/invest-core/app/config';
 
 const app = createApp(App);
 const appConfig: InvestAppConfig = /* app-owned env mapping */;

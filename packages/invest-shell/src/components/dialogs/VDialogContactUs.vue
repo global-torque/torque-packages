@@ -4,7 +4,7 @@ import { Button } from '@global-torque/ui-primitives/button';
 import { X } from '@lucide/vue';
 import { VQueryDialog } from '@global-torque/ui-kit/query-dialog';
 import { toast } from '@global-torque/ui-primitives/sonner';
-import { useInvestApplicationContext } from '@webdevelop-pro/invest-runtime/application-context';
+import { useInvestApplicationContext } from '@global-torque/invest-runtime/application-context';
 import VFormContactUs from './VFormContactUs.vue';
 import type { ContactSubjectPosition, ContactUsSessionPrefill, ContactUsSubmit } from './useContactUsForm';
 

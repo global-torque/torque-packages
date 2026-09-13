@@ -5,15 +5,15 @@ import {
 import { acceptHMRUpdate, defineStore, storeToRefs } from 'pinia';
 import { useRepositoryAuth } from '../data/auth.repository.ts';
 import { useFormValidation } from '@global-torque/ui-kit/form-validation';
-import { composeInvestmentFormSchema, createInvestmentAjv, prepareInvestmentFormData } from '@webdevelop-pro/invest-core/form-validation';
+import { composeInvestmentFormSchema, createInvestmentAjv, prepareInvestmentFormData } from '@global-torque/invest-core/form-validation';
 import { JSONSchemaType } from 'ajv/dist/types/json-schema';
-import { useSessionStore } from '@webdevelop-pro/invest-runtime/session';
-import { navigateWithQueryParams } from '@webdevelop-pro/invest-runtime/navigation';
+import { useSessionStore } from '@global-torque/invest-runtime/session';
+import { navigateWithQueryParams } from '@global-torque/invest-runtime/navigation';
 import { getAuthLinks } from '../links.ts';
-import { SELFSERVICE, AAL2_QUERY } from '@webdevelop-pro/domain-types/authConstants';
-import { oryErrorHandling } from '@webdevelop-pro/invest-runtime/error/oryErrorHandling';
-import { oryResponseHandling } from '@webdevelop-pro/invest-runtime/error/oryResponseHandling';
-import { notifyNativePushAuthSuccess } from '@webdevelop-pro/invest-runtime/native-push';
+import { SELFSERVICE, AAL2_QUERY } from '@global-torque/domain-types/authConstants';
+import { oryErrorHandling } from '@global-torque/invest-runtime/error/oryErrorHandling';
+import { oryResponseHandling } from '@global-torque/invest-runtime/error/oryResponseHandling';
+import { notifyNativePushAuthSuccess } from '@global-torque/invest-runtime/native-push';
 import { validateLocalPostAuthReturnPath } from '../navigation/invitationReturn.ts';
 
 type FormModelTOTP = {

@@ -1,8 +1,13 @@
 # Changelog
 
-## 0.2.1 candidate
+## 0.2.2 candidate
 
-- Reissued the framework candidate for fresh public-release validation; package APIs and runtime source remain unchanged.
+- Established `@global-torque/invest-widgets@0.2.2` as the full framework
+  widgets API and sole owner published from `torque-packages`. It replaces
+  curated `@global-torque/invest-widgets@0.1.3` from `vue-ui`; the two APIs are
+  not drop-in compatible.
+- The framework implementation and runtime behavior remain unchanged from the
+  retained `@webdevelop-pro/invest-widgets@0.2.1` source.
 
 ## 0.2.0 candidate
 

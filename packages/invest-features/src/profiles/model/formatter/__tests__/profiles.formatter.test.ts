@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import type { IProfileIndividual } from '@webdevelop-pro/domain-types/profilesTypes';
+import type { IProfileIndividual } from '@global-torque/domain-types/profilesTypes';
 import { ProfileFormatter } from '../profiles.formatter.ts';
 
 describe('ProfileFormatter beneficial-owner collection', () => {

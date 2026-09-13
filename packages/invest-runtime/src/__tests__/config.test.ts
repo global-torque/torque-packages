@@ -4,7 +4,7 @@ import {
   expect,
   it,
 } from 'vitest';
-import type { InvestAppConfig } from '@webdevelop-pro/invest-core/app/config';
+import type { InvestAppConfig } from '@global-torque/invest-core/app/config';
 import {
   createPwaPolicyEnvFromInvestAppConfig,
   getInvestRuntimeClientServiceName,

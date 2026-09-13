@@ -6,9 +6,9 @@ import {
   createSuccessActionState,
   withOfflineHydrationMeta,
   type ActionState,
-} from '@webdevelop-pro/invest-data/repository';
+} from '@global-torque/invest-data/repository';
 
-export type { ActionState, OptionsStateData } from '@webdevelop-pro/invest-data/repository';
+export type { ActionState, OptionsStateData } from '@global-torque/invest-data/repository';
 
 export function applyOfflineHydrationMeta<T>(
   stateRef: Ref<ActionState<T | undefined>>,

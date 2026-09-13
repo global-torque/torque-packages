@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
-import type { FilerObjectTree } from '@webdevelop-pro/domain-types/filerTypes';
+import type { FilerObjectTree } from '@global-torque/domain-types/filerTypes';
 import { useFilerModel } from '../useFilerModel.ts';
 
 const mocks = vi.hoisted(() => ({
@@ -8,7 +8,7 @@ const mocks = vi.hoisted(() => ({
   uploadFilerFile: vi.fn(),
 }));
 
-vi.mock('@webdevelop-pro/invest-data/filer', () => ({
+vi.mock('@global-torque/invest-data/filer', () => ({
   fetchObjectTree: mocks.fetchObjectTree,
   uploadFilerFile: mocks.uploadFilerFile,
   parseFilerNotificationFields: (value: unknown) => (

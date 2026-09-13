@@ -4,7 +4,7 @@ import {
 import { setActivePinia, createPinia } from 'pinia';
 import { useRepositoryAuth } from '../../data/auth.repository.ts';
 import { reactive, ref } from 'vue';
-import { SELFSERVICE } from '@webdevelop-pro/domain-types/authConstants';
+import { SELFSERVICE } from '@global-torque/domain-types/authConstants';
 import { useLoginRefreshStore } from '../useLoginRefresh.ts';
 
 // Add at the top of your file, before vi.mock:
@@ -33,17 +33,17 @@ vi.mock('../../data/auth.repository.ts', () => {
   };
 });
 
-vi.mock('@webdevelop-pro/invest-runtime/error/oryResponseHandling', () => ({ oryResponseHandling: vi.fn() }));
-vi.mock('@webdevelop-pro/invest-runtime/error/oryErrorHandling', () => ({
+vi.mock('@global-torque/invest-runtime/error/oryResponseHandling', () => ({ oryResponseHandling: vi.fn() }));
+vi.mock('@global-torque/invest-runtime/error/oryErrorHandling', () => ({
   oryErrorHandling: vi.fn().mockResolvedValue(undefined),
 }));
-vi.mock('@webdevelop-pro/invest-runtime/analytics/useSendAnalyticsEvent', () => ({
+vi.mock('@global-torque/invest-runtime/analytics/useSendAnalyticsEvent', () => ({
   useSendAnalyticsEvent: () => ({
     sendEvent: sendEventMock,
   }),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/session', () => ({
+vi.mock('@global-torque/invest-runtime/session', () => ({
   useSessionStore: vi.fn(() => ({
     updateSession: mockUpdateSession,
   })),
@@ -84,7 +84,7 @@ vi.mock('@global-torque/ui-kit/form-validation', () => ({
   }),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/dialogs', () => ({
+vi.mock('@global-torque/invest-runtime/dialogs', () => ({
   useDialogs: vi.fn(() => ({
     isDialogRefreshSessionOpen: ref(false),
     completeSessionRefresh: vi.fn(),

@@ -7,7 +7,7 @@ import type {
   VaultPosition,
   VaultRedemption,
   VaultSigningPayload,
-} from '@webdevelop-pro/domain-types/vaultTypes';
+} from '@global-torque/domain-types/vaultTypes';
 import type {
   SdkConvenienceRequestOptions,
   SdkHttpMethod,

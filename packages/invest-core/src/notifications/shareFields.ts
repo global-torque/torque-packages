@@ -1,7 +1,7 @@
 import type {
   INotification,
   INotificationDataFields,
-} from '@webdevelop-pro/domain-types/notificationsTypes';
+} from '@global-torque/domain-types/notificationsTypes';
 import { assertCanonicalDecimalString } from '../decimal/canonicalDecimal.ts';
 
 export function assertNotificationShareFields(notification: INotification): void {

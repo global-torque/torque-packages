@@ -24,7 +24,7 @@ vi.mock('../../data/auth.repository.ts', () => {
   };
 });
 
-vi.mock('@webdevelop-pro/invest-runtime/navigation', () => ({
+vi.mock('@global-torque/invest-runtime/navigation', () => ({
   navigateWithQueryParams: vi.fn(),
 }));
 
@@ -32,8 +32,8 @@ vi.mock('../../links.ts', () => ({
   getAuthLinks: () => ({ checkEmail: '/check-email' }),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/error/oryResponseHandling', () => ({ oryResponseHandling: vi.fn() }));
-vi.mock('@webdevelop-pro/invest-runtime/error/oryErrorHandling', () => ({ oryErrorHandling: vi.fn().mockResolvedValue(undefined) }));
+vi.mock('@global-torque/invest-runtime/error/oryResponseHandling', () => ({ oryResponseHandling: vi.fn() }));
+vi.mock('@global-torque/invest-runtime/error/oryErrorHandling', () => ({ oryErrorHandling: vi.fn().mockResolvedValue(undefined) }));
 
 describe('useForgot Store', () => {
   let store: ReturnType<typeof useForgotStore>;

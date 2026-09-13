@@ -1,4 +1,4 @@
-import type { AnalyticsBody } from '@webdevelop-pro/domain-types/analyticsTypes';
+import type { AnalyticsBody } from '@global-torque/domain-types/analyticsTypes';
 
 export type ApiClientOfflinePolicy = {
   persistToIndexedDb?: boolean;

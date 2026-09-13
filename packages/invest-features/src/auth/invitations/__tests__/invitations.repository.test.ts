@@ -7,7 +7,7 @@ const invitations = vi.hoisted(() => ({
   accept: vi.fn(),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/application-context', () => ({
+vi.mock('@global-torque/invest-runtime/application-context', () => ({
   useInvestApplicationContext: () => ({
     createInvitationsSdkResource: () => invitations,
   }),

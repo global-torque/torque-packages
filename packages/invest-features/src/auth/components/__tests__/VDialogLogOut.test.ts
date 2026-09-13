@@ -19,7 +19,7 @@ const logoutStore = reactive({
 
 const appConfig = reactive({ isStaticSite: false });
 
-vi.mock('@webdevelop-pro/invest-runtime/application-context', () => ({
+vi.mock('@global-torque/invest-runtime/application-context', () => ({
   useInvestApplicationContext: () => ({ appConfig }),
 }));
 

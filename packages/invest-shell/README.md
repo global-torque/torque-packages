@@ -2,14 +2,14 @@
 
 Stable app integration facade for investment apps.
 
-`@webdevelop-pro/invest-shell` exposes the app-facing shell APIs for runtime
+`@global-torque/invest-shell` exposes the app-facing shell APIs for runtime
 bootstrap, config, navigation, PWA integration, global investment styles, and
 shared shell components. The former compatibility implementation package has
 been retired; shell code is owned and tested here.
 
 ## Ownership
 
-- Runtime bootstrap wrappers that compose `@webdevelop-pro/invest-runtime` with
+- Runtime bootstrap wrappers that compose `@global-torque/invest-runtime` with
   host-supplied adapters.
 - App config installation and build-display helpers.
 - Navigation constants, menu metadata, links, and SEO helpers for app route
@@ -29,7 +29,7 @@ been retired; shell code is owned and tested here.
   configuration.
 - Do not restore compatibility aliases, fallback barrels, or dependencies on
   the retired common package.
-- Runtime behavior belongs in `@webdevelop-pro/invest-runtime`; shell wrappers
+- Runtime behavior belongs in `@global-torque/invest-runtime`; shell wrappers
   should stay thin.
 
 ## Public Exports
@@ -71,7 +71,7 @@ pnpm lint:boundaries
 
 ## CSS Budget
 
-`pnpm --filter @webdevelop-pro/invest-shell run css:budget` measures the public
+`pnpm --filter @global-torque/invest-shell run css:budget` measures the public
 `geometry.css`, `components.css`, and `index.scss` entries in that order. A
 production Vite build resolves their Sass and CSS imports with minification and
 disk output disabled. The aggregate includes imported styles, but excludes app

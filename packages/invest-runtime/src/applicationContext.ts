@@ -1,5 +1,5 @@
 import { inject, provide, type App, type InjectionKey } from "vue";
-import type { InvestAppConfig } from "@webdevelop-pro/invest-core/app/config";
+import type { InvestAppConfig } from "@global-torque/invest-core/app/config";
 import {
   cookieAuth,
   createInvestSdkTransport,
@@ -58,12 +58,12 @@ import {
   createInvestDataClient,
   type ApiClientHooks,
   type InvestDataClientHooks,
-} from "@webdevelop-pro/invest-data";
+} from "@global-torque/invest-data";
 import {
   createInvestDataClientConfigFromAppConfig,
   type InvestDataApiKey,
   type InvestDataClientConfig,
-} from "@webdevelop-pro/invest-data/service/dataClientConfig";
+} from "@global-torque/invest-data/service/dataClientConfig";
 import { createDefaultApiClientHooks } from "./apiClientDefaultHooks.ts";
 import { createPwaPolicyEnvFromInvestAppConfig } from "./config.ts";
 import type { InvestRuntimeAdapters } from "./adapters.ts";

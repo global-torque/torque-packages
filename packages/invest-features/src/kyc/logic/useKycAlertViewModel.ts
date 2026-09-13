@@ -6,17 +6,17 @@ import {
   useRoute,
   useRouter,
 } from 'vue-router';
-import { PROFILE_TYPES } from '@webdevelop-pro/domain-types/profileTypes';
+import { PROFILE_TYPES } from '@global-torque/domain-types/profileTypes';
 import {
   createHiddenKycAlertModel,
   formatKycAlertModel,
-} from '@webdevelop-pro/invest-core/kyc/kycAlert';
+} from '@global-torque/invest-core/kyc/kycAlert';
 import { useKycModel } from '../model/useKycModel.ts';
-import { InvestKycTypes } from '@webdevelop-pro/domain-types/kycTypes';
-import { getInvestDataAppLinks } from '@webdevelop-pro/invest-data/service/dataClientConfig';
-import { useDialogs } from '@webdevelop-pro/invest-runtime/dialogs';
-import { useProfilesStore } from '@webdevelop-pro/invest-runtime/profiles';
-import { useSessionStore } from '@webdevelop-pro/invest-runtime/session';
+import { InvestKycTypes } from '@global-torque/domain-types/kycTypes';
+import { getInvestDataAppLinks } from '@global-torque/invest-data/service/dataClientConfig';
+import { useDialogs } from '@global-torque/invest-runtime/dialogs';
+import { useProfilesStore } from '@global-torque/invest-runtime/profiles';
+import { useSessionStore } from '@global-torque/invest-runtime/session';
 
 const resolveCurrentRedirectTarget = (routeFullPath?: string | null): string | undefined => {
   const normalizedRoutePath = typeof routeFullPath === 'string' ? routeFullPath.trim() : '';

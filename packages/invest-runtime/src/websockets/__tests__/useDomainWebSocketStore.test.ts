@@ -40,11 +40,11 @@ vi.mock('@vueuse/core', () => ({
   useWebSocket: (...args: unknown[]) => useWebSocketMock(...args),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/application-context', () => ({
+vi.mock('@global-torque/invest-runtime/application-context', () => ({
   useInvestApplicationContext: () => useInvestApplicationContextMock(),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/session', () => ({
+vi.mock('@global-torque/invest-runtime/session', () => ({
   useSessionStore: () => ({
     userLoggedIn,
   }),

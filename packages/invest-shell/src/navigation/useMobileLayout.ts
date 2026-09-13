@@ -1,6 +1,6 @@
 import { onBeforeUnmount, onMounted, watch } from 'vue';
-import { installPwaNoZoomGuards } from '@webdevelop-pro/invest-runtime/pwa/disableZoom';
-import { isPwaMobile } from '@webdevelop-pro/invest-runtime/pwa/pwaDetector';
+import { installPwaNoZoomGuards } from '@global-torque/invest-runtime/pwa/disableZoom';
+import { isPwaMobile } from '@global-torque/invest-runtime/pwa/pwaDetector';
 import { useMobileAppShell } from './useMobileAppShell.ts';
 
 type UseMobileLayoutOptions = {

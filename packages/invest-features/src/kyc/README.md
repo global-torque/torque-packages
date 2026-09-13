@@ -2,8 +2,8 @@
 
 The final KYC ownership is split by responsibility:
 
-- `@webdevelop-pro/domain-types/kycTypes` owns DTOs and Plaid result contracts.
-- `@webdevelop-pro/invest-core/kyc/*` owns deterministic alert and third-party screen mapping.
+- `@global-torque/domain-types/kycTypes` owns DTOs and Plaid result contracts.
+- `@global-torque/invest-core/kyc/*` owns deterministic alert and third-party screen mapping.
 - `useKycModel.ts` owns the route-independent reactive Plaid/token model.
 - `useKycAlertViewModel.ts` owns route-independent KYC alert and CTA behavior exposed through `invest-widgets` providers.
 - `useKycThirdParty.ts` owns the public third-party Plaid state machine.

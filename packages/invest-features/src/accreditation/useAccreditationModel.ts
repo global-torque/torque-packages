@@ -1,9 +1,9 @@
 // @ts-nocheck
-import type { IAccreditationData } from '@webdevelop-pro/domain-types/accreditationTypes';
+import type { IAccreditationData } from '@global-torque/domain-types/accreditationTypes';
 import {
   createInvestDataApiClient,
   getInvestDataApiUrl,
-} from '@webdevelop-pro/invest-data/service/dataClientConfig';
+} from '@global-torque/invest-data/service/dataClientConfig';
 import { v4 as uuidv4 } from 'uuid';
 import {
   applyOfflineHydrationMeta,
@@ -11,7 +11,7 @@ import {
   withActionState,
   type OptionsStateData,
 } from '../modelState.ts';
-import { withOfflineHydrationMeta } from '@webdevelop-pro/invest-data/repository';
+import { withOfflineHydrationMeta } from '@global-torque/invest-data/repository';
 import { acceptHMRUpdate, defineStore } from 'pinia';
 
 type AccreditationStates = {

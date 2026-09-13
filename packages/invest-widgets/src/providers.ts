@@ -10,8 +10,8 @@ import {
   type InjectionKey,
   type Ref,
 } from 'vue';
-import type { KycAlertModel } from '@webdevelop-pro/invest-core/kyc/status';
-import type { WalletAuthOperationIntent } from '@webdevelop-pro/invest-core/wallet/auth';
+import type { KycAlertModel } from '@global-torque/invest-core/kyc/status';
+import type { WalletAuthOperationIntent } from '@global-torque/invest-core/wallet/auth';
 
 export type WidgetAlertVariant = 'error' | 'info';
 export type WidgetReadonlyRef<T> = Readonly<Ref<T>>;

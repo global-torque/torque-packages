@@ -7,7 +7,7 @@ import {
   withOfflineHydrationMeta,
   type ActionState,
   type OptionsStateData,
-} from '@webdevelop-pro/invest-data/repository';
+} from '@global-torque/invest-data/repository';
 
 export type { OptionsStateData };
 

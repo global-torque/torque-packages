@@ -5,7 +5,7 @@ import { flushPromises, mount } from '@vue/test-utils';
 import {
   computed, nextTick, ref,
 } from 'vue';
-import type { KycAlertModel } from '@webdevelop-pro/invest-core/kyc/status';
+import type { KycAlertModel } from '@global-torque/invest-core/kyc/status';
 import OffersDetailsBtn from '../OffersDetailsBtn.vue';
 
 const userLoggedIn = ref(true);
@@ -41,33 +41,33 @@ vi.mock('pinia', async () => {
   };
 });
 
-vi.mock('@webdevelop-pro/invest-runtime/session', () => ({
+vi.mock('@global-torque/invest-runtime/session', () => ({
   useSessionStore: () => ({
     userLoggedIn,
   }),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/profiles', () => ({
+vi.mock('@global-torque/invest-runtime/profiles', () => ({
   useProfilesStore: () => ({
     selectedUserProfileData,
     hasAnyKycApprovedProfile,
   }),
 }));
 
-vi.mock('@webdevelop-pro/invest-widgets/kyc', () => ({
+vi.mock('@global-torque/invest-widgets/kyc', () => ({
   useKycAlertViewModel: () => ({
     alertModel,
     onPrimaryAction: vi.fn(),
   }),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/analytics/useSendAnalyticsEvent', () => ({
+vi.mock('@global-torque/invest-runtime/analytics/useSendAnalyticsEvent', () => ({
   useSendAnalyticsEvent: () => ({
     sendEvent,
   }),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/error/errorReporting', () => ({ reportError }));
+vi.mock('@global-torque/invest-runtime/error/errorReporting', () => ({ reportError }));
 
 vi.mock('vitepress', () => ({
   useRoute: () => ({
@@ -75,7 +75,7 @@ vi.mock('vitepress', () => ({
   }),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/navigation', () => ({
+vi.mock('@global-torque/invest-runtime/navigation', () => ({
   navigateWithQueryParams: vi.fn(),
 }));
 

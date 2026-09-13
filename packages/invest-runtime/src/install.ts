@@ -1,6 +1,6 @@
 import type { App } from "vue";
-import type { InvestAppConfig } from "@webdevelop-pro/invest-core/app/config";
-import { setInvestDataClientConfig } from "@webdevelop-pro/invest-data/service/dataClientConfig";
+import type { InvestAppConfig } from "@global-torque/invest-core/app/config";
+import { setInvestDataClientConfig } from "@global-torque/invest-data/service/dataClientConfig";
 import {
   createPwaPolicyEnvFromInvestAppConfig,
   setInvestRuntimeConfig,

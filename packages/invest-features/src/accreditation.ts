@@ -3,7 +3,7 @@ import {
   VAccreditationButton,
   useAccreditationAlert,
   useAccreditationButton,
-} from '@webdevelop-pro/invest-widgets/accreditation';
+} from '@global-torque/invest-widgets/accreditation';
 import { useAccreditationModel } from './accreditation/useAccreditationModel.ts';
 import { useAccreditationAlert as useAccreditationAlertModel } from './accreditation/logic/useAccreditationAlert.ts';
 import { useAccreditationStatus } from './accreditation/store/useAccreditationStatus.ts';

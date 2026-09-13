@@ -7,16 +7,19 @@ import { assertNodeExportContracts, collectExportTargets, expectedNodeFilesForPa
 
 const receiptPath = path.resolve(process.argv[2] ?? 'artifacts/candidate-receipt.json');
 const receipt = JSON.parse(fs.readFileSync(receiptPath, 'utf8'));
+const root = path.resolve(new URL('..', import.meta.url).pathname);
+const reconciliation = JSON.parse(fs.readFileSync(path.join(root, 'docs/source-reconciliation.json'), 'utf8'));
 const expectedPackages = [
-  '@webdevelop-pro/domain-types',
-  '@webdevelop-pro/invest-core',
-  '@webdevelop-pro/invest-data',
-  '@webdevelop-pro/invest-runtime',
-  '@webdevelop-pro/invest-widgets',
-  '@webdevelop-pro/invest-features',
-  '@webdevelop-pro/invest-shell',
+  '@global-torque/domain-types',
+  '@global-torque/invest-core',
+  '@global-torque/invest-data',
+  '@global-torque/invest-runtime',
+  '@global-torque/invest-widgets',
+  '@global-torque/invest-features',
+  '@global-torque/invest-shell',
 ];
 const expectedPackageNames = new Set(expectedPackages);
+const externalPackageNames = new Set(Object.keys(reconciliation.externalPackages ?? {}));
 const dependencySections = ['dependencies', 'optionalDependencies', 'peerDependencies'];
 const expectedOverlayFiles = [
   'pnpm-lock.canonical.yaml',
@@ -41,9 +44,8 @@ function assertPackedManifest(manifest, packageName, version) {
       if (typeof specifier !== 'string' || /^(workspace:|file:|link:|catalog:)/u.test(specifier)) {
         throw new Error(`Unresolved ${section} entry ${packageName}:${dependency}`);
       }
-      if (dependency.startsWith('@webdevelop-pro/') && !expectedPackageNames.has(dependency)) {
-        throw new Error(`Private package dependency ${packageName}:${dependency}`);
-      }
+      if (dependency.startsWith('@webdevelop-pro/')) throw new Error(`Forbidden old framework dependency ${packageName}:${dependency}`);
+      if (dependency.startsWith('@global-torque/') && !expectedPackageNames.has(dependency) && !externalPackageNames.has(dependency)) throw new Error(`Unknown @global-torque dependency ${packageName}:${dependency}`);
     }
   }
 }
@@ -100,10 +102,10 @@ if (receipt.sourcePackageRevision !== undefined && !/^[0-9a-f]{40}$/u.test(recei
 if (!Array.isArray(receipt.packages) || receipt.packages.length !== expectedPackages.length) throw new Error('Receipt must contain all seven framework packages');
 if (JSON.stringify(receipt.dependencyOrder) !== JSON.stringify(expectedPackages)) throw new Error('Receipt dependency order is not the accepted framework order');
 if (new Set(receipt.packages.map(entry => entry.name)).size !== expectedPackages.length || receipt.packages.some(entry => !expectedPackages.includes(entry.name))) throw new Error('Receipt contains an unknown or duplicate package identity');
-const root = path.dirname(receiptPath);
+const artifactRoot = path.dirname(receiptPath);
 for (const entry of receipt.packages) {
   if (entry.sourceRevision !== receipt.sourceRevision || entry.sourceDirty !== receipt.sourceDirty || entry.sourcePackageRepository !== receipt.sourcePackageRepository || entry.sourcePackageRevision !== receipt.sourcePackageRevision) throw new Error(`Package source identity mismatch ${entry.name}`);
-  const archive = path.join(root, entry.archive);
+  const archive = path.join(artifactRoot, entry.archive);
   if (!fs.existsSync(archive)) throw new Error(`Missing candidate archive ${entry.archive}`);
   const expectedArchive = `${entry.name.slice(1).replace('/', '-')}-${receipt.candidate}.tgz`;
   if (entry.archive !== expectedArchive) throw new Error(`Archive identity mismatch ${entry.name}`);
@@ -150,9 +152,9 @@ if (receipt.uiKit?.canonical === true) {
     'transport-receipt.json',
   ];
   for (const file of requiredTransportFiles) {
-    if (typeof file !== 'string' || !fs.existsSync(path.join(root, file))) throw new Error(`Missing canonical UI Kit transport file ${file}`);
+    if (typeof file !== 'string' || !fs.existsSync(path.join(artifactRoot, file))) throw new Error(`Missing canonical UI Kit transport file ${file}`);
   }
-  const transportReceipt = JSON.parse(fs.readFileSync(path.join(root, 'transport-receipt.json'), 'utf8'));
+  const transportReceipt = JSON.parse(fs.readFileSync(path.join(artifactRoot, 'transport-receipt.json'), 'utf8'));
   for (const key of ['schemaVersion', 'package', 'version', 'sourceRepository', 'sourceCommit', 'sourceRunId', 'sourceReleaseTag', 'artifact', 'sha512', 'integrity', 'canonical']) {
     if (transportReceipt[key] !== uiKit[key]) throw new Error(`UI Kit transport receipt identity mismatch ${key}`);
   }
@@ -184,19 +186,19 @@ if (receipt.uiKit?.canonical === true) {
   const verificationOverlayReceipt = path.join(verificationDirectory, 'ui-kit-lock-overlay.json');
   try {
     for (const file of overlay.retainedFiles) {
-      const retainedPath = path.join(root, file.name);
+      const retainedPath = path.join(artifactRoot, file.name);
       if (!fs.existsSync(retainedPath)) throw new Error(`Missing retained UI Kit YAML ${file.name}`);
       const retainedBytes = fs.readFileSync(retainedPath);
       if (crypto.createHash('sha256').update(retainedBytes).digest('hex') !== file.sha256) throw new Error(`Retained UI Kit YAML digest mismatch ${file.name}`);
     }
     execFileSync(process.execPath, [
       path.join(path.dirname(new URL(import.meta.url).pathname), 'verify-ui-kit-lock-overlay.mjs'),
-      path.join(root, 'pnpm-lock.canonical.yaml'),
-      path.join(root, 'pnpm-lock.derived.yaml'),
-      path.join(root, 'transport-receipt.json'),
+      path.join(artifactRoot, 'pnpm-lock.canonical.yaml'),
+      path.join(artifactRoot, 'pnpm-lock.derived.yaml'),
+      path.join(artifactRoot, 'transport-receipt.json'),
       verificationOverlayReceipt,
-      path.join(root, 'pnpm-workspace.canonical.yaml'),
-      path.join(root, 'pnpm-workspace.derived.yaml'),
+      path.join(artifactRoot, 'pnpm-workspace.canonical.yaml'),
+      path.join(artifactRoot, 'pnpm-workspace.derived.yaml'),
     ], { stdio: 'inherit' });
     const verifiedOverlay = JSON.parse(fs.readFileSync(verificationOverlayReceipt, 'utf8'));
     if (
@@ -207,10 +209,10 @@ if (receipt.uiKit?.canonical === true) {
     ) throw new Error('UI Kit retained lock overlay verification differs from the combined receipt');
     execFileSync(process.execPath, [
       path.join(path.dirname(new URL(import.meta.url).pathname), 'verify-ui-kit-transport.mjs'),
-      root,
+      artifactRoot,
       uiKit.sourceRunId,
       uiKit.sourceReleaseTag,
-      path.join(root, uiKit.originalAttestation.file),
+      path.join(artifactRoot, uiKit.originalAttestation.file),
       verificationReceipt,
     ], { stdio: 'inherit' });
   } finally {

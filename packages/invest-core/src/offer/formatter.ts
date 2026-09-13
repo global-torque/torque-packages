@@ -25,7 +25,7 @@ import {
 import {
   IOfferFormatted, IOffer, OfferStatuses, PaymentScheduleTypes, VotingRightsTypes,
   DividendType, DividendFrequencyTypes,
-} from '@webdevelop-pro/domain-types/offerTypes';
+} from '@global-torque/domain-types/offerTypes';
 
 type OfferApiImage = {
   meta_data?: Partial<Record<PublicOfferImageSize, string>>;

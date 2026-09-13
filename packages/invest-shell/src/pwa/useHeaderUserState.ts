@@ -1,6 +1,6 @@
 import { computed, unref } from 'vue';
-import { useSessionStore } from '@webdevelop-pro/invest-runtime/session';
-import { getRequiredInvestRuntimeAdapter } from '@webdevelop-pro/invest-runtime/adapters';
+import { useSessionStore } from '@global-torque/invest-runtime/session';
+import { getRequiredInvestRuntimeAdapter } from '@global-torque/invest-runtime/adapters';
 
 export function useHeaderUserState() {
   const session = useSessionStore();

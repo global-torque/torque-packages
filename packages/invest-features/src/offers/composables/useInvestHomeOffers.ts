@@ -5,9 +5,9 @@ import {
   onMounted,
 } from 'vue';
 import { storeToRefs } from 'pinia';
-import type { VOfferCardData } from '@webdevelop-pro/domain-types/offerCardTypes';
+import type { VOfferCardData } from '@global-torque/domain-types/offerCardTypes';
 import { useRepositoryOffer } from '../data/offer.repository.ts';
-import { reportOfflineReadError } from '@webdevelop-pro/invest-runtime/error/errorReporting';
+import { reportOfflineReadError } from '@global-torque/invest-runtime/error/errorReporting';
 
 const HOME_OFFER_LIMIT = 6;
 

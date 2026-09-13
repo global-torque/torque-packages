@@ -8,7 +8,7 @@ const failures = [];
 for (const entry of packages) {
   const directory = path.join(root, 'packages', entry.name);
   const manifest = JSON.parse(fs.readFileSync(path.join(directory, 'package.json'), 'utf8'));
-  if (manifest.private || manifest.version !== '0.2.1' || manifest.license !== 'MIT') failures.push(`${entry.name}: public MIT 0.2.1 metadata missing`);
+  if (manifest.private || manifest.version !== '0.2.2' || manifest.license !== 'MIT') failures.push(`${entry.name}: public MIT 0.2.2 metadata missing`);
   for (const required of ['src', 'README.md', 'LICENSE', 'NOTICE.md', 'CHANGELOG.md', 'SECURITY.md', 'SUPPORT.md']) {
     if (!manifest.files?.includes(required)) failures.push(`${entry.name}: files must include ${required}`);
     if (required === 'src' && !fs.existsSync(path.join(directory, required))) failures.push(`${entry.name}: missing ${required}`);
@@ -22,9 +22,9 @@ for (const entry of packages) {
   for (const [specifier, target] of Object.entries(manifest.exports ?? {})) {
     const targets = collectExportTargets(target);
     const nodeTargets = new Set(
-      (manifest.name === '@webdevelop-pro/invest-core'
+      (manifest.name === '@global-torque/invest-core'
         ? ['./dist/node/app/config.js', './dist/node/markdown/tableWrap.js', './dist/node/helpers/text.js']
-        : manifest.name === '@webdevelop-pro/invest-runtime' ? ['./dist/node/pwa/pwaPolicy.js'] : []),
+        : manifest.name === '@global-torque/invest-runtime' ? ['./dist/node/pwa/pwaPolicy.js'] : []),
     );
     if (targets.some(value => !value.startsWith('./src/') && !nodeTargets.has(value))) {
       failures.push(`${entry.name}${specifier}: export is not a supported source or exact Node entry`);

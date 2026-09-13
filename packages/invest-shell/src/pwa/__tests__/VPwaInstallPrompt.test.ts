@@ -7,7 +7,7 @@ import {
 import { shallowMount } from '@vue/test-utils';
 import VPwaInstallPrompt from '../VPwaInstallPrompt.vue';
 
-vi.mock('@webdevelop-pro/invest-runtime/application-context', () => ({
+vi.mock('@global-torque/invest-runtime/application-context', () => ({
   useInvestApplicationContext: () => ({
     appConfig: { brand: { pwaName: 'Global Torque' } },
   }),

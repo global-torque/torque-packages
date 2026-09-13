@@ -8,7 +8,7 @@ import {
 
 const apiGetMock = vi.hoisted(() => vi.fn());
 
-vi.mock('@webdevelop-pro/invest-runtime/application-context', () => ({
+vi.mock('@global-torque/invest-runtime/application-context', () => ({
   useInvestApplicationContext: () => ({
     createApiClient: () => ({
       get: apiGetMock,

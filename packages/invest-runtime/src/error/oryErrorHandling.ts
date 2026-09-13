@@ -1,6 +1,6 @@
 import { getInvestRuntimeAdapters } from '../adapters.ts';
 import { getInvestRuntimeConfig, getInvestRuntimeLinks } from '../config.ts';
-import { navigateWithQueryParams } from '@webdevelop-pro/invest-runtime/navigation';
+import { navigateWithQueryParams } from '@global-torque/invest-runtime/navigation';
 import { toast } from 'vue-sonner';
 import { reportError } from './errorReporting.ts';
 import { h } from 'vue';

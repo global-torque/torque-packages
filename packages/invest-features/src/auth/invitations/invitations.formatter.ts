@@ -1,8 +1,8 @@
 import {
   WALLET_ONBOARDING_PROFILE_TYPES,
   type WalletOnboardingProfileType,
-} from '@webdevelop-pro/domain-types/onboardingTypes';
-import { parsePositiveProfileId } from '@webdevelop-pro/invest-core/onboarding/intents';
+} from '@global-torque/domain-types/onboardingTypes';
+import { parsePositiveProfileId } from '@global-torque/invest-core/onboarding/intents';
 import type {
   UserInvitationAcceptance,
   UserInvitationKind,

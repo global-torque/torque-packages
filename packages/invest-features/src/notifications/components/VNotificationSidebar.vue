@@ -2,10 +2,10 @@
 import { useNotifications } from '../useNotifications.ts';
 import { Button } from '@global-torque/ui-primitives/button';
 import { storeToRefs } from 'pinia';
-import { ArrowRightIcon } from '@webdevelop-pro/invest-widgets/icons';
+import { ArrowRightIcon } from '@global-torque/invest-widgets/icons';
 import { Sheet, SheetClose, SheetContent, SheetFooter, SheetHeader, SheetTitle } from '@global-torque/ui-primitives/sheet';
 import { X } from '@lucide/vue';
-import CloseIcon from '@webdevelop-pro/invest-widgets/icons/images/close.svg?component';
+import CloseIcon from '@global-torque/invest-widgets/icons/images/close.svg?component';
 import VNotificationTable from './VNotificationTable.vue';
 
 defineProps({

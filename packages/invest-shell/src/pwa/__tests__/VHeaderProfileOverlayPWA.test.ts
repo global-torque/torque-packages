@@ -2,22 +2,22 @@ import { describe, it, expect, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
 import VHeaderProfileOverlayPWA from '../VHeaderProfileOverlayPWA.vue';
 
-vi.mock('@webdevelop-pro/invest-widgets/icons/images/chevron-right.svg', () => ({
+vi.mock('@global-torque/invest-widgets/icons/images/chevron-right.svg', () => ({
   default: { template: '<i data-testid="chevron" />' },
 }));
-vi.mock('@webdevelop-pro/invest-widgets/icons/images/menu_common/user.svg', () => ({
+vi.mock('@global-torque/invest-widgets/icons/images/menu_common/user.svg', () => ({
   default: { template: '<i data-testid="icon-user" />' },
 }));
-vi.mock('@webdevelop-pro/invest-widgets/icons/images/menu_common/gear.svg', () => ({
+vi.mock('@global-torque/invest-widgets/icons/images/menu_common/gear.svg', () => ({
   default: { template: '<i data-testid="icon-gear" />' },
 }));
-vi.mock('@webdevelop-pro/invest-widgets/icons/images/menu_common/help.svg', () => ({
+vi.mock('@global-torque/invest-widgets/icons/images/menu_common/help.svg', () => ({
   default: { template: '<i data-testid="icon-help" />' },
 }));
-vi.mock('@webdevelop-pro/invest-widgets/icons/images/message.svg', () => ({
+vi.mock('@global-torque/invest-widgets/icons/images/message.svg', () => ({
   default: { template: '<i data-testid="icon-contact" />' },
 }));
-vi.mock('@webdevelop-pro/invest-widgets/icons/images/menu_common/logout.svg', () => ({
+vi.mock('@global-torque/invest-widgets/icons/images/menu_common/logout.svg', () => ({
   default: { template: '<i data-testid="icon-logout" />' },
 }));
 

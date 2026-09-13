@@ -1,4 +1,4 @@
-import { OfferStatuses } from '@webdevelop-pro/domain-types/offerTypes';
+import { OfferStatuses } from '@global-torque/domain-types/offerTypes';
 import {
   CANONICAL_DECIMAL_SCALE,
   canonicalDecimalToScaled,

@@ -1,8 +1,8 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { createApp, defineComponent } from 'vue';
 import { mount } from '@vue/test-utils';
-import { createApiClientHooks } from '@webdevelop-pro/invest-data/service/apiClientHooks';
-import type { InvestAppConfig } from '@webdevelop-pro/invest-core/app/config';
+import { createApiClientHooks } from '@global-torque/invest-data/service/apiClientHooks';
+import type { InvestAppConfig } from '@global-torque/invest-core/app/config';
 import {
   cookieAuth,
   SdkResponseValidationError,

@@ -2,7 +2,7 @@
 import VSlider from './VSlider.vue';
 import VCardOffer from './VCardOffer.vue';
 import { PropType } from 'vue';
-import type { VOfferCardData } from '@webdevelop-pro/domain-types/offerCardTypes';
+import type { VOfferCardData } from '@global-torque/domain-types/offerCardTypes';
 import { CarouselItem } from '@global-torque/ui-primitives/carousel';
 
 defineProps({

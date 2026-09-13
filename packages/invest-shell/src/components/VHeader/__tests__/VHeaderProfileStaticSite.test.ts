@@ -13,7 +13,7 @@ const state = vi.hoisted(() => ({
   isStaticSite: undefined as boolean | undefined,
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/application-context', () => ({
+vi.mock('@global-torque/invest-runtime/application-context', () => ({
   useInvestApplicationContext: () => ({
     appConfig: {
       isStaticSite: state.isStaticSite,
@@ -25,7 +25,7 @@ vi.mock('pinia', () => ({
   storeToRefs: (store: Record<string, unknown>) => store,
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/dialogs', () => ({
+vi.mock('@global-torque/invest-runtime/dialogs', () => ({
   useDialogs: () => ({
     isDialogLogoutOpen: { value: false },
   }),
@@ -39,7 +39,7 @@ vi.mock('../useHeaderUser.ts', () => ({
   }),
 }));
 
-vi.mock('@webdevelop-pro/invest-widgets/profiles', () => ({
+vi.mock('@global-torque/invest-widgets/profiles', () => ({
   useProfileSwitchMenu: () => ({
     selectedProfileLabel: { value: 'Growth SPV' },
     profileItems: { value: [] },
@@ -47,7 +47,7 @@ vi.mock('@webdevelop-pro/invest-widgets/profiles', () => ({
   }),
 }));
 
-vi.mock('@webdevelop-pro/invest-widgets/notifications/VNotificationsSidebarButton.vue', () => ({
+vi.mock('@global-torque/invest-widgets/notifications/VNotificationsSidebarButton.vue', () => ({
   default: {
     name: 'NotificationsSidebarButton',
     props: {
@@ -117,7 +117,7 @@ vi.mock('../../VAvatarIdentity.vue', () => ({
   },
 }));
 
-vi.mock('@webdevelop-pro/invest-widgets/profiles/ProfileSwitchMenuList.vue', () => ({
+vi.mock('@global-torque/invest-widgets/profiles/ProfileSwitchMenuList.vue', () => ({
   default: {
     name: 'ProfileSwitchMenuList',
     props: {
@@ -131,7 +131,7 @@ vi.mock('@webdevelop-pro/invest-widgets/profiles/ProfileSwitchMenuList.vue', () 
   },
 }));
 
-vi.mock('@webdevelop-pro/invest-widgets/icons/navigation', () => ({
+vi.mock('@global-torque/invest-widgets/icons/navigation', () => ({
   LogoutMenuIcon: {
     name: 'LogOutIcon',
     template: '<svg data-testid="logout-icon" />',

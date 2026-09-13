@@ -1,11 +1,11 @@
 import { ref, watch, computed } from 'vue';
 import { storeToRefs } from 'pinia';
-import { navigateWithQueryParams } from '@webdevelop-pro/invest-runtime/navigation';
-import { getInvestDataAppLinks } from '@webdevelop-pro/invest-data/service/dataClientConfig';
-import { useSessionStore } from '@webdevelop-pro/invest-runtime/session';
+import { navigateWithQueryParams } from '@global-torque/invest-runtime/navigation';
+import { getInvestDataAppLinks } from '@global-torque/invest-data/service/dataClientConfig';
+import { useSessionStore } from '@global-torque/invest-runtime/session';
 import { useRepositoryOffer } from '../../data/offer.repository.ts';
 import { useFormValidation } from '@global-torque/ui-kit/form-validation';
-import { composeInvestmentFormSchema, createInvestmentAjv, prepareInvestmentFormData } from '@webdevelop-pro/invest-core/form-validation';
+import { composeInvestmentFormSchema, createInvestmentAjv, prepareInvestmentFormData } from '@global-torque/invest-core/form-validation';
 import { useRoute } from 'vitepress';
 import type { JSONSchemaType } from 'ajv/dist/types/json-schema';
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { UiNavigationContentRecord } from '@webdevelop-pro/domain-types/contentTypes';
+import type { UiNavigationContentRecord } from '@global-torque/domain-types/contentTypes';
 import { PropType } from 'vue';
 
 export interface IHeaderNavigation {

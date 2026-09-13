@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { defineComponent, ref } from 'vue';
 import VDialogContactUs from '../VDialogContactUs.vue';
 
-vi.mock('@webdevelop-pro/invest-runtime/application-context', () => ({
+vi.mock('@global-torque/invest-runtime/application-context', () => ({
   useInvestApplicationContext: () => ({
     appConfig: { brand: { email: 'invest@example.test' } },
   }),

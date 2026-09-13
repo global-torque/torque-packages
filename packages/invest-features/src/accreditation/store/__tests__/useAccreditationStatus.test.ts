@@ -2,22 +2,22 @@ import {
   describe, it, expect, vi, beforeEach,
 } from 'vitest';
 import { setActivePinia, createPinia } from 'pinia';
-import { useProfilesStore } from '@webdevelop-pro/invest-runtime/profiles';
-import { useSessionStore } from '@webdevelop-pro/invest-runtime/session';
-import { AccreditationTypes } from '@webdevelop-pro/domain-types/accreditationTypes';
-import { AccreditationTextStatuses } from '@webdevelop-pro/invest-core/accreditation/status';
+import { useProfilesStore } from '@global-torque/invest-runtime/profiles';
+import { useSessionStore } from '@global-torque/invest-runtime/session';
+import { AccreditationTypes } from '@global-torque/domain-types/accreditationTypes';
+import { AccreditationTextStatuses } from '@global-torque/invest-core/accreditation/status';
 import { ref } from 'vue';
-import { PROFILE_TYPES } from '@webdevelop-pro/domain-types/profileTypes';
+import { PROFILE_TYPES } from '@global-torque/domain-types/profileTypes';
 import { useAccreditationStatus } from '../useAccreditationStatus.ts';
 
-vi.mock('@webdevelop-pro/invest-runtime/profiles', () => ({
+vi.mock('@global-torque/invest-runtime/profiles', () => ({
   useProfilesStore: vi.fn(() => ({
     selectedUserProfileData: ref(null),
     selectedUserProfileId: ref(null),
   })),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/session', () => ({
+vi.mock('@global-torque/invest-runtime/session', () => ({
   useSessionStore: vi.fn(() => ({
     userLoggedIn: ref(false),
   })),

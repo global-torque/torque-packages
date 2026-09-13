@@ -2,9 +2,9 @@
 // @ts-nocheck
 import { Button } from '@global-torque/ui-primitives/button';
 import { useRouter, type RouteLocationRaw } from 'vue-router';
-import { VBreadcrumbs, type IBreadcrumb } from '@webdevelop-pro/invest-widgets/navigation';
+import { VBreadcrumbs, type IBreadcrumb } from '@global-torque/invest-widgets/navigation';
 import { PropType } from 'vue';
-import { ArrowLeftIcon as arrowLeft } from '@webdevelop-pro/invest-widgets/icons/navigation';
+import { ArrowLeftIcon as arrowLeft } from '@global-torque/invest-widgets/icons/navigation';
 import { useMobileAppShell } from '../navigation/useMobileAppShell.ts';
 import { navigateToRouteLocation } from '../navigation/navigation.ts';
 import { Spinner } from '@global-torque/ui-primitives/spinner';

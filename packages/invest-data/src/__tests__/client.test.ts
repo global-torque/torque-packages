@@ -5,7 +5,7 @@ import {
   InvestDataHttpError,
 } from '../client.ts';
 import { createEvmWalletRepository } from '../evm.ts';
-import type { InvestAppConfig } from '@webdevelop-pro/invest-core/app/config';
+import type { InvestAppConfig } from '@global-torque/invest-core/app/config';
 
 const createResponse = (body: unknown, init: ResponseInit = {}) =>
   new Response(body === undefined ? undefined : JSON.stringify(body), {

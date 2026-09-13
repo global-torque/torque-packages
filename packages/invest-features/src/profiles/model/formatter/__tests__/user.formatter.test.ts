@@ -3,7 +3,7 @@ import type {
   IProfileFormatted,
   IProfileIndividual,
   IUser,
-} from '@webdevelop-pro/domain-types/profilesTypes';
+} from '@global-torque/domain-types/profilesTypes';
 import { UserFormatter } from '../user.formatter.ts';
 
 describe('UserFormatter profile collection', () => {

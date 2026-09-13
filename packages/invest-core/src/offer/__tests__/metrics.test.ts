@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { OfferStatuses } from '@webdevelop-pro/domain-types/offerTypes';
+import { OfferStatuses } from '@global-torque/domain-types/offerTypes';
 import {
   calculateOfferFundedPercent,
   calculateOfferMinimumInvestment,

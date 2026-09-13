@@ -1,7 +1,7 @@
-import { capitalizeFirstLetter } from '@webdevelop-pro/invest-core/formatting/display';
-import { getInvestDataAppLinks } from '@webdevelop-pro/invest-data/service/dataClientConfig';
-import { INotification, IFormattedNotification, INotificationDataFields } from '@webdevelop-pro/domain-types/notificationsTypes';
-import { assertNotificationShareFields } from '@webdevelop-pro/invest-core/notifications/shareFields';
+import { capitalizeFirstLetter } from '@global-torque/invest-core/formatting/display';
+import { getInvestDataAppLinks } from '@global-torque/invest-data/service/dataClientConfig';
+import { INotification, IFormattedNotification, INotificationDataFields } from '@global-torque/domain-types/notificationsTypes';
+import { assertNotificationShareFields } from '@global-torque/invest-core/notifications/shareFields';
 
 const ROUTE_ACCREDITATION_UPLOAD = 'ROUTE_ACCREDITATION_UPLOAD';
 const ROUTE_DASHBOARD_ACCOUNT = 'ROUTE_DASHBOARD_ACCOUNT';

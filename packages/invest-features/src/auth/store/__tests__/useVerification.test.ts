@@ -6,7 +6,7 @@ import { useRepositoryAuth } from '../../data/auth.repository.ts';
 import { ref, reactive, watch } from 'vue';
 // useToast will be mocked below; no direct import to avoid alias/type issues
 import { useVerificationStore } from '../useVerification.ts';
-import { navigateWithQueryParams } from '@webdevelop-pro/invest-runtime/navigation';
+import { navigateWithQueryParams } from '@global-torque/invest-runtime/navigation';
 
 // Mock all required dependencies
 vi.mock('../../data/auth.repository.ts', () => {
@@ -26,8 +26,8 @@ vi.mock('../../data/auth.repository.ts', () => {
   };
 });
 
-vi.mock('@webdevelop-pro/invest-runtime/error/oryResponseHandling', () => ({ oryResponseHandling: vi.fn() }));
-vi.mock('@webdevelop-pro/invest-runtime/error/oryErrorHandling', () => ({
+vi.mock('@global-torque/invest-runtime/error/oryResponseHandling', () => ({ oryResponseHandling: vi.fn() }));
+vi.mock('@global-torque/invest-runtime/error/oryErrorHandling', () => ({
   oryErrorHandling: vi.fn().mockResolvedValue(undefined),
 }));
 
@@ -74,7 +74,7 @@ vi.mock('@global-torque/ui-kit/form-validation', () => ({
 }));
 
 // Mock navigation
-vi.mock('@webdevelop-pro/invest-runtime/navigation', () => ({
+vi.mock('@global-torque/invest-runtime/navigation', () => ({
   navigateWithQueryParams: vi.fn().mockResolvedValue(undefined),
 }));
 

@@ -6,13 +6,13 @@ import { acceptHMRUpdate, defineStore, storeToRefs } from 'pinia';
 import { useRepositoryAuth } from '../data/auth.repository.ts';
 import { useFormValidation } from '@global-torque/ui-kit/form-validation';
 import { JSONSchemaType } from 'ajv/dist/types/json-schema';
-import { composeInvestmentFormSchema, createInvestmentAjv, emailRule, errorMessageRule, passwordRule, prepareInvestmentFormData } from '@webdevelop-pro/invest-core/form-validation';
-import { useSessionStore } from '@webdevelop-pro/invest-runtime/session';
-import { useDialogs } from '@webdevelop-pro/invest-runtime/dialogs';
-import { SELFSERVICE } from '@webdevelop-pro/domain-types/authConstants';
-import { oryErrorHandling } from '@webdevelop-pro/invest-runtime/error/oryErrorHandling';
-import { oryResponseHandling } from '@webdevelop-pro/invest-runtime/error/oryResponseHandling';
-import { useSendAnalyticsEvent } from '@webdevelop-pro/invest-runtime/analytics/useSendAnalyticsEvent';
+import { composeInvestmentFormSchema, createInvestmentAjv, emailRule, errorMessageRule, passwordRule, prepareInvestmentFormData } from '@global-torque/invest-core/form-validation';
+import { useSessionStore } from '@global-torque/invest-runtime/session';
+import { useDialogs } from '@global-torque/invest-runtime/dialogs';
+import { SELFSERVICE } from '@global-torque/domain-types/authConstants';
+import { oryErrorHandling } from '@global-torque/invest-runtime/error/oryErrorHandling';
+import { oryResponseHandling } from '@global-torque/invest-runtime/error/oryResponseHandling';
+import { useSendAnalyticsEvent } from '@global-torque/invest-runtime/analytics/useSendAnalyticsEvent';
 
 type FormModelSignIn = {
   email: string;

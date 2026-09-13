@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { InvestKycTypes } from '@webdevelop-pro/domain-types/kycTypes';
-import { formatKycAlertModel } from '@webdevelop-pro/invest-core/kyc/kycAlert';
+import { InvestKycTypes } from '@global-torque/domain-types/kycTypes';
+import { formatKycAlertModel } from '@global-torque/invest-core/kyc/kycAlert';
 
 describe('formatKycAlertModel', () => {
   it.each([

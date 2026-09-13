@@ -3,7 +3,7 @@ import type {
   FilerId,
   FilerObjectTree,
   IFilerItem,
-} from '@webdevelop-pro/domain-types/filerTypes';
+} from '@global-torque/domain-types/filerTypes';
 
 export interface FilerDocumentSource {
   access: FilerAccess;

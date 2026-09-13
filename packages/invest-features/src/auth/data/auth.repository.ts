@@ -1,11 +1,11 @@
-import { APIError } from '@webdevelop-pro/invest-data/service/handlers/apiError';
-import type { ApiResponse } from '@webdevelop-pro/invest-data/service/types';
-import { useInvestApplicationContext } from '@webdevelop-pro/invest-runtime/application-context';
+import { APIError } from '@global-torque/invest-data/service/handlers/apiError';
+import type { ApiResponse } from '@global-torque/invest-data/service/types';
+import { useInvestApplicationContext } from '@global-torque/invest-runtime/application-context';
 import { createActionState, withActionState } from '../../modelState.ts';
 import { computed } from 'vue';
 import {
   ISession, IAuthFlow, ILogoutFlow, ISchema, ISuccessfullNativeAuth,
-} from '@webdevelop-pro/domain-types/authTypes';
+} from '@global-torque/domain-types/authTypes';
 
 // https://github.com/ory/kratos-selfservice-ui-react-nextjs/blob/master/pages/login.tsx
 

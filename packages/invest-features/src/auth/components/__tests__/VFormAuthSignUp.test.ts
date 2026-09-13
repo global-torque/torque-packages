@@ -64,7 +64,7 @@ vi.mock('../../store/useSignup.ts', () => ({
   useSignupStore: () => signupStore,
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/loader', () => ({
+vi.mock('@global-torque/invest-runtime/loader', () => ({
   useGlobalLoader: () => globalLoaderStore,
 }));
 

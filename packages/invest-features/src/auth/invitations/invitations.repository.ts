@@ -1,6 +1,6 @@
 import { acceptHMRUpdate, defineStore } from 'pinia';
-import type { SignupProfileType } from '@webdevelop-pro/domain-types/onboardingTypes';
-import { useInvestApplicationContext } from '@webdevelop-pro/invest-runtime/application-context';
+import type { SignupProfileType } from '@global-torque/domain-types/onboardingTypes';
+import { useInvestApplicationContext } from '@global-torque/invest-runtime/application-context';
 import {
   createRepositoryStates,
   withActionState,

@@ -5,7 +5,7 @@ import {
 import { Button } from '@global-torque/ui-primitives/button';
 import { VFormGroup, VFormInput } from '@global-torque/ui-kit/form';
 import { useFormValidation } from '@global-torque/ui-kit/form-validation';
-import { composeInvestmentFormSchema, createInvestmentAjv, prepareInvestmentFormData } from '@webdevelop-pro/invest-core/form-validation';
+import { composeInvestmentFormSchema, createInvestmentAjv, prepareInvestmentFormData } from '@global-torque/invest-core/form-validation';
 import type { JSONSchemaType } from 'ajv/dist/types/json-schema';
 import { Spinner } from '@global-torque/ui-primitives/spinner';
 

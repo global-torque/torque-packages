@@ -97,15 +97,15 @@ importers:
 
   packages/invest-core:
     dependencies:
+      '@global-torque/domain-types':
+        specifier: workspace:*
+        version: link:../domain-types
       '@types/lodash':
         specifier: ^4.17.24
         version: 4.17.25
       '@types/markdown-it':
         specifier: ^14.1.2
         version: 14.2.0
-      '@webdevelop-pro/domain-types':
-        specifier: workspace:*
-        version: link:../domain-types
       ajv:
         specifier: ^8.20.0
         version: 8.20.0
@@ -131,15 +131,15 @@ importers:
 
   packages/invest-data:
     dependencies:
+      '@global-torque/domain-types':
+        specifier: workspace:*
+        version: link:../domain-types
+      '@global-torque/invest-core':
+        specifier: workspace:*
+        version: link:../invest-core
       '@global-torque/sdk':
         specifier: 0.2.0
         version: 0.2.0(typescript@6.0.3)(zod@4.6.2)
-      '@webdevelop-pro/domain-types':
-        specifier: workspace:*
-        version: link:../domain-types
-      '@webdevelop-pro/invest-core':
-        specifier: workspace:*
-        version: link:../invest-core
     devDependencies:
       typescript:
         specifier: ^6.0.2
@@ -150,6 +150,21 @@ importers:
 
   packages/invest-features:
     dependencies:
+      '@global-torque/domain-types':
+        specifier: workspace:*
+        version: link:../domain-types
+      '@global-torque/invest-core':
+        specifier: workspace:*
+        version: link:../invest-core
+      '@global-torque/invest-data':
+        specifier: workspace:*
+        version: link:../invest-data
+      '@global-torque/invest-runtime':
+        specifier: workspace:*
+        version: link:../invest-runtime
+      '@global-torque/invest-widgets':
+        specifier: workspace:*
+        version: link:../invest-widgets
       '@global-torque/ui-kit':
         specifier: 0.1.4
         version: 0.1.4(reka-ui@2.10.4(vue@3.5.42(typescript@6.0.3)))(sass@1.104.1)(typescript@6.0.3)(vue@3.5.42(typescript@6.0.3))
@@ -168,21 +183,6 @@ importers:
       '@vueuse/integrations':
         specifier: ^14.2.1
         version: 14.4.0(focus-trap@7.8.0)(idb-keyval@6.3.0)(jwt-decode@4.0.0)(universal-cookie@8.1.2)(vue@3.5.42(typescript@6.0.3))
-      '@webdevelop-pro/domain-types':
-        specifier: workspace:*
-        version: link:../domain-types
-      '@webdevelop-pro/invest-core':
-        specifier: workspace:*
-        version: link:../invest-core
-      '@webdevelop-pro/invest-data':
-        specifier: workspace:*
-        version: link:../invest-data
-      '@webdevelop-pro/invest-runtime':
-        specifier: workspace:*
-        version: link:../invest-runtime
-      '@webdevelop-pro/invest-widgets':
-        specifier: workspace:*
-        version: link:../invest-widgets
       ajv:
         specifier: ^8.17.1
         version: 8.20.0
@@ -244,6 +244,15 @@ importers:
       '@global-torque/client-error-handling':
         specifier: 0.1.0
         version: 0.1.0
+      '@global-torque/domain-types':
+        specifier: workspace:*
+        version: link:../domain-types
+      '@global-torque/invest-core':
+        specifier: workspace:*
+        version: link:../invest-core
+      '@global-torque/invest-data':
+        specifier: workspace:*
+        version: link:../invest-data
       '@global-torque/sdk':
         specifier: 0.2.0
         version: 0.2.0(typescript@6.0.3)(zod@4.6.2)
@@ -253,15 +262,6 @@ importers:
       '@vueuse/integrations':
         specifier: ^14.2.1
         version: 14.4.0(focus-trap@7.8.0)(idb-keyval@6.3.0)(jwt-decode@4.0.0)(universal-cookie@8.1.2)(vue@3.5.42(typescript@6.0.3))
-      '@webdevelop-pro/domain-types':
-        specifier: workspace:*
-        version: link:../domain-types
-      '@webdevelop-pro/invest-core':
-        specifier: workspace:*
-        version: link:../invest-core
-      '@webdevelop-pro/invest-data':
-        specifier: workspace:*
-        version: link:../invest-data
       firebase:
         specifier: ^12.15.0
         version: 12.19.0
@@ -305,6 +305,18 @@ importers:
 
   packages/invest-shell:
     dependencies:
+      '@global-torque/domain-types':
+        specifier: workspace:*
+        version: link:../domain-types
+      '@global-torque/invest-core':
+        specifier: workspace:*
+        version: link:../invest-core
+      '@global-torque/invest-runtime':
+        specifier: workspace:*
+        version: link:../invest-runtime
+      '@global-torque/invest-widgets':
+        specifier: workspace:*
+        version: link:../invest-widgets
       '@global-torque/ui-kit':
         specifier: 0.1.4
         version: 0.1.4(reka-ui@2.10.4(vue@3.5.42(typescript@6.0.3)))(sass@1.104.1)(typescript@6.0.3)(vue@3.5.42(typescript@6.0.3))
@@ -317,18 +329,6 @@ importers:
       '@vueuse/core':
         specifier: ^14.2.1
         version: 14.4.0(vue@3.5.42(typescript@6.0.3))
-      '@webdevelop-pro/domain-types':
-        specifier: workspace:*
-        version: link:../domain-types
-      '@webdevelop-pro/invest-core':
-        specifier: workspace:*
-        version: link:../invest-core
-      '@webdevelop-pro/invest-runtime':
-        specifier: workspace:*
-        version: link:../invest-runtime
-      '@webdevelop-pro/invest-widgets':
-        specifier: workspace:*
-        version: link:../invest-widgets
       reka-ui:
         specifier: ^2.10.1
         version: 2.10.4(vue@3.5.42(typescript@6.0.3))
@@ -372,6 +372,12 @@ importers:
 
   packages/invest-widgets:
     dependencies:
+      '@global-torque/domain-types':
+        specifier: workspace:*
+        version: link:../domain-types
+      '@global-torque/invest-core':
+        specifier: workspace:*
+        version: link:../invest-core
       '@global-torque/ui-kit':
         specifier: 0.1.4
         version: 0.1.4(reka-ui@2.10.4(vue@3.5.42(typescript@6.0.3)))(sass@1.104.1)(typescript@6.0.3)(vue@3.5.42(typescript@6.0.3))
@@ -390,12 +396,6 @@ importers:
       '@vueuse/core':
         specifier: ^14.2.1
         version: 14.4.0(vue@3.5.42(typescript@6.0.3))
-      '@webdevelop-pro/domain-types':
-        specifier: workspace:*
-        version: link:../domain-types
-      '@webdevelop-pro/invest-core':
-        specifier: workspace:*
-        version: link:../invest-core
       embla-carousel-autoplay:
         specifier: ^8.6.0
         version: 8.6.0(embla-carousel@8.6.0)

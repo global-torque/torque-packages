@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import VFormComments from './VFormComments.vue';
-import VCommentItems from '@webdevelop-pro/invest-widgets/comments/VCommentItems.vue';
+import VCommentItems from '@global-torque/invest-widgets/comments/VCommentItems.vue';
 import { useOffersComments } from './logic/useOffersComments.ts';
 
 const props = withDefaults(defineProps<{

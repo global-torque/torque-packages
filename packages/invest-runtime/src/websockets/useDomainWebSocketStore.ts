@@ -1,11 +1,11 @@
-import { useInvestApplicationContext } from '@webdevelop-pro/invest-runtime/application-context';
+import { useInvestApplicationContext } from '@global-torque/invest-runtime/application-context';
 import { ref, watch, type WatchStopHandle } from 'vue';
-import { INotification } from '@webdevelop-pro/domain-types/notificationsTypes';
+import { INotification } from '@global-torque/domain-types/notificationsTypes';
 import { acceptHMRUpdate, defineStore, storeToRefs } from 'pinia';
 import { useWebSocket } from '@vueuse/core';
-import { assertNotificationShareFields } from '@webdevelop-pro/invest-core/notifications/shareFields';
+import { assertNotificationShareFields } from '@global-torque/invest-core/notifications/shareFields';
 import { getInvestRuntimeAdapters } from '../adapters.ts';
-import { useSessionStore } from '@webdevelop-pro/invest-runtime/session';
+import { useSessionStore } from '@global-torque/invest-runtime/session';
 
 const isBrowserOffline = () => (
   typeof navigator !== 'undefined' && navigator.onLine === false

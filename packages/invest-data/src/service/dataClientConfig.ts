@@ -3,7 +3,7 @@ import {
   type InvestAppApiUrls,
   type InvestAppConfig,
   type InvestAppUrls,
-} from '@webdevelop-pro/invest-core/app/config';
+} from '@global-torque/invest-core/app/config';
 import { ApiClient } from './apiClient.ts';
 import type { ApiClientHooks } from './apiClientHooks.ts';
 import { resolveAllowedRedirectOrigins } from '../migration/redirectOrigins.ts';

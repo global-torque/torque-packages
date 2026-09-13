@@ -12,13 +12,13 @@ import { useSignupStore } from '../store/useSignup.ts';
 import {
   nextTick, onMounted, onUnmounted, ref, watch,
 } from 'vue';
-import { useGlobalLoader } from '@webdevelop-pro/invest-runtime/loader';
+import { useGlobalLoader } from '@global-torque/invest-runtime/loader';
 import VAuthDemoAccountButton from './VAuthDemoAccountButton.vue';
 import { ToggleGroup, ToggleGroupItem } from '@global-torque/ui-primitives/toggle-group';
 import { Spinner } from '@global-torque/ui-primitives/spinner';
 import { Check, Eye, EyeOff } from '@lucide/vue';
-import { EyeIcon, EyeOffIcon } from '@webdevelop-pro/invest-widgets/icons';
-import CheckIcon from '@webdevelop-pro/invest-widgets/icons/images/check.svg?component';
+import { EyeIcon, EyeOffIcon } from '@global-torque/invest-widgets/icons';
+import CheckIcon from '@global-torque/invest-widgets/icons/images/check.svg?component';
 
 const signupStore = useSignupStore();
 const {

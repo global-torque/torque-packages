@@ -4,13 +4,13 @@ import { acceptHMRUpdate, defineStore } from 'pinia';
 import {
   createInvestDataApiClient,
   isInvestDataDebugEnabled,
-} from '@webdevelop-pro/invest-data/service/dataClientConfig';
+} from '@global-torque/invest-data/service/dataClientConfig';
 import { createRepositoryStates, withActionState } from '../../modelState.ts';
 import type {
   IKycTokenResponse,
   KycPlaidLaunchResult,
-} from '@webdevelop-pro/domain-types/kycTypes';
-import { loadPlaidScriptOnce, type PlaidHandler } from '@webdevelop-pro/invest-data/plaid';
+} from '@global-torque/domain-types/kycTypes';
+import { loadPlaidScriptOnce, type PlaidHandler } from '@global-torque/invest-data/plaid';
 
 // Plaid SDK types (narrow when reading; SDK does not ship types in this project)
 interface IPlaidCreateConfig {

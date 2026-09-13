@@ -27,7 +27,7 @@ const hoisted = vi.hoisted(() => ({
     defineComponent({ name, setup: () => () => h('i', { 'data-icon': name }) }),
 }))
 
-vi.mock('@webdevelop-pro/invest-widgets/icons/navigation', () => ({
+vi.mock('@global-torque/invest-widgets/icons/navigation', () => ({
   EarnMenuIcon: hoisted.mockIcon('EarnIcon'),
   FaqMenuIcon: hoisted.mockIcon('FaqIcon'),
   HelpMenuIcon: hoisted.mockIcon('HelpIcon'),
@@ -56,20 +56,20 @@ const userLoggedInRef = ref(false)
 const selectedUserProfileIdRef = ref<string | number>('u-1')
 const notificationsSidebarOpenRef = ref(false)
 
-vi.mock('@webdevelop-pro/invest-runtime/application-context', () => ({
+vi.mock('@global-torque/invest-runtime/application-context', () => ({
   useInvestApplicationContext: () => ({
     appConfig: { urls: { frontend: 'https://example.test/dashboard' } },
   }),
 }))
 
-vi.mock('@webdevelop-pro/invest-runtime/session', () => ({
+vi.mock('@global-torque/invest-runtime/session', () => ({
   useSessionStore: () => ({ userLoggedIn: userLoggedInRef }),
 }))
-vi.mock('@webdevelop-pro/invest-runtime/profiles', () => ({
+vi.mock('@global-torque/invest-runtime/profiles', () => ({
   useProfilesStore: () => ({ selectedUserProfileId: selectedUserProfileIdRef }),
 }))
 
-vi.mock('@webdevelop-pro/invest-widgets/notifications', () => ({
+vi.mock('@global-torque/invest-widgets/notifications', () => ({
   useNotificationsSidebarWidget: () => ({
     isSidebarOpen: notificationsSidebarOpenRef,
   }),

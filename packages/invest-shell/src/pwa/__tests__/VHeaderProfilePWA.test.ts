@@ -40,12 +40,12 @@ vi.mock('pinia', async () => {
   };
 });
 
-vi.mock('@webdevelop-pro/invest-runtime/session', () => ({
+vi.mock('@global-torque/invest-runtime/session', () => ({
   useSessionStore: () => ({
     userSessionTraits,
   }),
 }));
-vi.mock('@webdevelop-pro/invest-runtime/dialogs', () => ({
+vi.mock('@global-torque/invest-runtime/dialogs', () => ({
   useDialogs: () => ({
     isDialogLogoutOpen,
   }),
@@ -59,17 +59,17 @@ vi.mock('../../components/VHeader/useHeaderUser.ts', () => ({
   }),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/filer', () => ({
+vi.mock('@global-torque/invest-runtime/filer', () => ({
   useFilerModel: () => ({ notificationFieldsState }),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/profiles', () => ({
+vi.mock('@global-torque/invest-runtime/profiles', () => ({
   useProfilesStore: () => ({
     selectedUserProfileId,
   }),
 }));
 
-vi.mock('@webdevelop-pro/invest-widgets/profiles', () => ({
+vi.mock('@global-torque/invest-widgets/profiles', () => ({
   useProfileSwitchMenu: () => ({
     selectedProfileLabel,
   }),

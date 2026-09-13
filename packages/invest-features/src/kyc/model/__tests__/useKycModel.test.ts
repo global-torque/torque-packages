@@ -11,7 +11,7 @@ import { createPinia, setActivePinia } from 'pinia';
 const apiPostMock = vi.hoisted(() => vi.fn());
 const loadPlaidScriptOnceMock = vi.hoisted(() => vi.fn());
 
-vi.mock('@webdevelop-pro/invest-data/service/apiClient', () => ({
+vi.mock('@global-torque/invest-data/service/apiClient', () => ({
   ApiClient: class {
     post = apiPostMock;
     get = vi.fn();
@@ -20,7 +20,7 @@ vi.mock('@webdevelop-pro/invest-data/service/apiClient', () => ({
   },
 }));
 
-vi.mock('@webdevelop-pro/invest-data/plaid', () => ({
+vi.mock('@global-torque/invest-data/plaid', () => ({
   loadPlaidScriptOnce: loadPlaidScriptOnceMock,
 }));
 

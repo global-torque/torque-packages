@@ -34,14 +34,16 @@ restored before the candidate is packed, so packed manifests and receipts
 retain the public registry dependency. Omitting the transport release uses the
 frozen public lockfile and requires the UI Kit release to be available.
 
-The candidate's ordinary immutable release tag is `framework-v0.2.1` for the
-`0.2.1` candidate. Dispatch the candidate workflow from that tag so its
-attestations carry `refs/tags/framework-v0.2.1`. The prior `framework-v0.2.0`
-source tag, commit, and failed-run diagnostic history remain retained for audit.
-That run failed before installation, build, or packing; no canonical `0.2.0`
-package artifacts or rollback proof exist. The provenance workflow
-requires that stable tag to resolve to the exact clean candidate commit, the
-candidate workflow run to be completed successfully, and the release to contain exactly the seven archives, their
+The candidate's ordinary immutable release tag is `framework-v0.2.2` for the
+`0.2.2` candidate. Dispatch the candidate workflow from that tag so its
+attestations carry `refs/tags/framework-v0.2.2`. The prior `framework-v0.2.1`
+source tag, commit, and immutable artifact history remain retained for audit;
+its package bytes and provenance are not replaced. The earlier
+`framework-v0.2.0` run failed before installation, build, or packing; no
+canonical `0.2.0` package artifacts or rollback proof exist. The provenance
+workflow requires that stable tag to resolve to the exact clean candidate
+commit, the candidate workflow run to be completed successfully, and the release
+to contain exactly the seven archives, their
 sidecars, the combined receipt, the four retained overlay files, and the
 canonical UI Kit transport files.
 Before attestation, the candidate workflow also installs detached npm and pnpm

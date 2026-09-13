@@ -1,5 +1,5 @@
 import { toast } from 'vue-sonner';
-import type { IAuthFlow } from '@webdevelop-pro/domain-types/authTypes';
+import type { IAuthFlow } from '@global-torque/domain-types/authTypes';
 import { h } from 'vue';
 
 /** Ory UI message (API may return this on flow response). */

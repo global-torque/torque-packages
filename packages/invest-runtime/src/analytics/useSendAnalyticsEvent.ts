@@ -6,11 +6,11 @@ import type {
   AnalyticsEventType,
   AnalyticsHttpMethod,
   IAnalyticsEventRequest,
-} from '@webdevelop-pro/domain-types/analyticsTypes';
+} from '@global-torque/domain-types/analyticsTypes';
 import {
   normalizeAnalyticsBodyForMethod,
   sanitizeAnalyticsText,
-} from '@webdevelop-pro/invest-core/analytics/analyticsBody';
+} from '@global-torque/invest-core/analytics/analyticsBody';
 import {
   getInvestRuntimeClientServiceName,
   getInvestRuntimeConfig,

@@ -1,5 +1,5 @@
 import type { App } from 'vue';
-import type { InvestAppConfig } from '@webdevelop-pro/invest-core/app/config';
+import type { InvestAppConfig } from '@global-torque/invest-core/app/config';
 import {
   installInvestRuntime,
   type InstallInvestRuntimeErrorHandlingOptions,
@@ -7,7 +7,7 @@ import {
   installNativePushBridge,
   setupChunkErrorHandler,
   setupErrorHandling,
-} from '@webdevelop-pro/invest-runtime';
+} from '@global-torque/invest-runtime';
 
 type InstallInvestShellRuntimeErrorHandlingOptions =
   Omit<InstallInvestRuntimeErrorHandlingOptions, 'serviceName'>

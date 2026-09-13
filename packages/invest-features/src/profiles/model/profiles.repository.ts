@@ -1,22 +1,22 @@
 // @ts-nocheck
 import { ref, computed } from 'vue';
 import { acceptHMRUpdate, defineStore } from 'pinia';
-import { createInvestDataApiClient } from '@webdevelop-pro/invest-data/service/dataClientConfig';
+import { createInvestDataApiClient } from '@global-torque/invest-data/service/dataClientConfig';
 import {
   applyOfflineHydrationMeta,
   createRepositoryStates,
   withActionState,
   type OptionsStateData,
-} from '@webdevelop-pro/invest-runtime/repository/action-state';
+} from '@global-torque/invest-runtime/repository/action-state';
 import {
   IProfileData, IUser, IProfileIndividual, ISchema,
   IProfileFormatted,
-} from '@webdevelop-pro/domain-types/profilesTypes';
+} from '@global-torque/domain-types/profilesTypes';
 import { UserFormatter } from './formatter/user.formatter.ts';
-import { IUserFormatted } from '@webdevelop-pro/domain-types/profilesTypes';
-import { INotification } from '@webdevelop-pro/domain-types/notificationsTypes';
+import { IUserFormatted } from '@global-torque/domain-types/profilesTypes';
+import { INotification } from '@global-torque/domain-types/notificationsTypes';
 import { ProfileFormatter } from './formatter/profiles.formatter.ts';
-import { createFormatterCache } from '@webdevelop-pro/invest-core/repository/formatterCache';
+import { createFormatterCache } from '@global-torque/invest-core/repository/formatterCache';
 
 type ProfilesStates = {
   setProfileByIdState: IProfileIndividual;

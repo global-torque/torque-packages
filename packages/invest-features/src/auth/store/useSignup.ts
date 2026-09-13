@@ -1,10 +1,10 @@
 // @ts-nocheck
-import { useInvestApplicationContext } from '@webdevelop-pro/invest-runtime/application-context';
+import { useInvestApplicationContext } from '@global-torque/invest-runtime/application-context';
 import {
   computed, nextTick, onScopeDispose, ref, toRaw,
 } from 'vue';
 import { acceptHMRUpdate, defineStore, storeToRefs } from 'pinia';
-import { navigateWithQueryParams } from '@webdevelop-pro/invest-runtime/navigation';
+import { navigateWithQueryParams } from '@global-torque/invest-runtime/navigation';
 import { getAuthLinks } from '../links.ts';
 import { useRepositoryAuth } from '../data/auth.repository.ts';
 import { useFormValidation } from '@global-torque/ui-kit/form-validation';
@@ -12,28 +12,28 @@ import { JSONSchemaType } from 'ajv/dist/types/json-schema';
 import {
   emailRule, errorMessageRule, passwordRule, firstNameRule, lastNameRule,
   composeInvestmentFormSchema, createInvestmentAjv, prepareInvestmentFormData,
-} from '@webdevelop-pro/invest-core/form-validation';
-import { useSessionStore } from '@webdevelop-pro/invest-runtime/session';
-import { SELFSERVICE } from '@webdevelop-pro/domain-types/authConstants';
-import { oryErrorHandling } from '@webdevelop-pro/invest-runtime/error/oryErrorHandling';
-import { oryResponseHandling } from '@webdevelop-pro/invest-runtime/error/oryResponseHandling';
-import { useSendAnalyticsEvent } from '@webdevelop-pro/invest-runtime/analytics/useSendAnalyticsEvent';
+} from '@global-torque/invest-core/form-validation';
+import { useSessionStore } from '@global-torque/invest-runtime/session';
+import { SELFSERVICE } from '@global-torque/domain-types/authConstants';
+import { oryErrorHandling } from '@global-torque/invest-runtime/error/oryErrorHandling';
+import { oryResponseHandling } from '@global-torque/invest-runtime/error/oryResponseHandling';
+import { useSendAnalyticsEvent } from '@global-torque/invest-runtime/analytics/useSendAnalyticsEvent';
 import {
   shouldAutoAuthenticateDemoAccount,
   useDemoAccountAuth,
 } from '../composables/useDemoAccountAuth.ts';
-import { notifyNativePushAuthSuccess } from '@webdevelop-pro/invest-runtime/native-push';
-import type { SignupProfileType } from '@webdevelop-pro/domain-types/onboardingTypes';
-import { parseSignupProfileType } from '@webdevelop-pro/invest-core/onboarding/intents';
-import { getRequiredInvestRuntimeAdapter } from '@webdevelop-pro/invest-runtime/adapters';
+import { notifyNativePushAuthSuccess } from '@global-torque/invest-runtime/native-push';
+import type { SignupProfileType } from '@global-torque/domain-types/onboardingTypes';
+import { parseSignupProfileType } from '@global-torque/invest-core/onboarding/intents';
+import { getRequiredInvestRuntimeAdapter } from '@global-torque/invest-runtime/adapters';
 import { useRepositoryInvitations } from '../invitations/invitations.repository.ts';
 import type {
   UserInvitationAcceptance,
   UserInvitationPreview,
 } from '../invitations/invitations.types.ts';
-import { resetAllData, resetDataForIdentityChange } from '@webdevelop-pro/invest-runtime/reset';
+import { resetAllData, resetDataForIdentityChange } from '@global-torque/invest-runtime/reset';
 import { useLogoutStore } from './useLogout.ts';
-import { normalizeError, reportError } from '@webdevelop-pro/invest-runtime/error/errorReporting';
+import { normalizeError, reportError } from '@global-torque/invest-runtime/error/errorReporting';
 import {
   buildCanonicalInvitationPath,
   buildCanonicalInvitationUrl,

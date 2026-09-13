@@ -3,7 +3,7 @@ import path from 'node:path';
 
 export const nodeExportContracts = [
   {
-    packageName: '@webdevelop-pro/invest-core',
+    packageName: '@global-torque/invest-core',
     directory: 'packages/invest-core',
     entries: [
       { specifier: './app/config', source: './src/app/config.ts', node: './dist/node/app/config.js' },
@@ -12,7 +12,7 @@ export const nodeExportContracts = [
     ],
   },
   {
-    packageName: '@webdevelop-pro/invest-runtime',
+    packageName: '@global-torque/invest-runtime',
     directory: 'packages/invest-runtime',
     entries: [
       { specifier: './pwa/pwaPolicy', source: './src/pwa/pwaPolicy.ts', node: './dist/node/pwa/pwaPolicy.js' },

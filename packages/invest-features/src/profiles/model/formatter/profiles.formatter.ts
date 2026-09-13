@@ -3,11 +3,11 @@ import {
   IProfileIndividual,
   IProfileFormatted,
   IFormPartialBeneficialOwnershipItemFormatted,
-} from '@webdevelop-pro/domain-types/profilesTypes';
-import { InvestKycTypes } from '@webdevelop-pro/domain-types/kycTypes';
-import { AccreditationTypes } from '@webdevelop-pro/domain-types/accreditationTypes';
-import { PROFILE_TYPES } from '@webdevelop-pro/domain-types';
-import { mapValidListItems } from '@webdevelop-pro/invest-runtime/repository/action-state';
+} from '@global-torque/domain-types/profilesTypes';
+import { InvestKycTypes } from '@global-torque/domain-types/kycTypes';
+import { AccreditationTypes } from '@global-torque/domain-types/accreditationTypes';
+import { PROFILE_TYPES } from '@global-torque/domain-types';
+import { mapValidListItems } from '@global-torque/invest-runtime/repository/action-state';
 import { BeneficialsFormatter } from './beneficials.formatter.ts';
 
 export class ProfileFormatter {

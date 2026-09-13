@@ -4,14 +4,14 @@ import {
   watch,
 } from 'vue';
 import { acceptHMRUpdate, defineStore, storeToRefs } from 'pinia';
-import { AccreditationTypes } from '@webdevelop-pro/domain-types/accreditationTypes';
-import { AccreditationTextStatuses, AccreditationAlerts } from '@webdevelop-pro/invest-core/accreditation/status';
+import { AccreditationTypes } from '@global-torque/domain-types/accreditationTypes';
+import { AccreditationTextStatuses, AccreditationAlerts } from '@global-torque/invest-core/accreditation/status';
 import { useRouter } from 'vue-router';
-import { useDialogs } from '@webdevelop-pro/invest-runtime/dialogs';
-import { useSessionStore } from '@webdevelop-pro/invest-runtime/session';
-import { useProfilesStore } from '@webdevelop-pro/invest-runtime/profiles';
-import { PROFILE_TYPES } from '@webdevelop-pro/domain-types/profileTypes';
-import { getInvestDataAppLinks } from '@webdevelop-pro/invest-data/service/dataClientConfig';
+import { useDialogs } from '@global-torque/invest-runtime/dialogs';
+import { useSessionStore } from '@global-torque/invest-runtime/session';
+import { useProfilesStore } from '@global-torque/invest-runtime/profiles';
+import { PROFILE_TYPES } from '@global-torque/domain-types/profileTypes';
+import { getInvestDataAppLinks } from '@global-torque/invest-data/service/dataClientConfig';
 
 export const useAccreditationStatus = defineStore('useAccreditationStatus', () => {
   const router = useRouter();

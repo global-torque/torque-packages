@@ -9,7 +9,7 @@ vi.mock('@global-torque/ui-kit/breakpoints', () => ({
   useBreakpoints: () => ({ isTablet: breakpointMock.isTablet }),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/session', () => ({
+vi.mock('@global-torque/invest-runtime/session', () => ({
   useSessionStore: vi.fn(() => ({ userLoggedIn: ref(true) })),
 }));
 

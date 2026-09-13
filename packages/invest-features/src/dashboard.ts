@@ -1,1 +1,1 @@
-export { DashboardTabTypes } from '@webdevelop-pro/domain-types/dashboardTypes';
+export { DashboardTabTypes } from '@global-torque/domain-types/dashboardTypes';

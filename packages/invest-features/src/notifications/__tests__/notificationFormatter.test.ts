@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { NotificationFormatter } from '../notificationFormatter.ts';
-import type { INotification } from '@webdevelop-pro/domain-types/notificationsTypes';
+import type { INotification } from '@global-torque/domain-types/notificationsTypes';
 
 const createNotification = (
   overrides: Partial<INotification> = {},

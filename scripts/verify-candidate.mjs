@@ -3,13 +3,27 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 
 const root = path.resolve(new URL('..', import.meta.url).pathname);
-const candidate = process.argv[2] ?? '0.2.1';
+const candidate = process.argv[2] ?? '0.2.2';
 const reconciliation = JSON.parse(fs.readFileSync(path.join(root, 'docs/source-reconciliation.json'), 'utf8'));
 if (candidate !== reconciliation.candidate) throw new Error(`Candidate ${candidate} is not the reviewed ${reconciliation.candidate}`);
 for (const entry of reconciliation.packages) {
   const manifest = JSON.parse(fs.readFileSync(path.join(root, entry.directory, 'package.json'), 'utf8'));
   if (manifest.name !== entry.name || manifest.version !== candidate || manifest.private) {
     throw new Error(`Candidate manifest mismatch: ${entry.directory}`);
+  }
+}
+const sourceFiles = [];
+const collectSourceFiles = directory => {
+  for (const item of fs.readdirSync(directory, { withFileTypes: true })) {
+    const file = path.join(directory, item.name);
+    if (item.isDirectory() && item.name !== 'dist') collectSourceFiles(file);
+    else if (/\.(?:ts|vue|js|mjs)$/u.test(item.name)) sourceFiles.push(file);
+  }
+};
+collectSourceFiles(path.join(root, 'packages'));
+for (const file of sourceFiles) {
+  if (fs.readFileSync(file, 'utf8').includes('@webdevelop-pro/')) {
+    throw new Error(`Forbidden old framework namespace in source: ${path.relative(root, file)}`);
   }
 }
 for (const patch of reconciliation.patches ?? []) {

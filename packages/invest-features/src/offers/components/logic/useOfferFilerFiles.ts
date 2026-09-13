@@ -1,15 +1,15 @@
-import { useInvestApplicationContext } from '@webdevelop-pro/invest-runtime/application-context';
+import { useInvestApplicationContext } from '@global-torque/invest-runtime/application-context';
 import {
   computed, getCurrentScope, onScopeDispose, ref, watch, type Ref,
 } from 'vue';
 import { storeToRefs } from 'pinia';
-import type { FilerAccess, IFilerItem } from '@webdevelop-pro/domain-types/filerTypes';
-import type { IFilerItemFormatted } from '@webdevelop-pro/invest-core/filer/documentFormatter';
-import type { IOfferFormatted } from '@webdevelop-pro/domain-types/offerTypes';
-import { FilerFormatter, type FilerDocumentSource } from '@webdevelop-pro/invest-core/filer/documentFormatter';
-import { useFilerModel } from '@webdevelop-pro/invest-runtime/filer';
-import { useSessionStore } from '@webdevelop-pro/invest-runtime/session';
-import { normalizeError, reportOfflineReadError } from '@webdevelop-pro/invest-runtime/error/errorReporting';
+import type { FilerAccess, IFilerItem } from '@global-torque/domain-types/filerTypes';
+import type { IFilerItemFormatted } from '@global-torque/invest-core/filer/documentFormatter';
+import type { IOfferFormatted } from '@global-torque/domain-types/offerTypes';
+import { FilerFormatter, type FilerDocumentSource } from '@global-torque/invest-core/filer/documentFormatter';
+import { useFilerModel } from '@global-torque/invest-runtime/filer';
+import { useSessionStore } from '@global-torque/invest-runtime/session';
+import { normalizeError, reportOfflineReadError } from '@global-torque/invest-runtime/error/errorReporting';
 
 const collectMedia = (nodes: Record<string, IFilerItem>, inMedia = false): IFilerItem[] => (
   Object.entries(nodes).flatMap(([key, node]) => {

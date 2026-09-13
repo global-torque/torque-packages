@@ -12,7 +12,7 @@ const appConfig = vi.hoisted(() => ({
   urls: { dashboard: '', static: '' },
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/application-context', () => ({
+vi.mock('@global-torque/invest-runtime/application-context', () => ({
   useInvestApplicationContext: () => ({ appConfig }),
 }));
 
@@ -70,7 +70,7 @@ vi.mock('../../data/auth.repository.ts', () => ({
   })),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/session', () => ({
+vi.mock('@global-torque/invest-runtime/session', () => ({
   useSessionStore: vi.fn(() => ({
     updateSession: mockUpdateSession,
     get userSession() {
@@ -79,7 +79,7 @@ vi.mock('@webdevelop-pro/invest-runtime/session', () => ({
   })),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/reset', () => ({
+vi.mock('@global-torque/invest-runtime/reset', () => ({
   resetDataForIdentityChange: mockResetDataForIdentityChange,
   resetAllData: mockResetAllData,
 }));
@@ -88,7 +88,7 @@ vi.mock('../useLogout.ts', () => ({
   useLogoutStore: () => ({ logoutHandler: mockLogoutHandler }),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/adapters', () => ({
+vi.mock('@global-torque/invest-runtime/adapters', () => ({
   getRequiredInvestRuntimeAdapter: () => ({
     init: mockProfilesInit,
     getUserProfiles: () => mockUserProfiles,
@@ -105,24 +105,24 @@ vi.mock('../../invitations/invitations.repository.ts', () => ({
   }),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/navigation', () => ({
+vi.mock('@global-torque/invest-runtime/navigation', () => ({
   navigateWithQueryParams: mockNavigateWithQueryParams,
 }));
 
 // no mock for useFormValidation – use the real implementation
 
 
-vi.mock('@webdevelop-pro/invest-runtime/analytics/useSendAnalyticsEvent', () => ({
+vi.mock('@global-torque/invest-runtime/analytics/useSendAnalyticsEvent', () => ({
   useSendAnalyticsEvent: () => ({
     sendEvent: sendEventMock,
   }),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/error/oryResponseHandling', () => ({
+vi.mock('@global-torque/invest-runtime/error/oryResponseHandling', () => ({
   oryResponseHandling: vi.fn(),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/error/oryErrorHandling', () => ({
+vi.mock('@global-torque/invest-runtime/error/oryErrorHandling', () => ({
   oryErrorHandling: vi.fn().mockResolvedValue(undefined),
 }));
 

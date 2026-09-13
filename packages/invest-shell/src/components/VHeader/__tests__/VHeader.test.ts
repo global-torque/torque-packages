@@ -6,7 +6,7 @@ import VHeader from '../VHeader.vue';
 const userLoggedIn = ref(false);
 const userState = ref({ loading: false });
 
-vi.mock('@webdevelop-pro/invest-runtime/adapters', () => ({
+vi.mock('@global-torque/invest-runtime/adapters', () => ({
   getRequiredInvestRuntimeAdapter: () => ({
     getStore: () => ({
       getUserState: userState,
@@ -14,7 +14,7 @@ vi.mock('@webdevelop-pro/invest-runtime/adapters', () => ({
   }),
 }));
 
-vi.mock('@webdevelop-pro/invest-runtime/session', () => ({
+vi.mock('@global-torque/invest-runtime/session', () => ({
   useSessionStore: () => ({}),
 }));
 vi.mock('pinia', async () => {
@@ -34,7 +34,7 @@ vi.mock('@global-torque/ui-kit/breakpoints', () => ({
     isDesktopMD: ref(true),
   }),
 }));
-vi.mock('@webdevelop-pro/invest-runtime/navigation', () => ({
+vi.mock('@global-torque/invest-runtime/navigation', () => ({
   navigateWithQueryParams: vi.fn(),
 }));
 vi.mock('../../VHeaderBar/VHeaderGuest.vue', () => ({

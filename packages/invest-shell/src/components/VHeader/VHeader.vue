@@ -4,7 +4,7 @@ import {
   computed, defineAsyncComponent, PropType,
 } from 'vue';
 import { Skeleton } from '@global-torque/ui-primitives/skeleton';
-import { navigateWithQueryParams } from '@webdevelop-pro/invest-runtime/navigation';
+import { navigateWithQueryParams } from '@global-torque/invest-runtime/navigation';
 import {
   urlSignin,
   urlSignup,

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Alert, AlertDescription, AlertTitle } from '@global-torque/ui-primitives/alert';
 import { Button } from '@global-torque/ui-primitives/button';
-import { useInvestApplicationContext } from '@webdevelop-pro/invest-runtime/application-context';
+import { useInvestApplicationContext } from '@global-torque/invest-runtime/application-context';
 import { InfoIcon } from '@lucide/vue';
 
 const brandName = useInvestApplicationContext().appConfig.brand.pwaName!;

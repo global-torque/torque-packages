@@ -1,6 +1,6 @@
 import { computed } from 'vue';
-import { getRequiredInvestRuntimeAdapter } from '@webdevelop-pro/invest-runtime/adapters';
-import { useSessionStore } from '@webdevelop-pro/invest-runtime/session';
+import { getRequiredInvestRuntimeAdapter } from '@global-torque/invest-runtime/adapters';
+import { useSessionStore } from '@global-torque/invest-runtime/session';
 import type { ContactUsSessionPrefill } from './useContactUsForm';
 
 export function useContactUsSessionPrefill() {

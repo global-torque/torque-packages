@@ -1,11 +1,11 @@
-import { useInvestApplicationContext } from '@webdevelop-pro/invest-runtime/application-context';
+import { useInvestApplicationContext } from '@global-torque/invest-runtime/application-context';
 import {
   computed, getCurrentScope, onScopeDispose, ref, watch,
 } from 'vue';
 import { storeToRefs } from 'pinia';
-import { useSessionStore } from '@webdevelop-pro/invest-runtime/session';
-import { getRequiredInvestRuntimeAdapter } from '@webdevelop-pro/invest-runtime/adapters';
-import { useFilerModel } from '@webdevelop-pro/invest-runtime/filer';
+import { useSessionStore } from '@global-torque/invest-runtime/session';
+import { getRequiredInvestRuntimeAdapter } from '@global-torque/invest-runtime/adapters';
+import { useFilerModel } from '@global-torque/invest-runtime/filer';
 
 export function useHeaderUser() {
   const sessionStore = useSessionStore();

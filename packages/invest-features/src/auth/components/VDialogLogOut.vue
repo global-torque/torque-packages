@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { VImage } from '@global-torque/ui-kit/image';
-import { useInvestApplicationContext } from '@webdevelop-pro/invest-runtime/application-context';
+import { useInvestApplicationContext } from '@global-torque/invest-runtime/application-context';
 import { Button } from '@global-torque/ui-primitives/button';
 import { storeToRefs } from 'pinia';
 import image from '../assets/logout-modal.svg?url';

@@ -60,7 +60,7 @@ assert.match(provenanceWorkflow, /actions\/attest@/u);
 assert.doesNotMatch(provenanceWorkflow, /npm publish/u);
 assert.match(provenanceWorkflow, /type == "array" and length > 0 and all\(\.\[\]; \(\.attestation \| type == "object"\) and \(\.verificationResult \| type == "object"\)\)/u);
 assert.doesNotMatch(provenanceWorkflow, /matrix\.package\s*==\s*['"]domain-types['"]/u);
-assert.match(consumerScript, /@webdevelop-pro\/invest-shell\/styles';/u);
+assert.match(consumerScript, /@global-torque\/invest-shell\/styles';/u);
 assert.match(consumerScript, /Public shell styles entry emitted no typography rules/u);
 assert.match(consumerScript, /Public shell styles entry emitted no responsive rules/u);
 assert.match(consumerScript, /@playwright\/test/u);
@@ -249,22 +249,22 @@ function archiveMetadata(archive) {
 }
 
 const packageNames = [
-  '@webdevelop-pro/domain-types',
-  '@webdevelop-pro/invest-core',
-  '@webdevelop-pro/invest-data',
-  '@webdevelop-pro/invest-runtime',
-  '@webdevelop-pro/invest-widgets',
-  '@webdevelop-pro/invest-features',
-  '@webdevelop-pro/invest-shell',
+  '@global-torque/domain-types',
+  '@global-torque/invest-core',
+  '@global-torque/invest-data',
+  '@global-torque/invest-runtime',
+  '@global-torque/invest-widgets',
+  '@global-torque/invest-features',
+  '@global-torque/invest-shell',
 ];
 const dependencyMap = {
-  '@webdevelop-pro/domain-types': {},
-  '@webdevelop-pro/invest-core': { '@webdevelop-pro/domain-types': '0.2.1' },
-  '@webdevelop-pro/invest-data': { '@webdevelop-pro/domain-types': '0.2.1', '@webdevelop-pro/invest-core': '0.2.1' },
-  '@webdevelop-pro/invest-runtime': { '@webdevelop-pro/domain-types': '0.2.1', '@webdevelop-pro/invest-core': '0.2.1', '@webdevelop-pro/invest-data': '0.2.1' },
-  '@webdevelop-pro/invest-widgets': { '@webdevelop-pro/domain-types': '0.2.1', '@webdevelop-pro/invest-core': '0.2.1' },
-  '@webdevelop-pro/invest-features': { '@webdevelop-pro/domain-types': '0.2.1', '@webdevelop-pro/invest-core': '0.2.1', '@webdevelop-pro/invest-data': '0.2.1', '@webdevelop-pro/invest-runtime': '0.2.1' },
-  '@webdevelop-pro/invest-shell': { '@webdevelop-pro/domain-types': '0.2.1', '@webdevelop-pro/invest-core': '0.2.1', '@webdevelop-pro/invest-runtime': '0.2.1', '@webdevelop-pro/invest-widgets': '0.2.1', '@webdevelop-pro/invest-features': '0.2.1' },
+  '@global-torque/domain-types': {},
+  '@global-torque/invest-core': { '@global-torque/domain-types': '0.2.2' },
+  '@global-torque/invest-data': { '@global-torque/domain-types': '0.2.2', '@global-torque/invest-core': '0.2.2' },
+  '@global-torque/invest-runtime': { '@global-torque/domain-types': '0.2.2', '@global-torque/invest-core': '0.2.2', '@global-torque/invest-data': '0.2.2' },
+  '@global-torque/invest-widgets': { '@global-torque/domain-types': '0.2.2', '@global-torque/invest-core': '0.2.2' },
+  '@global-torque/invest-features': { '@global-torque/domain-types': '0.2.2', '@global-torque/invest-core': '0.2.2', '@global-torque/invest-data': '0.2.2', '@global-torque/invest-runtime': '0.2.2' },
+  '@global-torque/invest-shell': { '@global-torque/domain-types': '0.2.2', '@global-torque/invest-core': '0.2.2', '@global-torque/invest-runtime': '0.2.2', '@global-torque/invest-widgets': '0.2.2', '@global-torque/invest-features': '0.2.2' },
 };
 
 function makeCandidate(directory) {
@@ -273,12 +273,12 @@ function makeCandidate(directory) {
   const packages = [];
   for (const [index, name] of packageNames.entries()) {
     const packageDirectory = path.join(directory, `package-${index}`);
-    const archiveName = `${name.slice(1).replace('/', '-')}-0.2.1.tgz`;
+    const archiveName = `${name.slice(1).replace('/', '-')}-0.2.2.tgz`;
     const archive = path.join(directory, archiveName);
     const nodeContract = nodeExportContracts.find(contract => contract.packageName === name);
     const manifest = {
       name,
-      version: '0.2.1',
+      version: '0.2.2',
       files: ['src', 'README.md', 'LICENSE', 'NOTICE.md', ...(nodeContract?.entries.map(entry => entry.node.slice(2)) ?? [])],
       exports: { '.': './src/index.ts' },
       dependencies: dependencyMap[name],
@@ -302,20 +302,20 @@ function makeCandidate(directory) {
     packFixtureArchive(archive, packageDirectory);
     const metadata = archiveMetadata(archive);
     const entry = {
-      name, version: '0.2.1', directory: `packages/${name.slice('@webdevelop-pro/'.length)}`,
+      name, version: '0.2.2', directory: `packages/${name.slice('@global-torque/'.length)}`,
       sourceRevision: null, sourceDirty: true, sourcePackageRepository: 'fixture/source', sourcePackageRevision,
       archive: archiveName, ...metadata,
     };
     packages.push(entry);
     writeJson(`${archive}.manifest.json`, {
-      schemaVersion: 1, package: name, version: '0.2.1', sourceRepository: 'fixture/torque-packages',
+      schemaVersion: 1, package: name, version: '0.2.2', sourceRepository: 'fixture/torque-packages',
       sourceRevision: null, sourceDirty: true, sourcePackageRepository: 'fixture/source', sourcePackageRevision,
       artifact: archiveName, sha512: metadata.sha512, integrity: metadata.integrity, files: metadata.fileSha512,
     });
     fs.writeFileSync(`${archive}.sha512`, `${metadata.sha512}  ${archiveName}\n`);
   }
   const receipt = {
-    schemaVersion: 1, candidate: '0.2.1', sourceRepository: 'fixture/torque-packages', sourceRevision: null,
+    schemaVersion: 1, candidate: '0.2.2', sourceRepository: 'fixture/torque-packages', sourceRevision: null,
     sourceDirty: true, sourcePackageRepository: 'fixture/source', sourcePackageRevision,
     generatedAt: '2026-01-01T00:00:00.000Z', lockfileSha256: 'b'.repeat(64),
     uiKit: { mode: 'registry', package: '@global-torque/ui-kit', version: '0.1.4' }, packages,
@@ -394,7 +394,7 @@ exit 99
   return binDirectory;
 }
 
-function expectPackCandidateFailure(label, { candidate = '0.2.1', mode, existingOutput = false }) {
+function expectPackCandidateFailure(label, { candidate = '0.2.2', mode, existingOutput = false }) {
   const directory = path.join(fixtureRoot, `pack-candidate-${label}`);
   const output = path.join(directory, 'output');
   const packSentinel = path.join(directory, 'pack-called');
@@ -425,10 +425,10 @@ function expectPackCandidateFailure(label, { candidate = '0.2.1', mode, existing
     : [];
   assert.equal(
     invocationLog.length > 0,
-    !existingOutput && candidate === '0.2.1',
+    !existingOutput && candidate === '0.2.2',
     `${label} must stop before build when eligibility or output checks fail`,
   );
-  if (mode === 'check-failure' && !existingOutput && candidate === '0.2.1') {
+  if (mode === 'check-failure' && !existingOutput && candidate === '0.2.2') {
     assert.deepEqual(invocationLog, [
       'invoke:run:build:node',
       'stage:build:node:success',
@@ -456,16 +456,16 @@ function expectPackCandidateFailure(label, { candidate = '0.2.1', mode, existing
 }
 
 expectPackCandidateFailure('existing-output', { mode: 'check-failure', existingOutput: true });
-expectPackCandidateFailure('invalid-eligibility', { candidate: '0.2.2', mode: 'check-failure' });
+expectPackCandidateFailure('invalid-eligibility', { candidate: '0.2.3', mode: 'check-failure' });
 expectPackCandidateFailure('full-check-failure', { mode: 'check-failure' });
 expectPackCandidateFailure('post-check-inventory-failure', { mode: 'inventory-failure' });
 
 const candidateDirectory = path.join(fixtureRoot, 'candidate');
 const candidateReceipt = makeCandidate(candidateDirectory);
 execFileSync('jq', ['-e', '.packages | length == 7', path.join(candidateDirectory, 'candidate-receipt.json')], { stdio: 'ignore' });
-const candidateCore = candidateReceipt.packages.find(entry => entry.name === '@webdevelop-pro/invest-core');
+const candidateCore = candidateReceipt.packages.find(entry => entry.name === '@global-torque/invest-core');
 const candidateCoreManifest = JSON.parse(execFileSync('tar', ['-xOzf', path.join(candidateDirectory, candidateCore.archive), 'package/package.json'], { encoding: 'utf8' }));
-assert.doesNotThrow(() => assertNodeExportContracts(candidateCoreManifest, '@webdevelop-pro/invest-core'));
+assert.doesNotThrow(() => assertNodeExportContracts(candidateCoreManifest, '@global-torque/invest-core'));
 runScript('verify-release-bundle.mjs', [path.join(candidateDirectory, 'candidate-receipt.json')]);
 
 function refreshPackageMetadata(directory, packageName) {
@@ -502,19 +502,20 @@ function mutateArchive(label, packageName, mutate) {
 }
 
 for (const [label, packageName, mutate] of [
-  ['broken-export', '@webdevelop-pro/domain-types', ({ manifest }) => { manifest.exports['.'] = './src/missing.ts'; }],
-  ['node-leaf-root', '@webdevelop-pro/invest-core', ({ manifest }) => { manifest.exports['.'] = './dist/node/app/config.js'; }],
-  ['node-leaf-alias', '@webdevelop-pro/invest-core', ({ manifest }) => { manifest.exports['./config-alias'] = './dist/node/app/config.js'; }],
-  ['node-leaf-nested-condition', '@webdevelop-pro/invest-core', ({ manifest }) => {
+  ['broken-export', '@global-torque/domain-types', ({ manifest }) => { manifest.exports['.'] = './src/missing.ts'; }],
+  ['node-leaf-root', '@global-torque/invest-core', ({ manifest }) => { manifest.exports['.'] = './dist/node/app/config.js'; }],
+  ['node-leaf-alias', '@global-torque/invest-core', ({ manifest }) => { manifest.exports['./config-alias'] = './dist/node/app/config.js'; }],
+  ['node-leaf-nested-condition', '@global-torque/invest-core', ({ manifest }) => {
     manifest.exports['./config-nested'] = {
       browser: './src/app/config.ts',
       node: { default: './dist/node/app/config.js' },
       default: './src/app/config.ts',
     };
   }],
-  ['missing-file', '@webdevelop-pro/domain-types', ({ packageDirectory }) => { fs.rmSync(path.join(packageDirectory, 'src', 'index.ts')); }],
-  ['unexpected-file', '@webdevelop-pro/domain-types', ({ packageDirectory }) => { fs.writeFileSync(path.join(packageDirectory, 'unexpected.txt'), 'unexpected\n'); }],
-  ['protocol', '@webdevelop-pro/invest-core', ({ manifest }) => { manifest.dependencies['@webdevelop-pro/domain-types'] = 'workspace:*'; }],
+  ['missing-file', '@global-torque/domain-types', ({ packageDirectory }) => { fs.rmSync(path.join(packageDirectory, 'src', 'index.ts')); }],
+  ['unexpected-file', '@global-torque/domain-types', ({ packageDirectory }) => { fs.writeFileSync(path.join(packageDirectory, 'unexpected.txt'), 'unexpected\n'); }],
+  ['protocol', '@global-torque/invest-core', ({ manifest }) => { manifest.dependencies['@global-torque/domain-types'] = 'workspace:*'; }],
+  ['old-scope', '@global-torque/invest-core', ({ manifest }) => { manifest.dependencies['@webdevelop-pro/domain-types'] = '0.2.2'; }],
 ]) {
   const directory = mutateArchive(label, packageName, mutate);
   expectFailure(label, () => runScript('verify-release-bundle.mjs', [path.join(directory, 'candidate-receipt.json')]));
@@ -712,20 +713,20 @@ function makeWorkflowFixture(label) {
     status: 'completed',
     conclusion: 'success',
     event: 'workflow_dispatch',
-    headBranch: 'framework-v0.2.1',
+    headBranch: 'framework-v0.2.2',
     headSha: sourceRevision,
     workflowName: 'Framework package candidate',
   });
   writeJson(path.join(directory, 'release.json'), {
     id: 99,
-    tag_name: 'framework-v0.2.1',
+    tag_name: 'framework-v0.2.2',
     draft: false,
     prerelease: false,
     immutable: true,
     assets: assetNames.map((name, index) => ({ id: index + 1, name })),
   });
   writeJson(path.join(directory, 'tag-ref.json'), {
-    ref: 'refs/tags/framework-v0.2.1',
+    ref: 'refs/tags/framework-v0.2.2',
     object: { type: 'commit', sha: sourceRevision },
   });
   writeJson(path.join(directory, 'annotated-tag.json'), {});
@@ -839,8 +840,8 @@ function runActualProvenanceWorkflow(fixture, matrixPackage, options = {}) {
     GITHUB_OUTPUT: outputPath,
     GITHUB_ENV: path.join(runnerTemp, 'github-env'),
     CANDIDATE_RUN_ID: '67890',
-    CANDIDATE: '0.2.1',
-    RELEASE_TAG: 'framework-v0.2.1',
+    CANDIDATE: '0.2.2',
+    RELEASE_TAG: 'framework-v0.2.2',
     PACKAGE: matrixPackage,
   };
   fs.writeFileSync(outputPath, '');
@@ -1031,7 +1032,7 @@ expectWorkflowFailure('workflow-wrong-commit', { tagRef: { object: { type: 'comm
 expectWorkflowFailure('workflow-failed-run', { run: { conclusion: 'failure' } }, 'Verify the immutable release and successful candidate run');
 expectWorkflowFailure('workflow-missing-release-asset', { release: { assets: validWorkflowFixture.assetNames.slice(1).map((name, index) => ({ id: index + 1, name })) } }, 'Verify the immutable release and successful candidate run');
 expectWorkflowFailure('workflow-other-package-byte-mismatch', {
-  mutateAsset: fixture => fs.appendFileSync(path.join(fixture.releaseAssets, 'webdevelop-pro-domain-types-0.2.1.tgz'), 'tamper'),
+  mutateAsset: fixture => fs.appendFileSync(path.join(fixture.releaseAssets, 'global-torque-domain-types-0.2.2.tgz'), 'tamper'),
 }, 'Verify every immutable release asset byte');
 expectWorkflowFailure('workflow-ui-byte-mismatch', {
   mutateAsset: fixture => fs.appendFileSync(path.join(fixture.releaseAssets, 'global-torque-ui-kit-0.1.4.tgz'), 'tamper'),
@@ -1069,14 +1070,14 @@ else process.exit(2);
 `);
 fs.chmodSync(ghStub, 0o755);
 const writeContextFixture = ({ run = {}, release = {}, tagRef = {} } = {}) => {
-  writeJson(path.join(contextDirectory, 'run.json'), { status: 'completed', conclusion: 'success', event: 'workflow_dispatch', headBranch: 'framework-v0.2.1', headSha: 'd'.repeat(40), workflowName: 'Framework package candidate', ...run });
-  writeJson(path.join(contextDirectory, 'release.json'), { id: 99, tag_name: 'framework-v0.2.1', draft: false, prerelease: false, immutable: true, assets: expectedContextAssets.map((name, index) => ({ id: index + 1, name })), ...release });
-  writeJson(path.join(contextDirectory, 'tag-ref.json'), { ref: 'refs/tags/framework-v0.2.1', object: { type: 'commit', sha: 'd'.repeat(40) }, ...tagRef });
+  writeJson(path.join(contextDirectory, 'run.json'), { status: 'completed', conclusion: 'success', event: 'workflow_dispatch', headBranch: 'framework-v0.2.2', headSha: 'd'.repeat(40), workflowName: 'Framework package candidate', ...run });
+  writeJson(path.join(contextDirectory, 'release.json'), { id: 99, tag_name: 'framework-v0.2.2', draft: false, prerelease: false, immutable: true, assets: expectedContextAssets.map((name, index) => ({ id: index + 1, name })), ...release });
+  writeJson(path.join(contextDirectory, 'tag-ref.json'), { ref: 'refs/tags/framework-v0.2.2', object: { type: 'commit', sha: 'd'.repeat(40) }, ...tagRef });
   writeJson(path.join(contextDirectory, 'annotated-tag.json'), {});
 };
 const contextEnv = { ...process.env, PATH: `${ghBin}:${process.env.PATH}`, GH_FIXTURE_DIR: contextDirectory };
 writeContextFixture();
-runScript('verify-provenance-context.mjs', [path.join(contextDirectory, 'candidate-receipt.json'), '67890', 'framework-v0.2.1', 'fixture/torque-packages'], { env: contextEnv });
+runScript('verify-provenance-context.mjs', [path.join(contextDirectory, 'candidate-receipt.json'), '67890', 'framework-v0.2.2', 'fixture/torque-packages'], { env: contextEnv });
 for (const [label, fixture] of [
   ['draft-release', { release: { draft: true } }],
   ['prerelease', { release: { prerelease: true } }],
@@ -1086,12 +1087,12 @@ for (const [label, fixture] of [
   ['incomplete-assets', { release: { assets: expectedContextAssets.slice(1).map((name, index) => ({ id: index + 1, name })) } }],
 ]) {
   writeContextFixture(fixture);
-  expectFailure(label, () => runScript('verify-provenance-context.mjs', [path.join(contextDirectory, 'candidate-receipt.json'), '67890', 'framework-v0.2.1', 'fixture/torque-packages'], { env: contextEnv }));
+  expectFailure(label, () => runScript('verify-provenance-context.mjs', [path.join(contextDirectory, 'candidate-receipt.json'), '67890', 'framework-v0.2.2', 'fixture/torque-packages'], { env: contextEnv }));
 }
 const wrongReceipt = JSON.parse(fs.readFileSync(path.join(contextDirectory, 'candidate-receipt.json'), 'utf8'));
-wrongReceipt.candidate = '0.2.2';
+wrongReceipt.candidate = '0.2.3';
 writeJson(path.join(contextDirectory, 'candidate-receipt.json'), wrongReceipt);
 writeContextFixture();
-expectFailure('receipt-identity', () => runScript('verify-provenance-context.mjs', [path.join(contextDirectory, 'candidate-receipt.json'), '67890', 'framework-v0.2.1', 'fixture/torque-packages'], { env: contextEnv }));
+expectFailure('receipt-identity', () => runScript('verify-provenance-context.mjs', [path.join(contextDirectory, 'candidate-receipt.json'), '67890', 'framework-v0.2.2', 'fixture/torque-packages'], { env: contextEnv }));
 
 console.log(`release-contract-tests-pass ${fixtureRoot}`);

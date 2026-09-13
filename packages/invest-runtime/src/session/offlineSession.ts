@@ -1,5 +1,5 @@
-import type { ISession } from '@webdevelop-pro/domain-types/authTypes';
-import { APIError } from '@webdevelop-pro/invest-data/service/handlers/apiError';
+import type { ISession } from '@global-torque/domain-types/authTypes';
+import { APIError } from '@global-torque/invest-data/service/handlers/apiError';
 
 const OFFLINE_ERROR_MESSAGES = [
   'failed to fetch',

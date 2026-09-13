@@ -42,7 +42,7 @@ vi.mock('@global-torque/ui-primitives/dialog', () => ({
 
 const brand = vi.hoisted(() => ({ email: 'invest@example.test' }));
 
-vi.mock('@webdevelop-pro/invest-runtime/application-context', () => ({
+vi.mock('@global-torque/invest-runtime/application-context', () => ({
   useInvestApplicationContext: () => ({
     appConfig: { brand },
   }),

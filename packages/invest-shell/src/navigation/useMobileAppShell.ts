@@ -1,6 +1,6 @@
 import { computed, onMounted, shallowRef } from 'vue';
 
-import { isPwaMobile } from '@webdevelop-pro/invest-runtime/pwa/pwaDetector';
+import { isPwaMobile } from '@global-torque/invest-runtime/pwa/pwaDetector';
 import { useBreakpoints } from '@global-torque/ui-kit/breakpoints';
 
 export function useMobileAppShell() {

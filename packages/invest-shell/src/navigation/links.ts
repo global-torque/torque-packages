@@ -1,7 +1,7 @@
 import {
   createInvestAppLinks,
   type InvestAppConfig,
-} from '@webdevelop-pro/invest-core/app/config';
+} from '@global-torque/invest-core/app/config';
 
 let links = createInvestAppLinks({ dashboard: '', static: '' });
 

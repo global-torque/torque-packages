@@ -7,11 +7,11 @@ import { VFormInputPassword } from '@global-torque/ui-kit/form';
 import { Button } from '@global-torque/ui-primitives/button';
 import { getAuthLinks } from '../links.ts';
 import { useLoginStore } from '../store/useLogin.ts';
-import { useGlobalLoader } from '@webdevelop-pro/invest-runtime/loader';
+import { useGlobalLoader } from '@global-torque/invest-runtime/loader';
 import VAuthDemoAccountButton from './VAuthDemoAccountButton.vue';
 import { Spinner } from '@global-torque/ui-primitives/spinner';
 import { Eye, EyeOff } from '@lucide/vue';
-import { EyeIcon, EyeOffIcon } from '@webdevelop-pro/invest-widgets/icons';
+import { EyeIcon, EyeOffIcon } from '@global-torque/invest-widgets/icons';
 
 const loginStore = useLoginStore();
 const { forgot: urlForgot, signup: urlSignup } = getAuthLinks();
