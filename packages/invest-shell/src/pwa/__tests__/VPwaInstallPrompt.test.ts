@@ -57,7 +57,7 @@ describe('VPwaInstallPrompt', () => {
     expect(buttons).toHaveLength(2);
     expect(buttons[0].text()).toContain('Install');
     expect(buttons[1].text()).toContain('Not now');
-    expect(buttons[1].attributes('data-variant')).toBe('outline');
+    expect(buttons[1].attributes('data-variant')).toBe('link');
 
     await buttons[0].trigger('click');
     await buttons[1].trigger('click');
@@ -78,7 +78,7 @@ describe('VPwaInstallPrompt', () => {
     const buttons = wrapper.findAll('button');
     expect(buttons).toHaveLength(1);
     expect(buttons[0].text()).toContain('Got it');
-    expect(buttons[0].attributes('data-variant')).toBe('secondary');
+    expect(buttons[0].attributes('data-variant')).toBe('link');
 
     await buttons[0].trigger('click');
     expect(wrapper.emitted('dismiss')).toHaveLength(1);

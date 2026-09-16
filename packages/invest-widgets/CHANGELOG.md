@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.3 candidate
+
+- Reconciled the accreditation and KYC alert action presentation so actions
+  stay inline with sanitised descriptions while retaining disabled and loading
+  behavior.
+
 ## 0.2.2 candidate
 
 - Established `@global-torque/invest-widgets@0.2.2` as the full framework

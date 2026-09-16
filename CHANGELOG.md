@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.3 candidate
+
+- Reconciled the five shared PWA and alert SFC fixes from the accepted
+  cross-repository source update, preserving typed props/events and existing
+  loading, disabled, sanitisation, and PWA lifecycle behavior.
+- Prepared a uniform seven-package framework cohort at `0.2.3`; the prior
+  `0.2.2` candidate remains retained for recovery.
+
 ## 0.2.2 candidate
 
 - Reissued the seven-package framework candidate under the `@global-torque/*`

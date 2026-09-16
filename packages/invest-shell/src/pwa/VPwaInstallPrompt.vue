@@ -36,23 +36,26 @@ const emit = defineEmits<{
                     ? `Install ${brandName} for faster launch, standalone navigation, and a more native app experience.`
                     : `On iPhone or iPad, open the Share menu in Safari and choose "Add to Home Screen" to install ${brandName}.`
                 }}
-              </AlertDescription>
-            </div>
-            <div class="v-pwa-install-prompt__actions">
+                {{ ' ' }}
               <Button
                 v-if="canInstall"
+                type="button"
+                variant="link"
+                class="v-pwa-install-prompt__action"
                 @click="emit('install')"
-                size="sm"
               >
                 Install
               </Button>
+              {{ ' ' }}
               <Button
-                :variant="canInstall ? 'outline' : 'secondary'"
+                type="button"
+                variant="link"
+                class="v-pwa-install-prompt__action"
                 @click="emit('dismiss')"
-                size="sm"
               >
                 {{ canInstall ? 'Not now' : 'Got it' }}
               </Button>
+              </AlertDescription>
             </div>
     </Alert>
   </div>
@@ -71,11 +74,26 @@ const emit = defineEmits<{
     min-width: 0;
   }
 
-  &__actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-left: auto;
+  &__action[data-slot='button'][data-variant='link'] {
+    display: inline;
+    min-height: 0;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    gap: 0;
+    font: inherit;
+    line-height: inherit;
+    white-space: normal;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    vertical-align: baseline;
+
+    &:hover {
+      background: transparent;
+    }
   }
 }
 </style>

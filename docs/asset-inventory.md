@@ -1,8 +1,11 @@
 # Framework asset inventory
 
-This is the source and rights inventory for framework candidate `0.2.2`.
+This is the source and rights inventory for framework candidate `0.2.3`.
 Counts cover regular asset files (`svg`, `webp`, raster images, and font
 files) under the seven framework packages.
+
+The 0.2.3 SFC reconciliation changes no framework asset paths; the retained
+0.2.2 inventory remains the asset baseline for this candidate.
 
 The pinned producer is
 `global-torque/dashboard.webdevelop.biz@9f35aa0882b765e202538ce7c7d5e82eb1b452d3`.

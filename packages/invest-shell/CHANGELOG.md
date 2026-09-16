@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.3 candidate
+
+- Reconciled the offline, install, and update PWA prompts so actions stay
+  inline with alert content while retaining typed events and lifecycle state.
+
 ## 0.2.2 candidate
 
 - Reissued the framework candidate for fresh public-release validation; package APIs and runtime source remain unchanged.

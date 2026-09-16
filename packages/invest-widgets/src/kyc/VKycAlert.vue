@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue';
 import { Alert, AlertDescription, AlertTitle } from '@global-torque/ui-primitives/alert';
 import { Button } from '@global-torque/ui-primitives/button';
 import { Skeleton } from '@global-torque/ui-primitives/skeleton';
@@ -31,8 +30,6 @@ const emit = defineEmits<{
   descriptionAction: [event: Event];
 }>();
 
-const buttonVariant = computed(() => (props.variant === 'info' ? 'default' : 'destructive'));
-
 const handleDescriptionAction = (event: Event) => emit('descriptionAction', event);
 </script>
 
@@ -46,25 +43,48 @@ const handleDescriptionAction = (event: Event) => emit('descriptionAction', even
     class="VKycAlert v-kyc-alert">
     <component :is="alertIcon(variant)" />
     <AlertTitle>{{ title }}</AlertTitle>
-    <AlertDescription><span
-        v-dompurify-html="description"
-      /></AlertDescription>
-    <Button
-          v-if="buttonText"
-          :variant="buttonVariant"
-          :disabled="isDisabled || isLoading"
-          class="v-kyc-alert__button is--margin-top-0"
-          @click="emit('action')"
-          size="sm"
-        >
-            <Spinner v-if="isLoading" />
-          {{ buttonText }}
-        </Button>
+    <AlertDescription>
+      <span v-dompurify-html="description" />
+      {{ ' ' }}
+      <Button
+        v-if="buttonText"
+        type="button"
+        variant="link"
+        :disabled="isDisabled || isLoading"
+        class="v-kyc-alert__action"
+        @click="emit('action')"
+      >
+        <Spinner v-if="isLoading" />
+        {{ buttonText }}
+      </Button>
+    </AlertDescription>
   </Alert>
 </template>
 
 <style lang="scss">
 .v-kyc-alert {
   margin: 0;
+
+  &__action[data-slot='button'][data-variant='link'] {
+    display: inline;
+    min-height: 0;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    gap: 0;
+    font: inherit;
+    line-height: inherit;
+    white-space: normal;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    vertical-align: baseline;
+
+    &:hover {
+      background: transparent;
+    }
+  }
 }
 </style>

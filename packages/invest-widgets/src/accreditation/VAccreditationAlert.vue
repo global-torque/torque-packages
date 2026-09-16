@@ -31,7 +31,6 @@ const emit = defineEmits<{
   descriptionAction: [event: Event];
 }>();
 
-const buttonVariant = computed(() => (props.variant === 'info' ? 'default' : 'destructive'));
 const hasDescriptionAction = computed(() => !!props.description?.includes('data-action="contact-us"'));
 
 const handleDescriptionAction = (event: Event) => {
@@ -50,23 +49,48 @@ const handleDescriptionAction = (event: Event) => {
     class="VAccreditationAlert v-accreditation-alert">
     <component :is="alertIcon(variant)" />
     <AlertTitle>{{ title }}</AlertTitle>
-    <AlertDescription><span v-dompurify-html="description" /></AlertDescription>
-    <Button
-          v-if="buttonText"
-          :variant="buttonVariant"
-          :disabled="isDisabled || isLoading"
-          class="v-accreditation-alert__button is--margin-top-0"
-          @click="emit('action')"
-          size="sm"
-        >
-            <Spinner v-if="isLoading" />
-          {{ buttonText }}
-        </Button>
+    <AlertDescription>
+      <span v-dompurify-html="description" />
+      {{ ' ' }}
+      <Button
+        v-if="buttonText"
+        type="button"
+        variant="link"
+        :disabled="isDisabled || isLoading"
+        class="v-accreditation-alert__action"
+        @click="emit('action')"
+      >
+        <Spinner v-if="isLoading" />
+        {{ buttonText }}
+      </Button>
+    </AlertDescription>
   </Alert>
 </template>
 
 <style lang="scss">
 .v-accreditation-alert {
   margin: 0;
+
+  &__action[data-slot='button'][data-variant='link'] {
+    display: inline;
+    min-height: 0;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    gap: 0;
+    font: inherit;
+    line-height: inherit;
+    white-space: normal;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    vertical-align: baseline;
+
+    &:hover {
+      background: transparent;
+    }
+  }
 }
 </style>

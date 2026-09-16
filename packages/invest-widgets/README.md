@@ -105,13 +105,13 @@ The `socials` export contains neutral network metadata and standard share URL
 prefixes. Social icons and destinations are host-owned: hosts pass a typed
 `SocialLink[]` with the actual `icon` and `href` values to social link
 surfaces. The retired `./icons/social-login` export and its bundled marks are
-not part of public `0.2.2`; authentication and offer views receive required
+not part of public `0.2.3`; authentication and offer views receive required
 typed icon maps from their application owners. An empty host list renders no
 social anchors.
 
 ## Migration from curated widgets
 
-`@global-torque/invest-widgets@0.2.2` is the full framework widgets package
+`@global-torque/invest-widgets@0.2.3` is the full framework widgets package
 owned and published from `global-torque/torque-packages`. It replaces the
 curated `@global-torque/invest-widgets@0.1.3` package previously published by
 `global-torque/vue-ui`; the two packages have different public APIs and are

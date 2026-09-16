@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.3 candidate
+
+- Reissued the framework cohort after the accepted cross-repository source
+  reconciliation; feature contracts remain unchanged.
+
 ## 0.2.2 candidate
 
 - Reissued the framework candidate for fresh public-release validation; package APIs and runtime source remain unchanged.

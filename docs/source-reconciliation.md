@@ -1,7 +1,11 @@
 # Source and release reconciliation
 
-The `0.2.2` candidate is transferred from
+The `0.2.3` candidate carries the accepted framework SFC reconciliation. Its
+transferred baseline is from
 `global-torque/dashboard.webdevelop.biz@9f35aa0882b765e202538ce7c7d5e82eb1b452d3`.
+The SFC fixes are reconciled from
+`global-torque/webdevelop-platform@20d96220b2a0f3d7cb5d4fa6f5088d9dd45aff1e`,
+and the prior `0.2.2` candidate and its immutable artifacts remain retained.
 The seven framework packages are the only source owned by this repository.
 The exact package matrix, external pins, patch hashes, dependency order,
 intermediate compatibility, abort signals, and recovery rule are recorded in

@@ -58,19 +58,21 @@ const bannerText = computed(() => (
     >
       <component :is="alertIcon(isReconnected ? 'success' : 'info')" />
       <AlertTitle>{{ isReconnected ? 'Back online' : bannerTitle }}</AlertTitle>
-      <AlertDescription>{{ bannerText }}
+      <AlertDescription>
+        {{ bannerText }}
         <span v-if="lastSyncedLabel">
           Last synced: {{ lastSyncedLabel }}.
-        </span></AlertDescription>
-      <div class="v-offline-status-banner__actions">
-              <Button
-                @click="emit('dismiss')"
-                variant="outline"
-                size="sm"
-              >
-                OK
-              </Button>
-            </div>
+        </span>
+        {{ ' ' }}
+        <Button
+          type="button"
+          variant="link"
+          class="v-offline-status-banner__action"
+          @click="emit('dismiss')"
+        >
+          OK
+        </Button>
+      </AlertDescription>
     </Alert>
   </div>
 </template>
@@ -84,11 +86,26 @@ const bannerText = computed(() => (
     margin: 0;
   }
 
-  &__actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-left: auto;
+  &__action[data-slot='button'][data-variant='link'] {
+    display: inline;
+    min-height: 0;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    gap: 0;
+    font: inherit;
+    line-height: inherit;
+    white-space: normal;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    vertical-align: baseline;
+
+    &:hover {
+      background: transparent;
+    }
   }
 }
 </style>

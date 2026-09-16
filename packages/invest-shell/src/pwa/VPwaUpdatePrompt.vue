@@ -45,26 +45,29 @@ const currentBuildLabel = computed(() => (
                 <span v-if="currentBuildLabel">
                   {{ currentBuildLabel }}
                 </span>
-              </AlertDescription>
-            </div>
-            <div class="v-pwa-update-prompt__actions">
+                {{ ' ' }}
               <Button
+                type="button"
+                variant="link"
+                class="v-pwa-update-prompt__action"
                 @click="emit('reload')"
-                size="sm"
                 :disabled="lifecycleState === 'reloading'"
               >
-                  <Spinner v-if="lifecycleState === 'reloading'" />
+                <Spinner v-if="lifecycleState === 'reloading'" />
                 Refresh app
               </Button>
+              {{ ' ' }}
               <Button
+                type="button"
+                variant="link"
+                class="v-pwa-update-prompt__action"
                 :disabled="lifecycleState === 'reloading'"
                 @click="emit('dismissUpdate')"
-                variant="outline"
-                size="sm"
               >
-                  <Spinner v-if="lifecycleState === 'reloading'" />
+                <Spinner v-if="lifecycleState === 'reloading'" />
                 Later
               </Button>
+              </AlertDescription>
             </div>
     </Alert>
 
@@ -78,16 +81,16 @@ const currentBuildLabel = computed(() => (
               </AlertTitle>
               <AlertDescription>
                 Core app files are cached and the app can reopen previously visited pages with cached content.
-              </AlertDescription>
-            </div>
-            <div class="v-pwa-update-prompt__actions">
+                {{ ' ' }}
               <Button
+                type="button"
+                variant="link"
+                class="v-pwa-update-prompt__action"
                 @click="emit('dismissOfflineReady')"
-                variant="secondary"
-                size="sm"
               >
                 Dismiss
               </Button>
+              </AlertDescription>
             </div>
     </Alert>
 
@@ -117,11 +120,26 @@ const currentBuildLabel = computed(() => (
     margin: 0;
   }
 
-  &__actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-left: auto;
+  &__action[data-slot='button'][data-variant='link'] {
+    display: inline;
+    min-height: 0;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    gap: 0;
+    font: inherit;
+    line-height: inherit;
+    white-space: normal;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    vertical-align: baseline;
+
+    &:hover {
+      background: transparent;
+    }
   }
 
   &__content {
