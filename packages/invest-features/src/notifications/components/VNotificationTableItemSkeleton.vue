@@ -54,13 +54,13 @@ import { Skeleton } from '@global-torque/ui-primitives/skeleton';
   }
 
   &__date {
-    color: var(--ui-color-text-muted, #495057);
+    color: var(--ui-color-text-muted, var(--color-text-meta));
     margin-bottom: 8px;
     display: block;
   }
 
   &__content {
-    color: var(--ui-color-text-secondary, #343A40);
+    color: var(--ui-color-text-secondary, var(--color-text-strong));
 
     @media screen and (width < 768px){
       width: 100% !important;

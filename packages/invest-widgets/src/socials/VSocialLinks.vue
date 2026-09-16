@@ -43,7 +43,7 @@ defineProps({
   flex-direction: row;
   align-items: center;
   width: 100%;
-  color: var(--ui-color-text-inverse, #fff);
+  color: var(--ui-color-text-inverse, var(--background));
 
   @media screen and (max-width: 768px){
     flex-wrap: wrap;

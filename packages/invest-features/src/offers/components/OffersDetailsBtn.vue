@@ -240,7 +240,7 @@ onUnmounted(() => {
 
   &__info {
     margin-top: 8px;
-    color: #495057;
+    color: var(--color-text-meta);
   }
 
   &.offer-details-btn--floating {

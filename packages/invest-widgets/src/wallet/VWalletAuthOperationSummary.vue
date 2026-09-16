@@ -255,7 +255,7 @@ const estimatedRateText = computed(() =>
 
   &__text {
     margin: 0;
-    color: #343A40;
+    color: var(--color-text-strong);
     font-size: 14px;
     line-height: 22px;
 
@@ -280,7 +280,7 @@ const estimatedRateText = computed(() =>
   }
 
   &__request-id {
-    color: #343A40;
+    color: var(--color-text-strong);
     font-weight: 700;
     overflow-wrap: anywhere;
   }

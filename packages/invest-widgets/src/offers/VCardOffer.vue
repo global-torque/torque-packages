@@ -224,7 +224,7 @@ const infoItemGroups = computed(() => {
               v-for="(tagInfo, indexInfo) in infoTags"
               :key="indexInfo"
               round
-              background="var(--ui-color-border-muted, #DEE2E6)"
+              background="var(--ui-color-border-muted, var(--input))"
               itemprop="keywords"
               class="v-offer-card__tag-info"
               variant="outline"
@@ -271,7 +271,7 @@ const infoItemGroups = computed(() => {
   display: flex;
   flex-direction: column;
   background: var(--ui-color-surface, var(--background));
-  box-shadow: var(--ui-shadow-dialog, 0 4px 5px -2px rgb(18 22 31 / 5%), 0 6px 25px 2px rgb(18 22 31 / 6%));
+  box-shadow: var(--ui-shadow-dialog, var(--shadow-dialog));
   transition: all .3s ease;
   width: 100%;
   cursor: pointer;
@@ -282,7 +282,7 @@ const infoItemGroups = computed(() => {
   }
 
   &:hover {
-    box-shadow: var(--ui-shadow-raised, 0 6px 7px -4px rgb(18 22 31 / 5%), 0 10px 32px 4px rgb(18 22 31 / 10%));
+    box-shadow: var(--ui-shadow-raised, var(--shadow-raised));
   }
 
   &__img-wrap {
@@ -339,7 +339,7 @@ const infoItemGroups = computed(() => {
   }
 
   &__funded {
-    color: var(--ui-color-positive, #36be83);
+    color: var(--ui-color-positive, var(--color-positive-strong));
     margin-bottom: 8px;
   }
 

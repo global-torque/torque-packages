@@ -204,7 +204,7 @@ const initials = computed(() => {
     border: var(--ui-sidebar-avatar-border, none);
     border-radius: 100%;
     background: var(--ui-color-border-subtle, var(--border));
-    color: var(--ui-color-text-muted, #495057) !important;
+    color: var(--ui-color-text-muted, var(--color-text-meta)) !important;
     font-size: 14px;
     line-height: 18px;
     font-weight: 500;

@@ -264,7 +264,7 @@ function handleSelect(item: SidebarNavItem, options: SelectOptions = {}) {
 
   &__subitem.is--active:hover &__subitem-badge {
     background: rgb(from var(--background) r g b / 18%);
-    color: var(--ui-color-text-inverse, #fff);
+    color: var(--ui-color-text-inverse, var(--background));
   }
 
   :deep(.v-button__content) {

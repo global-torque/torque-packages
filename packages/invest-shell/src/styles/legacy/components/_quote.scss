@@ -18,7 +18,7 @@ q {
     font-weight: 350;
     line-height: 36px;
     flex-direction: column; 
-    color: #333;
+    color: var(--color-text-quote);
 
     p {
         font-style: italic;

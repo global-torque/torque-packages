@@ -22,42 +22,42 @@
 }
 
 .custom-block.info{
-  border-left: 2px solid #0042D4;
+  border-left: 2px solid var(--color-accent-strong);
   background: var(--accent);
 }
 
 .custom-block.note{
-  border-left: 2px solid #6F3DFD;
-  background: #F8F5FF;
+  border-left: 2px solid var(--chart-4);
+  background: var(--color-highlight-tint);
 }
 
 .custom-block.tip{
-  border-left: 2px solid #ADB5BD;
+  border-left: 2px solid var(--color-text-disabled);
   background: var(--border);
 }
 
 .custom-block.important{
   border-left: 2px solid var(--color-status-success, var(--secondary));
-  background: #D9FFEE;
+  background: var(--color-positive-tint);
 }
 
 .custom-block.warning{
-  border-left: 2px solid #FFC24D;
-  background: #FFF7E8;
+  border-left: 2px solid var(--color-warning-accent);
+  background: var(--color-warning-tint);
 }
 
 .custom-block.danger{
-  border-left: 2px solid #FF7070;
-  background: #FFF1F1;
+  border-left: 2px solid var(--destructive);
+  background: var(--color-negative-tint);
 }
 
 .custom-block.caution{
-  border-left: 2px solid #FF7070;
-  background: #FFF1F1;
+  border-left: 2px solid var(--destructive);
+  background: var(--color-negative-tint);
 }
 
 .custom-block.details{
-  border-left: 2px solid #ADB5BD;
+  border-left: 2px solid var(--color-text-disabled);
   background: var(--border);
 }
 

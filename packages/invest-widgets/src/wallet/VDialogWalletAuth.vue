@@ -136,7 +136,7 @@ const otpSubmitButtonText = computed(() =>
 
   &__description {
     margin: 0;
-    color: #495057;
+    color: var(--color-text-meta);
   }
 
   &__operation-alert {

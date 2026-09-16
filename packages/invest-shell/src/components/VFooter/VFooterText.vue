@@ -47,8 +47,8 @@ defineProps<{ brandName: string }>();
 .v-footer-text {
   $root: &;
 
-  color: var(--ui-color-text-disabled, #ADB5BD);
-  background-color: var(--ui-color-surface-inverse, #12161f);
+  color: var(--ui-color-text-disabled, var(--color-text-disabled));
+  background-color: var(--ui-color-surface-inverse, var(--foreground));
 
   &__list {
     list-style-type: disc;

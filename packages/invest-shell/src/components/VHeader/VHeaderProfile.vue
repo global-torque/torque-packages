@@ -151,7 +151,7 @@ const onLogout = () => {
   }
 
   &__menu-email {
-    color: var(--ui-color-text-muted, #495057);
+    color: var(--ui-color-text-muted, var(--color-text-meta));
     margin-top: 2px;
     overflow-wrap: anywhere;
   }
@@ -189,7 +189,7 @@ const onLogout = () => {
     width: 18px;
     height: 18px;
     flex-shrink: 0;
-    color: var(--ui-color-text-disabled, #ADB5BD);
+    color: var(--ui-color-text-disabled, var(--color-text-disabled));
 
     path {
       fill: currentcolor;
@@ -207,7 +207,7 @@ const onLogout = () => {
   &__divider {
     width: 1px;
     height: 30px;
-    border-left: 1px solid var(--ui-color-border, #CED4DA);
+    border-left: 1px solid var(--ui-color-border, var(--color-border-strong));
   }
 
   &__notification {
@@ -220,7 +220,7 @@ const onLogout = () => {
   &__notification-icon {
     width: 24px;
     height: 24px;
-    color: var(--ui-color-text-disabled, #ADB5BD);
+    color: var(--ui-color-text-disabled, var(--color-text-disabled));
   }
 
   &__notification-dot {

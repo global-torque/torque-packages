@@ -343,7 +343,7 @@ const signUpHandler = () => {
   }
 
   &__auth-text {
-    color: var(--ui-color-text-secondary, #343A40);
+    color: var(--ui-color-text-secondary, var(--color-text-strong));
     font-size: 14px;
     line-height: 20px;
   }
@@ -374,7 +374,7 @@ const signUpHandler = () => {
     border: none;
     background: transparent;
     padding: 0;
-    color: var(--ui-color-text-secondary, #343A40);
+    color: var(--ui-color-text-secondary, var(--color-text-strong));
     cursor: pointer;
   }
 
@@ -390,7 +390,7 @@ const signUpHandler = () => {
     border: none;
     background: transparent;
     padding: 0;
-    color: var(--ui-color-text-secondary, #343A40);
+    color: var(--ui-color-text-secondary, var(--color-text-strong));
     cursor: pointer;
   }
 
@@ -403,7 +403,7 @@ const signUpHandler = () => {
     display: flex;
     align-items: center;
     gap: 12px;
-    color: var(--ui-color-text-secondary, #343A40);
+    color: var(--ui-color-text-secondary, var(--color-text-strong));
   }
 
   &__pwa-auth-text {

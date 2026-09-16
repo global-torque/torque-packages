@@ -40,7 +40,7 @@ const showAnswer = computed(() => false);
       :date="formatToDate(new Date(comment.created_at).toISOString())"
       :text="comment?.comment"
       :tag="comment.related"
-      background="var(--ui-color-canvas, #F8F9FA)"
+      background="var(--ui-color-canvas, var(--muted))"
     />
   </div>
 </template>

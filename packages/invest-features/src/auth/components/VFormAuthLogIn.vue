@@ -198,7 +198,7 @@ watch(isGlobalLoading, (active) => {
   }
 
   &__signup-label {
-    color: var(--ui-color-text-secondary, #343A40);
+    color: var(--ui-color-text-secondary, var(--color-text-strong));
   }
 
   &__signup-btn {
@@ -218,7 +218,7 @@ watch(isGlobalLoading, (active) => {
   }
 
   &__input-icon {
-    color: #495057;
+    color: var(--color-text-meta);
     width: 20px;
     height: 20px;
     display: flex;
@@ -227,7 +227,7 @@ watch(isGlobalLoading, (active) => {
   &__wrap {
     padding: 40px;
     background: var(--ui-color-surface, var(--background));
-    box-shadow: var(--ui-shadow-dialog, 0 4px 5px -2px rgb(18 22 31 / 5%), 0 6px 25px 2px rgb(18 22 31 / 6%));
+    box-shadow: var(--ui-shadow-dialog, var(--shadow-dialog));
 
     @media screen and (width < 768px){
       padding: 20px;

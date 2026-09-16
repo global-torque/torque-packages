@@ -90,7 +90,7 @@ const onClose = () => {
 .v-notification-sidebar {
 
   &__header {
-    box-shadow: var(--ui-shadow-control, 0 2px 5px 1px rgb(18 22 31 / 3%), 0 2px 3px -2px rgb(18 22 31 / 15%));
+    box-shadow: var(--ui-shadow-control, var(--shadow-control));
     color: var(--foreground);
   }
 
