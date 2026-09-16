@@ -27,12 +27,16 @@ function isNestedChartDatum(value: unknown): value is NestedChartDatum {
   return typeof value === 'object'
     && value !== null
     && 'data' in value
+    && (value as NestedChartDatum).data !== null
     && typeof (value as NestedChartDatum).data === 'object';
 }
 
 function template(d: ChartDatum | NestedChartDatum, i: number, elements: (HTMLElement | SVGElement)[]) {
   const valueFormatter = props.valueFormatter ?? ((tick: number) => `${tick}`);
-  if (Object.prototype.hasOwnProperty.call(d, props.index)) {
+  // Donut arcs carry a `value` field as well as the original nested datum.
+  const hasNestedValue = isNestedChartDatum(d)
+    && Object.prototype.hasOwnProperty.call(d.data, props.index);
+  if (!hasNestedValue && Object.prototype.hasOwnProperty.call(d, props.index)) {
     const datum = d as ChartDatum;
 
     if (wm.has(datum)) {

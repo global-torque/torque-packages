@@ -3,12 +3,13 @@ import path from 'node:path';
 import { assertNodeExportContracts, collectExportTargets } from './node-build-contract.mjs';
 
 const root = path.resolve(new URL('..', import.meta.url).pathname);
+const { candidate } = JSON.parse(fs.readFileSync(path.join(root, 'docs/source-reconciliation.json'), 'utf8'));
 const packages = fs.readdirSync(path.join(root, 'packages'), { withFileTypes: true }).filter(entry => entry.isDirectory());
 const failures = [];
 for (const entry of packages) {
   const directory = path.join(root, 'packages', entry.name);
   const manifest = JSON.parse(fs.readFileSync(path.join(directory, 'package.json'), 'utf8'));
-  if (manifest.private || manifest.version !== '0.2.3' || manifest.license !== 'MIT') failures.push(`${entry.name}: public MIT 0.2.3 metadata missing`);
+  if (manifest.private || manifest.version !== candidate || manifest.license !== 'MIT') failures.push(`${entry.name}: public MIT ${candidate} metadata missing`);
   for (const required of ['src', 'README.md', 'LICENSE', 'NOTICE.md', 'CHANGELOG.md', 'SECURITY.md', 'SUPPORT.md']) {
     if (!manifest.files?.includes(required)) failures.push(`${entry.name}: files must include ${required}`);
     if (required === 'src' && !fs.existsSync(path.join(directory, required))) failures.push(`${entry.name}: missing ${required}`);

@@ -85,21 +85,14 @@ The package exposes `setInvestWidgetProviders()` and
 `provideInvestWidgetProviders()` for tests or host integration. App and feature
 composition wire these providers to their final models and runtime config.
 
-## Unovis patches
+## Charts
 
-The package consumes `@unovis/ts` and `@unovis/vue` at exactly `1.6.7`. The
-application workspace applies these two application-owned patches:
-
-- `patches/@unovis__ts@1.6.7.patch` — SHA-256
-  `3417f483ba9a7b124580467efc2defb0e23492a58ae3a6970f6a10beaa151630`.
-- `patches/@unovis__vue@1.6.7.patch` — SHA-256
-  `5a989c693186e25ac38869492a688cc6c640c87682a0ea059771c32471e1a4c4`.
-
-They remove the Unovis Leaflet and MapLibre component exports and their related
-types from the application dependency graph. The workspace also keeps its
-scoped `@unovis/ts@1.6.7 > maplibre-gl` omission. These patches and the scoped
-omission remain application-owned; this package does not silently add or
-rebundle MapLibre.
+The package consumes `@unovis/ts` and `@unovis/vue` at exactly `1.7.0`.
+The former 1.6.7 barrel patches and MapLibre exclusion have been removed.
+Consumers install the upstream dependency graph; no workspace patch or hidden
+MapLibre override is required. Area/donut rendering, legends, tooltips,
+crosshairs and selection are exercised in detached browser and SSR fixtures.
+Mapping components are not exposed as framework widget APIs.
 
 The `socials` export contains neutral network metadata and standard share URL
 prefixes. Social icons and destinations are host-owned: hosts pass a typed

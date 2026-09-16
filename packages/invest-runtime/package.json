@@ -1,11 +1,11 @@
 {
   "name": "@global-torque/invest-runtime",
   "private": false,
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "Investment runtime context, session lifecycle, adapters, and PWA services.",
   "license": "MIT",
-  "engines": { "node": ">=22.12.0" },
-  "packageManager": "pnpm@10.34.5",
+  "engines": { "node": "^24.21.0" },
+  "packageManager": "pnpm@12.4.2",
   "sideEffects": ["**/*.vue", "**/*.css", "**/*.scss"],
   "type": "module",
   "exports": {
@@ -55,8 +55,8 @@
     "@capacitor/local-notifications": "^8.2.0",
     "@global-torque/client-error-handling": "0.1.0",
     "@global-torque/sdk": "0.2.0",
-    "@vueuse/core": "^14.2.1",
-    "@vueuse/integrations": "^14.2.1",
+    "@vueuse/core": "^15.0.0",
+    "@vueuse/integrations": "^15.0.0",
     "@global-torque/domain-types": "workspace:*",
     "@global-torque/invest-core": "workspace:*",
     "@global-torque/invest-data": "workspace:*",
@@ -66,18 +66,18 @@
     "vue-sonner": "^2.0.9"
   },
   "devDependencies": {
-    "@types/node": "^25.5.0",
-    "@vue/test-utils": "^2.4.11",
+    "@types/node": "^24.13.5",
+    "@vue/test-utils": "^2.5.1",
     "happy-dom": "^20.12.0",
     "typescript": "^6.0.2",
     "vite": "^8.1.3",
     "vitest": "catalog:",
-    "pinia": "^3.0.4",
+    "pinia": "^4.0.3",
     "vue": "^3.5.39",
     "vue-router": "^5.1.0"
   },
   "peerDependencies": {
-    "pinia": "^3.0.4",
+    "pinia": "^3.0.4 || ^4.0.3",
     "vue": "^3.5.39",
     "vue-router": "^5.1.0"
   },

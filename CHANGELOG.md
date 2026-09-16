@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.3.0 candidate
+
+- Require Node `^24.21.0` and pnpm 12.4.2; remove Node 22 support.
+- Upgrade Vitest 5, jsdom 30, Markdown 15, VueUse 15, Pinia 4 and Unovis 1.7;
+  retain tested Pinia 3 consumer support and TypeScript 6.0.3.
+- Preserve Markdown 14 host plugin compatibility and WebSocket heartbeat timing;
+  fix donut tooltip values and symlink-path link recovery.
+- Remove unused ESLint and obsolete Unovis patches; expand real browser, SSR,
+  hydration, HMR, chart and session-cookie consumer verification.
+- See `docs/dependency-migration-results.md` for staged evidence and limitations.
+
 ## 0.2.3 candidate
 
 - Reconciled the five shared PWA and alert SFC fixes from the accepted

@@ -1,7 +1,9 @@
 # Changelog
 
-## Unreleased
+## 0.3.0 candidate
 
+- Require Node `^24.21.0`; Node 22 is no longer supported.
+- Upgrade Markdown and VueUse integrations; support Pinia 3 and 4 through public package exports.
 - Colour and shadow values now resolve through shared role variables instead of
   ending in a fixed value. 138 declarations across 52 files in this package,
   `@global-torque/invest-shell` and `@global-torque/invest-widgets` are affected.

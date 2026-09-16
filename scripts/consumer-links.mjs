@@ -16,7 +16,7 @@ export const STATE_DIRECTORY = '.torque-framework-links';
 export const JOURNAL_FILE = 'journal.json';
 export const WORKSPACE_FILE = 'pnpm-workspace.yaml';
 export const LOCKFILE = 'pnpm-lock.yaml';
-export const REQUIRED_PNPM_VERSION = '10.34.5';
+export const REQUIRED_PNPM_VERSION = '12.4.2';
 export const FRAMEWORK_PACKAGE_NAMES = Object.freeze([
   '@global-torque/domain-types',
   '@global-torque/invest-core',

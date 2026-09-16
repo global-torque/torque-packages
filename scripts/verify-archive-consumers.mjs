@@ -21,6 +21,19 @@ const expectedPackages = [
   '@global-torque/invest-features',
   '@global-torque/invest-shell',
 ];
+const profileName = process.env.CONSUMER_PROFILE ?? 'baseline';
+const profiles = {
+  baseline: { pinia: '3.0.4', vite: '8.1.3', pluginVue: '6.0.5', nodeTypes: '25.5.0', router: '5.1.0', pnpm: '10.34.5' },
+  target: { pinia: '4.0.3', vite: '8.3.0', pluginVue: '6.0.9', nodeTypes: '24.13.5', router: '5.3.1', pnpm: '12.4.2' },
+};
+if (!Object.hasOwn(profiles, profileName)) throw new Error(`Unknown consumer profile: ${profileName}`);
+const profile = profiles[profileName];
+// Reviewed exact targets published within pnpm 12's default 24-hour window.
+const reviewedMigrationVersions = [
+  '@types/node@24.13.5', '@vue/test-utils@2.5.1',
+  '@vueuse/core@15.0.0', '@vueuse/integrations@15.0.0',
+  '@vueuse/metadata@15.0.0', '@vueuse/shared@15.0.0', 'prettier@3.9.7',
+];
 const packageManagers = (process.env.CONSUMER_PACKAGE_MANAGERS ?? 'npm,pnpm')
   .split(',')
   .map(value => value.trim())
@@ -80,18 +93,21 @@ const directDependencies = {
   '@global-torque/sdk': '0.2.0',
   '@global-torque/client-error-handling': '0.1.0',
   vue: '3.5.42',
-  pinia: '3.0.4',
-  'vue-router': '5.1.0',
+  pinia: profile.pinia,
+  'vue-router': profile.router,
   'reka-ui': '2.10.4',
   sass: '1.104.1',
+  vitepress: '1.6.4',
+  'markdown-it': '15.0.2',
 };
 const developmentDependencies = {
-  '@types/node': '25.5.0',
-  '@vitejs/plugin-vue': '6.0.5',
+  ...(profile.pinia.startsWith('4.') ? { '@vue/devtools-api': '8.1.5' } : {}),
+  '@types/node': profile.nodeTypes,
+  '@vitejs/plugin-vue': profile.pluginVue,
   '@vue/compiler-sfc': '3.5.42',
   '@vue/server-renderer': '3.5.42',
   typescript: '6.0.3',
-  vite: '8.1.3',
+  vite: profile.vite,
   'vite-svg-loader': '5.1.1',
   'vue-tsc': '3.3.11',
 };
@@ -106,14 +122,14 @@ function writeConsumer(consumer) {
     version: '1.0.0',
     private: true,
     type: 'module',
-    packageManager: 'pnpm@10.34.5',
+    packageManager: `pnpm@${profile.pnpm}`,
     scripts: { build: 'vite build', 'build:ssr': 'vite build --ssr src/entry-server.ts --outDir dist-ssr' },
     dependencies: directDependencies,
     devDependencies: developmentDependencies,
     overrides,
-    pnpm: { overrides },
   };
   fs.writeFileSync(path.join(consumer, 'package.json'), `${JSON.stringify(packageJson, null, 2)}\n`);
+  fs.writeFileSync(path.join(consumer, 'pnpm-workspace.yaml'), `${JSON.stringify({ overrides, ...(profile.pnpm.startsWith('12.') ? { verifyDepsBeforeRun: false, minimumReleaseAgeExclude: reviewedMigrationVersions } : {}) }, null, 2)}\n`);
   fs.mkdirSync(path.join(consumer, 'src'), { recursive: true });
   fs.writeFileSync(path.join(consumer, 'index.html'), `<!doctype html>
 <html lang="en">
@@ -129,6 +145,10 @@ export default defineConfig({
   plugins: [vue(), svgLoader({ defaultImport: 'url' })],
   ssr: { noExternal: [/^@global-torque\\//u] },
 });
+`);
+  fs.writeFileSync(path.join(consumer, 'vite.hmr.config.ts'), `import { defineConfig } from 'vite';
+import base from './vite.config';
+export default defineConfig({ ...base, optimizeDeps: { entries: ['hmr.html'] } });
 `);
   fs.writeFileSync(path.join(consumer, 'tsconfig.json'), `${JSON.stringify({
     compilerOptions: {
@@ -161,10 +181,21 @@ import { stripHtmlAndMarkdown } from '@global-torque/invest-core/helpers/text';
 import { VFormAuthSocial } from '@global-torque/invest-features/auth';
 import { VLogo } from '@global-torque/invest-shell/components';
 import { VCardOffer } from '@global-torque/invest-widgets/offers';
-import { defineComponent, h } from 'vue';
+import { defineComponent, h, ref } from 'vue';
+import { useProbeStore } from './store';
+import { useSessionStore } from '@global-torque/invest-runtime/session';
+import { setInvestRuntimeConfig } from '@global-torque/invest-runtime/config';
+import { createInvestAppConfigFromEnv } from '@global-torque/invest-core/app/config';
+import { AreaChart } from '@global-torque/invest-widgets/charts/area';
+import { DonutChart } from '@global-torque/invest-widgets/charts/donut';
 import ChevronDownIcon from '@global-torque/invest-widgets/icons/images/chevron-down.svg?component';
 import chevronDownUrl from '@global-torque/invest-widgets/icons/images/chevron-down.svg';
 
+setInvestRuntimeConfig({ ...createInvestAppConfigFromEnv({ ENV: 'test' }), brand: { title: 'Consumer', description: 'Probe' } });
+const session = useSessionStore();
+const store = useProbeStore();
+const chartData = [{ label: 'A', value: 10, benchmark: 8 }, { label: 'B', value: 20, benchmark: 12 }, { label: 'C', value: 15, benchmark: 18 }];
+const legendClicks = ref(0);
 const canonicalValue = isCanonicalDecimalString('12.5') ? '12.5' : 'invalid';
 const textValue = stripHtmlAndMarkdown('<strong>Plain</strong> **text**');
 const hostIcon = defineComponent({ render: () => h('svg', { 'aria-hidden': 'true' }) });
@@ -177,6 +208,16 @@ const socialIcons = {
 
 <template>
   <main class="consumer-probe">
+    <output data-testid="session-active">{{ session.userLoggedIn }}</output>
+    <button data-testid="session-sync" @click="session.syncSessionFromCookies()">Read session</button>
+    <button data-testid="session-reset" @click="session.resetAll()">Log out</button>
+    <output data-testid="store-label">{{ store.label }}</output>
+    <output data-testid="store-value">{{ store.count }}</output>
+    <button data-testid="store-increment" @click="store.count++">Increment</button>
+    <button data-testid="store-reset" @click="store.$reset()">Reset</button>
+    <div data-testid="area-chart"><AreaChart :data="chartData" index="label" :categories="['value', 'benchmark']" @legend-item-click="legendClicks++" /></div>
+    <output data-testid="legend-clicks">{{ legendClicks }}</output>
+    <div data-testid="donut-chart" style="height: 300px"><DonutChart :data="chartData" index="label" category="value" /></div>
     <div data-testid="logo"><VLogo brand-name="Detached consumer" /></div>
     <div data-testid="social"><VFormAuthSocial :social-icons="socialIcons" /></div>
     <div data-testid="offer"><VCardOffer /></div>
@@ -189,20 +230,60 @@ const socialIcons = {
   </main>
 </template>
 `);
+  fs.writeFileSync(path.join(consumer, 'src/markdown-compatibility.ts'), `import { createMarkdownRenderer } from 'vitepress';
+import MarkdownIt from 'markdown-it';
+import tableWrap from '@global-torque/invest-core/markdown/tableWrap';
+new MarkdownIt().use(tableWrap);
+export async function renderMarkdown(text: string) {
+  const md = await createMarkdownRenderer(process.cwd());
+  md.use(tableWrap);
+  return md.render(text);
+}
+`);
+  fs.writeFileSync(path.join(consumer, 'src/store.ts'), `import { acceptHMRUpdate, defineStore } from 'pinia';
+export const useProbeStore = defineStore('consumer-probe', { state: () => ({ count: 0 }), getters: { label: state => 'v1:' + state.count } });
+if (import.meta.hot) import.meta.hot.accept(acceptHMRUpdate(useProbeStore, import.meta.hot));
+`);
+  fs.writeFileSync(path.join(consumer, 'hmr.html'), '<div id="app"></div><script type="module" src="/src/hmr.ts"></script>');
+  fs.writeFileSync(path.join(consumer, 'src/hmr.ts'), `import { createApp, h } from 'vue';
+import { createPinia } from 'pinia';
+import { useSessionStore } from '@global-torque/invest-runtime/session';
+import { useProbeStore } from './store';
+createApp({ setup() {
+  const store = useProbeStore();
+  const session = useSessionStore();
+  return () => h('main', [
+    h('output', { 'data-testid': 'store-label' }, store.label),
+    h('output', { 'data-testid': 'session-active' }, String(session.userLoggedIn)),
+    h('button', { 'data-testid': 'store-increment', onClick: () => store.count++ }, 'Increment'),
+  ]);
+} }).use(createPinia()).mount('#app');
+`);
   fs.writeFileSync(path.join(consumer, 'src/main.ts'), `import '@global-torque/invest-shell/styles/geometry.css';
 import '@global-torque/invest-shell/styles/components.css';
 import '@global-torque/invest-shell/styles';
-import { createApp } from 'vue';
+import { createApp, createSSRApp } from 'vue';
+import { createPinia } from 'pinia';
 import App from './App.vue';
 
-createApp(App).mount('#app');
+const pinia = createPinia();
+const state = (window as unknown as { __PINIA__?: Record<string, any> }).__PINIA__;
+if (state) pinia.state.value = state;
+const app = state ? createSSRApp(App) : createApp(App);
+app.use(pinia).mount('#app');
 `);
   fs.writeFileSync(path.join(consumer, 'src/entry-server.ts'), `import { createSSRApp } from 'vue';
 import { renderToString } from '@vue/server-renderer';
+import { createPinia } from 'pinia';
+import { useProbeStore } from './store';
 import App from './App.vue';
 
-export async function render() {
-  return renderToString(createSSRApp(App));
+export async function render(count = 0) {
+  const pinia = createPinia();
+  const app = createSSRApp(App).use(pinia);
+  useProbeStore(pinia).count = count;
+  const html = await renderToString(app);
+  return { html, state: pinia.state.value };
 }
 `);
 }
@@ -304,6 +385,11 @@ async function verifyNativeNode(consumer) {
   const markdown = new (MarkdownIt.default ?? MarkdownIt)();
   tableWrap.default(markdown);
   assert.match(markdown.render('| A |\n| - |\n| B |'), /v-table__wrap/u, 'Node table wrapper did not render its public wrapper');
+
+  const vitepress = await import(pathToFileURL(requireFromConsumer.resolve('vitepress')).href);
+  const vitepressMarkdown = await vitepress.createMarkdownRenderer(consumer);
+  vitepressMarkdown.use(tableWrap.default);
+  assert.match(vitepressMarkdown.render('| A |\n| - |\n| B |'), /v-table__wrap/u);
 
   const text = resolvedModules.get('@global-torque/invest-core/helpers/text');
   assert.equal(text.stripHtmlAndMarkdown('<strong>Plain</strong> **text**'), 'Plain ');
@@ -431,7 +517,17 @@ async function verifyBuilds(consumer) {
   const serverEntry = walkFiles(path.join(consumer, 'dist-ssr')).find(file => file.endsWith('entry-server.js'));
   if (!serverEntry) throw new Error('SSR consumer entry was not emitted');
   const server = await import(pathToFileURL(serverEntry).href);
-  const rendered = await server.render();
+  const [first, second] = await Promise.all([server.render(7), server.render(19)]);
+  assert.equal(first.state['consumer-probe'].count, 7, 'SSR request state leaked');
+  assert.equal(second.state['consumer-probe'].count, 19, 'SSR request state leaked');
+  const rendered = first.html;
+  assert.match(rendered, /data-testid="store-value">7<\/output>/u);
+  assert.match(rendered, /v-shadcn-chart-area/u);
+  assert.match(rendered, /v-shadcn-chart-donut/u);
+  const indexPath = path.join(consumer, 'dist/index.html');
+  const index = fs.readFileSync(indexPath, 'utf8');
+  fs.writeFileSync(path.join(consumer, 'dist/hydrated.html'), index.replace('<div id="app"></div>',
+    `<div id="app">${rendered}</div><script>window.__PINIA__=${JSON.stringify(first.state).replaceAll('<', '\\u003c')}</script>`));
   assert.match(rendered, /consumer-probe/u, 'SSR consumer did not render the framework SFC');
   assert.match(rendered, /12\.5/u, 'SSR consumer did not render the source TypeScript contract');
   console.log(`consumer-build-pass ${consumer}`);
@@ -455,6 +551,8 @@ async function verifyBrowser(consumer, manager) {
   const evidenceRoot = path.resolve(
     process.env.RUNNER_TEMP ?? process.env.TMPDIR ?? os.tmpdir(),
     'torque-framework-consumer-evidence',
+    receipt.candidate,
+    profileName,
     manager,
   );
   fs.mkdirSync(evidenceRoot, { recursive: true });
@@ -469,7 +567,9 @@ async function verifyBrowser(consumer, manager) {
   preview.stderr.on('data', chunk => { output.stderr += chunk.toString(); });
   const report = {
     schemaVersion: 1,
+    profile: profileName,
     packageManager: manager,
+    resolvedVersions: resolvedVersions(consumer),
     node: process.version,
     chromium: null,
     candidateReceipt: path.resolve(artifacts, 'candidate-receipt.json'),
@@ -511,6 +611,54 @@ async function verifyBrowser(consumer, manager) {
         const image = page.locator('[data-testid="svg-url"]');
         await image.waitFor({ state: 'visible' });
         assert(await image.evaluate(element => element instanceof HTMLImageElement && element.complete && element.naturalWidth > 0), 'Detached SVG URL image did not load');
+        assert.equal(await page.locator('[data-testid="session-active"]').textContent(), 'false');
+        await context.addCookies([{ name: 'session', value: encodeURIComponent(JSON.stringify({ active: true })), url: `http://127.0.0.1:${port}` }]);
+        await page.locator('[data-testid="session-sync"]').click();
+        assert.equal(await page.locator('[data-testid="session-active"]').textContent(), 'true');
+        await page.locator('[data-testid="session-reset"]').click();
+        assert.equal(await page.locator('[data-testid="session-active"]').textContent(), 'false');
+        assert(!(await context.cookies()).some(cookie => cookie.name === 'session'), 'Logout did not remove the real browser session cookie');
+        assert.equal(await page.locator('[data-testid="store-value"]').textContent(), '0');
+        await page.locator('[data-testid="store-increment"]').click();
+        assert.equal(await page.locator('[data-testid="store-value"]').textContent(), '1');
+        await page.locator('[data-testid="store-reset"]').click();
+        assert.equal(await page.locator('[data-testid="store-value"]').textContent(), '0');
+        await page.locator('[data-testid="area-chart"] path[class$="-area"]').first().waitFor();
+        await page.locator('[data-testid="donut-chart"] path[class$="-segment"]').first().waitFor();
+        const area = page.locator('[data-testid="area-chart"]');
+        const legend = area.locator('.v-chart-legend').getByText('value', { exact: true });
+        await legend.click();
+        assert.equal(await page.locator('[data-testid="legend-clicks"]').textContent(), '1');
+        await page.waitForFunction(() => {
+          const lines = [...document.querySelectorAll('[data-testid="area-chart"] path[class$="-linePath"]')];
+          return lines.length === 2 && lines.some(line => Number(getComputedStyle(line.parentElement).opacity) === 0.2);
+        });
+        await legend.click();
+        await page.waitForFunction(() => {
+          const lines = [...document.querySelectorAll('[data-testid="area-chart"] path[class$="-linePath"]')];
+          return lines.length === 2 && lines.every(line => Number(getComputedStyle(line.parentElement).opacity) === 1);
+        });
+        await area.locator('path[class$="-area"]').first().hover({ force: true });
+        await area.locator('.v-chart-tooltip').waitFor({ state: 'visible' });
+        assert.match(await area.locator('.v-chart-tooltip').innerText(), /value/);
+        assert.match(await area.locator('.v-chart-tooltip').innerText(), /benchmark/);
+        assert(await area.locator('[class$="-crosshair-component"] circle').count() > 0, 'Area crosshair did not render data markers');
+        const segments = page.locator('[data-testid="donut-chart"] path[class$="-segment"]');
+        await segments.first().scrollIntoViewIfNeeded();
+        const segmentPoint = await segments.first().evaluate(element => {
+          const point = element.getPointAtLength(element.getTotalLength() * 0.2);
+          const screen = new DOMPoint(point.x * 0.97, point.y * 0.97).matrixTransform(element.getScreenCTM());
+          return { x: screen.x, y: screen.y };
+        });
+        await page.mouse.move(segmentPoint.x, segmentPoint.y);
+        const donutTooltip = page.locator('[data-testid="donut-chart"] .v-chart-tooltip');
+        await donutTooltip.waitFor({ state: 'visible' });
+        assert.equal(await donutTooltip.locator('.v-chart-tooltip__right').innerText(), '20');
+        assert.doesNotMatch(await donutTooltip.innerText(), /NaN/);
+        await page.mouse.click(segmentPoint.x, segmentPoint.y);
+        await page.waitForFunction(() => [...document.querySelectorAll('[data-testid="donut-chart"] path[class$="-segment"]')].filter(el => Number(getComputedStyle(el).opacity) === 0.2).length === 2);
+        await page.mouse.click(segmentPoint.x, segmentPoint.y);
+        await page.waitForFunction(() => [...document.querySelectorAll('[data-testid="donut-chart"] path[class$="-segment"]')].every(el => Number(getComputedStyle(el).opacity) === 1));
         await assertTypographyWitness(page);
         await verifyTypographyOverride(page);
         const desktopWitnessDisplay = await page.locator('[data-testid="desktop-witness"]').evaluate(element => getComputedStyle(element).display);
@@ -522,6 +670,12 @@ async function verifyBrowser(consumer, manager) {
         assert.deepEqual(badResponses, [], 'Browser resources returned an error response');
         for (const resourceType of ['script', 'stylesheet']) assert(resources.has(resourceType), `Missing local ${resourceType} browser resource`);
         await page.screenshot({ path: path.join(evidenceRoot, `${viewport.name}.png`), fullPage: true });
+        await page.goto(`http://127.0.0.1:${port}/hydrated.html`, { waitUntil: 'networkidle' });
+        assert.equal(await page.locator('[data-testid="store-value"]').textContent(), '7');
+        await page.locator('[data-testid="store-increment"]').click();
+        assert.equal(await page.locator('[data-testid="store-value"]').textContent(), '8');
+        assert.deepEqual(pageErrors, [], 'Hydration page errors were reported');
+        assert.deepEqual(consoleErrors, [], 'Hydration console errors were reported');
         report.viewports.push({ ...viewport, result: 'pass', resources: [...resources] });
       } catch (error) {
         report.errors.push(`${viewport.name}: ${error.message}`);
@@ -550,6 +704,80 @@ async function verifyBrowser(consumer, manager) {
   }
 }
 
+async function verifyStoreHmr(consumer, evidence) {
+  const port = 5400 + (process.pid % 1000);
+  const output = { stdout: '', stderr: '' };
+  const server = spawn(path.join(consumer, 'node_modules/.bin/vite'), ['--config', 'vite.hmr.config.ts', '--host', '127.0.0.1', '--port', String(port), '--strictPort'], { cwd: consumer, env: { ...process.env, NODE_ENV: 'development' } });
+  server.stdout.on('data', chunk => { output.stdout += chunk; });
+  server.stderr.on('data', chunk => { output.stderr += chunk; });
+  const storePath = path.join(consumer, 'src/store.ts');
+  const original = fs.readFileSync(storePath, 'utf8');
+  const report = { result: 'fail', errors: [], server: output };
+  let browser;
+  try {
+    await waitForPreview(`http://127.0.0.1:${port}/`, server, output);
+    browser = await chromium.launch({ headless: true });
+    const page = await browser.newPage();
+    const errors = report.errors;
+    page.on('pageerror', error => errors.push(String(error)));
+    await page.goto(`http://127.0.0.1:${port}/hmr.html`, { waitUntil: 'networkidle' });
+    assert.equal(await page.locator('[data-testid="session-active"]').textContent(), 'false');
+    await page.locator('[data-testid="store-increment"]').click();
+    assert.equal(await page.locator('[data-testid="store-label"]').textContent(), 'v1:1');
+    fs.writeFileSync(storePath, original.replace("'v1:'", "'v2:'"));
+    await page.waitForFunction(() => document.querySelector('[data-testid="store-label"]')?.textContent === 'v2:1');
+    assert.deepEqual(errors, [], 'Store HMR raised browser errors');
+    report.result = 'pass';
+    console.log(`consumer-pinia-hmr-pass ${consumer}`);
+  } catch (error) {
+    report.errors.push(error.message);
+    throw error;
+  } finally {
+    fs.writeFileSync(path.join(evidence, 'hmr-report.json'), JSON.stringify(report, null, 2) + '\n');
+    fs.writeFileSync(storePath, original);
+    if (browser) await browser.close();
+    server.kill('SIGTERM');
+    await new Promise(resolve => { if (server.exitCode !== null) resolve(); else { server.once('exit', resolve); setTimeout(resolve, 3000); } });
+    if (server.exitCode === null) server.kill('SIGKILL');
+  }
+}
+
+function resolvedVersions(consumer) {
+  return Object.fromEntries([...Object.keys(directDependencies), ...Object.keys(developmentDependencies)].map(name => {
+    const resolved = path.join(consumer, 'node_modules', ...name.split('/'), 'package.json');
+    return [name, JSON.parse(fs.readFileSync(resolved, 'utf8')).version];
+  }));
+}
+
+function installedGraph(consumer) {
+  const visited = new Set();
+  const packages = [];
+  function visitModules(directory) {
+    if (!fs.existsSync(directory)) return;
+    for (const entry of fs.readdirSync(directory)) {
+      if (entry === '.pnpm') {
+        const store = path.join(directory, entry);
+        for (const slot of fs.readdirSync(store)) {
+          visitModules(slot === 'node_modules' ? path.join(store, slot) : path.join(store, slot, 'node_modules'));
+        }
+      } else if (entry.startsWith('@')) {
+        visitModules(path.join(directory, entry));
+      } else if (!entry.startsWith('.')) {
+        const candidate = path.join(directory, entry);
+        if (!fs.existsSync(path.join(candidate, 'package.json'))) continue;
+        const real = fs.realpathSync(candidate);
+        if (visited.has(real)) continue;
+        visited.add(real);
+        const manifest = JSON.parse(fs.readFileSync(path.join(real, 'package.json'), 'utf8'));
+        packages.push({ name: manifest.name, version: manifest.version, engines: manifest.engines ?? {}, path: path.relative(consumer, real) });
+        visitModules(path.join(real, 'node_modules'));
+      }
+    }
+  }
+  visitModules(path.join(consumer, 'node_modules'));
+  return packages.sort((a, b) => `${a.name}@${a.version}`.localeCompare(`${b.name}@${b.version}`));
+}
+
 for (const manager of packageManagers) {
   if (!['npm', 'pnpm'].includes(manager)) throw new Error(`Unsupported detached consumer package manager: ${manager}`);
   const base = fs.mkdtempSync(path.join(os.tmpdir(), `torque-framework-${manager}-`));
@@ -557,16 +785,29 @@ for (const manager of packageManagers) {
   fs.mkdirSync(consumer, { recursive: true });
   try {
     writeConsumer(consumer);
+    const managerVersion = execFileSync(manager, ['--version'], { cwd: consumer, encoding: 'utf8' }).trim();
+    if (manager === 'pnpm') assert.equal(managerVersion, profile.pnpm, 'Detached pnpm version does not match the profile');
+    console.log(`consumer-toolchain ${profileName} ${manager}@${managerVersion} node@${process.version}`);
     const installArgs = manager === 'npm'
       ? ['install', '--ignore-scripts', '--no-audit', '--no-fund']
       : ['install', '--ignore-scripts'];
     execFileSync(manager, installArgs, { cwd: consumer, stdio: 'inherit', env: { ...process.env, CI: 'true' } });
+    const evidence = path.resolve(process.env.RUNNER_TEMP ?? process.env.TMPDIR ?? os.tmpdir(),
+      'torque-framework-consumer-evidence', receipt.candidate, profileName, manager);
+    fs.mkdirSync(evidence, { recursive: true });
+    for (const file of ['package.json', 'package-lock.json', 'pnpm-lock.yaml', 'pnpm-workspace.yaml']) {
+      if (fs.existsSync(path.join(consumer, file))) fs.copyFileSync(path.join(consumer, file), path.join(evidence, file));
+    }
+    fs.writeFileSync(path.join(evidence, 'dependency-graph.json'), `${JSON.stringify(installedGraph(consumer), null, 2)}\n`);
+    fs.writeFileSync(path.join(evidence, 'toolchain.json'), `${JSON.stringify({ profile: profileName, manager, managerVersion, node: process.version }, null, 2)}\n`);
+    console.log(`consumer-versions ${profileName} ${manager} ${JSON.stringify(resolvedVersions(consumer))}`);
     runTypecheck(consumer);
     runNegativePublicContractCheck(consumer);
     await verifyNativeNode(consumer);
     verifySingletons(consumer);
     await verifyBuilds(consumer);
     await verifyBrowser(consumer, manager);
+    await verifyStoreHmr(consumer, evidence);
     console.log(`archive-consumer-pass ${manager}`);
   } finally {
     if (process.env.KEEP_CONSUMER_ARTIFACTS !== 'true') fs.rmSync(base, { recursive: true, force: true });

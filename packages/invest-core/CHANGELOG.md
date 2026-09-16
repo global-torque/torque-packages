@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.0 candidate
+
+- Require Node `^24.21.0`; Node 22 is no longer supported.
+- Upgrade Markdown to 15 and retain typed table-plugin compatibility with Markdown 14 hosts.
+
 ## 0.2.3 candidate
 
 - Reissued the framework cohort after the accepted cross-repository source

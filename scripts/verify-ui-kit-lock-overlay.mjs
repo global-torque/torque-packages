@@ -39,16 +39,24 @@ if (derivedFileLocators.length === 0) throw new Error('Derived lockfile does not
 if (derivedFileLocators.some(locator => !locator.includes(archiveName))) throw new Error('Derived lockfile contains an unrelated file locator');
 const locatorToken = `file:<${archiveToken}>`;
 
-const normalize = (text, { derived }) => text.split('\n').filter((line) => {
-  if (!derived) return true;
-  return !/^\s{2}['"]?@global-torque\/ui-kit['"]?:\s*file:[^\n]*global-torque-ui-kit-0\.1\.4\.tgz\s*$/u.test(line);
-}).map((line) => line
-  .replace(uiFileLocator, locatorToken)
-  .replaceAll(`@global-torque/ui-kit@${locatorToken}`, '@global-torque/ui-kit@0.1.4')
-  .replaceAll(`specifier: ${locatorToken}`, 'specifier: 0.1.4')
-  .replaceAll(`version: ${locatorToken}`, 'version: 0.1.4')
-  .replaceAll(`, tarball: ${locatorToken}`, '')
-).join('\n');
+const normalize = (text, { derived }) => {
+  const normalized = text.split('\n').filter((line) => {
+    if (!derived) return true;
+    return !/^\s{2}['"]?@global-torque\/ui-kit['"]?:\s*file:[^\n]*global-torque-ui-kit-0\.1\.4\.tgz\s*$/u.test(line);
+  }).map((line) => line
+    .replace(uiFileLocator, locatorToken)
+    .replaceAll(`@global-torque/ui-kit@${locatorToken}`, '@global-torque/ui-kit@0.1.4')
+    .replaceAll(`specifier: ${locatorToken}`, 'specifier: 0.1.4')
+    .replaceAll(`version: ${locatorToken}`, 'version: 0.1.4')
+    .replaceAll(`, tarball: ${locatorToken}`, '')
+  ).join('\n');
+  // pnpm 12 records the package version explicitly for file tarballs. Permit
+  // only the authenticated UI Kit version in its own package resolution block.
+  return derived ? normalized.replace(
+    /(^  ['"]@global-torque\/ui-kit@0\.1\.4['"]:\n    resolution: \{[^\n]+\}\n)    version: 0\.1\.4\n/mu,
+    '$1',
+  ) : normalized;
+};
 
 const expectedImporters = ['packages/invest-features', 'packages/invest-shell', 'packages/invest-widgets'];
 const importerBlock = (text, importer) => {

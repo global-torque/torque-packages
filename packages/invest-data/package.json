@@ -1,11 +1,11 @@
 {
   "name": "@global-torque/invest-data",
   "private": false,
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "Framework-free investment data clients and repository state helpers.",
   "license": "MIT",
-  "engines": { "node": ">=22.12.0" },
-  "packageManager": "pnpm@10.34.5",
+  "engines": { "node": "^24.21.0" },
+  "packageManager": "pnpm@12.4.2",
   "sideEffects": false,
   "type": "module",
   "exports": {

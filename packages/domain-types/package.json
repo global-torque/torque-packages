@@ -1,11 +1,11 @@
 {
   "name": "@global-torque/domain-types",
   "private": false,
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "Pure investment domain contracts for the Torque framework.",
   "license": "MIT",
-  "engines": { "node": ">=22.12.0" },
-  "packageManager": "pnpm@10.34.5",
+  "engines": { "node": "^24.21.0" },
+  "packageManager": "pnpm@12.4.2",
   "sideEffects": false,
   "scripts": {
     "typecheck": "tsc --noEmit -p tsconfig.json",
