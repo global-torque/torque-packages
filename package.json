@@ -17,9 +17,10 @@
     "verify-candidate": "node scripts/verify-candidate.mjs",
     "verify-ui-kit-overlay": "node scripts/verify-ui-kit-overlay.mjs",
     "verify-archive-consumers": "node scripts/verify-archive-consumers.mjs",
+    "test:links": "node --test scripts/consumer-links.test.mjs scripts/consumer-link-vite-cohort.test.mjs",
     "test:release": "node scripts/test-release-contracts.mjs",
     "pack:candidate": "node scripts/pack-candidate.mjs",
-    "check": "pnpm run verify-candidate && pnpm run typecheck && pnpm run test:run && pnpm run lint && pnpm run check:runtime-deps && pnpm run check:packlist",
+    "check": "pnpm run verify-candidate && pnpm run typecheck && pnpm run test:run && pnpm run test:links && pnpm run lint && pnpm run check:runtime-deps && pnpm run check:packlist",
     "release:verify": "node scripts/verify-release-bundle.mjs",
     "build:node": "pnpm --filter @global-torque/invest-core run build:node && pnpm --filter @global-torque/invest-runtime run build:node"
   },
