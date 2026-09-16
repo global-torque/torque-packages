@@ -117,7 +117,7 @@ const handleComplete = () => {
   &__wrap {
     padding: 40px;
     background: var(--background);
-    box-shadow: 0 4px 5px -2px rgb(18 22 31 / 5%), 0 6px 25px 2px rgb(18 22 31 / 6%);
+    box-shadow: var(--shadow-dialog);
 
     @media screen and (width < 768px) {
       padding: 20px;
@@ -132,7 +132,7 @@ const handleComplete = () => {
 
   &__description {
     margin: 0 0 16px;
-    color: #495057;
+    color: var(--color-text-meta);
   }
 
   &__submit {

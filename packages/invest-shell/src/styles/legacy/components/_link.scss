@@ -79,7 +79,7 @@ font-weight: 800;
 
     &:hover{
         text-decoration-line: none;
-        background-image: linear-gradient(to bottom, var(--ui-link-highlight-background, #444fe520) 0%, var(--ui-link-highlight-background, #444fe520) 100%);
+        background-image: linear-gradient(to bottom, var(--ui-link-highlight-background, var(--color-link-highlight)) 0%, var(--ui-link-highlight-background, var(--color-link-highlight)) 100%);
         background-size: 100% 100%;
     }
 }

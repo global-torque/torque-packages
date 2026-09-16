@@ -171,7 +171,7 @@ const emit = defineEmits(['click']);
     height: 20px;
     flex-shrink: 0;
     display: none;
-    color: #adb5bd;
+    color: var(--color-text-disabled);
 
     path{
       fill: currentcolor;

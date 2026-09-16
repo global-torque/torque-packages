@@ -316,10 +316,10 @@ const shouldHideMenu = computed(() => (
   --pwa-footer-menu-background: var(--ui-color-surface, var(--background));
   --pwa-footer-menu-border-color: color-mix(in srgb, var(--ui-color-surface, var(--background)) 5%, transparent);
   --pwa-footer-menu-border-radius: 2px;
-  --pwa-footer-menu-shadow: var(--ui-shadow-raised, 0 6px 7px -4px rgb(18 22 31 / 5%), 0 10px 32px 4px rgb(18 22 31 / 10%));
+  --pwa-footer-menu-shadow: var(--ui-shadow-raised, var(--shadow-raised));
   --pwa-footer-menu-color: #{var(--muted-foreground)};
   --pwa-footer-menu-link-active-background: #{var(--accent)};
-  --pwa-footer-menu-label-active-color: var(--ui-color-surface-inverse-muted, #1A202D);
+  --pwa-footer-menu-label-active-color: var(--ui-color-surface-inverse-muted, var(--color-surface-inverse-muted));
 }
 
 @media (width <= 768px) {

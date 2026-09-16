@@ -4,6 +4,6 @@
   gap: 8px;
   border-radius: 2px;
   background: var(--ui-color-surface, var(--background));
-  box-shadow: var(--ui-shadow-dialog, 0 4px 5px -2px rgb(18 22 31 / 5%), 0 6px 25px 2px rgb(18 22 31 / 6%));
+  box-shadow: var(--ui-shadow-dialog, var(--shadow-dialog));
   border: 1px solid var(--ui-color-canvas, var(--muted));
 }

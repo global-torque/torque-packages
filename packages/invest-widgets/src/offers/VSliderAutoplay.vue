@@ -16,7 +16,7 @@ const props = defineProps({
   },
   activeColor: {
     type: String,
-    default: 'var(--ui-color-warning, #F1AF32)',
+    default: 'var(--ui-color-warning, var(--color-status-warning))',
   },
   showPagination: {
     type: Boolean,

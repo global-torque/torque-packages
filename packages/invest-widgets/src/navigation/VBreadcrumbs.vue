@@ -97,7 +97,7 @@ const isLast = (index: number) => index === props.data.length - 1;
   // Keep inactive labels in the host's existing text role.
   [data-slot='breadcrumb-page'],
   [data-slot='breadcrumb-separator'] {
-    color: var(--ui-color-text-disabled, #adb5bd);
+    color: var(--ui-color-text-disabled, var(--color-text-disabled));
   }
 
   & + * {

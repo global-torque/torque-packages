@@ -74,14 +74,14 @@ const onSubmit = () => {
 .forgot-form {
   padding: 40px;
   background: var(--ui-color-surface, var(--background));
-  box-shadow: var(--ui-shadow-dialog, 0 4px 5px -2px rgb(18 22 31 / 5%), 0 6px 25px 2px rgb(18 22 31 / 6%));
+  box-shadow: var(--ui-shadow-dialog, var(--shadow-dialog));
 
   @media screen and (width < 768px){
       padding: 20px;
   }
 
   &__text {
-    color: var(--ui-color-text-muted, #495057);
+    color: var(--ui-color-text-muted, var(--color-text-meta));
     margin-top: 4px;
   }
 

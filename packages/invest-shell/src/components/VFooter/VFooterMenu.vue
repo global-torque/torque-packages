@@ -113,12 +113,12 @@ const getComponentClass = (item: MenuItem) => {
 
   &__item {
     white-space: nowrap;
-    color: var(--ui-color-text-inverse, #fff);
+    color: var(--ui-color-text-inverse, var(--background));
     text-decoration: none;
 
     &:hover,
     &.is--active {
-      color: var(--ui-color-accent-inverse, var(--ui-color-accent, #004fff));
+      color: var(--ui-color-accent-inverse, var(--ui-color-accent, var(--primary)));
     }
   }
 

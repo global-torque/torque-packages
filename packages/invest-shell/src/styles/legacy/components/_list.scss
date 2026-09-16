@@ -3,13 +3,13 @@
 ol {
     list-style: decimal;
     padding-left: 23px;
-    color: var(--ui-color-text-secondary, #343A40);
+    color: var(--ui-color-text-secondary, var(--color-text-strong));
 }
 
 ul {
     list-style: disc;
     padding-left: 23px;
-    color: var(--ui-color-text-secondary, #343A40);
+    color: var(--ui-color-text-secondary, var(--color-text-strong));
 }
 
 li {
@@ -93,7 +93,7 @@ li.with-default-distance + li.with-default-distance{
         align-items: center;
         gap: 10px;
         color: inherit;
-        border-bottom: 1px solid var(--ui-color-text-muted, #495057);
+        border-bottom: 1px solid var(--ui-color-text-muted, var(--color-text-meta));
     }
 
     li + li{

@@ -110,7 +110,7 @@ const getComponentProps = (item: IDropdown) => {
   &__chevron {
     width: 14px;
     margin-left: 9px;
-    color: var(--ui-color-text-muted, #495057);
+    color: var(--ui-color-text-muted, var(--color-text-meta));
     transition: transform 0.3s;
   }
 
@@ -135,7 +135,7 @@ const getComponentProps = (item: IDropdown) => {
     width: 18px;
     height: 18px;
     flex-shrink: 0;
-    color: var(--ui-color-text-disabled, #adb5bd);
+    color: var(--ui-color-text-disabled, var(--color-text-disabled));
 
     path{
       fill: currentcolor;

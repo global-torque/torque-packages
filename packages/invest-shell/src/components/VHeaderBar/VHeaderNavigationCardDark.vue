@@ -86,7 +86,7 @@ const backgroundImageLocal = computed(() => (props.data?.background ? `url(${pro
   gap: 8px;
   flex-shrink: 0;
   align-self: stretch;
-  background-color: var(--ui-color-surface-inverse, #12161f);
+  background-color: var(--ui-color-surface-inverse, var(--foreground));
   background-size: auto 75%;
   background-position: bottom 9px right 0;
   background-repeat: no-repeat;
@@ -107,7 +107,7 @@ const backgroundImageLocal = computed(() => (props.data?.background ? `url(${pro
   &__text {
     flex: 1 0 0;
     align-self: stretch;
-    color: var(--ui-color-text-inverse, #fff);
+    color: var(--ui-color-text-inverse, var(--background));
     opacity: 0.9;
   }
 
@@ -136,7 +136,7 @@ const backgroundImageLocal = computed(() => (props.data?.background ? `url(${pro
     max-width: 100%;
     width: 100%;
     min-width: 0;
-    color: var(--ui-color-text-inverse, #fff);
+    color: var(--ui-color-text-inverse, var(--background));
     text-decoration: none;
     overflow: hidden;
     opacity: 0.9;

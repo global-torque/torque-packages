@@ -1,44 +1,35 @@
 // Legacy Sass names resolve at runtime; default values preserve the original palette.
-$primary: var(--ui-color-accent, #004FFF);
-$primary-dark: var(--ui-color-accent-strong, #0042D4);
-$primary-light: var(--ui-color-subtle, #F0F4FF);
+$primary: var(--ui-color-accent, var(--primary));
+$primary-dark: var(--ui-color-accent-strong, var(--color-accent-strong));
+$primary-light: var(--ui-color-subtle, var(--accent));
 
-$secondary: var(--color-status-success, var(--ui-color-positive-accent, #3DDC97));
-$secondary-dark: var(--ui-color-positive, #36BE83);
-$secondary-light: var(--ui-color-positive-background, #D9FFEE);
+$secondary: var(--color-status-success, var(--ui-color-positive-accent, var(--chart-2)));
+$secondary-dark: var(--ui-color-positive, var(--color-positive-strong));
+$secondary-light: var(--ui-color-positive-background, var(--color-positive-tint));
 
-$red: var(--ui-color-negative-accent, #FF7070);
-$red-dark: var(--ui-color-negative, #FF3B3B);
-$red-light: var(--ui-color-negative-background, #FFF1F1);
+$red: var(--ui-color-negative-accent, var(--destructive));
+$red-dark: var(--ui-color-negative, var(--chart-5));
+$red-light: var(--ui-color-negative-background, var(--color-negative-tint));
 
-$purple: var(--ui-color-highlight, #6F3DFD);
-$purple-dark: var(--ui-color-highlight-strong, #5014D0);
-$purple-light: var(--ui-color-highlight-background, #F8F5FF);
+$purple: var(--ui-color-highlight, var(--color-status-info));
+$purple-dark: var(--ui-color-highlight-strong, var(--color-highlight-strong));
+$purple-light: var(--ui-color-highlight-background, var(--color-highlight-tint));
 
-$yellow: var(--ui-color-warning-accent, #FFC24D);
-$yellow-dark: var(--ui-color-warning, #F1AF32);
-$yellow-light: var(--ui-color-warning-background, #FFF7E8);
+$yellow: var(--ui-color-warning-accent, var(--color-warning-accent));
+$yellow-dark: var(--ui-color-warning, var(--color-status-warning));
+$yellow-light: var(--ui-color-warning-background, var(--color-warning-tint));
 
-$white: var(--ui-color-surface, #fff);
-$gray-10: var(--ui-color-canvas, #F8F9FA);
-$gray-20: var(--ui-color-border-subtle, #E9ECEF);
-$gray-30: var(--ui-color-border-muted, #DEE2E6);
-$gray-40: var(--ui-color-border, #CED4DA);
-$gray-50: var(--ui-color-text-disabled, #ADB5BD);
-$gray-60: var(--ui-color-text-subtle, #6C757D);
-$gray-70: var(--ui-color-text-muted, #495057);
-$gray-80: var(--ui-color-text-secondary, #343A40);
-$gray-90: var(--ui-color-surface-inverse-muted, #1A202D);
-$black: var(--ui-color-text, #12161F);
-$black-2: var(--ui-color-text-neutral, #333);
-
-$gradient-blue: var(--ui-background-brand-gradient, linear-gradient(
-  107deg,
-  rgb(0 66 212 / 95%) -11.26%,
-  rgb(1 47 150 / 95%) 8.01%,
-  rgb(1 33 102 / 95%) 42.66%,
-  rgb(2 22 67 / 95%) 99.14%
-));
+$white: var(--ui-color-surface, var(--card));
+$gray-10: var(--ui-color-canvas, var(--muted));
+$gray-20: var(--ui-color-border-subtle, var(--border));
+$gray-30: var(--ui-color-border-muted, var(--input));
+$gray-40: var(--ui-color-border, var(--color-border-strong));
+$gray-50: var(--ui-color-text-disabled, var(--color-text-disabled));
+$gray-60: var(--ui-color-text-subtle, var(--muted-foreground));
+$gray-70: var(--ui-color-text-muted, var(--color-text-meta));
+$gray-80: var(--ui-color-text-secondary, var(--color-text-strong));
+$gray-90: var(--ui-color-surface-inverse-muted, var(--color-surface-inverse-muted));
+$black: var(--ui-color-text, var(--foreground));
 
 
 .is--background-primary{
@@ -102,7 +93,7 @@ $gradient-blue: var(--ui-background-brand-gradient, linear-gradient(
 }
 
 .is--background-black{
-  background-color: var(--ui-color-surface-inverse, #12161f);
+  background-color: var(--ui-color-surface-inverse, var(--foreground));
 }
 
 .is--background-white{
@@ -212,7 +203,7 @@ $gradient-blue: var(--ui-background-brand-gradient, linear-gradient(
 }
 
 .is--color-white{
-  color: var(--ui-color-text-inverse, #fff);
+  color: var(--ui-color-text-inverse, var(--background));
 }
 
 

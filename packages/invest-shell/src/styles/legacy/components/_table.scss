@@ -6,7 +6,7 @@
     padding: var(--ui-investor-table-wrapper-padding, 0);
 
     td:not([data-slot]) {
-        color: var(--ui-color-text-secondary, #343A40);
+        color: var(--ui-color-text-secondary, var(--color-text-strong));
     }
 
     tbody > tr:not([data-slot]) {
@@ -56,7 +56,7 @@ tbody{
 td:not([data-slot]){
     padding: 16px;
     flex: 1 0 0;
-    color: #343A40;
+    color: var(--color-text-strong);
 }
 
 

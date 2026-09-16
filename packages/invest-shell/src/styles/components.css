@@ -53,7 +53,7 @@
 [data-slot='badge'].badge-tone-success-soft { background: var(--ui-color-positive-background, color-mix(in srgb, var(--color-status-success, var(--chart-2)) 20%, var(--background))); }
 [data-slot='badge'].badge-tone-warning { background: var(--ui-color-warning-accent, var(--color-status-warning, var(--chart-3))); }
 [data-slot='badge'].badge-tone-warning-soft { background: var(--ui-color-warning-background, color-mix(in srgb, var(--color-status-warning, var(--chart-3)) 10%, var(--background))); }
-[data-slot='badge'].badge-tone-danger { background: var(--destructive); color: var(--ui-badge-danger-foreground, #ffffff); }
+[data-slot='badge'].badge-tone-danger { background: var(--destructive); color: var(--ui-badge-danger-foreground, var(--destructive-foreground)); }
 [data-slot='badge'].badge-tone-danger-soft { background: var(--ui-color-negative-background, color-mix(in srgb, var(--destructive) 10%, var(--background))); }
 [data-slot='badge'].badge-tone-info-soft { background: var(--ui-color-highlight-background, color-mix(in srgb, var(--color-status-info, var(--chart-4)) 5%, var(--background))); }
 [data-slot='badge'][data-active].badge-tone-primary:is(:hover, [data-active='true']) { background: var(--ui-color-accent-strong, var(--primary)); }
@@ -203,11 +203,11 @@ input[data-slot='input']:focus-visible,
   display: var(--ui-form-approved-icon-display, none);
   width: 20px;
   height: 20px;
-  color: var(--ui-color-text, #495057);
+  color: var(--ui-color-text, var(--color-text-meta));
 }
 .invest-form-search-icon__approved--clear {
   width: 10px;
-  color: var(--ui-color-text-secondary, #343a40);
+  color: var(--ui-color-text-secondary, var(--color-text-strong));
 }
 .v-form-input-search [data-slot='input-group-addon'] {
   position: var(--ui-form-search-addon-position, revert-layer);
@@ -297,7 +297,7 @@ input[data-slot='input']:focus-visible,
 /* Skeletons, separators, progress. */
 [data-slot='skeleton'] {
   border-radius: 2px;
-  background: linear-gradient(90deg, rgb(207 219 255 / 34%) 0%, rgb(235 243 255 / 34%) 50%, rgb(207 219 255 / 34%) 100%);
+  background: linear-gradient(90deg, var(--color-skeleton-base) 0%, var(--color-skeleton-highlight) 50%, var(--color-skeleton-base) 100%);
 }
 [data-slot='separator'] { background: var(--ui-color-border, var(--input)); }
 [data-slot='progress'] { height: 3px; border-radius: 2px; background: var(--input); }
@@ -640,7 +640,7 @@ input[data-slot='input']:focus-visible,
 [data-slot='button'][data-variant='destructive'] {
   background: var(--destructive);
   border-color: var(--destructive);
-  color: var(--ui-color-negative-foreground, #ffffff);
+  color: var(--ui-color-negative-foreground, var(--destructive-foreground));
 }
 [data-slot='button'][data-variant='destructive']:hover {
   /* the legacy hover red keeps the full red channel: #ff7070 -> #ff3b3b */
@@ -722,8 +722,8 @@ button:not([role='combobox']),
 .sidebar-07-shell {
   z-index: 30;
   overflow: hidden;
-  background: var(--ui-sidebar-panel-background, color-mix(in oklab, var(--color-white) 90%, transparent));
-  border-color: var(--ui-color-border, var(--color-slate-200));
+  background: var(--ui-sidebar-panel-background, color-mix(in oklab, var(--background) 90%, transparent));
+  border-color: var(--ui-color-border, var(--color-sidebar-rule));
   backdrop-filter: blur(8px);
 }
 .sidebar-07-shell > [data-sidebar='sidebar'] { background: transparent; min-height: 0; overflow: hidden; }
@@ -735,8 +735,8 @@ button:not([role='combobox']),
   max-width: calc(100vw - 10px);
   padding: 0;
   gap: 0;
-  background: var(--ui-sidebar-mobile-background, color-mix(in oklab, var(--color-white) 95%, transparent));
-  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 25%);
+  background: var(--ui-sidebar-mobile-background, color-mix(in oklab, var(--background) 95%, transparent));
+  box-shadow: var(--shadow-sheet);
 }
 .sidebar-07-shell[data-mobile='true'] > [data-slot='sheet-close'] { display: none; }
 /* Initial focus belongs to this noninteractive dialog, not a profile action.
@@ -754,12 +754,12 @@ button:not([role='combobox']),
   transform: translateX(-100%);
   will-change: transform;
   pointer-events: none;
-  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 25%);
+  box-shadow: var(--shadow-sheet);
 }
 .sidebar-07-closed-shadow[data-side='right'] { left: auto; right: 0; transform: translateX(100%); }
 [data-slot='sheet-overlay']:has(+ .sidebar-07-shell) {
   z-index: 130;
-  background: var(--ui-sidebar-overlay-background, color-mix(in oklab, var(--ui-color-surface-inverse, var(--color-slate-950)) 40%, transparent));
+  background: var(--ui-sidebar-overlay-background, color-mix(in oklab, var(--ui-color-surface-inverse, var(--color-overlay-base)) 40%, transparent));
 }
 .sidebar-07-shell [data-slot='sidebar-header'],
 .sidebar-07-shell [data-slot='sidebar-footer'] {
@@ -767,7 +767,7 @@ button:not([role='combobox']),
   flex-direction: column;
   gap: 12px;
   padding: 12px;
-  border-color: var(--ui-color-border, var(--color-slate-200));
+  border-color: var(--ui-color-border, var(--color-sidebar-rule));
 }
 .sidebar-07-shell [data-slot='sidebar-header'] { border-bottom-width: 1px; }
 .sidebar-07-shell [data-slot='sidebar-footer'] { margin-top: auto; border-top-width: 1px; }
@@ -784,7 +784,7 @@ button:not([role='combobox']),
   font-weight: 600;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--ui-color-text-secondary, #343a40);
+  color: var(--ui-color-text-secondary, var(--color-text-strong));
 }
 .sidebar-07-shell [data-slot='sidebar-menu'] { list-style: none; padding: 0; gap: 4px; }
 .sidebar-07-shell [data-slot='sidebar-menu-item'] { position: static; list-style: none; }
@@ -796,7 +796,7 @@ button:not([role='combobox']),
   border-radius: 2px;
   border: 1px solid transparent;
   background: transparent;
-  color: var(--ui-color-text-muted, #495057);
+  color: var(--ui-color-text-muted, var(--color-text-meta));
   font-size: 14px;
   line-height: 21px;
   font-weight: 700;
@@ -837,7 +837,7 @@ button:not([role='combobox']),
 .sidebar-07-shell .sidebar-07-rail::after { display: none; }
 .app-sidebar[data-side='right'] .sidebar-07-rail { left: 0; right: auto; }
 .sidebar-07-shell .sidebar-07-rail:hover,
-.sidebar-07-shell .sidebar-07-rail:focus-visible { background: rgb(from var(--ui-color-border, #e2e8f0) r g b / 70%); outline: none; }
+.sidebar-07-shell .sidebar-07-rail:focus-visible { background: rgb(from var(--ui-color-border, var(--color-sidebar-rule)) r g b / 70%); outline: none; }
 .sidebar-07-inset { min-width: 0; position: var(--ui-sidebar-inset-position, revert-layer); }
 
 /* Native controls retain the host's text metrics without changing Button. */

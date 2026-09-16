@@ -1,7 +1,9 @@
 /* Investor-surface geometry (both brands): the legacy control and table
    metrics of the invest surface, set on the ui-primitives geometry tokens
    (packages/ui-primitives/src/styles/theme.css). Brand palette, font and
-   radius keep coming from the preset. Values only. */
+   radius keep coming from the preset. Values only.
+   Import order: the host must load @global-torque/design-tokens/css before
+   this file; the --gt-primitive-* reads below have no fallback. */
 :root {
   --spacing-control-sm: 2rem;
   --spacing-control-md: 2.5rem;
@@ -28,4 +30,40 @@
   --color-status-success: var(--chart-2);
   --color-status-warning: var(--chart-3);
   --color-status-info: var(--chart-4);
+  --color-text-strong: var(--gt-primitive-color-grey-800);
+  --color-text-meta: var(--gt-primitive-color-grey-700);
+  --color-text-disabled: var(--gt-primitive-color-grey-500);
+  --color-border-strong: var(--gt-primitive-color-grey-400);
+  --color-surface-inverse-muted: var(--gt-primitive-color-navy-900);
+  --color-accent-strong: var(--gt-primitive-color-primary-600);
+  --color-positive-strong: var(--gt-primitive-color-secondary-600);
+  --color-positive-tint: var(--gt-primitive-color-secondary-100);
+  --color-negative-tint: var(--gt-primitive-color-scarlet-50);
+  --color-warning-accent: var(--gt-primitive-color-gold-400);
+  --color-warning-tint: var(--gt-primitive-color-gold-50);
+  --color-highlight-strong: var(--gt-primitive-color-grape-700);
+  --color-highlight-tint: var(--gt-primitive-color-grape-50);
+  --color-link-highlight: var(--gt-primitive-color-iris-tint);
+  --color-sidebar-rule: var(--gt-primitive-color-slate-200);
+  --color-overlay-base: var(--gt-primitive-color-slate-950);
+  --color-text-quote: var(--gt-primitive-color-charcoal-500);
+  --color-overlay-page: color-mix(in srgb, var(--gt-primitive-color-charcoal-500) 20%, transparent);
+
+  /* Elevations. The surface lifts on its own ink, so the three geometry pairs
+     read --foreground and follow the theme and the brand seed; the two black
+     ones are fixed values from the dictionary. --ui-shadow-* stays the host
+     override hook. */
+  --shadow-control:
+    0 2px 5px 1px color-mix(in srgb, var(--foreground) 3%, transparent),
+    0 2px 3px -2px color-mix(in srgb, var(--foreground) 15%, transparent);
+  --shadow-dialog:
+    0 4px 5px -2px color-mix(in srgb, var(--foreground) 5%, transparent),
+    0 6px 25px 2px color-mix(in srgb, var(--foreground) 6%, transparent);
+  --shadow-raised:
+    0 6px 7px -4px color-mix(in srgb, var(--foreground) 5%, transparent),
+    0 10px 32px 4px color-mix(in srgb, var(--foreground) 10%, transparent);
+  --shadow-sheet: var(--gt-primitive-shadow-sheet);
+  --shadow-badge: var(--gt-primitive-shadow-badge);
+  --color-skeleton-base: var(--gt-primitive-color-azure-tint-200);
+  --color-skeleton-highlight: var(--gt-primitive-color-azure-tint-100);
 }

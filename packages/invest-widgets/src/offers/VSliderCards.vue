@@ -21,7 +21,7 @@ defineProps({
   },
   activeColor: {
     type: String,
-    default: 'var(--ui-color-accent, #004FFF)',
+    default: 'var(--ui-color-accent, var(--primary))',
   },
   autoplayChangeTime: {
     type: Number,

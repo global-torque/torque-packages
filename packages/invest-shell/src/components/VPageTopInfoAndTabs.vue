@@ -215,12 +215,12 @@ const handleTabChange = (nextTab: string | number) => {
 
     &--left {
       left: 0;
-      background: linear-gradient(to right, var(--ui-color-surface, #fff) 0%, var(--ui-tabs-edge-background, rgb(255 255 255 / 80%)) 50%, transparent 100%);
+      background: linear-gradient(to right, var(--ui-color-surface, var(--card)) 0%, var(--ui-tabs-edge-background, color-mix(in srgb, var(--card) 80%, transparent)) 50%, transparent 100%);
     }
 
     &--right {
       right: 0;
-      background: linear-gradient(to left, var(--ui-color-surface, #fff) 0%, var(--ui-tabs-edge-background, rgb(255 255 255 / 80%)) 50%, transparent 100%);
+      background: linear-gradient(to left, var(--ui-color-surface, var(--card)) 0%, var(--ui-tabs-edge-background, color-mix(in srgb, var(--card) 80%, transparent)) 50%, transparent 100%);
     }
   }
   // @media screen and (max-width: 768px){

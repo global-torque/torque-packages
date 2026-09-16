@@ -118,12 +118,12 @@ div[class*='language-'],
 
 
 [class*='language-'] code .highlighted.error{
-    background-color: #FF7070;
+    background-color: var(--destructive);
 }
 
 
 [class*='language-'] code .highlighted.warning{
-    background-color: #FFC24D;
+    background-color: var(--color-warning-accent);
 }
 
 
@@ -156,14 +156,14 @@ div[class*='language-'],
 
 
 [class*='language-'] code .diff.remove{
-    background-color: #FF7070;
+    background-color: var(--destructive);
     opacity: 0.7;
 }
 
 
 [class*='language-'] code .diff.remove::before{
     content: '-';
-    color: #FF7070;
+    color: var(--destructive);
 }
 
 
@@ -302,7 +302,7 @@ div[class*='language-'].line-numbers-mode{
 .vp-code-group input:checked + label{
     color: var(--foreground);
     background-color: var(--background);
-    box-shadow: 0 2px 5px 1px rgb(18 22 31 / 3%), 0 2px 3px -2px rgb(18 22 31 / 15%);
+    box-shadow: var(--shadow-control);
 }
   
 

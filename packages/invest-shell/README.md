@@ -78,9 +78,9 @@ disk output disabled. The aggregate includes imported styles, but excludes app
 styles, Vue SFC styles, and app Tailwind/design-token generation; it is not an
 application bundle budget.
 
-The reviewed aggregate is 95,647 raw bytes, 18,012 gzip bytes, and zero generated
+The reviewed aggregate is 98,507 raw bytes, 18,177 gzip bytes, and zero generated
 dimension selectors. Caps retain 250 raw bytes and 50 gzip bytes of headroom:
-95,897 raw and 18,062 gzip. Tests pin the raw bytes and SHA-256, require resolved
+98,757 raw and 18,227 gzip. Tests pin the raw bytes and SHA-256, require resolved
 imports and zero generated selectors, and enforce gzip only against its cap
 because supported Node/zlib versions can compress identical CSS differently.
 `css-budget.json` records the reference toolchain and keeps the prior

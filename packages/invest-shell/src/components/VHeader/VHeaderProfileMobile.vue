@@ -170,7 +170,7 @@ const primaryProfileMenu = computed(() => props.menu || []);
     width: 20px;
     height: 20px;
     flex-shrink: 0;
-    color: #ADB5BD;
+    color: var(--color-text-disabled);
   }
 
   &__label {

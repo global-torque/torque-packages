@@ -248,7 +248,7 @@ const handleContactUsClick = () => {
     border-radius: 2px;
     border: 1px solid var(--border);
     background: var(--background);
-    box-shadow: 0 2px 5px 1px rgb(18 22 31 / 3%), 0 2px 3px -2px rgb(18 22 31 / 15%);
+    box-shadow: var(--shadow-control);
     margin-bottom: 20px;
   }
 
@@ -277,7 +277,7 @@ const handleContactUsClick = () => {
   }
 
   &__side-details-label {
-    color: #495057;
+    color: var(--color-text-meta);
   }
 
   &__nav-notice {
@@ -290,7 +290,7 @@ const handleContactUsClick = () => {
 
   &__nav-notice-title,
   &__nav-notice-text {
-    color: #343A40;
+    color: var(--color-text-strong);
   }
 
   &__nav-notice-text {
@@ -305,7 +305,7 @@ const handleContactUsClick = () => {
   }
 
   &__on-chain-title {
-    color: #343A40;
+    color: var(--color-text-strong);
     cursor: pointer;
   }
 
@@ -314,7 +314,7 @@ const handleContactUsClick = () => {
   }
 
   &__details-value {
-    color: #343A40;
+    color: var(--color-text-strong);
     width: fit-content;
     display: flex;
     text-align: end;
@@ -351,7 +351,7 @@ const handleContactUsClick = () => {
   }
 
   &__min-invest-label {
-    color: #495057;
+    color: var(--color-text-meta);
     min-width: 141px;
   }
 

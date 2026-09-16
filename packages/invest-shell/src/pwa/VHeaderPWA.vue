@@ -510,7 +510,7 @@ const headerComponent = computed(() => (
   }
 
   &__auth-text {
-    color: var(--ui-color-text-secondary, #343A40);
+    color: var(--ui-color-text-secondary, var(--color-text-strong));
     font-size: 14px;
     line-height: 20px;
   }
@@ -541,7 +541,7 @@ const headerComponent = computed(() => (
     border: none;
     background: transparent;
     padding: 0;
-    color: var(--ui-color-text-secondary, #343A40);
+    color: var(--ui-color-text-secondary, var(--color-text-strong));
     cursor: pointer;
   }
 
@@ -565,7 +565,7 @@ const headerComponent = computed(() => (
 
     .notifications-sidebar-button__notification-icon {
       margin-right: 0;
-      color: var(--ui-color-text-secondary, #343A40);
+      color: var(--ui-color-text-secondary, var(--color-text-strong));
       width: 24px;
       height: 24px;
     }
@@ -588,7 +588,7 @@ const headerComponent = computed(() => (
     border: none;
     background: transparent;
     padding: 0;
-    color: var(--ui-color-text-secondary, #343A40);
+    color: var(--ui-color-text-secondary, var(--color-text-strong));
     cursor: pointer;
   }
 
@@ -601,7 +601,7 @@ const headerComponent = computed(() => (
     display: flex;
     align-items: center;
     gap: 12px;
-    color: var(--ui-color-text-secondary, #343A40);
+    color: var(--ui-color-text-secondary, var(--color-text-strong));
   }
 
   &__pwa-auth-text {
