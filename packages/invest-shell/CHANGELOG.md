@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.4 candidate
+
+- Corrected `VDropdown` menu item composition so link and router-link entries
+  receive primitive menu-item behavior and dismiss the menu after activation.
+
 ## 0.2.3 candidate
 
 - Reconciled the offline, install, and update PWA prompts so actions stay

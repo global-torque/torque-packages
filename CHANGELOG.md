@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.4 candidate
+
+- Corrected `VDropdown` menu item composition so link and router-link entries
+  receive the primitive menu-item behavior and dismiss the menu after activation.
+- Prepared a uniform seven-package framework cohort at `0.2.4`; the prior
+  `0.2.3` candidate remains retained for recovery.
+
 ## 0.2.3 candidate
 
 - Reconciled the five shared PWA and alert SFC fixes from the accepted
