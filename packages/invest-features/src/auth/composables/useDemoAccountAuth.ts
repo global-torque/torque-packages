@@ -28,10 +28,14 @@ export type DemoAccountAuthProvider = {
   isLoading: Ref<boolean>;
 };
 
-const getDemoAccountCredentialsSource = (): DemoAccountCredentialsSource => ({
-  DEMO_ACCOUNT_EMAIL: useInvestApplicationContext().appConfig.demoAccount?.email,
-  DEMO_ACCOUNT_PASSWORD: useInvestApplicationContext().appConfig.demoAccount?.password,
-});
+const getDemoAccountCredentialsSource = (): DemoAccountCredentialsSource => {
+  const { appConfig } = useInvestApplicationContext();
+
+  return {
+    DEMO_ACCOUNT_EMAIL: appConfig.demoAccount?.email,
+    DEMO_ACCOUNT_PASSWORD: appConfig.demoAccount?.password,
+  };
+};
 
 export const resolveDemoAccountCredentialsConfig = (
   source = getDemoAccountCredentialsSource(),
@@ -67,6 +71,8 @@ export const shouldAutoAuthenticateDemoAccount = (search: string) => {
 };
 
 export const createPasswordDemoAccountProvider = (): DemoAccountAuthProvider => {
+  const demoAccountCredentialsSource = getDemoAccountCredentialsSource();
+  const defaultDemoAccountRedirect = resolveDemoAccountRedirect('');
   const authRepository = useRepositoryAuth();
   const sessionStore = useSessionStore();
   const isLoading = ref(false);
@@ -77,10 +83,12 @@ export const createPasswordDemoAccountProvider = (): DemoAccountAuthProvider => 
       .then((flow) => oryResponseHandling(flow as any));
   };
 
-  const isAvailable = computed(() => Boolean(resolveDemoAccountCredentialsConfig()));
+  const isAvailable = computed(() => Boolean(
+    resolveDemoAccountCredentialsConfig(demoAccountCredentialsSource),
+  ));
 
   const authenticate = async () => {
-    const credentials = resolveDemoAccountCredentialsConfig();
+    const credentials = resolveDemoAccountCredentialsConfig(demoAccountCredentialsSource);
 
     if (!credentials || isLoading.value || typeof window === 'undefined') {
       return false;
@@ -111,7 +119,9 @@ export const createPasswordDemoAccountProvider = (): DemoAccountAuthProvider => 
 
       sessionStore.updateSession(session);
       notifyNativePushAuthSuccess();
-      navigateWithQueryParams(resolveDemoAccountRedirect(window.location.search));
+      const redirect = new URLSearchParams(window.location.search).get('redirect')
+        || defaultDemoAccountRedirect;
+      navigateWithQueryParams(redirect);
 
       return true;
     } catch (error) {

@@ -9,6 +9,7 @@ import type {
 } from '@global-torque/domain-types/analyticsTypes';
 import {
   normalizeAnalyticsBodyForMethod,
+  sanitizeAnalyticsUrl,
   sanitizeAnalyticsText,
 } from '@global-torque/invest-core/analytics/analyticsBody';
 import {
@@ -22,13 +23,7 @@ import { buildHttpRequest } from './useAnalyticsError.ts';
 const sanitizeRequestPath = (raw: unknown): string => {
   const value = sanitizeAnalyticsText(raw).trim();
   if (!value) return '';
-
-  try {
-    const base = typeof window !== 'undefined' ? window.location.origin : 'https://client.local';
-    return new URL(value, base).pathname;
-  } catch {
-    return value.split('?')[0]?.split('#')[0] ?? '';
-  }
+  return sanitizeAnalyticsText(sanitizeAnalyticsUrl(value), 255);
 };
 
 export interface UseSendAnalyticsEventOptions {

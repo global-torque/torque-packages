@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.1 candidate
+
+- Reissued the uniform framework cohort for the shared telemetry and request
+  context updates; widget APIs, assets, and source behavior remain unchanged.
+
 ## 0.3.0 candidate
 
 - Require Node `^24.21.0`; Node 22 is no longer supported.

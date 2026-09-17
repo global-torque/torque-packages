@@ -4,12 +4,12 @@ This repository is the independent source workspace for the seven investment
 framework packages under the `@global-torque` namespace. The workspace root
 is private; each package is an independently reviewed MIT package candidate.
 
-The current candidate is `0.3.0` for all seven packages. It is source based:
+The current candidate is `0.3.1` for all seven packages. It is source based:
 published files contain the explicit `src` exports and the host application
 provides the Vue/Vite toolchain and singleton peers. The candidate is local and
 non-promotable until the primary maintainer completes the accepted release
 gates. Dispatch the candidate workflow from the matching
-`framework-v0.3.0` tag when producing attestations. The previously reviewed
+`framework-v0.3.1` tag when producing attestations. The previously reviewed
 `framework-v0.2.2` source tag, commit, and immutable artifacts remain
 retained as history; no canonical `0.2.0` package artifacts were produced.
 
@@ -26,8 +26,10 @@ checks, and detached browser/consumer verification remain available locally
 but are not CI gates. The manual release workflow builds and tests before
 packing and retaining the candidate artifacts.
 
-This release combines the dependency migration from the retained 0.2.3 baseline,
-the 0.2.4 dropdown navigation fix, and the merged role-colour updates.
+This release reissues the 0.3.0 cohort with selectively sanitized analytics and
+request diagnostics, stable demo-account configuration capture, and local Vite
+exclusions for the public UI Kit peer graph. The dependency migration, dropdown
+navigation fix, and role-colour updates remain part of the retained cohort.
 See [migration results](docs/dependency-migration-results.md) for the supported
 Pinia 3/4 consumer matrix, verification evidence and release handoff items.
 
@@ -80,7 +82,9 @@ directory before cleanup, removes only the two owned `dist/node` directories,
 runs this build once, runs package and consumer-link tests, revalidates the
 four-file inventory, and then packs all seven packages.
 
-After `@global-torque/ui-kit@0.1.4` is available from its owning release, run
+The framework candidate using the public `@global-torque/ui-kit@0.1.4`
+dependency produces 22 release assets. After `@global-torque/ui-kit@0.1.4` is
+available from its owning release, run
 `pnpm install --frozen-lockfile`, then `pnpm run build:node` followed by
 `pnpm run check`. Before that release,
 the framework candidate workflow accepts the framework repository's draft
@@ -89,7 +93,9 @@ the repository token, and verifies the UI archive against its source tag,
 commit, hosted run, and raw Sigstore bundle (including `gh attestation verify
 --bundle`). It temporarily installs that verified tarball, checks the derived lockfile against the committed canonical
 lockfile, restores the canonical files, and keeps the framework manifest and
-lockfile pinned to public `0.1.4`.
+lockfile pinned to public `0.1.4`. The authenticated path conditionally retains
+four canonical and derived lock/workspace overlay files; the ordinary public path
+does not add those overlays.
 
 Optional local detached npm and pnpm verification requires Chromium and its
 checked system dependencies:

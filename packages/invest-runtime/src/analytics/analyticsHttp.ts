@@ -1,4 +1,5 @@
 import { useClientIp } from '../client/useClientIp.ts';
+import { sanitizeAnalyticsUrl } from '@global-torque/invest-core/analytics/analyticsBody';
 
 export interface HttpRequestLike {
   method: string;
@@ -9,8 +10,6 @@ export interface HttpRequestLike {
   remoteIp: string;
   protocol: string;
 }
-
-const stripQueryAndHash = (value: string): string => value.split('?')[0]?.split('#')[0] ?? value;
 
 export const buildHttpRequest = (httpRequest?: Partial<HttpRequestLike>): HttpRequestLike => {
   const pathValue = typeof window !== 'undefined' ? window.location.pathname : '';
@@ -29,26 +28,19 @@ export const buildHttpRequest = (httpRequest?: Partial<HttpRequestLike>): HttpRe
       ? httpRequest.remoteIp
       : ip.value ?? '-';
 
-  // Build a safe URL for analytics: strip query/hash to avoid leaking sensitive data
+  // Preserve useful query and fragment context while masking known credentials.
   const rawUrl = httpRequest?.url ?? urlValue;
-  let safeUrl = rawUrl;
-  try {
-    if (rawUrl) {
-      const base = typeof window !== 'undefined' ? window.location.origin : undefined;
-      const parsed = new URL(rawUrl, base);
-      safeUrl = `${parsed.origin}${parsed.pathname}`;
-    }
-  } catch {
-    // Fallback: prefer path-only value if available
-    safeUrl = pathValue || rawUrl || '';
-  }
+  const safeUrl = sanitizeAnalyticsUrl(rawUrl || pathValue || '');
 
   return {
     method: httpRequest?.method ?? 'GET',
     url: safeUrl,
-    path: stripQueryAndHash(httpRequest?.path ?? pathValue),
+    path: sanitizeAnalyticsUrl(httpRequest?.path ?? pathValue),
     userAgent: httpRequest?.userAgent ?? userAgentValue,
-    referer: httpRequest?.referer ?? (typeof document !== 'undefined' ? document.referrer || '-' : '-'),
+    referer: sanitizeAnalyticsUrl(
+      httpRequest?.referer
+        ?? (typeof document !== 'undefined' ? document.referrer || '-' : '-'),
+    ),
     remoteIp: resolvedRemoteIp,
     protocol: httpRequest?.protocol ?? (typeof window !== 'undefined' ? window.location.protocol : ''),
   };

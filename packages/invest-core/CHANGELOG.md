@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.1 candidate
+
+- Retain user, business, numeric, URL, and diagnostic analytics values while
+  redacting exact known credential fields across objects, JSON, FormData, and
+  URLSearchParams.
+- Preserve duplicate form values, circular/binary markers, and method-specific
+  request-body normalization without mutating caller data.
+
 ## 0.3.0 candidate
 
 - Require Node `^24.21.0`; Node 22 is no longer supported.

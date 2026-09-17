@@ -73,7 +73,7 @@ describe('invest-data client', () => {
         url: 'https://api.example.test/auth/wallet/register/7',
         path: '/auth/wallet/register/7',
       }),
-      body: { redacted: true },
+      body: { address: '0xabc' },
     } satisfies Partial<InvestDataHttpError>);
   });
 
@@ -97,7 +97,7 @@ describe('invest-data client', () => {
         causeMessage: 'Network transport failed',
         httpRequest: expect.objectContaining({
           method: 'GET',
-          url: 'https://api.example.test/auth/wallet/7',
+          url: 'https://api.example.test/auth/wallet/7?chain=ethereum-sepolia',
           path: '/auth/wallet/7',
         }),
       },
@@ -110,6 +110,41 @@ describe('invest-data client', () => {
         }),
       }),
     );
+  });
+
+  it('uses the shared default body projection while sending the original request body and auth', async () => {
+    const body = {
+      email: 'user@example.com',
+      offer_id: 42,
+      password: 'PASSWORD_SECRET',
+    };
+    const fetchMock = vi.fn().mockRejectedValue(new TypeError('Failed to fetch'));
+    const client = createInvestDataClient({
+      baseUrl: 'https://api.example.test',
+      fetch: fetchMock,
+      hooks: {
+        getAuthHeaders: () => ({ authorization: 'Bearer AUTH_SECRET' }),
+      },
+    });
+
+    await expect(client.post('/offers', body)).rejects.toMatchObject({
+      name: 'NetworkRequestError',
+      data: {
+        body: {
+          email: 'user@example.com',
+          offer_id: 42,
+          password: '[redacted]',
+        },
+      },
+    });
+    expect(body).toEqual({
+      email: 'user@example.com',
+      offer_id: 42,
+      password: 'PASSWORD_SECRET',
+    });
+    const requestInit = fetchMock.mock.calls[0]?.[1] as RequestInit;
+    expect(requestInit.body).toBe(JSON.stringify(body));
+    expect(new Headers(requestInit.headers).get('authorization')).toBe('Bearer AUTH_SECRET');
   });
 
   it('calls onResponse once and preserves legacy network projection when that hook fails', async () => {
@@ -196,9 +231,9 @@ describe('invest-data client', () => {
       },
     });
     expect(httpError.httpRequest).toMatchObject({
-      url: 'https://api.example.test/auth/token/[redacted]',
+      url: 'https://api.example.test/auth/token/[redacted]?token=%5Bredacted%5D',
       path: '/auth/token/[redacted]',
-      referer: 'https://app.example.test/from',
+      referer: 'https://app.example.test/from?token=%5Bredacted%5D#private',
     });
     expect(httpError.response.headers.get('x-debug-token')).toBe('HEADER_SECRET');
     await expect(httpError.response.clone().json()).resolves.toEqual(httpError.data);
@@ -207,8 +242,8 @@ describe('invest-data client', () => {
       headers: Headers;
       response: Response;
     };
-    expect(responseHook.url).toBe('https://api.example.test/auth/token/[redacted]');
-    expect(responseHook.headers.get('authorization')).toBeNull();
+    expect(responseHook.url).toBe('https://api.example.test/auth/token/[redacted]?token=%5Bredacted%5D');
+    expect(responseHook.headers.get('authorization')).toBe('[redacted]');
     expect(responseHook.response.headers.get('x-debug-token')).toBeNull();
     await expect(responseHook.response.text()).resolves.toBe('');
     expect(JSON.stringify({ httpError, onError: onError.mock.calls[0]?.[0] })).not.toMatch(
@@ -241,8 +276,8 @@ describe('invest-data client', () => {
         causeMessage: 'Network transport failed',
         stack: '',
         httpRequest: {
-          url: 'https://api.example.test/auth/wallet/7',
-          referer: 'https://app.example.test/from',
+          url: 'https://api.example.test/auth/wallet/7?token=%5Bredacted%5D',
+          referer: 'https://app.example.test/from?token=%5Bredacted%5D#private',
         },
       },
     });

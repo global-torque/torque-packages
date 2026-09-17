@@ -6,6 +6,8 @@ import {
   it,
   vi,
 } from 'vitest';
+import { flushPromises, mount } from '@vue/test-utils';
+import { defineComponent, inject, ref } from 'vue';
 import {
   DEMO_ACCOUNT_TRIGGER_QUERY_PARAM,
   shouldAutoAuthenticateDemoAccount,
@@ -27,6 +29,8 @@ const hoisted = vi.hoisted(() => {
     navigateWithQueryParamsMock: vi.fn(),
     oryErrorHandlingMock: vi.fn(),
     oryResponseHandlingMock: vi.fn(),
+    applicationContextKey: Symbol('test-invest-application-context'),
+    useInvestApplicationContextMock: vi.fn(),
     appConfig: {
       demoAccount: { email: '', password: '' },
       urls: { dashboard: 'https://dashboard.example.com', static: 'https://invest.example.com' },
@@ -35,7 +39,7 @@ const hoisted = vi.hoisted(() => {
 });
 
 vi.mock('@global-torque/invest-runtime/application-context', () => ({
-  useInvestApplicationContext: () => ({ appConfig: hoisted.appConfig }),
+  useInvestApplicationContext: hoisted.useInvestApplicationContextMock,
 }));
 
 vi.mock('../../data/auth.repository.ts', () => ({
@@ -119,6 +123,9 @@ const setDemoAccountCredentials = (password = 'demo-password') => {
 
 describe('useDemoAccountAuth', () => {
   beforeEach(() => {
+    hoisted.useInvestApplicationContextMock
+      .mockReset()
+      .mockImplementation(() => ({ appConfig: hoisted.appConfig }));
     hoisted.mockGetAuthFlow.mockReset().mockResolvedValue(createFlow());
     hoisted.mockSetLogin.mockReset().mockImplementation(async () => {
       hoisted.mockSetLoginState.value = {
@@ -162,6 +169,55 @@ describe('useDemoAccountAuth', () => {
     expect(hoisted.navigateWithQueryParamsMock).toHaveBeenCalledWith('https://dashboard.example.com/profile');
     expect(document.cookie).not.toContain('selectedUserProfileId=');
     expect(document.cookie).not.toContain('ory_kratos_session=');
+  });
+
+  it('captures the application context during setup before deferred demo authentication', async () => {
+    setDemoAccountCredentials();
+    hoisted.useInvestApplicationContextMock.mockImplementation(() => {
+      const context = inject(hoisted.applicationContextKey, null);
+      if (!context) {
+        throw new Error('The application context is unavailable.');
+      }
+      return context;
+    });
+
+    const DemoAccountHost = defineComponent({
+      setup() {
+        const demoAccountAuth = useDemoAccountAuth();
+
+        // Resolve availability while setup has an active injection context.
+        expect(demoAccountAuth.isAvailable.value).toBe(true);
+
+        const result = ref<boolean | null>(null);
+        const error = ref<unknown>(null);
+        const handleClick = async () => {
+          try {
+            result.value = await demoAccountAuth.authenticate();
+          } catch (caught) {
+            error.value = caught;
+          }
+        };
+
+        return { error, handleClick, result };
+      },
+      template: '<button type="button" @click="handleClick">Try Demo Account</button>',
+    });
+
+    const wrapper = mount(DemoAccountHost, {
+      global: {
+        provide: {
+          [hoisted.applicationContextKey]: { appConfig: hoisted.appConfig },
+        },
+      },
+    });
+    await wrapper.get('button').trigger('click');
+    await flushPromises();
+
+    expect(wrapper.vm.result).toBe(true);
+    expect(wrapper.vm.error).toBe(null);
+    expect(hoisted.useInvestApplicationContextMock).toHaveBeenCalledTimes(2);
+
+    wrapper.unmount();
   });
 
   it('honors the redirect query parameter when authenticating the demo account', async () => {

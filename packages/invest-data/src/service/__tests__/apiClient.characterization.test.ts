@@ -151,7 +151,7 @@ describe('legacy ApiClient Phase 0 characterization', () => {
 
     expect(projectedError).toBeInstanceOf(APIError);
     expect(projectedError.data.responseJson).toEqual(responseBody);
-    expect(projectedError.data.httpRequest.url).toBe(`${baseUrl}/self-service/login`);
+    expect(projectedError.data.httpRequest.url).toBe(`${baseUrl}/self-service/login?flow=request-secret`);
     expect(projectedError.data.httpRequest.path).toBe('/self-service/login');
   });
 

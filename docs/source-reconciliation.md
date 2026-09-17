@@ -1,9 +1,11 @@
 # Source and release reconciliation
 
-The `0.3.0` candidate applies the dependency migration to the accepted `0.2.3`
-framework SFC baseline, retaining the 0.2.4 dropdown fix and the role-colour
-changes merged in 381ad2f. Node 24 is required; external package pins and source
-exports are preserved. See [migration results](dependency-migration-results.md). Its
+The `0.3.1` candidate reissues the dependency-migrated `0.3.0` framework cohort
+with selective analytics/request sanitization, stable demo-account configuration
+capture, and local Vite UI peer exclusions. The accepted `0.2.3` framework SFC
+baseline, 0.2.4 dropdown fix, and role-colour changes merged in 381ad2f remain
+retained. Node 24 is required; external package pins and source exports are
+preserved. See [migration results](dependency-migration-results.md). Its
 transferred baseline is from
 `global-torque/dashboard.webdevelop.biz@9f35aa0882b765e202538ce7c7d5e82eb1b452d3`.
 The SFC fixes are reconciled from
@@ -13,6 +15,12 @@ The seven framework packages are the only source owned by this repository.
 The exact package matrix, external pins, patch hashes, dependency order,
 intermediate compatibility, abort signals, and recovery rule are recorded in
 [`source-reconciliation.json`](./source-reconciliation.json).
+
+The framework candidate using the public `@global-torque/ui-kit@0.1.4`
+dependency produces 22 release assets. Its authenticated transport consumes
+six conditional UI Kit assets, and the corresponding lock overlay retains four
+canonical/derived YAML files only when that transport path is selected; the
+ordinary public dependency path has no overlay.
 
 The package owner is responsible for pure domain contracts and investment
 framework behavior. Generic UI, SDK, token, content, Markdown, and error

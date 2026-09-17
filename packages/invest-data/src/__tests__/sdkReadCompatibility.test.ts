@@ -179,7 +179,7 @@ describe('SDK read compatibility projection', () => {
         statusCode: 422,
         httpRequest: {
           method: 'GET',
-          url: 'https://api.example.test/v1.0/offers',
+          url: 'https://api.example.test/v1.0/offers?token=%5Bredacted%5D',
         },
       },
     });

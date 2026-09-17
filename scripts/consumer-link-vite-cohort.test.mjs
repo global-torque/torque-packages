@@ -7,7 +7,7 @@ import { createServer } from 'vite';
 
 import { FRAMEWORK_PACKAGE_NAMES, frameworkLinkViteConfig } from './consumer-link-vite.mjs';
 
-const cohortVersion = '0.3.0';
+const cohortVersion = '0.3.1';
 
 function createFixture() {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'framework-vite-cohort-'));
@@ -121,6 +121,10 @@ test('local config binds Reka to the selected consumer UI Kit peer package root'
 
   const config = frameworkLinkViteConfig({ root: fixture.consumer, appRoot: app, mode: 'local' });
   assert.deepEqual(config.resolve.dedupe, ['vue', 'pinia', 'vue-router']);
+  assert.deepEqual(config.optimizeDeps.exclude.slice(-2), [
+    '@global-torque/ui-primitives',
+    '@global-torque/ui-kit',
+  ]);
   assert.equal(fs.realpathSync(config.resolve.alias['reka-ui']), fs.realpathSync(rekaRoot));
   assert.equal(config.resolve.alias['reka-ui/date'], path.join(fs.realpathSync(rekaRoot), 'dist/date.js'));
   assert.equal(config.resolve.alias['reka-ui/package.json'], path.join(fs.realpathSync(rekaRoot), 'package.json'));

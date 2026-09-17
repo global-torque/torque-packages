@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.1 candidate
+
+- Capture demo-account credentials and the default redirect at provider setup so
+  availability and authentication use one stable configuration snapshot.
+- Preserve explicit redirect query parameters and the existing auth/session,
+  loading, and error handling behavior.
+
 ## 0.3.0 candidate
 
 - Require Node `^24.21.0`; Node 22 is no longer supported.
