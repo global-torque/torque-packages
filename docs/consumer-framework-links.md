@@ -11,7 +11,10 @@ pnpm framework:status
 pnpm framework:unlink
 ```
 
-The link transaction requires pnpm `10.34.5`. It installs and builds the
+The link transaction requires Node `^24.21.0` and pnpm `12.4.2`. Bootstrap
+the executable with Corepack (`corepack enable` and
+`corepack prepare pnpm@12.4.2 --activate`); consumer-owned launchers must use
+that same version. It installs and builds the
 canonical workspace first, snapshots the consumer workspace and protected
 metadata, writes a seven-entry temporary override, and runs
 `pnpm install --no-lockfile --ignore-scripts`. The workspace file is restored

@@ -40,12 +40,32 @@ vi.mock('./VChartTooltip.vue', () => ({
 import VChartSingleTooltip from './VChartSingleTooltip.vue';
 
 type TooltipTemplate = (
-  datum: { data: Record<string, unknown> },
+  datum: Record<string, unknown>,
   index: number,
   elements: HTMLElement[],
 ) => string;
 
 describe('VChartSingleTooltip', () => {
+  it('prefers the original datum when donut arc metadata also contains the category key', () => {
+    const valueFormatter = vi.fn((value: number) => `$${value}`);
+    const wrapper = mount(VChartSingleTooltip, {
+      props: { selector: 'segment', index: 'value', valueFormatter },
+    });
+    const triggers = wrapper.getComponent({ name: 'VisTooltip' }).props('triggers') as Record<string, TooltipTemplate>;
+    const segment = document.createElement('div');
+    const tooltip = triggers.segment({
+      value: 999,
+      index: 1,
+      startAngle: 0,
+      data: { name: 'Investment', value: 20 },
+    }, 0, [segment]);
+    expect(valueFormatter).toHaveBeenCalledExactlyOnceWith(20);
+    expect(tooltip).toContain('<span data-testid="tooltip-title">$20</span>');
+    expect(tooltip).toContain('<span data-testid="tooltip-value">$20</span>');
+    expect(tooltip).not.toContain('NaN');
+    wrapper.unmount();
+  });
+
   it('formats a nested chart value in both the title and detail row', () => {
     const valueFormatter = vi.fn((value: number) => `${Math.round(value)}%`);
     const wrapper = mount(VChartSingleTooltip, {

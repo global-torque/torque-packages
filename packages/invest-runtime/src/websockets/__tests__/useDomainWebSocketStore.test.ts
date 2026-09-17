@@ -36,7 +36,8 @@ vi.mock('pinia', async () => {
   };
 });
 
-vi.mock('@vueuse/core', () => ({
+vi.mock('@vueuse/core', async importOriginal => ({
+  ...await importOriginal<typeof import('@vueuse/core')>(),
   useWebSocket: (...args: unknown[]) => useWebSocketMock(...args),
 }));
 
@@ -113,6 +114,29 @@ describe('useDomainWebSocketStore', () => {
       'wss://notification.example.com/ws',
       expect.any(Object),
     );
+  });
+
+  it('schedules heartbeats once per minute only while the socket is active', async () => {
+    vi.useFakeTimers();
+    const store = await loadStore();
+    await store.webSocketHandler();
+    const heartbeat = vi.fn();
+    const controls = latestSocketOptions!.heartbeat.scheduler(heartbeat);
+    try {
+      await vi.advanceTimersByTimeAsync(60000);
+      expect(heartbeat).not.toHaveBeenCalled();
+      controls.resume();
+      await vi.advanceTimersByTimeAsync(59999);
+      expect(heartbeat).not.toHaveBeenCalled();
+      await vi.advanceTimersByTimeAsync(1);
+      expect(heartbeat).toHaveBeenCalledOnce();
+      controls.pause();
+      await vi.advanceTimersByTimeAsync(120000);
+      expect(heartbeat).toHaveBeenCalledOnce();
+    } finally {
+      controls.pause();
+      store.$dispose();
+    }
   });
 
   it('suppresses the retry toast when reconnect attempts fail offline', async () => {

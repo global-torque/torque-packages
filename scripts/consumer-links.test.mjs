@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
+import { execFileSync } from 'node:child_process';
 import {
   FRAMEWORK_PACKAGE_NAMES,
   buildWorkspaceOverlay,
@@ -15,7 +16,7 @@ import {
 import { recover, status as recoveryStatus } from './framework-links-recovery.mjs';
 
 function fixture(t) {
-  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'torque-framework-links-'));
+  const root = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'torque-framework-links-')));
   const canonical = path.join(root, 'canonical');
   const consumer = path.join(root, 'consumer');
   fs.mkdirSync(path.join(canonical, 'packages'), { recursive: true });
@@ -24,7 +25,7 @@ function fixture(t) {
     const slug = name.slice('@global-torque/'.length);
     const directory = path.join(canonical, 'packages', slug);
     fs.mkdirSync(directory, { recursive: true });
-    fs.writeFileSync(path.join(directory, 'package.json'), JSON.stringify({ name, version: '0.2.3' }));
+    fs.writeFileSync(path.join(directory, 'package.json'), JSON.stringify({ name, version: '0.3.0' }));
   }
   fs.writeFileSync(path.join(canonical, 'package.json'), JSON.stringify({ private: true }));
   fs.writeFileSync(path.join(canonical, 'pnpm-lock.yaml'), 'lockfileVersion: "9.0"\n');
@@ -50,7 +51,7 @@ function fixture(t) {
 function fakePnpm(canonical, consumer, calls) {
   return (_executable, args, cwd, options = {}) => {
     calls.push({ args, cwd });
-    if (args[0] === '--version') return { stdout: '10.34.5\n' };
+    if (args[0] === '--version') return { stdout: '12.4.2\n' };
     if (cwd === canonical) return { stdout: '' };
     if (args[0] === 'install' && args.includes('--no-lockfile')) {
       for (const name of FRAMEWORK_PACKAGE_NAMES) {
@@ -63,6 +64,22 @@ function fakePnpm(canonical, consumer, calls) {
     return { stdout: '' };
   };
 }
+
+test('retained recovery accepts a symlink to the same consumer checkout', t => {
+  const { root, canonical, consumer } = fixture(t);
+  const alias = path.join(root, 'consumer-alias');
+  fs.symlinkSync(consumer, alias, 'dir');
+  const run = fakePnpm(canonical, consumer, []);
+  linkConsumer({ consumerRoot: alias, frameworkRoot: canonical, run });
+  assert.equal(recoveryStatus(alias).consumerRoot, consumer);
+  const cliStatus = JSON.parse(execFileSync(process.execPath, [
+    path.join(alias, '.torque-framework-links/recovery.mjs'), 'status', '--consumer-root', alias,
+  ], { encoding: 'utf8' }));
+  assert.equal(cliStatus.consumerRoot, consumer);
+  installRegistryFramework(consumer);
+  recover(alias, { install: false });
+  assert.equal(fs.existsSync(path.join(consumer, '.torque-framework-links')), false);
+});
 
 const registryFrameworkDependencies = Object.freeze({
   '@global-torque/domain-types': [],
@@ -294,7 +311,7 @@ test('link preflight removes only its newly-created empty state directory', t =>
     if (scenario === 'wrong-pnpm') {
       assert.throws(
         () => linkConsumer({ consumerRoot: consumer, frameworkRoot: canonical, run: () => ({ stdout: '10.34.4\n' }) }),
-        /requires pnpm 10\.34\.5/u,
+        /requires pnpm 12\.4\.2/u,
       );
     }
     else if (scenario === 'missing-workspace') {
@@ -320,7 +337,7 @@ test('link preflight removes only its newly-created empty state directory', t =>
   fs.writeFileSync(path.join(stateDirectory, 'preexisting.txt'), 'keep\n');
   assert.throws(
     () => linkConsumer({ consumerRoot: preserved.consumer, frameworkRoot: preserved.canonical, run: () => ({ stdout: '10.34.4\n' }) }),
-    /requires pnpm 10\.34\.5/u,
+    /requires pnpm 12\.4\.2/u,
   );
   assert.equal(fs.readFileSync(path.join(stateDirectory, 'preexisting.txt'), 'utf8'), 'keep\n');
 });
@@ -332,7 +349,7 @@ test('lock release preserves a replacement lock instance', t => {
   const run = (executable, args, cwd, options) => {
     if (args[0] === '--version') {
       fs.writeFileSync(path.join(stateDirectory, 'transaction.lock'), JSON.stringify(replacement));
-      return { stdout: '10.34.5\n' };
+      return { stdout: '12.4.2\n' };
     }
     return fakePnpm(canonical, consumer, [])(executable, args, cwd, options);
   };
@@ -562,9 +579,9 @@ test('recovery accepts an intentional current cohort update', t => {
   const appManifest = path.join(consumer, 'apps/app/package.json');
   fs.writeFileSync(appManifest, JSON.stringify({
     name: 'fixture-app',
-    dependencies: Object.fromEntries(FRAMEWORK_PACKAGE_NAMES.map(name => [name, '0.2.3'])),
+    dependencies: Object.fromEntries(FRAMEWORK_PACKAGE_NAMES.map(name => [name, '0.3.0'])),
   }));
-  installRegistryFramework(consumer, { version: '0.2.3' });
+  installRegistryFramework(consumer, { version: '0.3.0' });
   assert.equal(recover(consumer, { install: false }).recovered, true);
 });
 
@@ -586,7 +603,7 @@ test('linking rejects roots that overlap and framework cohorts with mixed versio
   );
   const manifest = path.join(canonical, 'packages/invest-core/package.json');
   const original = fs.readFileSync(manifest);
-  fs.writeFileSync(manifest, JSON.stringify({ name: '@global-torque/invest-core', version: '0.2.4' }));
+  fs.writeFileSync(manifest, JSON.stringify({ name: '@global-torque/invest-core', version: '99.0.0' }));
   try {
     assert.throws(
       () => linkConsumer({ consumerRoot: consumer, frameworkRoot: canonical, run: fakePnpm(canonical, consumer, []) }),

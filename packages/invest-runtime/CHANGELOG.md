@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.3.0 candidate
+
+- Require Node `^24.21.0`; Node 22 is no longer supported.
+- Upgrade VueUse to 15 and adapt the WebSocket heartbeat scheduler while preserving its 60-second cadence. Support both Pinia 3 and 4.
+
+## 0.2.4 candidate
+
+- Reissued the framework cohort for the dropdown SFC correction; runtime
+  contracts remain unchanged.
+
 ## 0.2.3 candidate
 
 - Reissued the framework cohort after the accepted cross-repository source

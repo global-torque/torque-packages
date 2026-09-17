@@ -10,6 +10,7 @@ import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 
 export const RECOVERY_SCHEMA_VERSION = 1;
 export const STATE_DIRECTORY = '.torque-framework-links';
@@ -596,6 +597,7 @@ function assertRegistryResolution(consumerRoot) {
 }
 
 export function status(consumerRoot) {
+  consumerRoot = fs.realpathSync(consumerRoot);
   const journal = readJournal(consumerRoot);
   const workspacePath = journal.workspacePath || path.join(consumerRoot, 'pnpm-workspace.yaml');
   const workspace = fs.existsSync(workspacePath) ? readBytes(workspacePath) : Buffer.alloc(0);
@@ -625,6 +627,7 @@ export function status(consumerRoot) {
 }
 
 export function recover(consumerRoot, { install = true, run = runPnpm } = {}) {
+  consumerRoot = fs.realpathSync(consumerRoot);
   const transactionLock = acquireTransactionLock(consumerRoot);
   let recoveryStateRemoved = false;
   try {
@@ -696,7 +699,8 @@ function parseArguments(argv) {
   return { action, consumerRoot };
 }
 
-if (process.argv[1] && import.meta.url === `file://${process.argv[1]}`) {
+if (process.argv[1] && fs.existsSync(process.argv[1])
+  && fs.realpathSync(process.argv[1]) === fs.realpathSync(fileURLToPath(import.meta.url))) {
   try {
     const parsed = parseArguments(process.argv.slice(2));
     if (parsed.help) {

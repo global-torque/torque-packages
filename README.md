@@ -4,14 +4,32 @@ This repository is the independent source workspace for the seven investment
 framework packages under the `@global-torque` namespace. The workspace root
 is private; each package is an independently reviewed MIT package candidate.
 
-The current candidate is `0.2.3` for all seven packages. It is source based:
+The current candidate is `0.3.0` for all seven packages. It is source based:
 published files contain the explicit `src` exports and the host application
 provides the Vue/Vite toolchain and singleton peers. The candidate is local and
 non-promotable until the primary maintainer completes the accepted release
 gates. Dispatch the candidate workflow from the matching
-`framework-v0.2.3` tag when producing attestations. The previously reviewed
+`framework-v0.3.0` tag when producing attestations. The previously reviewed
 `framework-v0.2.2` source tag, commit, and immutable artifacts remain
 retained as history; no canonical `0.2.0` package artifacts were produced.
+
+Development and package consumption require Node `^24.21.0`; `.node-version`
+and CI pin 24.21.0. Bootstrap pnpm with `corepack enable` and
+`corepack prepare pnpm@12.4.2 --activate`, then run
+`pnpm install --frozen-lockfile --ignore-scripts`. TypeScript remains 6.0.3;
+TypeScript 7 is deferred until vue-tsc supports its compiler entry point.
+
+CI runs on pull requests and pushes to `master` using Node 24.21.0. It runs
+`pnpm run build:node`, `pnpm run check` (package and consumer-link tests), and
+`pnpm run test:release`. Typechecks, audits, boundary/runtime dependency/packlist
+checks, and detached browser/consumer verification remain available locally
+but are not CI gates. The manual release workflow builds and tests before
+packing and retaining the candidate artifacts.
+
+This release combines the dependency migration from the retained 0.2.3 baseline,
+the 0.2.4 dropdown navigation fix, and the merged role-colour updates.
+See [migration results](docs/dependency-migration-results.md) for the supported
+Pinia 3/4 consumer matrix, verification evidence and release handoff items.
 
 The package graph is dependency first:
 
@@ -59,8 +77,8 @@ entries. The Node build compiles only those four entries once during candidate
 packing; generated output is ignored and is never a source of browser SFCs.
 `pnpm run pack:candidate` rejects an ineligible candidate or existing output
 directory before cleanup, removes only the two owned `dist/node` directories,
-runs this build once, runs the full check, revalidates the four-file inventory,
-and then packs all seven packages.
+runs this build once, runs package and consumer-link tests, revalidates the
+four-file inventory, and then packs all seven packages.
 
 After `@global-torque/ui-kit@0.1.4` is available from its owning release, run
 `pnpm install --frozen-lockfile`, then `pnpm run build:node` followed by
@@ -73,8 +91,8 @@ commit, hosted run, and raw Sigstore bundle (including `gh attestation verify
 lockfile, restores the canonical files, and keeps the framework manifest and
 lockfile pinned to public `0.1.4`.
 
-Detached npm and pnpm verification requires Chromium and its checked system
-dependencies:
+Optional local detached npm and pnpm verification requires Chromium and its
+checked system dependencies:
 
 ```sh
 pnpm exec playwright install --with-deps chromium
@@ -82,7 +100,7 @@ CONSUMER_PACKAGE_MANAGERS=npm,pnpm node scripts/verify-archive-consumers.mjs art
 ```
 
 When the authenticated UI Kit transport is selected, pass its archive as the
-second argument, as the candidate workflow does:
+second argument:
 
 ```sh
 CONSUMER_PACKAGE_MANAGERS=npm,pnpm node scripts/verify-archive-consumers.mjs \
@@ -91,8 +109,8 @@ CONSUMER_PACKAGE_MANAGERS=npm,pnpm node scripts/verify-archive-consumers.mjs \
 
 The script saves each manager's report, screenshots, and failure diagnostics
 under `$RUNNER_TEMP/torque-framework-consumer-evidence/npm/` and
-`$RUNNER_TEMP/torque-framework-consumer-evidence/pnpm/`. The workflow retains
-that evidence as a separate artifact from the candidate archives.
+`$RUNNER_TEMP/torque-framework-consumer-evidence/pnpm/`. These optional checks
+and their evidence uploads are not part of CI.
 
 `pnpm run pack:candidate` creates
 one local immutable receipt and one tarball per package under `artifacts/` for

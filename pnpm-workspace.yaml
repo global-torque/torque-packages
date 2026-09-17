@@ -3,25 +3,34 @@ packages:
 
 overrides:
   'vitepress@1.6.4>vite': '6.4.3'
-  '@unovis/ts@1.6.7>maplibre-gl': '-'
   'fast-uri@>=3.0.0 <3.1.6': '3.1.6'
   'nanoid@>=3.0.0 <3.3.18': '3.3.18'
   'postcss@>=8.0.0 <8.5.23': '8.5.23'
   'svgo@>=3.0.0 <3.3.5': '3.3.5'
   'undici@>=7.0.0 <7.29.0': '7.29.0'
 
-patchedDependencies:
-  '@unovis/ts@1.6.7': patches/@unovis__ts@1.6.7.patch
-  '@unovis/vue@1.6.7': patches/@unovis__vue@1.6.7.patch
-
 catalog:
-  '@vitejs/plugin-vue': '^6.0.5'
+  '@vitejs/plugin-vue': '^6.0.9'
   '@vue/compiler-sfc': '^3.5.39'
-  '@vueuse/core': '^14.3.0'
-  '@vueuse/integrations': '^14.3.0'
+  '@vueuse/core': '^15.0.0'
+  '@vueuse/integrations': '^15.0.0'
   'typescript': '^6.0.2'
   'vite': '^8.1.3'
-  'vitest': '4.1.11'
+  'vitest': '5.0.1'
   'vue': '^3.5.39'
   'vue-router': '^5.1.0'
   'vue-tsc': '^3.3.6'
+
+# Installs are explicit and use --ignore-scripts, including link transactions.
+verifyDepsBeforeRun: false
+
+# Exact migration targets reviewed on 2026-09-16; all other releases retain
+# pnpm 12's default 24-hour minimum release age.
+minimumReleaseAgeExclude:
+  - '@types/node@24.13.5'
+  - '@vue/test-utils@2.5.1'
+  - '@vueuse/core@15.0.0'
+  - '@vueuse/integrations@15.0.0'
+  - '@vueuse/metadata@15.0.0'
+  - '@vueuse/shared@15.0.0'
+  - 'prettier@3.9.7'

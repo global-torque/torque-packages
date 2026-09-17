@@ -1,11 +1,11 @@
 {
   "name": "@global-torque/invest-core",
   "private": false,
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "Pure investment policy, calculations, formatters, and schema helpers.",
   "license": "MIT",
-  "engines": { "node": ">=22.12.0" },
-  "packageManager": "pnpm@10.34.5",
+  "engines": { "node": "^24.21.0" },
+  "packageManager": "pnpm@12.4.2",
   "sideEffects": false,
   "type": "module",
   "scripts": {
@@ -71,13 +71,12 @@
   },
   "dependencies": {
     "@types/lodash": "^4.17.24",
-    "@types/markdown-it": "^14.1.2",
     "@global-torque/domain-types": "workspace:*",
     "ajv": "^8.20.0",
     "ajv-errors": "^3.0.0",
     "ajv-formats": "^3.0.1",
     "lodash": "^4.18.1",
-    "markdown-it": "^14.3.0"
+    "markdown-it": "^15.0.2"
   },
   "devDependencies": {
     "typescript": "^6.0.2",

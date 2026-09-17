@@ -78,4 +78,37 @@ describe('useOffersDetailsContent', () => {
       composable.tabOptions.value.find(o => o.value === OfferTabTypes.documents)?.label,
     ).toBe('Docs');
   });
+  it('renders tables, code, entities, links and signed images in every offer text field', () => {
+    const content = [
+      '| Asset | Value |',
+      '| --- | --- |',
+      '| Fund | **42** |',
+      '',
+      '```html',
+      '<script>alert("x")</script>',
+      '```',
+      '',
+      '&copy; &amp; [Details](https://example.test/docs?q=1&lang=en)',
+      '',
+      '![Signed](https://example.test/image.png?X-Goog-Algorithm=GOOG4&X-Goog-Signature=abc)',
+      '![Sized](https://example.test/image.png?width=100&height=50)',
+    ].join('\n');
+    const offerRef = ref({ description: content, highlights: content, risk_disclosures: content } as any);
+    const result = useOffersDetailsContent(offerRef, ref(true));
+    for (const html of [result.parsedDescription.value, result.parsedHighlights.value, result.parsedRiskDisclosures.value]) {
+      const document = new DOMParser().parseFromString(html, 'text/html');
+      expect(document.querySelector('.v-table__wrap table tbody td strong')?.textContent).toBe('42');
+      expect(document.querySelector('pre code')?.textContent).toBe('<script>alert("x")</script>\n');
+      expect(document.querySelector('script')).toBeNull();
+      expect(document.body.textContent).toContain('© & Details');
+      expect(document.querySelector('a')?.getAttribute('href')).toBe('https://example.test/docs?q=1&lang=en');
+      expect([...document.querySelectorAll('img')].map(image => image.getAttribute('src'))).toEqual([
+        'https://example.test/image.png',
+        'https://example.test/image.png?width=100&height=50',
+      ]);
+    }
+    offerRef.value.description = 'Updated **description**';
+    expect(result.parsedDescription.value).toContain('<strong>description</strong>');
+  });
+
 });

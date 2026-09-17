@@ -2,7 +2,7 @@ import { useInvestApplicationContext } from '@global-torque/invest-runtime/appli
 import { ref, watch, type WatchStopHandle } from 'vue';
 import { INotification } from '@global-torque/domain-types/notificationsTypes';
 import { acceptHMRUpdate, defineStore, storeToRefs } from 'pinia';
-import { useWebSocket } from '@vueuse/core';
+import { useIntervalFn, useWebSocket } from '@vueuse/core';
 import { assertNotificationShareFields } from '@global-torque/invest-core/notifications/shareFields';
 import { getInvestRuntimeAdapters } from '../adapters.ts';
 import { useSessionStore } from '@global-torque/invest-runtime/session';
@@ -223,7 +223,7 @@ export const useDomainWebSocketStore = defineStore('domainWebsockets', () => {
       },
       heartbeat: {
         message: '{"Command": "ping"}',
-        interval: 60000,
+        scheduler: callback => useIntervalFn(callback, 60000, { immediate: false }),
         pongTimeout: 1000,
       },
     });

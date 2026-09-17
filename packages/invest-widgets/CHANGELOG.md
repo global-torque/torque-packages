@@ -1,7 +1,9 @@
 # Changelog
 
-## Unreleased
+## 0.3.0 candidate
 
+- Require Node `^24.21.0`; Node 22 is no longer supported.
+- Upgrade Unovis to 1.7 without workspace patches; fix nested donut tooltip values that could display NaN.
 - Colour and shadow values now resolve through shared role variables instead of
   ending in a fixed value. 138 declarations across 52 files in this package,
   `@global-torque/invest-shell` and `@global-torque/invest-features` are affected.
@@ -15,6 +17,11 @@
   for that declaration. Where neither the hook nor both stylesheets are present,
   the declaration resolves to no value: colours inherit and shadows are not
   painted.
+
+## 0.2.4 candidate
+
+- Reissued the framework cohort for the dropdown SFC correction; widget
+  contracts remain unchanged.
 
 ## 0.2.3 candidate
 
