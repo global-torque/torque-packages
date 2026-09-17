@@ -2,6 +2,8 @@
 
 ## 0.3.0 candidate
 
+- Retain the 0.2.4 dropdown navigation fix for full-row pointer and keyboard activation.
+
 - Require Node `^24.21.0` and pnpm 12.4.2; remove Node 22 support.
 - Upgrade Vitest 5, jsdom 30, Markdown 15, VueUse 15, Pinia 4 and Unovis 1.7;
   retain tested Pinia 3 consumer support and TypeScript 6.0.3.
@@ -10,6 +12,13 @@
 - Remove unused ESLint and obsolete Unovis patches; expand real browser, SSR,
   hydration, HMR, chart and session-cookie consumer verification.
 - See `docs/dependency-migration-results.md` for staged evidence and limitations.
+
+## 0.2.4 candidate
+
+- Corrected `VDropdown` menu item composition so link and router-link entries
+  receive the primitive menu-item behavior and dismiss the menu after activation.
+- Prepared a uniform seven-package framework cohort at `0.2.4`; the prior
+  `0.2.3` candidate remains retained for recovery.
 
 ## 0.2.3 candidate
 

@@ -5,6 +5,11 @@
 - Require Node `^24.21.0`; Node 22 is no longer supported.
 - Preserve source exports and domain contracts with the upgraded framework cohort.
 
+## 0.2.4 candidate
+
+- Reissued the framework cohort for the dropdown SFC correction; domain
+  contracts remain unchanged.
+
 ## 0.2.3 candidate
 
 - Reissued the framework cohort after the accepted cross-repository source

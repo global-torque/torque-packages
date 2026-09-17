@@ -1,6 +1,6 @@
 # Dependency migration implementation evidence
 
-Implementation in progress, 2026-09-16. Local probes are non-promotable development evidence; no publication, hosted Linux run, or consuming application rollout is implied.
+Dependency migration completed and locally verified, 2026-09-16. Release integration resumed on 2026-09-17; see the release integration section below. Local probes are non-promotable development evidence; no publication, hosted Linux run, or consuming application rollout is implied.
 
 ## Baseline
 
@@ -105,3 +105,27 @@ The authenticated UI transport was downloaded and verified against its original 
 A real pnpm 12 transaction linked all seven packages into a detached registry consumer. The retained standalone recovery helper restored all three protected manifest/lock/workspace files byte-for-byte and restored all seven registry 0.2.3 packages. Unit contracts additionally cover unlink, conflicts and mixed cohorts. A raw npm-installed pnpm 12 placeholder produced macOS `ENOEXEC` when lifecycle scripts were ignored; the documented Corepack bootstrap resolves that without enabling dependency lifecycle scripts.
 
 Sources: [pnpm 12.4.2 release](https://github.com/pnpm/pnpm/releases/tag/v12.4.2), [pnpm settings](https://pnpm.io/settings).
+
+## Final clean verification
+
+Candidate `0.3.0` was unused in the seven npm package histories and repository tags when selected. The isolated local verification commit is `b6e61c404eac438ed715e4d39bc1d742d90f741a`, based on the original source commit above. It is not a hosted release commit or attestation. `REQUIRE_CLEAN_SOURCE=true` packing records `sourceDirty: false`; the working checkout remains uncommitted for review. At completion of that verification, only this verification record differed from the tested snapshot. The subsequent release integration below changes the source and requires fresh packed-consumer verification.
+
+Node 24.21.0 / pnpm 12.4.2 frozen installation, exact four-output Node build, all typechecks, framework boundary/runtime/packlist checks and release contracts pass. The unchanged clean checkout produced seven archives in dependency order. All 146 Vitest files / 1,120 tests pass (core 138, data 136, runtime 258, widgets 31, features 352, shell 205), plus five native shell CSS tests and 33 link/recovery tests. No existing suites or assertions were removed. Audit reports zero advisories at every severity.
+
+A separate manifest review confirms unchanged exports, files, side-effect declarations, repository/publish metadata and exact external `@global-torque/*` dependency pins. All 846 package versions shared by the original and final application lockfiles retain identical integrity digests. Inspection of the actual seven tarballs confirms the Node 24 engine floor and correct catalog/workspace dependency rewriting, with no local path dependencies. The authenticated overlay also passes on the final canonical files, with canonical files restored byte-for-byte. `pnpm peers check` reports only the previously recorded Alchemy TypeScript peer mismatch; no peer rules were relaxed.
+
+The final eight detached consumer combinations all pass: baseline Pinia 3.0.4 and target Pinia 4.0.3, each under npm and pnpm, with both public-registry UI Kit and its authenticated transport archive. Baseline pnpm is 10.34.5, target pnpm is 12.4.2; npm is 11.19.0. All run on Node 24.21.0 with Chromium 153.0.8010.12. Every run passes positive/negative SFC typechecks, native Node helpers, Markdown 14/15 plugin integration, singleton identity, production and SSR builds, desktop/mobile chart interactions, cookie logout, hydration and HMR state preservation. Every installed package's declared Node range accepts 24.21.0. The machine-readable aggregate is `final-verification-summary.json` in the evidence directory.
+
+The real host `dashboard.webdevelop.biz/apps/invest` was rechecked in its isolated checkout against the exact seven final archives. Typechecking, all 22 files / 105 tests, production client/server build, SSR page rendering and five-page browser smoke pass. The `/`, `/signin`, `/signup`, `/offers` and `/contact-us` routes retain the baseline titles, headings and input counts, with zero JavaScript exceptions. Existing localhost CORS refusals and the missing resource remain; no authenticated backend behavior is claimed. The original host checkout remains untouched.
+
+Retained final evidence under `/tmp/torque-dependency-migration-evidence` includes `candidate-0.3.0/`, `final-clean-*`, `final-integrity-review.json`, `final-peers.log`, `final-ui-overlay/`, `final-public/`, `final-overlay/` and `final-host-*`. The baseline host lockfile and built artifact remain available for rollback comparison. These local temporary artifacts are not durable release storage.
+
+Hosted Linux execution, owner resolution of the Alchemy peer declaration, authenticated host acceptance and the existing maintainer publication process remain release handoff items. No packages, tags, releases or deployments were published.
+
+## 0.3.0 release integration — 2026-09-17
+
+The user authorized npm publication of 0.3.0 with all current changes. Integrated `origin/master` at `381ad2f26ae3d2e0e2f7826a16698a1ccf6ca6e0`, including the role-colour changes from PR #1, and the published 0.2.4 menu fix from `dc44e88e4d2617d2851b5ba390ae1792999279f3`. All seven 0.2.4 registry archives were downloaded and their published SHA-512 integrity verified. The new dropdown script/template matches the published fix exactly; its newer role-colour styles are preserved. The original three dropdown regression cases cover Enter, Space, router navigation and menu dismissal.
+
+Changelog integration retains the dependency migration, colour changes and 0.2.4 history. The compatibility workflow now targets the repository's actual `master` branch. Detached consumers explicitly load design-token CSS before geometry, as required by the merged colour changes.
+
+Prior local 0.3.0 archives remain untouched development evidence. The user explicitly requested publication of the combined changes as 0.3.0; a fresh hosted candidate will supply the release bytes. Original migration evidence above describes the earlier source and does not certify the combined release. New evidence is retained under `/tmp/torque-release-030-evidence/` and in the hosted candidate/provenance runs. No dependency peer rules are relaxed; the previously disclosed Alchemy TypeScript peer metadata mismatch remains an external-owner issue.

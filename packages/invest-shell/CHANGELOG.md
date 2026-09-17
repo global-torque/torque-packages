@@ -2,6 +2,8 @@
 
 ## 0.3.0 candidate
 
+- Retain the 0.2.4 dropdown navigation fix for full-row pointer and keyboard activation.
+
 - Require Node `^24.21.0`; Node 22 is no longer supported.
 - Support the upgraded framework cohort and both Pinia 3 and 4 with the existing source and asset contracts.
 - Colour and shadow values now resolve through shared role variables instead of
@@ -16,6 +18,11 @@
   no value: colours inherit and shadows are not painted.
 - Re-measured the CSS budget against the new aggregate: 98,507 raw bytes and
   18,177 gzip bytes.
+
+## 0.2.4 candidate
+
+- Corrected `VDropdown` menu item composition so link and router-link entries
+  receive primitive menu-item behavior and dismiss the menu after activation.
 
 ## 0.2.3 candidate
 

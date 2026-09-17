@@ -92,6 +92,7 @@ const directDependencies = {
   '@global-torque/ui-primitives': '0.1.3',
   '@global-torque/sdk': '0.2.0',
   '@global-torque/client-error-handling': '0.1.0',
+  '@global-torque/design-tokens': '0.2.1',
   vue: '3.5.42',
   pinia: profile.pinia,
   'vue-router': profile.router,
@@ -259,7 +260,8 @@ createApp({ setup() {
   ]);
 } }).use(createPinia()).mount('#app');
 `);
-  fs.writeFileSync(path.join(consumer, 'src/main.ts'), `import '@global-torque/invest-shell/styles/geometry.css';
+  fs.writeFileSync(path.join(consumer, 'src/main.ts'), `import '@global-torque/design-tokens/css';
+import '@global-torque/invest-shell/styles/geometry.css';
 import '@global-torque/invest-shell/styles/components.css';
 import '@global-torque/invest-shell/styles';
 import { createApp, createSSRApp } from 'vue';

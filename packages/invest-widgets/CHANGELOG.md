@@ -18,6 +18,11 @@
   the declaration resolves to no value: colours inherit and shadows are not
   painted.
 
+## 0.2.4 candidate
+
+- Reissued the framework cohort for the dropdown SFC correction; widget
+  contracts remain unchanged.
+
 ## 0.2.3 candidate
 
 - Reconciled the accreditation and KYC alert action presentation so actions

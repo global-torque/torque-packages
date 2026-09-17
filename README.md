@@ -19,7 +19,8 @@ and CI pin 24.21.0. Bootstrap pnpm with `corepack enable` and
 `pnpm install --frozen-lockfile --ignore-scripts`. TypeScript remains 6.0.3;
 TypeScript 7 is deferred until vue-tsc supports its compiler entry point.
 
-The dependency migration starts from the retained 0.2.3 source baseline.
+This release combines the dependency migration from the retained 0.2.3 baseline,
+the 0.2.4 dropdown navigation fix, and the merged role-colour updates.
 See [migration results](docs/dependency-migration-results.md) for the supported
 Pinia 3/4 consumer matrix, verification evidence and release handoff items.
 

@@ -64,6 +64,7 @@ const getComponentProps = (item: IDropdown) => {
       <DropdownMenuItem
         v-for="menuItem in menu"
         :key="menuItem.text"
+        as-child
         :class="menuItem.class"
       >
         <component

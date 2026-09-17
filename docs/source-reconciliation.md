@@ -1,7 +1,8 @@
 # Source and release reconciliation
 
 The `0.3.0` candidate applies the dependency migration to the accepted `0.2.3`
-framework SFC baseline. Node 24 is required; external package pins and source
+framework SFC baseline, retaining the 0.2.4 dropdown fix and the role-colour
+changes merged in 381ad2f. Node 24 is required; external package pins and source
 exports are preserved. See [migration results](dependency-migration-results.md). Its
 transferred baseline is from
 `global-torque/dashboard.webdevelop.biz@9f35aa0882b765e202538ce7c7d5e82eb1b452d3`.
