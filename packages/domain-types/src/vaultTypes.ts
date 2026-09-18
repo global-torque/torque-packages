@@ -3,6 +3,7 @@ export const VaultProtocolStates = {
   pending: 'pending',
   claimable: 'claimable',
   claimed: 'claimed',
+  quarantined: 'quarantined',
 } as const;
 
 export type VaultProtocolState =
@@ -128,6 +129,16 @@ export interface VaultRedemption {
   claimed_shares_raw: string;
   claimed_assets_raw: string;
   liquidity_shortfall_raw?: string;
+  priced_at?: string | null;
+  liquidity_quarantine?: {
+    id: number;
+    state: 'active' | 'cleared';
+    reason_code: string;
+    shortfall_assets_raw: string;
+    finalized_block_number: string;
+    finalized_block_hash: string;
+    detected_at: string;
+  } | null;
   request_locked_at?: string | null;
   estimate: VaultRedemptionEstimate | null;
   dealing_cutoff: {

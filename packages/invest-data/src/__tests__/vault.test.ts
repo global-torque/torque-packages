@@ -521,4 +521,50 @@ describe('Vault client', () => {
       }),
     );
   });
+
+  it('keeps a priced final redemption when finalized NAV is intentionally null', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(jsonResponse({
+      count: 1,
+      data: [{
+        id: 74,
+        offer_id: 42,
+        profile_id: 9,
+        vault_request_origin: 'application',
+        vault_request_effect_id: 17,
+        status: 'approved',
+        protocol_state: 'claimable',
+        share_amount_raw: '1000000000000000000',
+        pending_shares_raw: '0',
+        claimable_shares_raw: '1000000000000000000',
+        claimable_assets_raw: '12500000',
+        claimed_shares_raw: '0',
+        claimed_assets_raw: '0',
+        asset_amount_raw: '12500000',
+        dealing_price_usdc_raw: '12500000',
+        priced_at: '2026-08-01T00:00:00Z',
+        nav_record_id: null,
+        nav_version: null,
+        nav_usdc_raw: null,
+        nav_valuation_block_number: null,
+        nav_valuation_as_of: null,
+        estimated_nav_record_id: null,
+        dealing_cutoff_block_number: null,
+        dealing_cutoff_at: null,
+        request_locked_at: null,
+      }],
+    }));
+    const hooks = createApiClientHooks({ isOnline: () => true });
+    const client = createVaultClient({
+      investment: new ApiClient('https://investment.example.test', { fetch: fetchMock, hooks }),
+      evm: new ApiClient('https://evm.example.test', { fetch: fetchMock, hooks }),
+    });
+
+    const result = await client.listRedemptions();
+
+    expect(result.data[0]?.final).toMatchObject({
+      asset_amount_raw: '12500000',
+      nav_usdc_raw: null,
+      priced_at: '2026-08-01T00:00:00Z',
+    });
+  });
 });

@@ -209,15 +209,37 @@ const normalizeRedemption = (
           at: String(value.dealing_cutoff_at),
         };
   const final =
-    value.nav_record_id == null
+    value.asset_amount_raw == null &&
+    value.dealing_price_usdc_raw == null &&
+    value.priced_at == null
       ? null
       : {
-          nav_record_id: Number(value.nav_record_id),
-          nav_version: Number(value.nav_version),
-          nav_usdc_raw: String(value.nav_usdc_raw),
-          valuation_block_number: String(value.nav_valuation_block_number),
-          valuation_as_of: String(value.nav_valuation_as_of),
+          nav_record_id:
+            value.nav_record_id == null ? null : Number(value.nav_record_id),
+          nav_version:
+            value.nav_version == null ? null : Number(value.nav_version),
+          nav_usdc_raw:
+            value.nav_usdc_raw == null ? null : String(value.nav_usdc_raw),
+          valuation_block_number:
+            value.nav_valuation_block_number == null
+              ? null
+              : String(value.nav_valuation_block_number),
+          valuation_as_of:
+            value.nav_valuation_as_of == null
+              ? null
+              : String(value.nav_valuation_as_of),
           asset_amount_raw: String(value.asset_amount_raw),
+          pricing_source:
+            value.pricing_source == null ? null : String(value.pricing_source),
+          dealing_price_usdc_raw:
+            value.dealing_price_usdc_raw == null
+              ? null
+              : String(value.dealing_price_usdc_raw),
+          priced_by_user_id:
+            value.priced_by_user_id == null
+              ? null
+              : Number(value.priced_by_user_id),
+          priced_at: value.priced_at == null ? null : String(value.priced_at),
           delta_from_estimate_raw:
             value.estimate_delta_raw == null
               ? null
@@ -254,6 +276,41 @@ const normalizeRedemption = (
       value.liquidity_shortfall_raw == null
         ? undefined
         : String(value.liquidity_shortfall_raw),
+    priced_at: value.priced_at == null ? null : String(value.priced_at),
+    liquidity_quarantine:
+      value.liquidity_quarantine == null
+        ? null
+        : {
+            id: Number((value.liquidity_quarantine as Record<string, unknown>).id),
+            state: (value.liquidity_quarantine as Record<string, unknown>)
+              .state as "active" | "cleared",
+            reason_code: String(
+              (value.liquidity_quarantine as Record<string, unknown>).reasonCode ??
+                (value.liquidity_quarantine as Record<string, unknown>).reason_code,
+            ),
+            shortfall_assets_raw: String(
+              (value.liquidity_quarantine as Record<string, unknown>)
+                .shortfallAssetsRaw ??
+                (value.liquidity_quarantine as Record<string, unknown>)
+                  .shortfall_assets_raw,
+            ),
+            finalized_block_number: String(
+              (value.liquidity_quarantine as Record<string, unknown>)
+                .finalizedBlockNumber ??
+                (value.liquidity_quarantine as Record<string, unknown>)
+                  .finalized_block_number,
+            ),
+            finalized_block_hash: String(
+              (value.liquidity_quarantine as Record<string, unknown>)
+                .finalizedBlockHash ??
+                (value.liquidity_quarantine as Record<string, unknown>)
+                  .finalized_block_hash,
+            ),
+            detected_at: String(
+              (value.liquidity_quarantine as Record<string, unknown>).detectedAt ??
+                (value.liquidity_quarantine as Record<string, unknown>).detected_at,
+            ),
+          },
     request_locked_at:
       value.request_locked_at == null ? null : String(value.request_locked_at),
     estimate,
