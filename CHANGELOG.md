@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.0 candidate
+
+- Breaking redemption contract: business status is now required and limited to
+  `pending`, `approved`, `denied`, `cancelled`, or `completed`.
+- Removed redemption-only pricing fields and the transitional response
+  compatibility shim; protocol state and decision metadata remain independent.
+- Added shared canonical redemption digest fixtures and strict domain exports.
+
 ## 0.3.1 candidate
 
 - Reissued the uniform seven-package cohort with the reviewed telemetry,

@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.0 candidate
+
+- Reissued the framework cohort for the breaking redemption domain contract;
+  feature ViewModels consume the new status axis through public exports.
+
 ## 0.3.1 candidate
 
 - Capture demo-account credentials and the default redirect at provider setup so

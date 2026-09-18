@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.0 candidate
+
+- Reissued the framework cohort for the breaking redemption domain contract;
+  shell and navigation exports remain unchanged.
+
 ## 0.3.1 candidate
 
 - Reissued the uniform framework cohort while retaining the 0.3.0 dropdown

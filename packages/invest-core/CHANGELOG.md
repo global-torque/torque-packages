@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.0 candidate
+
+- Reissued the framework cohort for the breaking redemption domain contract;
+  analytics and policy exports remain unchanged.
+
 ## 0.3.1 candidate
 
 - Retain user, business, numeric, URL, and diagnostic analytics values while

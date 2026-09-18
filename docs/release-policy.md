@@ -34,17 +34,18 @@ restored before the candidate is packed, so packed manifests and receipts
 retain the public registry dependency. Omitting the transport release uses the
 frozen public lockfile and requires the UI Kit release to be available.
 
-Candidate 0.3.1 reissues the dependency-migrated 0.3.0 cohort with selective
-analytics/request sanitization, stable demo-account configuration capture, and
-local Vite UI peer exclusions. The retained 0.2.3 baseline remains the source
-reconciliation reference.
+Candidate 0.4.0 delivers the breaking stablecoin redemption contract and
+reissues the dependency-migrated 0.3.0 cohort with selective analytics/request
+sanitization, stable demo-account configuration capture, and local Vite UI peer
+exclusions. The retained 0.2.3 baseline remains the source reconciliation
+reference.
 Local verification does not authorize publication; the external Alchemy
 TypeScript peer declaration remains a documented owner handoff item in
 [the migration results](dependency-migration-results.md).
 
-The candidate's ordinary immutable release tag is `framework-v0.3.1` for the
-`0.3.1` candidate. Dispatch the candidate workflow from that tag so its
-attestations carry `refs/tags/framework-v0.3.1`. The prior `framework-v0.2.2`
+The candidate's ordinary immutable release tag is `framework-v0.4.0` for the
+`0.4.0` candidate. Dispatch the candidate workflow from that tag so its
+attestations carry `refs/tags/framework-v0.4.0`. The prior `framework-v0.2.2`
 source tag, commit, and immutable artifact history remain retained for audit;
 its package bytes and provenance are not replaced. The earlier
 `framework-v0.2.0` run failed before installation, build, or packing; no

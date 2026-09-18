@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.0 candidate
+
+- Make redemption status required with the canonical five-value status union.
+- Remove `pricing_status` and `priced_request_effect_id` from redemption
+  contracts.
+- Export the canonical redemption digest helper and fixtures.
+
 ## 0.3.1 candidate
 
 - Reissued the uniform framework cohort for the telemetry and request-context

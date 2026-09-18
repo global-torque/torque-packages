@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.0 candidate
+
+- Reissued the framework cohort for the breaking redemption domain contract;
+  widget providers and assets remain unchanged.
+
 ## 0.3.1 candidate
 
 - Reissued the uniform framework cohort for the shared telemetry and request

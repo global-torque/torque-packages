@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.0 candidate
+
+- Reissued the framework cohort for the breaking redemption domain contract;
+  runtime context and telemetry exports remain unchanged.
+
 ## 0.3.1 candidate
 
 - Preserve useful URL, fragment, user, and diagnostic context in analytics and

@@ -1,7 +1,7 @@
 {
   "name": "@global-torque/domain-types",
   "private": false,
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "Pure investment domain contracts for the Torque framework.",
   "license": "MIT",
   "engines": { "node": "^24.21.0" },
@@ -34,6 +34,7 @@
     "./profilesTypes": "./src/profilesTypes.ts",
     "./profileTypes": "./src/profileTypes.ts",
     "./vaultTypes": "./src/vaultTypes.ts",
+    "./redemptionDigest": "./src/redemptionDigest.ts",
     "./settingsTypes": "./src/settingsTypes.ts",
     "./walletTypes": "./src/walletTypes.ts"
   },

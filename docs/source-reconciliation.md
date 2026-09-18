@@ -1,8 +1,9 @@
 # Source and release reconciliation
 
-The `0.3.1` candidate reissues the dependency-migrated `0.3.0` framework cohort
-with selective analytics/request sanitization, stable demo-account configuration
-capture, and local Vite UI peer exclusions. The accepted `0.2.3` framework SFC
+The `0.4.0` candidate delivers the breaking stablecoin redemption contract and
+the dependency-migrated framework cohort with selective analytics/request
+sanitization, stable demo-account configuration capture, and local Vite UI peer
+exclusions. The accepted `0.2.3` framework SFC
 baseline, 0.2.4 dropdown fix, and role-colour changes merged in 381ad2f remain
 retained. Node 24 is required; external package pins and source exports are
 preserved. See [migration results](dependency-migration-results.md). Its

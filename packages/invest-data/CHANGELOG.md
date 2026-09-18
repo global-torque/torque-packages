@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.0 candidate
+
+- Consume the breaking redemption contract without pricing-field projection or
+  transitional response fallback.
+- Preserve protocol state and the explicit redemption status axis through the
+  Vault client.
+
 ## 0.3.1 candidate
 
 - Share the selective analytics normalization policy with API client error

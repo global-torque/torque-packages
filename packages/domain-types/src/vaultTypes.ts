@@ -94,7 +94,6 @@ export interface VaultRedemptionFinal {
   pricing_source?: string | null;
   dealing_price_usdc_raw?: string | null;
   priced_by_user_id?: number | null;
-  priced_request_effect_id?: number | null;
   priced_at?: string | null;
   nav_record_id?: number | null;
   nav_version?: number | null;
@@ -105,6 +104,12 @@ export interface VaultRedemptionFinal {
 }
 
 export type VaultClaimDirection = 'deposit' | 'redemption';
+export type VaultRedemptionStatus =
+  | 'pending'
+  | 'approved'
+  | 'denied'
+  | 'cancelled'
+  | 'completed';
 export interface VaultRedemption {
   id: number;
   offer_id?: number;
@@ -114,8 +119,7 @@ export interface VaultRedemption {
   request_origin: 'application' | 'chain';
   request_effect_id: number | null;
   request_effect_state?: 'assigned' | 'unassigned';
-  status?: string;
-  pricing_status: 'awaiting_dealing_nav' | 'priced';
+  status: VaultRedemptionStatus;
   protocol_state: VaultProtocolState;
   share_amount_raw: string;
   pending_shares_raw: string;
