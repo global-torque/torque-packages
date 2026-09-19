@@ -1,34 +1,13 @@
 import { SdkHttpError } from '@global-torque/sdk';
 import type { APIErrorData } from '../service/handlers/apiError.ts';
-
-const SECRET_PATH_LABEL = /^(?:api[-_]?key|authorization|bearer|cookie|csrf(?:_token)?|password|secret|token)$/iu;
-const JWT_LIKE_SEGMENT = /^[A-Za-z\d_-]{8,}\.[A-Za-z\d_-]{8,}\.[A-Za-z\d_-]{8,}$/u;
-const SAFE_REQUEST_HEADERS = new Set(['accept', 'content-type', 'x-request-id']);
-
-const sanitizePathname = (pathname: string): string => {
-  const segments = pathname.split('/');
-  return segments.map((segment, index) => {
-    const previous = segments[index - 1] ?? '';
-    if (
-      SECRET_PATH_LABEL.test(previous)
-      || JWT_LIKE_SEGMENT.test(segment)
-      || segment.length > 256
-    ) {
-      return '[redacted]';
-    }
-    return segment;
-  }).join('/');
-};
+import {
+  isCredentialKey,
+  sanitizeAnalyticsText,
+  sanitizeAnalyticsUrl,
+} from '@global-torque/invest-core/analytics/analyticsBody';
 
 export const sanitizeCompatibilityUrl = (value: string): string => {
-  if (!value) return '';
-  try {
-    const url = new URL(value);
-    return `${url.origin}${sanitizePathname(url.pathname)}`;
-  }
-  catch {
-    return value.replace(/[?#].*$/u, '').slice(0, 500);
-  }
+  return sanitizeAnalyticsUrl(value);
 };
 
 export const createCompatibilityHttpRequest = (
@@ -60,7 +39,10 @@ export const createCompatibilityHttpRequest = (
 export const createCompatibilityDiagnosticHeaders = (headers?: HeadersInit): Headers => {
   const sanitized = new Headers();
   new Headers(headers).forEach((value, name) => {
-    if (SAFE_REQUEST_HEADERS.has(name.toLowerCase())) sanitized.set(name, value.slice(0, 500));
+    sanitized.set(
+      name,
+      isCredentialKey(name) ? '[redacted]' : sanitizeAnalyticsText(value),
+    );
   });
   return sanitized;
 };

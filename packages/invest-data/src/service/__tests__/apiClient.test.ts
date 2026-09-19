@@ -152,11 +152,49 @@ describe('legacy ApiClient', () => {
         attempts: 1,
         httpRequest: expect.objectContaining({
           method: 'GET',
-          url: 'https://api.example.test/items',
+          url: 'https://api.example.test/items?page=1',
           path: '/items',
         }),
       },
     });
+  });
+
+  it('default hooks project diagnostics selectively while preserving legacy request body and auth', async () => {
+    resetApiClientHooks();
+    configureApiClientHooks({
+      createRequestId: () => 'request-default-policy',
+      isOnline: () => true,
+    });
+    fetchMock.mockRejectedValueOnce(new TypeError('Failed to fetch'));
+    const body = {
+      email: 'user@example.com',
+      offer_id: 42,
+      password: 'PASSWORD_SECRET',
+    };
+    const client = new ApiClient('https://api.example.test');
+
+    let caught: NetworkRequestError | undefined;
+    try {
+      await client.post('/offers', body, {
+        retry: 0,
+        headers: { authorization: 'Bearer AUTH_SECRET' },
+      });
+    } catch (error) {
+      caught = error as NetworkRequestError;
+    }
+
+    expect(caught?.data.body).toEqual({
+      email: 'user@example.com',
+      offer_id: 42,
+      password: '[redacted]',
+    });
+    expect(body).toEqual({
+      email: 'user@example.com',
+      offer_id: 42,
+      password: 'PASSWORD_SECRET',
+    });
+    expect(fetchMock.mock.calls[0]?.[1]?.body).toBe(JSON.stringify(body));
+    expect(new Headers(fetchMock.mock.calls[0]?.[1]?.headers).get('authorization')).toBe('Bearer AUTH_SECRET');
   });
 
   it('retries idempotent network failures once by default', async () => {

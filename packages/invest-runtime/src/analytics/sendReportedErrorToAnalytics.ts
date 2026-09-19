@@ -10,9 +10,9 @@ import {
 } from '@global-torque/domain-types/analyticsTypes';
 import {
   normalizeAnalyticsBodyForMethod,
+  sanitizeAnalyticsUrl,
   sanitizeAnalyticsText,
 } from '@global-torque/invest-core/analytics/analyticsBody';
-import { sanitizeText as sanitizeTransportText } from '@global-torque/client-error-handling/sanitize';
 import { createClientErrorPipeline } from '@global-torque/client-error-handling/pipeline';
 import type {
   ClientErrorReporter,
@@ -37,7 +37,8 @@ import { createRuntimeTransportSafeError } from '../error/transportSafeError.ts'
 
 /**
  * Optional structured context passed by the caller.
- * All fields are sanitized before being sent to analytics.
+ * All fields are selectively sanitized before being sent to analytics. Known
+ * credential fields are removed while business and diagnostic context remains.
  */
 export interface AnalyticsErrorContext {
   source?: IAnalyticsClientErrorContext['source'];
@@ -110,9 +111,7 @@ function shouldReportToAnalytics(): boolean {
 }
 
 function sanitizeText(raw: unknown): string {
-  return sanitizeTransportText(sanitizeAnalyticsText(raw), {
-    maxStringLength: 500,
-  });
+  return sanitizeAnalyticsText(raw);
 }
 
 function sanitizeOptionalText(raw: unknown): string | undefined {
@@ -185,29 +184,15 @@ function sanitizeStack(stack?: string[]): string[] {
 }
 
 function sanitizeUrlText(raw: unknown): string | undefined {
-  const value = sanitizeOptionalText(raw);
+  const value = typeof raw === 'string' ? sanitizeAnalyticsUrl(raw) : '';
   if (!value) return undefined;
-
-  try {
-    const base = typeof window !== 'undefined' ? window.location.origin : 'https://client.local';
-    const parsed = new URL(value, base);
-    return `${parsed.origin}${parsed.pathname}`;
-  } catch {
-    return value.split('?')[0]?.split('#')[0] || undefined;
-  }
+  return sanitizeAnalyticsText(value);
 }
 
 function sanitizePathText(raw: unknown): string | undefined {
-  const value = sanitizeOptionalText(raw);
+  const value = typeof raw === 'string' ? sanitizeAnalyticsUrl(raw) : '';
   if (!value) return undefined;
-
-  try {
-    const base = typeof window !== 'undefined' ? window.location.origin : 'https://client.local';
-    const parsed = new URL(value, base);
-    return parsed.pathname;
-  } catch {
-    return value.split('?')[0]?.split('#')[0] || undefined;
-  }
+  return sanitizeAnalyticsText(value);
 }
 
 function buildTransportHttpRequest(httpRequest: HttpRequestLike): HttpRequestLike {
@@ -218,9 +203,9 @@ function buildTransportHttpRequest(httpRequest: HttpRequestLike): HttpRequestLik
     method: sanitizeOptionalText(httpRequest.method) ?? 'GET',
     url: sanitizeUrlText(httpRequest.url) ?? '',
     path: sanitizePathText(httpRequest.path) ?? '',
-    userAgent: '-',
-    referer: '-',
-    remoteIp: '-',
+    userAgent: sanitizeOptionalText(httpRequest.userAgent) ?? '',
+    referer: sanitizeOptionalText(httpRequest.referer) ?? '',
+    remoteIp: sanitizeOptionalText(httpRequest.remoteIp) ?? '',
     protocol,
   };
 }
@@ -230,12 +215,30 @@ function buildTransportClientContext(): ReturnType<typeof getClientContext> {
   const width = client.viewport?.width;
   const height = client.viewport?.height;
   return {
+    userAgent: sanitizeOptionalText(client.userAgent),
     language: sanitizeOptionalText(client.language),
+    timeZone: sanitizeOptionalText(client.timeZone),
     onLine: typeof client.onLine === 'boolean' ? client.onLine : undefined,
     viewport: {
       width: typeof width === 'number' && Number.isFinite(width) ? width : undefined,
       height: typeof height === 'number' && Number.isFinite(height) ? height : undefined,
     },
+    screen: client.screen
+      ? Object.fromEntries(
+        Object.entries(client.screen).map(([key, value]) => [
+          key,
+          typeof value === 'number' && Number.isFinite(value) ? value : undefined,
+        ]),
+      )
+      : undefined,
+    orientation: client.orientation
+      ? {
+        type: sanitizeOptionalText(client.orientation.type),
+        angle: typeof client.orientation.angle === 'number' && Number.isFinite(client.orientation.angle)
+          ? client.orientation.angle
+          : undefined,
+      }
+      : undefined,
   };
 }
 
@@ -410,11 +413,6 @@ const analyticsReporter: ClientErrorReporter = Object.freeze({
     await dispatch.analytics.logMessage({
       ...dispatch.payload,
       time: error.timestamp,
-      error: error.message,
-      data: {
-        ...dispatch.payload.data,
-        stack: error.stack?.split('\n') ?? [],
-      },
     });
   },
 });
@@ -445,8 +443,8 @@ export function resetReportedErrorAnalyticsDedupeForTests(): void {
  * Use as setErrorLogger at app bootstrap so every user-facing error is recorded.
  * Respects VITE_ENABLE_ANALYTICS=1; skips when analytics disabled or user agent is a bot.
  *
- * The caller can optionally provide component/caller/stack via options; these are sanitized
- * and merged with sensible defaults before sending to analytics.
+ * The caller can optionally provide component/caller/stack via options; these are selectively
+ * sanitized and merged with sensible defaults before sending to analytics.
  */
 export function sendReportedErrorToAnalytics(
   normalized: NormalizedError,
@@ -472,6 +470,9 @@ export function sendReportedErrorToAnalytics(
     const body = normalizeAnalyticsBodyForMethod(httpRequest.method, options.body);
     const safeFallbackMessage = sanitizeText(fallbackMessage);
     const safeNormalizedMessage = sanitizeText(normalized.message);
+    const finalErrorText = [safeFallbackMessage, safeNormalizedMessage]
+      .filter((value) => value.trim() !== '')
+      .join(': ');
     const initialStack = sanitizeStack(options.stack);
     const stackString = initialStack.join('\n');
 
@@ -532,12 +533,12 @@ export function sendReportedErrorToAnalytics(
         time: '',
         level: AnalyticsLogLevel.ERROR,
         message: normalizeGroupMessage(safeNormalizedMessage),
-        error: '',
+        error: finalErrorText,
         body,
         data: {
           component,
           caller,
-          stack: [],
+          stack: initialStack,
           serviceContext: {
             httpRequest,
             service_name: serviceName,

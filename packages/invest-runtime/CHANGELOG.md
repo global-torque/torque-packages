@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.4.0 candidate
+
+- Reissued the framework cohort for the breaking redemption domain contract;
+  runtime context and telemetry exports remain unchanged.
+
+## 0.3.1 candidate
+
+- Preserve useful URL, fragment, user, and diagnostic context in analytics and
+  reported-error telemetry while redacting known credential fields.
+- Keep the internal error envelope bounded for deduplication and transport,
+  while sharing core body normalization with runtime analytics events.
+
 ## 0.3.0 candidate
 
 - Require Node `^24.21.0`; Node 22 is no longer supported.

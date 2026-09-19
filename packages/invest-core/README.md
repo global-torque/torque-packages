@@ -27,7 +27,9 @@ TypeScript browser and type targets and additionally provide exact generated
 candidate packer emits only these three Node files; all other exports remain
 source based.
 
-- `analytics/analyticsBody`: analytics request body normalization and redaction.
+- `analytics/analyticsBody`: analytics request body normalization with exact
+  credential-field redaction. User, business, numeric, URL, and diagnostic
+  values are retained unless assigned to a known credential field.
 - `decimal/canonicalDecimal`: numeric(38,18) canonical-string validation, exact scaled-integer arithmetic, comparison, and display formatting.
 - `evm/walletInfo`: EVM wallet status-only response normalization and deposit-address extraction.
 - `filer/publicImage`: pure public filer image URL and `srcset` builders with injected `filerUrl`.

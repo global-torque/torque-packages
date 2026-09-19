@@ -304,7 +304,11 @@ export function createConsumerLinkViteConfig({ root, mode = 'registry', command 
   if (uiPeer && isWithin(canonicalRoot, uiPeer.root)) {
     throw new Error(`Consumer app ${UI_PEER_PACKAGE} peer resolves inside the canonical framework root: ${uiPeer.root}.`);
   }
-  const optimizeDepsExclude = [...FRAMEWORK_PACKAGE_NAMES];
+  const optimizeDepsExclude = [
+    ...FRAMEWORK_PACKAGE_NAMES,
+    '@global-torque/ui-primitives',
+    '@global-torque/ui-kit',
+  ];
   const noExternal = [...FRAMEWORK_PACKAGE_NAMES, ...UI_SSR_CLOSURE];
   return {
     active: true,

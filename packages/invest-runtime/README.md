@@ -143,6 +143,7 @@ only replaces toasts/alerts, not normalization, analytics logging, global
 handler setup, or status-code branching. `setErrorReporter` remains available
 for tests that need to replace the whole pipeline.
 
-Client error telemetry strips query strings from URLs, sanitizes obvious PII and
-token-like text, caps long strings, and never submits raw mutation bodies.
-Mutation bodies are represented as `{ redacted: true }` when present.
+Client error telemetry preserves useful query, fragment, user, and diagnostic
+context while redacting only known credential fields. Bodies use the shared
+analytics normalization policy, and the internal error envelope remains bounded
+for fingerprinting, deduplication, queueing, and rate limiting.

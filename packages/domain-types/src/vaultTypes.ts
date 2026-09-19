@@ -1,8 +1,10 @@
 export const VaultProtocolStates = {
+  none: 'none',
   unconfirmed: 'unconfirmed',
   pending: 'pending',
   claimable: 'claimable',
   claimed: 'claimed',
+  quarantined: 'quarantined',
 } as const;
 
 export type VaultProtocolState =
@@ -94,7 +96,6 @@ export interface VaultRedemptionFinal {
   pricing_source?: string | null;
   dealing_price_usdc_raw?: string | null;
   priced_by_user_id?: number | null;
-  priced_request_effect_id?: number | null;
   priced_at?: string | null;
   nav_record_id?: number | null;
   nav_version?: number | null;
@@ -105,6 +106,12 @@ export interface VaultRedemptionFinal {
 }
 
 export type VaultClaimDirection = 'deposit' | 'redemption';
+export type VaultRedemptionStatus =
+  | 'pending'
+  | 'approved'
+  | 'denied'
+  | 'cancelled'
+  | 'completed';
 export interface VaultRedemption {
   id: number;
   offer_id?: number;
@@ -114,8 +121,7 @@ export interface VaultRedemption {
   request_origin: 'application' | 'chain';
   request_effect_id: number | null;
   request_effect_state?: 'assigned' | 'unassigned';
-  status?: string;
-  pricing_status: 'awaiting_dealing_nav' | 'priced';
+  status: VaultRedemptionStatus;
   protocol_state: VaultProtocolState;
   share_amount_raw: string;
   pending_shares_raw: string;
@@ -124,6 +130,16 @@ export interface VaultRedemption {
   claimed_shares_raw: string;
   claimed_assets_raw: string;
   liquidity_shortfall_raw?: string;
+  priced_at?: string | null;
+  liquidity_quarantine?: {
+    id: number;
+    state: 'active' | 'cleared';
+    reason_code: string;
+    shortfall_assets_raw: string;
+    finalized_block_number: string;
+    finalized_block_hash: string;
+    detected_at: string;
+  } | null;
   request_locked_at?: string | null;
   estimate: VaultRedemptionEstimate | null;
   dealing_cutoff: {

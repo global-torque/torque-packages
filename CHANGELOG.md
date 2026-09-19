@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.4.0 candidate
+
+- Breaking redemption contract: business status is now required and limited to
+  `pending`, `approved`, `denied`, `cancelled`, or `completed`.
+- Removed redemption-only pricing fields and the transitional response
+  compatibility shim; protocol state and decision metadata remain independent.
+- Added shared canonical redemption digest fixtures and strict domain exports.
+
+## 0.3.1 candidate
+
+- Reissued the uniform seven-package cohort with the reviewed telemetry,
+  request-context, demo-account, and local Vite integration updates.
+- Analytics now retains useful user, business, URL, and diagnostic context while
+  redacting known credential fields; data and runtime error paths share that
+  policy.
+- Preserved the 0.3.0 dependency graph, Node 24.21.0/pnpm 12.4.2 toolchain,
+  dropdown behavior, role-colour fallback, and release ownership contracts.
+
 ## 0.3.0 candidate
 
 - Retain the 0.2.4 dropdown navigation fix for full-row pointer and keyboard activation.

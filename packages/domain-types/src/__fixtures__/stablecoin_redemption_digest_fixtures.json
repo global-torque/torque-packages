@@ -1,0 +1,24 @@
+{
+  "documents": [
+    {
+      "name": "active-set-and-grant-scope",
+      "document": {"active_set":[{"coverage":"unrepresented","fulfillment_effect_id":null,"payout_assets_raw":"100","redemption_id":"7"}],"scope":{"executor_address":"0x2222","fulfill_selector":"0xc55790e3","vault_contract_id":"3"}},
+      "canonical": "{\"active_set\":[{\"coverage\":\"unrepresented\",\"fulfillment_effect_id\":null,\"payout_assets_raw\":\"100\",\"redemption_id\":\"7\"}],\"scope\":{\"executor_address\":\"0x2222\",\"fulfill_selector\":\"0xc55790e3\",\"vault_contract_id\":\"3\"}}",
+      "sha256": "ad4df193eda82fcac91770058a47f43cca77d61dd3d7649e6c5e270250a3491c"
+    },
+    {
+      "name": "safe-integer-number-forms",
+      "document": {"integer": 9007199254740991, "negative_zero": 0},
+      "canonical": "{\"integer\":9007199254740991,\"negative_zero\":0}",
+      "sha256": "b8f90ec72744f20ec35f0a3a7bb10fdd786b49ac799b5be1cbff38881f9f414b"
+    }
+  ],
+  "invalidRaw": [
+    {"name": "duplicate-key", "raw": "{\"a\":1,\"a\":2}"},
+    {"name": "negative-zero", "raw": "-0"},
+    {"name": "fraction", "raw": "1.0"},
+    {"name": "exponent", "raw": "1e0"},
+    {"name": "unsafe-integer", "raw": "9007199254740992"},
+    {"name": "lone-surrogate", "raw": "\"\\ud800\""}
+  ]
+}

@@ -1,4 +1,5 @@
 import type { AnalyticsBody } from '@global-torque/domain-types/analyticsTypes';
+import { normalizeAnalyticsBodyForMethod } from '@global-torque/invest-core/analytics/analyticsBody';
 
 export type ApiClientOfflinePolicy = {
   persistToIndexedDb?: boolean;
@@ -81,7 +82,7 @@ export function createApiClientHooks(hooks: Partial<ApiClientHooks> = {}): ApiCl
     readOfflineResponse: async () => null,
     readOfflineResponseMetadata: async () => null,
     persistOfflineResponse: async () => {},
-    normalizeAnalyticsBodyForMethod: () => ({}),
+    normalizeAnalyticsBodyForMethod,
     offlineResponseSourceHeader: DEFAULT_OFFLINE_RESPONSE_SOURCE_HEADER,
     offlineLastSyncHeader: DEFAULT_OFFLINE_LAST_SYNC_HEADER,
     ...hooks,

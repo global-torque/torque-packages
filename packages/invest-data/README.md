@@ -8,8 +8,9 @@ helpers.
 
 - Legacy `ApiClient`, API hook configuration, API errors, and service request
   types.
-- API/network error classes that carry sanitized request metadata for the
-  frontend reporting pipeline.
+- API/network error classes that carry selectively sanitized request metadata
+  for the frontend reporting pipeline. Known credential headers, URL fields,
+  and body fields are redacted while useful request context is retained.
 - SDK-read compatibility error projection that preserves bounded protocol
   response bodies, plus narrowly normalized, revalidated offer list/detail
   responses during the backend deployment transition.
@@ -51,9 +52,8 @@ package exposes only framework-free clients and repository-state helpers.
 - `./service/handlers/apiError` and
   `./service/handlers/offlineRequestError`: API error classes.
 - `./service/handlers/networkRequestError`: raw fetch/network failure wrapper
-  with `data.httpRequest`, `statusCode: 0`, retry metadata, and strict body
-  metadata (`{ redacted: true }` for mutation bodies, `{}` when no body is
-  present).
+  with `data.httpRequest`, `statusCode: 0`, retry metadata, and body metadata
+  normalized through the shared analytics policy.
 - `./service/types`: legacy service request/response types.
 - `./repository`: pure `ActionState` and state-transition helpers.
 - `./migration/sdkReadCompatibility`: SDK-read error projection plus narrowly
@@ -84,6 +84,6 @@ const wallet = await walletClient.get('/auth/wallet/1150');
 
 Both the legacy `ApiClient` and the hook-based `createInvestDataClient` keep
 the package framework-free while preserving failed request context. HTTP
-failures expose method, URL, path, status, and strict redacted body metadata;
+failures expose method, URL, path, status, and selectively redacted body metadata;
 raw fetch failures are wrapped as `NetworkRequestError` unless the request was
 aborted.

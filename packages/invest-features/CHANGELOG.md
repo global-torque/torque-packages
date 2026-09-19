@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.4.0 candidate
+
+- Reissued the framework cohort for the breaking redemption domain contract;
+  feature ViewModels consume the new status axis through public exports.
+
+## 0.3.1 candidate
+
+- Capture demo-account credentials and the default redirect at provider setup so
+  availability and authentication use one stable configuration snapshot.
+- Preserve explicit redirect query parameters and the existing auth/session,
+  loading, and error handling behavior.
+
 ## 0.3.0 candidate
 
 - Require Node `^24.21.0`; Node 22 is no longer supported.

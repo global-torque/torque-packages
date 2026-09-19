@@ -31,8 +31,10 @@ const RUNTIME_METADATA_KEYS = [
 ] as const;
 
 /**
- * Convert the legacy runtime error summary into the public package's bounded,
- * body-free transport contract before it reaches an analytics adapter.
+ * Convert the legacy runtime error summary into the bounded internal envelope
+ * used for fingerprinting, deduplication, queueing, and rate limiting. The
+ * final analytics payload is assembled by the runtime sidecar and is not
+ * replaced by this dependency's privacy projection.
  */
 export function createRuntimeTransportSafeError(
   normalized: NormalizedError,

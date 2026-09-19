@@ -34,14 +34,18 @@ restored before the candidate is packed, so packed manifests and receipts
 retain the public registry dependency. Omitting the transport release uses the
 frozen public lockfile and requires the UI Kit release to be available.
 
-Candidate 0.3.0 applies the dependency migration to the retained 0.2.3 baseline.
+Candidate 0.4.0 delivers the breaking stablecoin redemption contract and
+reissues the dependency-migrated 0.3.0 cohort with selective analytics/request
+sanitization, stable demo-account configuration capture, and local Vite UI peer
+exclusions. The retained 0.2.3 baseline remains the source reconciliation
+reference.
 Local verification does not authorize publication; the external Alchemy
 TypeScript peer declaration remains a documented owner handoff item in
 [the migration results](dependency-migration-results.md).
 
-The candidate's ordinary immutable release tag is `framework-v0.3.0` for the
-`0.3.0` candidate. Dispatch the candidate workflow from that tag so its
-attestations carry `refs/tags/framework-v0.3.0`. The prior `framework-v0.2.2`
+The candidate's ordinary immutable release tag is `framework-v0.4.0` for the
+`0.4.0` candidate. Dispatch the candidate workflow from that tag so its
+attestations carry `refs/tags/framework-v0.4.0`. The prior `framework-v0.2.2`
 source tag, commit, and immutable artifact history remain retained for audit;
 its package bytes and provenance are not replaced. The earlier
 `framework-v0.2.0` run failed before installation, build, or packing; no
@@ -49,8 +53,12 @@ canonical `0.2.0` package artifacts or rollback proof exist. The provenance
 workflow requires that stable tag to resolve to the exact clean candidate
 commit, the candidate workflow run to be completed successfully, and the release
 to contain exactly the seven archives, their
-sidecars, the combined receipt, the four retained overlay files, and the
-canonical UI Kit transport files.
+sidecars, and the combined receipt. When the authenticated transport path is
+selected, its six canonical UI Kit transport files and four retained
+lock/workspace overlay files are included as conditional release evidence.
+The ordinary candidate using the public UI Kit dependency therefore produces
+22 release assets; the authenticated transport path conditionally supplies six
+UI Kit assets and retains the four lock/workspace overlay files.
 Before attestation, the candidate workflow builds the Node helpers and runs
 package, consumer-link, and release contract tests on Node 24. Detached npm
 and pnpm consumer verification is an optional local check; audits, typechecks,
@@ -58,10 +66,16 @@ and standalone source policy checks are not CI gates.
 
 The release workflow does not publish npm packages, create tags, deploy apps,
 or promote ordinary releases. The provenance workflow accepts a retained CI
-candidate run, verifies every receipt digest, and creates a signed npm package
-identity attestation using GitHub hosted OIDC. The primary maintainer owns any
-later `npm publish` operation and must use the exact retained tarball and
-provenance bundle.
+candidate run, verifies every receipt digest, and creates signed npm package
+identity attestations using GitHub hosted OIDC. The separate manual
+`.github/workflows/publish.yml` workflow is the only publication path. It
+downloads and verifies the immutable release assets, verifies the full
+candidate receipt, then publishes the exact retained tarballs sequentially in
+dependency order with npm trusted publishing (`npm publish <tgz> --provenance`).
+It never builds or packs source. After each publication it downloads the
+registry tarball and byte-compares it with the retained archive; a final
+publication receipt is retained as a workflow artifact. A failed package stops
+the sequence and no later package is published.
 
 Never repack or replace bytes under a previously reviewed version. Missing
 provenance, a digest mismatch, private or workspace dependencies in a packed

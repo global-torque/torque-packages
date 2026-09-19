@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.4.0 candidate
+
+- Reissued the framework cohort for the breaking redemption domain contract;
+  shell and navigation exports remain unchanged.
+
+## 0.3.1 candidate
+
+- Reissued the uniform framework cohort while retaining the 0.3.0 dropdown
+  full-row activation behavior and role-colour fallback compatibility.
+- The local consumer Vite integration now excludes the public UI Kit and
+  primitives from dependency optimization alongside framework packages.
+
 ## 0.3.0 candidate
 
 - Retain the 0.2.4 dropdown navigation fix for full-row pointer and keyboard activation.

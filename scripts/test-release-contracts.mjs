@@ -53,6 +53,7 @@ assert.throws(checkFixturePacklist, /public MIT .* metadata missing/u);
 for (const command of ['jq', 'tar', 'sha512sum']) execFileSync(command, ['--version'], { stdio: 'ignore' });
 const releaseWorkflow = fs.readFileSync(path.join(root, '.github/workflows/release.yml'), 'utf8');
 const provenanceWorkflow = fs.readFileSync(path.join(root, '.github/workflows/npm-provenance.yml'), 'utf8');
+const publisherWorkflow = fs.readFileSync(path.join(root, '.github/workflows/publish.yml'), 'utf8');
 const consumerScript = fs.readFileSync(path.join(root, 'scripts/verify-archive-consumers.mjs'), 'utf8');
 const packCandidateScript = fs.readFileSync(path.join(root, 'scripts/pack-candidate.mjs'), 'utf8');
 assert.match(releaseWorkflow, /gh api[\s\S]+releases\//u);
@@ -78,6 +79,23 @@ assert.match(provenanceWorkflow, /Verify every immutable release asset byte/u);
 assert.match(provenanceWorkflow, /cmp "artifacts\/\$asset_name"/u);
 assert.match(provenanceWorkflow, /actions\/attest@/u);
 assert.doesNotMatch(provenanceWorkflow, /npm publish/u);
+assert.match(publisherWorkflow, /workflow_dispatch:/u);
+assert.match(publisherWorkflow, /id-token:\s*write/u);
+assert.match(publisherWorkflow, /gh release download/u);
+assert.match(publisherWorkflow, /verify-provenance-context\.mjs/u);
+assert.match(publisherWorkflow, /verify-release-bundle\.mjs/u);
+assert.match(
+  publisherWorkflow,
+  /archive="\.\/release\/global-torque-\$\{package\}-\$\{CANDIDATE\}\.tgz"/u,
+  'Publisher must pass an explicit filesystem path to npm publish',
+);
+assert.match(publisherWorkflow, /npm publish "\$archive" --access public --provenance --tag latest/u);
+assert.match(publisherWorkflow, /npm pack "@global-torque\/\$\{package\}@\$\{CANDIDATE\}"/u);
+assert.match(publisherWorkflow, /cmp "\$archive" "registry\/\$registry_archive"/u);
+assert.match(publisherWorkflow, /publication-receipt\.json/u);
+assert.ok(publisherWorkflow.indexOf('domain-types invest-core invest-data invest-runtime invest-widgets invest-features invest-shell') < publisherWorkflow.indexOf('npm publish'), 'Publisher must define dependency order before publication');
+assert.doesNotMatch(publisherWorkflow, /pnpm (?:run )?(?:pack|build)/u);
+for (const match of publisherWorkflow.matchAll(/uses:\s+[^@\s]+@([0-9a-f]+)/gu)) assert.equal(match[1].length, 40, 'Publisher workflow action pins must be full commit SHAs');
 assert.match(provenanceWorkflow, /type == "array" and length > 0 and all\(\.\[\]; \(\.attestation \| type == "object"\) and \(\.verificationResult \| type == "object"\)\)/u);
 assert.doesNotMatch(provenanceWorkflow, /matrix\.package\s*==\s*['"]domain-types['"]/u);
 assert.match(consumerScript, /@global-torque\/invest-shell\/styles';/u);
@@ -183,6 +201,24 @@ function matrixPackages(workflow) {
 const provenanceSteps = parseWorkflowJob(provenanceWorkflow, 'attest');
 const provenanceMatrix = matrixPackages(provenanceWorkflow);
 assert.deepEqual(provenanceMatrix, ['domain-types', 'invest-core', 'invest-data', 'invest-runtime', 'invest-widgets', 'invest-features', 'invest-shell']);
+const publisherSteps = parseWorkflowJob(publisherWorkflow, 'publish');
+const publisherDownloadStep = publisherSteps.find(step => step.name === 'Download and reverify the exact retained candidate');
+assert.ok(publisherDownloadStep?.run, 'Publisher must define the retained candidate download body');
+for (const requiredTransportAsset of [
+  'selected-release.json',
+  'original-provenance.json',
+  'transport-receipt.json',
+  'pnpm-lock.canonical.yaml',
+  'pnpm-lock.derived.yaml',
+  'pnpm-workspace.canonical.yaml',
+  'pnpm-workspace.derived.yaml',
+]) {
+  assert.match(
+    publisherDownloadStep.run,
+    new RegExp(`--pattern '${requiredTransportAsset.replaceAll('.', '\\.')}'`, 'u'),
+    `Publisher must download retained UI Kit asset ${requiredTransportAsset}`,
+  );
+}
 const candidateSteps = parseWorkflowJob(releaseWorkflow, 'candidate');
 const candidateJob = releaseWorkflow.match(/^  candidate:\n[\s\S]*?^    steps:/mu)?.[0] ?? '';
 assert.match(candidateJob, /\n    permissions:\n[\s\S]*?\n      contents: write\n/u, 'Candidate workflow must be able to read draft transport assets');
@@ -266,12 +302,12 @@ const packageNames = [
 ];
 const dependencyMap = {
   '@global-torque/domain-types': {},
-  '@global-torque/invest-core': { '@global-torque/domain-types': '0.3.0' },
-  '@global-torque/invest-data': { '@global-torque/domain-types': '0.3.0', '@global-torque/invest-core': '0.3.0' },
-  '@global-torque/invest-runtime': { '@global-torque/domain-types': '0.3.0', '@global-torque/invest-core': '0.3.0', '@global-torque/invest-data': '0.3.0' },
-  '@global-torque/invest-widgets': { '@global-torque/domain-types': '0.3.0', '@global-torque/invest-core': '0.3.0' },
-  '@global-torque/invest-features': { '@global-torque/domain-types': '0.3.0', '@global-torque/invest-core': '0.3.0', '@global-torque/invest-data': '0.3.0', '@global-torque/invest-runtime': '0.3.0' },
-  '@global-torque/invest-shell': { '@global-torque/domain-types': '0.3.0', '@global-torque/invest-core': '0.3.0', '@global-torque/invest-runtime': '0.3.0', '@global-torque/invest-widgets': '0.3.0', '@global-torque/invest-features': '0.3.0' },
+  '@global-torque/invest-core': { '@global-torque/domain-types': '0.4.0' },
+  '@global-torque/invest-data': { '@global-torque/domain-types': '0.4.0', '@global-torque/invest-core': '0.4.0' },
+  '@global-torque/invest-runtime': { '@global-torque/domain-types': '0.4.0', '@global-torque/invest-core': '0.4.0', '@global-torque/invest-data': '0.4.0' },
+  '@global-torque/invest-widgets': { '@global-torque/domain-types': '0.4.0', '@global-torque/invest-core': '0.4.0' },
+  '@global-torque/invest-features': { '@global-torque/domain-types': '0.4.0', '@global-torque/invest-core': '0.4.0', '@global-torque/invest-data': '0.4.0', '@global-torque/invest-runtime': '0.4.0' },
+  '@global-torque/invest-shell': { '@global-torque/domain-types': '0.4.0', '@global-torque/invest-core': '0.4.0', '@global-torque/invest-runtime': '0.4.0', '@global-torque/invest-widgets': '0.4.0', '@global-torque/invest-features': '0.4.0' },
 };
 
 function makeCandidate(directory) {
@@ -280,12 +316,12 @@ function makeCandidate(directory) {
   const packages = [];
   for (const [index, name] of packageNames.entries()) {
     const packageDirectory = path.join(directory, `package-${index}`);
-    const archiveName = `${name.slice(1).replace('/', '-')}-0.3.0.tgz`;
+    const archiveName = `${name.slice(1).replace('/', '-')}-0.4.0.tgz`;
     const archive = path.join(directory, archiveName);
     const nodeContract = nodeExportContracts.find(contract => contract.packageName === name);
     const manifest = {
       name,
-      version: '0.3.0',
+      version: '0.4.0',
       files: ['src', 'README.md', 'LICENSE', 'NOTICE.md', ...(nodeContract?.entries.map(entry => entry.node.slice(2)) ?? [])],
       exports: { '.': './src/index.ts' },
       dependencies: dependencyMap[name],
@@ -309,20 +345,20 @@ function makeCandidate(directory) {
     packFixtureArchive(archive, packageDirectory);
     const metadata = archiveMetadata(archive);
     const entry = {
-      name, version: '0.3.0', directory: `packages/${name.slice('@global-torque/'.length)}`,
+      name, version: '0.4.0', directory: `packages/${name.slice('@global-torque/'.length)}`,
       sourceRevision: null, sourceDirty: true, sourcePackageRepository: 'fixture/source', sourcePackageRevision,
       archive: archiveName, ...metadata,
     };
     packages.push(entry);
     writeJson(`${archive}.manifest.json`, {
-      schemaVersion: 1, package: name, version: '0.3.0', sourceRepository: 'fixture/torque-packages',
+      schemaVersion: 1, package: name, version: '0.4.0', sourceRepository: 'fixture/torque-packages',
       sourceRevision: null, sourceDirty: true, sourcePackageRepository: 'fixture/source', sourcePackageRevision,
       artifact: archiveName, sha512: metadata.sha512, integrity: metadata.integrity, files: metadata.fileSha512,
     });
     fs.writeFileSync(`${archive}.sha512`, `${metadata.sha512}  ${archiveName}\n`);
   }
   const receipt = {
-    schemaVersion: 1, candidate: '0.3.0', sourceRepository: 'fixture/torque-packages', sourceRevision: null,
+    schemaVersion: 1, candidate: '0.4.0', sourceRepository: 'fixture/torque-packages', sourceRevision: null,
     sourceDirty: true, sourcePackageRepository: 'fixture/source', sourcePackageRevision,
     generatedAt: '2026-01-01T00:00:00.000Z', lockfileSha256: 'b'.repeat(64),
     uiKit: { mode: 'registry', package: '@global-torque/ui-kit', version: '0.1.4' }, packages,
@@ -401,7 +437,7 @@ exit 99
   return binDirectory;
 }
 
-function expectPackCandidateFailure(label, { candidate = '0.3.0', mode, existingOutput = false }) {
+function expectPackCandidateFailure(label, { candidate = '0.4.0', mode, existingOutput = false }) {
   const directory = path.join(fixtureRoot, `pack-candidate-${label}`);
   const output = path.join(directory, 'output');
   const packSentinel = path.join(directory, 'pack-called');
@@ -432,10 +468,10 @@ function expectPackCandidateFailure(label, { candidate = '0.3.0', mode, existing
     : [];
   assert.equal(
     invocationLog.length > 0,
-    !existingOutput && candidate === '0.3.0',
+    !existingOutput && candidate === '0.4.0',
     `${label} must stop before build when eligibility or output checks fail`,
   );
-  if (mode === 'check-failure' && !existingOutput && candidate === '0.3.0') {
+  if (mode === 'check-failure' && !existingOutput && candidate === '0.4.0') {
     assert.deepEqual(invocationLog, [
       'invoke:run:build:node',
       'stage:build:node:success',
@@ -671,6 +707,37 @@ canonicalCandidateReceipt.uiKit = {
 canonicalCandidateReceipt.lockfileSha256 = overlayReceipt.canonicalLockSha256;
 writeJson(path.join(canonicalCandidateDirectory, 'candidate-receipt.json'), canonicalCandidateReceipt);
 runScript('verify-release-bundle.mjs', [path.join(canonicalCandidateDirectory, 'candidate-receipt.json')]);
+
+// Exercise the publisher's exact retained-asset input with a canonical UI Kit
+// candidate. This catches a workflow that verifies only package tarballs while
+// silently omitting the JSON transport and attestation files required by the
+// combined receipt verifier.
+const publisherBundleDirectory = path.join(fixtureRoot, 'publisher-canonical-bundle');
+const publisherReleaseDirectory = path.join(publisherBundleDirectory, 'release');
+fs.mkdirSync(publisherReleaseDirectory, { recursive: true });
+const publisherAssetNames = expectedAssetsForReceipt(canonicalCandidateReceipt);
+for (const assetName of publisherAssetNames) {
+  fs.copyFileSync(
+    path.join(canonicalCandidateDirectory, assetName),
+    path.join(publisherReleaseDirectory, assetName),
+  );
+}
+runScript('verify-release-bundle.mjs', [path.join(publisherReleaseDirectory, 'candidate-receipt.json')]);
+assert.deepEqual(
+  publisherAssetNames.filter(name => new Set([
+    'candidate-receipt.json',
+    'original-provenance.json',
+    'selected-release.json',
+    'transport-receipt.json',
+  ]).has(name)),
+  [
+    'candidate-receipt.json',
+    'original-provenance.json',
+    'selected-release.json',
+    'transport-receipt.json',
+  ],
+  'Publisher fixture must retain all canonical UI Kit JSON assets',
+);
 const missingOverlayDirectory = path.join(fixtureRoot, 'canonical-candidate-missing-overlay');
 fs.cpSync(canonicalCandidateDirectory, missingOverlayDirectory, { recursive: true });
 const missingOverlayReceiptPath = path.join(missingOverlayDirectory, 'candidate-receipt.json');
@@ -734,20 +801,20 @@ function makeWorkflowFixture(label) {
     status: 'completed',
     conclusion: 'success',
     event: 'workflow_dispatch',
-    headBranch: 'framework-v0.3.0',
+    headBranch: 'framework-v0.4.0',
     headSha: sourceRevision,
     workflowName: 'Framework package candidate',
   });
   writeJson(path.join(directory, 'release.json'), {
     id: 99,
-    tag_name: 'framework-v0.3.0',
+    tag_name: 'framework-v0.4.0',
     draft: false,
     prerelease: false,
     immutable: true,
     assets: assetNames.map((name, index) => ({ id: index + 1, name })),
   });
   writeJson(path.join(directory, 'tag-ref.json'), {
-    ref: 'refs/tags/framework-v0.3.0',
+    ref: 'refs/tags/framework-v0.4.0',
     object: { type: 'commit', sha: sourceRevision },
   });
   writeJson(path.join(directory, 'annotated-tag.json'), {});
@@ -861,8 +928,8 @@ function runActualProvenanceWorkflow(fixture, matrixPackage, options = {}) {
     GITHUB_OUTPUT: outputPath,
     GITHUB_ENV: path.join(runnerTemp, 'github-env'),
     CANDIDATE_RUN_ID: '67890',
-    CANDIDATE: '0.3.0',
-    RELEASE_TAG: 'framework-v0.3.0',
+    CANDIDATE: '0.4.0',
+    RELEASE_TAG: 'framework-v0.4.0',
     PACKAGE: matrixPackage,
   };
   fs.writeFileSync(outputPath, '');
@@ -1029,7 +1096,7 @@ expectWorkflowFailure('workflow-wrong-commit', { tagRef: { object: { type: 'comm
 expectWorkflowFailure('workflow-failed-run', { run: { conclusion: 'failure' } }, 'Verify the immutable release and successful candidate run');
 expectWorkflowFailure('workflow-missing-release-asset', { release: { assets: validWorkflowFixture.assetNames.slice(1).map((name, index) => ({ id: index + 1, name })) } }, 'Verify the immutable release and successful candidate run');
 expectWorkflowFailure('workflow-other-package-byte-mismatch', {
-  mutateAsset: fixture => fs.appendFileSync(path.join(fixture.releaseAssets, 'global-torque-domain-types-0.3.0.tgz'), 'tamper'),
+  mutateAsset: fixture => fs.appendFileSync(path.join(fixture.releaseAssets, 'global-torque-domain-types-0.4.0.tgz'), 'tamper'),
 }, 'Verify every immutable release asset byte');
 expectWorkflowFailure('workflow-ui-byte-mismatch', {
   mutateAsset: fixture => fs.appendFileSync(path.join(fixture.releaseAssets, 'global-torque-ui-kit-0.1.4.tgz'), 'tamper'),
@@ -1067,14 +1134,14 @@ else process.exit(2);
 `);
 fs.chmodSync(ghStub, 0o755);
 const writeContextFixture = ({ run = {}, release = {}, tagRef = {} } = {}) => {
-  writeJson(path.join(contextDirectory, 'run.json'), { status: 'completed', conclusion: 'success', event: 'workflow_dispatch', headBranch: 'framework-v0.3.0', headSha: 'd'.repeat(40), workflowName: 'Framework package candidate', ...run });
-  writeJson(path.join(contextDirectory, 'release.json'), { id: 99, tag_name: 'framework-v0.3.0', draft: false, prerelease: false, immutable: true, assets: expectedContextAssets.map((name, index) => ({ id: index + 1, name })), ...release });
-  writeJson(path.join(contextDirectory, 'tag-ref.json'), { ref: 'refs/tags/framework-v0.3.0', object: { type: 'commit', sha: 'd'.repeat(40) }, ...tagRef });
+  writeJson(path.join(contextDirectory, 'run.json'), { status: 'completed', conclusion: 'success', event: 'workflow_dispatch', headBranch: 'framework-v0.4.0', headSha: 'd'.repeat(40), workflowName: 'Framework package candidate', ...run });
+  writeJson(path.join(contextDirectory, 'release.json'), { id: 99, tag_name: 'framework-v0.4.0', draft: false, prerelease: false, immutable: true, assets: expectedContextAssets.map((name, index) => ({ id: index + 1, name })), ...release });
+  writeJson(path.join(contextDirectory, 'tag-ref.json'), { ref: 'refs/tags/framework-v0.4.0', object: { type: 'commit', sha: 'd'.repeat(40) }, ...tagRef });
   writeJson(path.join(contextDirectory, 'annotated-tag.json'), {});
 };
 const contextEnv = { ...process.env, PATH: `${ghBin}:${process.env.PATH}`, GH_FIXTURE_DIR: contextDirectory };
 writeContextFixture();
-runScript('verify-provenance-context.mjs', [path.join(contextDirectory, 'candidate-receipt.json'), '67890', 'framework-v0.3.0', 'fixture/torque-packages'], { env: contextEnv });
+runScript('verify-provenance-context.mjs', [path.join(contextDirectory, 'candidate-receipt.json'), '67890', 'framework-v0.4.0', 'fixture/torque-packages'], { env: contextEnv });
 for (const [label, fixture] of [
   ['draft-release', { release: { draft: true } }],
   ['prerelease', { release: { prerelease: true } }],
@@ -1084,12 +1151,12 @@ for (const [label, fixture] of [
   ['incomplete-assets', { release: { assets: expectedContextAssets.slice(1).map((name, index) => ({ id: index + 1, name })) } }],
 ]) {
   writeContextFixture(fixture);
-  expectFailure(label, () => runScript('verify-provenance-context.mjs', [path.join(contextDirectory, 'candidate-receipt.json'), '67890', 'framework-v0.3.0', 'fixture/torque-packages'], { env: contextEnv }));
+  expectFailure(label, () => runScript('verify-provenance-context.mjs', [path.join(contextDirectory, 'candidate-receipt.json'), '67890', 'framework-v0.4.0', 'fixture/torque-packages'], { env: contextEnv }));
 }
 const wrongReceipt = JSON.parse(fs.readFileSync(path.join(contextDirectory, 'candidate-receipt.json'), 'utf8'));
 wrongReceipt.candidate = '99.0.0';
 writeJson(path.join(contextDirectory, 'candidate-receipt.json'), wrongReceipt);
 writeContextFixture();
-expectFailure('receipt-identity', () => runScript('verify-provenance-context.mjs', [path.join(contextDirectory, 'candidate-receipt.json'), '67890', 'framework-v0.3.0', 'fixture/torque-packages'], { env: contextEnv }));
+expectFailure('receipt-identity', () => runScript('verify-provenance-context.mjs', [path.join(contextDirectory, 'candidate-receipt.json'), '67890', 'framework-v0.4.0', 'fixture/torque-packages'], { env: contextEnv }));
 
 console.log(`release-contract-tests-pass ${fixtureRoot}`);

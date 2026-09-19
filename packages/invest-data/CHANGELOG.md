@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.4.0 candidate
+
+- Consume the breaking redemption contract without pricing-field projection or
+  transitional response fallback.
+- Preserve protocol state and the explicit redemption status axis through the
+  Vault client.
+
+## 0.3.1 candidate
+
+- Share the selective analytics normalization policy with API client error
+  metadata, retaining useful request context while masking credentials.
+- Sanitize compatibility URLs and diagnostic headers without discarding bounded
+  protocol response bodies or SDK read compatibility behavior.
+
 ## 0.3.0 candidate
 
 - Require Node `^24.21.0`; Node 22 is no longer supported.
