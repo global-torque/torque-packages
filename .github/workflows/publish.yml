@@ -101,7 +101,7 @@ jobs:
             const [, , archive, registryArchive, packageName, version] = process.argv;
             const digest = file => crypto.createHash('sha512').update(fs.readFileSync(file)).digest('hex');
             console.log(JSON.stringify({ package: `@global-torque/${packageName}`, version, archive, sha512: digest(archive), registryArchive, registrySha512: digest(`registry/${registryArchive}`) }));
-            JS
+          JS
           done
           node --input-type=module <<'JS'
           import fs from 'node:fs';
