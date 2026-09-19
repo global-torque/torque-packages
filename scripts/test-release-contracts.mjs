@@ -237,7 +237,7 @@ const publisherStep = publisherSteps.find(step => step.name === 'Publish exact r
 assert.ok(publisherStep?.run, 'Publisher must define the sequential publication body');
 assert.match(publisherStep.run, /if \[\[ "\$\{BOOTSTRAP\}" == "true" \]\]; then[\s\S]+unset NODE_AUTH_TOKEN/u);
 assert.match(publisherStep.run, /for package in "\$\{packages\[@\]\}"; do[\s\S]+npm publish "\$archive"/u);
-assert.match(publisherStep.run, /registry_retry_attempts=6/u);
+assert.match(publisherStep.run, /registry_retry_attempts=8/u);
 assert.match(publisherStep.run, /while \(\( pack_attempt <= registry_retry_attempts \)\); do/u);
 assert.match(publisherStep.run, /sleep "\$pack_delay_seconds"[\s\S]+pack_delay_seconds=\$\(\(pack_delay_seconds \* 2\)\)/u);
 assert.match(publisherStep.run, /npm view "\$package_spec" version --json/u);
@@ -495,7 +495,7 @@ const authPublisherFixture = makePublisherLoopFixture('auth', { mode: 'auth' });
 assert.throws(() => runPublisherLoopFixture(authPublisherFixture), undefined, 'Registry auth errors must not be treated as absence');
 assert.deepEqual(readPublisherLines(path.join(authPublisherFixture.stateDirectory, 'publish.log')), []);
 
-const exhaustedPublisherFixture = makePublisherLoopFixture('exhausted', { mode: 'absent', packFailures: 6 });
+const exhaustedPublisherFixture = makePublisherLoopFixture('exhausted', { mode: 'absent', packFailures: 8 });
 assert.throws(() => runPublisherLoopFixture(exhaustedPublisherFixture), undefined, 'Registry propagation retries must be bounded');
 assert.deepEqual(
   readPublisherLines(path.join(exhaustedPublisherFixture.stateDirectory, 'publish.log')),
@@ -503,11 +503,11 @@ assert.deepEqual(
 );
 assert.equal(
   Number(fs.readFileSync(path.join(exhaustedPublisherFixture.stateDirectory, 'pack-domain-types.count'), 'utf8')),
-  6,
+  8,
 );
 assert.deepEqual(
   readPublisherLines(path.join(exhaustedPublisherFixture.stateDirectory, 'sleep.log')),
-  ['2', '4', '8', '16', '32'],
+  ['2', '4', '8', '16', '32', '64', '128'],
 );
 
 const dependencyMap = {

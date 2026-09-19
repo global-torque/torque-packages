@@ -79,7 +79,7 @@ jobs:
           receipt="release/candidate-receipt.json"
           test "$(node -p "JSON.parse(require('fs').readFileSync('$receipt', 'utf8')).candidate")" = "$CANDIDATE"
           mkdir -p registry
-          registry_retry_attempts=6
+          registry_retry_attempts=8
           registry_retry_initial_delay_seconds=2
           registry_state_dir="$RUNNER_TEMP/framework-publish-registry"
           mkdir -p "$registry_state_dir"
