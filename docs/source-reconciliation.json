@@ -65,7 +65,7 @@
     }
   },
   "externalPackages": {
-    "@global-torque/sdk": "0.2.0",
+    "@global-torque/sdk": "0.3.1",
     "@global-torque/client-error-handling": "0.1.0",
     "@global-torque/design-tokens": "0.2.1",
     "@global-torque/ui-kit": "0.1.4",

@@ -90,7 +90,7 @@ const directDependencies = {
   ...frameworkDependencySpecs,
   '@global-torque/ui-kit': uiArchive ? `file:${uiArchive}` : '0.1.4',
   '@global-torque/ui-primitives': '0.1.3',
-  '@global-torque/sdk': '0.2.0',
+  '@global-torque/sdk': '0.3.1',
   '@global-torque/client-error-handling': '0.1.0',
   '@global-torque/design-tokens': '0.2.1',
   vue: '3.5.42',
