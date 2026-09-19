@@ -24,7 +24,9 @@ CI runs on pull requests and pushes to `master` using Node 24.21.0. It runs
 `pnpm run test:release`. Typechecks, audits, boundary/runtime dependency/packlist
 checks, and detached browser/consumer verification remain available locally
 but are not CI gates. The manual release workflow builds and tests before
-packing and retaining the candidate artifacts.
+packing and retaining the candidate artifacts. Publication is a separate
+trusted-OIDC workflow that uses only those retained tarballs; it never
+rebuilds or repacks source.
 
 This release delivers the breaking stablecoin redemption contract and reissues
 the 0.3.0 cohort with selectively sanitized analytics and request diagnostics,

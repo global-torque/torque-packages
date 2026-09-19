@@ -66,10 +66,16 @@ and standalone source policy checks are not CI gates.
 
 The release workflow does not publish npm packages, create tags, deploy apps,
 or promote ordinary releases. The provenance workflow accepts a retained CI
-candidate run, verifies every receipt digest, and creates a signed npm package
-identity attestation using GitHub hosted OIDC. The primary maintainer owns any
-later `npm publish` operation and must use the exact retained tarball and
-provenance bundle.
+candidate run, verifies every receipt digest, and creates signed npm package
+identity attestations using GitHub hosted OIDC. The separate manual
+`.github/workflows/publish.yml` workflow is the only publication path. It
+downloads and verifies the immutable release assets, verifies the full
+candidate receipt, then publishes the exact retained tarballs sequentially in
+dependency order with npm trusted publishing (`npm publish <tgz> --provenance`).
+It never builds or packs source. After each publication it downloads the
+registry tarball and byte-compares it with the retained archive; a final
+publication receipt is retained as a workflow artifact. A failed package stops
+the sequence and no later package is published.
 
 Never repack or replace bytes under a previously reviewed version. Missing
 provenance, a digest mismatch, private or workspace dependencies in a packed
