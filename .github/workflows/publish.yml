@@ -47,7 +47,10 @@ jobs:
           mkdir release
           gh release download "$RELEASE_TAG" --dir release \
             --pattern '*.tgz' --pattern '*.tgz.manifest.json' --pattern '*.tgz.sha512' \
-            --pattern 'candidate-receipt.json' --pattern 'pnpm-*.yaml'
+            --pattern 'candidate-receipt.json' --pattern 'selected-release.json' \
+            --pattern 'original-provenance.json' --pattern 'transport-receipt.json' \
+            --pattern 'pnpm-lock.canonical.yaml' --pattern 'pnpm-lock.derived.yaml' \
+            --pattern 'pnpm-workspace.canonical.yaml' --pattern 'pnpm-workspace.derived.yaml'
           gh release verify "$RELEASE_TAG"
           for asset in release/*; do
             gh release verify-asset "$RELEASE_TAG" "$(basename "$asset")"

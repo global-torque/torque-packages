@@ -196,6 +196,24 @@ function matrixPackages(workflow) {
 const provenanceSteps = parseWorkflowJob(provenanceWorkflow, 'attest');
 const provenanceMatrix = matrixPackages(provenanceWorkflow);
 assert.deepEqual(provenanceMatrix, ['domain-types', 'invest-core', 'invest-data', 'invest-runtime', 'invest-widgets', 'invest-features', 'invest-shell']);
+const publisherSteps = parseWorkflowJob(publisherWorkflow, 'publish');
+const publisherDownloadStep = publisherSteps.find(step => step.name === 'Download and reverify the exact retained candidate');
+assert.ok(publisherDownloadStep?.run, 'Publisher must define the retained candidate download body');
+for (const requiredTransportAsset of [
+  'selected-release.json',
+  'original-provenance.json',
+  'transport-receipt.json',
+  'pnpm-lock.canonical.yaml',
+  'pnpm-lock.derived.yaml',
+  'pnpm-workspace.canonical.yaml',
+  'pnpm-workspace.derived.yaml',
+]) {
+  assert.match(
+    publisherDownloadStep.run,
+    new RegExp(`--pattern '${requiredTransportAsset.replaceAll('.', '\\.')}'`, 'u'),
+    `Publisher must download retained UI Kit asset ${requiredTransportAsset}`,
+  );
+}
 const candidateSteps = parseWorkflowJob(releaseWorkflow, 'candidate');
 const candidateJob = releaseWorkflow.match(/^  candidate:\n[\s\S]*?^    steps:/mu)?.[0] ?? '';
 assert.match(candidateJob, /\n    permissions:\n[\s\S]*?\n      contents: write\n/u, 'Candidate workflow must be able to read draft transport assets');
@@ -684,6 +702,37 @@ canonicalCandidateReceipt.uiKit = {
 canonicalCandidateReceipt.lockfileSha256 = overlayReceipt.canonicalLockSha256;
 writeJson(path.join(canonicalCandidateDirectory, 'candidate-receipt.json'), canonicalCandidateReceipt);
 runScript('verify-release-bundle.mjs', [path.join(canonicalCandidateDirectory, 'candidate-receipt.json')]);
+
+// Exercise the publisher's exact retained-asset input with a canonical UI Kit
+// candidate. This catches a workflow that verifies only package tarballs while
+// silently omitting the JSON transport and attestation files required by the
+// combined receipt verifier.
+const publisherBundleDirectory = path.join(fixtureRoot, 'publisher-canonical-bundle');
+const publisherReleaseDirectory = path.join(publisherBundleDirectory, 'release');
+fs.mkdirSync(publisherReleaseDirectory, { recursive: true });
+const publisherAssetNames = expectedAssetsForReceipt(canonicalCandidateReceipt);
+for (const assetName of publisherAssetNames) {
+  fs.copyFileSync(
+    path.join(canonicalCandidateDirectory, assetName),
+    path.join(publisherReleaseDirectory, assetName),
+  );
+}
+runScript('verify-release-bundle.mjs', [path.join(publisherReleaseDirectory, 'candidate-receipt.json')]);
+assert.deepEqual(
+  publisherAssetNames.filter(name => new Set([
+    'candidate-receipt.json',
+    'original-provenance.json',
+    'selected-release.json',
+    'transport-receipt.json',
+  ]).has(name)),
+  [
+    'candidate-receipt.json',
+    'original-provenance.json',
+    'selected-release.json',
+    'transport-receipt.json',
+  ],
+  'Publisher fixture must retain all canonical UI Kit JSON assets',
+);
 const missingOverlayDirectory = path.join(fixtureRoot, 'canonical-candidate-missing-overlay');
 fs.cpSync(canonicalCandidateDirectory, missingOverlayDirectory, { recursive: true });
 const missingOverlayReceiptPath = path.join(missingOverlayDirectory, 'candidate-receipt.json');
