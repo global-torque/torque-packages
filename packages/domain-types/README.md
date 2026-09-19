@@ -37,6 +37,8 @@ This package owns DTOs, status constants, request/response shapes, and data-shap
 - `offerTypes`: offer status constants, offer response/comment payload contracts, and formatted offer contracts.
 - `profilesTypes`: profile/user/background-information request and response contracts.
 - `profileTypes`: stable investment profile type constants and unions.
+- `redemptionDigest`: Canonical JSON Grammar v1 encoding, SHA-256 helpers, and
+  the typed `CanonicalJsonError` validation contract.
 - `settingsTypes`: session activity and formatted session contracts.
 - `walletTypes`: custodial wallet status constants, funding-source, wallet, transaction, and Plaid response contracts.
 - `vaultTypes`: ERC-7540 deployment, position, redemption, signing, operation,

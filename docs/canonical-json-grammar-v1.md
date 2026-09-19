@@ -22,6 +22,14 @@ surrogate escapes. The invalid-token cases are retained in
 `src/__fixtures__/stablecoin_redemption_digest_fixtures.json` so each owner can
 exercise the same boundary conditions.
 
+Validation failures throw the public `CanonicalJsonError` class, which extends
+`TypeError` for ordinary exception compatibility. Consumers must classify a
+failure with its stable `code`, not its diagnostic message. The shared codes
+are `duplicate_key`, `negative_zero`, `invalid_number`, `unsafe_integer`,
+`invalid_surrogate`, `unsupported_value`, `cycle`, `sparse_array`,
+`accessor_property`, `symbol_property`, `array_property`, `non_plain_object`,
+and `invalid_raw_json`.
+
 Every owner must hash the UTF-8 bytes of the resulting document with SHA-256
 and render the digest as lowercase hexadecimal. The normative fixture is
 duplicated in the framework, EVM API, fund-manager API, and i-models trees so a
