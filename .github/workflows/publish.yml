@@ -79,6 +79,10 @@ jobs:
           receipt="release/candidate-receipt.json"
           test "$(node -p "JSON.parse(require('fs').readFileSync('$receipt', 'utf8')).candidate")" = "$CANDIDATE"
           mkdir -p registry
+          registry_retry_attempts=6
+          registry_retry_initial_delay_seconds=2
+          registry_state_dir="$RUNNER_TEMP/framework-publish-registry"
+          mkdir -p "$registry_state_dir"
           node --input-type=module <<'JS'
           import fs from 'node:fs';
           const receipt = JSON.parse(fs.readFileSync('release/candidate-receipt.json', 'utf8'));
@@ -103,8 +107,58 @@ jobs:
           for package in "${packages[@]}"; do
             archive="./release/global-torque-${package}-${CANDIDATE}.tgz"
             test -f "$archive"
-            npm publish "$archive" --access public --provenance --tag latest
-            registry_archive=$(npm pack "@global-torque/${package}@${CANDIDATE}" --pack-destination registry | tail -n 1)
+            package_spec="@global-torque/${package}@${CANDIDATE}"
+            view_output="$registry_state_dir/${package}.view"
+            view_error="$registry_state_dir/${package}.view.error"
+            registry_visible=false
+            view_status=0
+            if npm view "$package_spec" version --json >"$view_output" 2>"$view_error"; then
+              registry_version=$(tr -d '[:space:]"' < "$view_output")
+              test "$registry_version" = "$CANDIDATE"
+              registry_visible=true
+            else
+              view_status=$?
+              view_error_text=$(<"$view_error")
+              if [[ "$view_error_text" != *E404* && "$view_error_text" != *ETARGET* ]]; then
+                cat "$view_error" >&2
+                exit "$view_status"
+              fi
+            fi
+            if [[ "$registry_visible" != true ]]; then
+              npm publish "$archive" --access public --provenance --tag latest
+            fi
+            registry_archive=''
+            pack_attempt=1
+            pack_delay_seconds=$registry_retry_initial_delay_seconds
+            while (( pack_attempt <= registry_retry_attempts )); do
+              pack_error="$registry_state_dir/${package}.pack.error"
+              pack_status=0
+              registry_archive=$(npm pack "$package_spec" --pack-destination registry 2>"$pack_error" | tail -n 1) || pack_status=$?
+              if (( pack_status == 0 )) && [[ -n "$registry_archive" && -f "registry/$registry_archive" ]]; then
+                break
+              fi
+              pack_error_text=$(<"$pack_error")
+              if [[ "$pack_error_text" != *E404* && "$pack_error_text" != *ETARGET* ]]; then
+                cat "$pack_error" >&2
+                failure_status=$pack_status
+                if (( failure_status == 0 )); then
+                  failure_status=1
+                fi
+                exit "$failure_status"
+              fi
+              if (( pack_attempt == registry_retry_attempts )); then
+                cat "$pack_error" >&2
+                failure_status=$pack_status
+                if (( failure_status == 0 )); then
+                  failure_status=1
+                fi
+                exit "$failure_status"
+              fi
+              sleep "$pack_delay_seconds"
+              pack_delay_seconds=$((pack_delay_seconds * 2))
+              pack_attempt=$((pack_attempt + 1))
+            done
+            test -n "$registry_archive"
             test -f "registry/$registry_archive"
             cmp "$archive" "registry/$registry_archive"
             node --input-type=module - "$archive" "$registry_archive" "$package" "$CANDIDATE" <<'JS' >> publication-receipt.jsonl
