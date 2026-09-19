@@ -53,7 +53,7 @@ jobs:
             --pattern 'pnpm-workspace.canonical.yaml' --pattern 'pnpm-workspace.derived.yaml'
           gh release verify "$RELEASE_TAG"
           for asset in release/*; do
-            gh release verify-asset "$RELEASE_TAG" "$(basename "$asset")"
+            gh release verify-asset "$RELEASE_TAG" "$asset"
           done
           node scripts/verify-provenance-context.mjs \
             release/candidate-receipt.json "$CANDIDATE_RUN_ID" "$RELEASE_TAG" \

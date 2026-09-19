@@ -82,6 +82,16 @@ assert.doesNotMatch(provenanceWorkflow, /npm publish/u);
 assert.match(publisherWorkflow, /workflow_dispatch:/u);
 assert.match(publisherWorkflow, /id-token:\s*write/u);
 assert.match(publisherWorkflow, /gh release download/u);
+assert.match(
+  publisherWorkflow,
+  /gh release verify-asset "\$RELEASE_TAG" "\$asset"/u,
+  'Publisher must verify each retained asset using its downloaded local path',
+);
+assert.doesNotMatch(
+  publisherWorkflow,
+  /gh release verify-asset "\$RELEASE_TAG" "\$\(basename "\$asset"\)"/u,
+  'Publisher must not verify a basename that is absent from the working directory',
+);
 assert.match(publisherWorkflow, /verify-provenance-context\.mjs/u);
 assert.match(publisherWorkflow, /verify-release-bundle\.mjs/u);
 assert.match(
