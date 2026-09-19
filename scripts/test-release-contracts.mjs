@@ -212,6 +212,12 @@ const provenanceSteps = parseWorkflowJob(provenanceWorkflow, 'attest');
 const provenanceMatrix = matrixPackages(provenanceWorkflow);
 assert.deepEqual(provenanceMatrix, ['domain-types', 'invest-core', 'invest-data', 'invest-runtime', 'invest-widgets', 'invest-features', 'invest-shell']);
 const publisherSteps = parseWorkflowJob(publisherWorkflow, 'publish');
+const publisherStep = publisherSteps.find(step => step.name === 'Publish exact retained tarballs sequentially with trusted OIDC');
+assert.ok(publisherStep?.run, 'Publisher must define the sequential publication body');
+assert.doesNotThrow(
+  () => execFileSync('bash', ['-n'], { input: publisherStep.run, encoding: 'utf8' }),
+  'Publisher shell body must pass Bash syntax validation',
+);
 const publisherDownloadStep = publisherSteps.find(step => step.name === 'Download and reverify the exact retained candidate');
 assert.ok(publisherDownloadStep?.run, 'Publisher must define the retained candidate download body');
 for (const requiredTransportAsset of [
