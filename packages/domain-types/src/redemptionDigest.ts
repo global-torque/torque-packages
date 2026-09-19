@@ -1,7 +1,7 @@
 /**
- * Canonical JSON Grammar v1 shared by redemption commands and scope hashes.
+ * Global Torque Canonical JSON Grammar v1 shared by redemption commands and scope hashes.
  *
- * This is an intentionally small application protocol. It is not RFC 8785/JCS:
+ * This is an intentionally small Global Torque protocol. It is not RFC 8785/JCS:
  * callers must use decimal strings for protocol quantities and this encoder
  * rejects values which cannot be represented identically by every owner.
  */
@@ -9,7 +9,7 @@
 const MAX_SAFE_INTEGER = Number.MAX_SAFE_INTEGER;
 const JSON_WHITESPACE = new Set([' ', '\t', '\n', '\r']);
 
-/** Stable classifications emitted by Canonical JSON Grammar v1 validation. */
+/** Stable classifications emitted by Global Torque Canonical JSON Grammar v1 validation. */
 export type CanonicalJsonErrorCode =
   | 'unsupported_value'
   | 'invalid_number'
@@ -26,7 +26,7 @@ export type CanonicalJsonErrorCode =
   | 'invalid_raw_json';
 
 /**
- * Typed validation failure for Canonical JSON Grammar v1.
+ * Typed validation failure for Global Torque Canonical JSON Grammar v1.
  *
  * The `code` is the stable cross-runtime contract. Messages are diagnostic
  * only and must not be used for programmatic classification.
@@ -135,7 +135,7 @@ function encodeProgrammatic(value: unknown, active: Set<object>): string {
   }
 }
 
-/** Encode a programmatic value under Canonical JSON Grammar v1. */
+/** Encode a programmatic value under Global Torque Canonical JSON Grammar v1. */
 export const canonicalJson = (value: unknown): string => encodeProgrammatic(value, new Set());
 
 class RawJsonParser {

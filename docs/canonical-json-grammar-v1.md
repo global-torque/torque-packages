@@ -1,8 +1,8 @@
-# Canonical JSON Grammar v1
+# Global Torque Canonical JSON Grammar v1
 
 The redemption command, grant scope, and checkpoint evidence digests use one
 small canonical JSON grammar across TypeScript, Go, and Python. This grammar is
-an application protocol and is explicitly **not RFC 8785/JCS**.
+a Global Torque protocol and is explicitly **not RFC 8785/JCS**.
 
 The accepted values are `null`, booleans, safe integer numbers, strings, dense
 arrays, and plain objects with string keys. Arrays preserve order. Object keys

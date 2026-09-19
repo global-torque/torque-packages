@@ -15,7 +15,7 @@ function assertCanonicalError(action, code) {
   ));
 }
 
-test('Canonical JSON Grammar v1 sorts keys, preserves null, and hashes bytes', async () => {
+test('Global Torque Canonical JSON Grammar v1 sorts keys, preserves null, and hashes bytes', async () => {
   const document = { z: '9', a: null };
   assert.equal(canonicalJson(document), '{"a":null,"z":"9"}');
   assert.equal(
@@ -24,7 +24,7 @@ test('Canonical JSON Grammar v1 sorts keys, preserves null, and hashes bytes', a
   );
 });
 
-test('Canonical JSON Grammar v1 classifies programmatic validation failures', () => {
+test('Global Torque Canonical JSON Grammar v1 classifies programmatic validation failures', () => {
   for (const value of [undefined, 1n, Symbol('unsupported'), () => null]) {
     assertCanonicalError(() => canonicalJson(value), 'unsupported_value');
   }
@@ -42,11 +42,11 @@ test('Canonical JSON Grammar v1 classifies programmatic validation failures', ()
   assertCanonicalError(() => canonicalJson({ '\ud800': 1 }), 'invalid_surrogate');
 });
 
-test('Canonical JSON Grammar v1 sorts object keys by UTF-8 bytes', () => {
+test('Global Torque Canonical JSON Grammar v1 sorts object keys by UTF-8 bytes', () => {
   assert.equal(canonicalJson({ 'é': 1, e: 2, '😀': 3 }), '{"e":2,"é":1,"😀":3}');
 });
 
-test('Canonical JSON Grammar v1 validates raw tokens before parsing', async () => {
+test('Global Torque Canonical JSON Grammar v1 validates raw tokens before parsing', async () => {
   const valid = '{"z":1,"a":[null,true,"ok"]}';
   assert.equal(canonicalJsonFromRaw(valid), '{"a":[null,true,"ok"],"z":1}');
   assert.equal(await sha256HexFromRaw(valid), await sha256Hex({ z: 1, a: [null, true, 'ok'] }));
