@@ -17,6 +17,11 @@ on:
         required: true
         type: string
         default: framework-v0.4.0
+      bootstrap:
+        description: Use the temporary NPM_BOOTSTRAP_TOKEN for the package cohort's first publication only
+        required: true
+        default: false
+        type: boolean
 
 permissions:
   contents: read
@@ -62,8 +67,15 @@ jobs:
       - name: Publish exact retained tarballs sequentially with trusted OIDC
         env:
           CANDIDATE: ${{ inputs.candidate }}
+          BOOTSTRAP: ${{ inputs.bootstrap }}
+          NODE_AUTH_TOKEN: ${{ inputs.bootstrap && secrets.NPM_BOOTSTRAP_TOKEN || '' }}
         run: |
           set -euo pipefail
+          if [[ "${BOOTSTRAP}" == "true" ]]; then
+            test -n "${NODE_AUTH_TOKEN}"
+          else
+            unset NODE_AUTH_TOKEN
+          fi
           receipt="release/candidate-receipt.json"
           test "$(node -p "JSON.parse(require('fs').readFileSync('$receipt', 'utf8')).candidate")" = "$CANDIDATE"
           mkdir -p registry

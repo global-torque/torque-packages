@@ -84,6 +84,26 @@ assert.match(publisherWorkflow, /id-token:\s*write/u);
 assert.match(publisherWorkflow, /gh release download/u);
 assert.match(
   publisherWorkflow,
+  /bootstrap:\n\s+description: Use the temporary NPM_BOOTSTRAP_TOKEN[\s\S]+?required: true\n\s+default: false\n\s+type: boolean/u,
+  'Publisher must expose an explicit required boolean bootstrap input',
+);
+assert.match(
+  publisherWorkflow,
+  /NODE_AUTH_TOKEN: \$\{\{ inputs\.bootstrap && secrets\.NPM_BOOTSTRAP_TOKEN \|\| '' \}\}/u,
+  'Bootstrap auth must be sourced from the repository secret only when enabled',
+);
+assert.equal(
+  (publisherWorkflow.match(/secrets\.NPM_BOOTSTRAP_TOKEN/gu) ?? []).length,
+  1,
+  'Publisher must reference the bootstrap secret exactly once',
+);
+assert.doesNotMatch(
+  publisherWorkflow,
+  /NODE_AUTH_TOKEN:[ \t]+(?!\$\{\{)[^\n]+/u,
+  'Publisher must not contain a literal bootstrap token',
+);
+assert.match(
+  publisherWorkflow,
   /gh release verify-asset "\$RELEASE_TAG" "\$asset"/u,
   'Publisher must verify each retained asset using its downloaded local path',
 );
@@ -214,6 +234,8 @@ assert.deepEqual(provenanceMatrix, ['domain-types', 'invest-core', 'invest-data'
 const publisherSteps = parseWorkflowJob(publisherWorkflow, 'publish');
 const publisherStep = publisherSteps.find(step => step.name === 'Publish exact retained tarballs sequentially with trusted OIDC');
 assert.ok(publisherStep?.run, 'Publisher must define the sequential publication body');
+assert.match(publisherStep.run, /if \[\[ "\$\{BOOTSTRAP\}" == "true" \]\]; then[\s\S]+unset NODE_AUTH_TOKEN/u);
+assert.match(publisherStep.run, /for package in "\$\{packages\[@\]\}"; do[\s\S]+npm publish "\$archive"/u);
 assert.doesNotThrow(
   () => execFileSync('bash', ['-n'], { input: publisherStep.run, encoding: 'utf8' }),
   'Publisher shell body must pass Bash syntax validation',
