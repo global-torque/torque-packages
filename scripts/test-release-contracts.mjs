@@ -120,7 +120,8 @@ assert.match(
   'Publisher must pass an explicit filesystem path to npm publish',
 );
 assert.match(publisherWorkflow, /npm publish "\$archive" --access public --provenance --tag latest/u);
-assert.match(publisherWorkflow, /npm pack "@global-torque\/\$\{package\}@\$\{CANDIDATE\}"/u);
+assert.match(publisherWorkflow, /package_spec="@global-torque\/\$\{package\}@\$\{CANDIDATE\}"/u);
+assert.match(publisherWorkflow, /npm pack "\$package_spec" --pack-destination registry/u);
 assert.match(publisherWorkflow, /cmp "\$archive" "registry\/\$registry_archive"/u);
 assert.match(publisherWorkflow, /publication-receipt\.json/u);
 assert.ok(publisherWorkflow.indexOf('domain-types invest-core invest-data invest-runtime invest-widgets invest-features invest-shell') < publisherWorkflow.indexOf('npm publish'), 'Publisher must define dependency order before publication');
@@ -236,6 +237,13 @@ const publisherStep = publisherSteps.find(step => step.name === 'Publish exact r
 assert.ok(publisherStep?.run, 'Publisher must define the sequential publication body');
 assert.match(publisherStep.run, /if \[\[ "\$\{BOOTSTRAP\}" == "true" \]\]; then[\s\S]+unset NODE_AUTH_TOKEN/u);
 assert.match(publisherStep.run, /for package in "\$\{packages\[@\]\}"; do[\s\S]+npm publish "\$archive"/u);
+assert.match(publisherStep.run, /registry_retry_attempts=6/u);
+assert.match(publisherStep.run, /while \(\( pack_attempt <= registry_retry_attempts \)\); do/u);
+assert.match(publisherStep.run, /sleep "\$pack_delay_seconds"[\s\S]+pack_delay_seconds=\$\(\(pack_delay_seconds \* 2\)\)/u);
+assert.match(publisherStep.run, /npm view "\$package_spec" version --json/u);
+assert.match(publisherStep.run, /view_error_text[\s\S]+E404[\s\S]+ETARGET/u);
+assert.match(publisherStep.run, /pack_error_text[\s\S]+E404[\s\S]+ETARGET/u);
+assert.match(publisherStep.run, /cmp "\$archive" "registry\/\$registry_archive"/u);
 assert.doesNotThrow(
   () => execFileSync('bash', ['-n'], { input: publisherStep.run, encoding: 'utf8' }),
   'Publisher shell body must pass Bash syntax validation',
@@ -338,6 +346,170 @@ const packageNames = [
   '@global-torque/invest-features',
   '@global-torque/invest-shell',
 ];
+const publisherPackageDirectories = packageNames.map(name => name.slice('@global-torque/'.length));
+const publisherCandidate = '0.4.0';
+const publisherNpmStub = [
+  '#!/usr/bin/env node',
+  "import fs from 'node:fs';",
+  "import path from 'node:path';",
+  'const command = process.argv[2];',
+  'const args = process.argv.slice(3);',
+  'const state = process.env.PUBLISH_STUB_STATE;',
+  'const mode = process.env.PUBLISH_STUB_MODE;',
+  'const candidate = process.env.PUBLISH_STUB_CANDIDATE;',
+  "const append = (file, value) => fs.appendFileSync(path.join(state, file), value + '\\n');",
+  "const packageFromSpec = spec => spec.slice('@global-torque/'.length).split('@')[0];",
+  "if (command === 'view') {",
+  "  if (mode === 'existing' || mode === 'tampered') {",
+  "    process.stdout.write(JSON.stringify(candidate) + '\\n');",
+  '    process.exit(0);',
+  '  }',
+  "  process.stderr.write('npm error code ' + (mode === 'auth' ? 'E401' : 'E404') + '\\n');",
+  '  process.exit(1);',
+  '}',
+  "if (command === 'publish') {",
+  "  append('publish.log', args[0]);",
+  '  process.exit(0);',
+  '}',
+  "if (command === 'pack') {",
+  '  const packageName = packageFromSpec(args[0]);',
+  "  const filename = 'global-torque-' + packageName + '-' + candidate + '.tgz';",
+  "  const countFile = path.join(state, 'pack-' + packageName + '.count');",
+  "  const count = (Number(fs.existsSync(countFile) ? fs.readFileSync(countFile, 'utf8') : 0) || 0) + 1;",
+  "  fs.writeFileSync(countFile, String(count) + '\\n');",
+  '  if (count <= Number(process.env.PUBLISH_STUB_PACK_FAILURES)) {',
+  "    process.stderr.write('npm error code ETARGET\\n');",
+  '    process.exit(1);',
+  '  }',
+  "  const registryArchive = path.join(process.cwd(), 'registry', filename);",
+  "  fs.copyFileSync(path.join(process.cwd(), 'release', filename), registryArchive);",
+  "  if (mode === 'tampered') fs.appendFileSync(registryArchive, 'tampered\\n');",
+  "  process.stdout.write(filename + '\\n');",
+  '  process.exit(0);',
+  '}',
+  "process.stderr.write('unexpected npm invocation\\n');",
+  'process.exit(64);',
+].join('\n') + '\n';
+const publisherSleepStub = [
+  '#!/usr/bin/env node',
+  "import fs from 'node:fs';",
+  "import path from 'node:path';",
+  "fs.appendFileSync(path.join(process.env.PUBLISH_STUB_STATE, 'sleep.log'), (process.argv[2] ?? '') + '\\n');",
+].join('\n') + '\n';
+
+function makePublisherLoopFixture(label, { mode = 'existing', packFailures = 0 } = {}) {
+  const directory = path.join(fixtureRoot, 'publisher-loop-' + label);
+  const releaseDirectory = path.join(directory, 'release');
+  const registryDirectory = path.join(directory, 'registry');
+  const stateDirectory = path.join(directory, 'state');
+  const binDirectory = path.join(directory, 'bin');
+  fs.mkdirSync(releaseDirectory, { recursive: true });
+  fs.mkdirSync(registryDirectory, { recursive: true });
+  fs.mkdirSync(stateDirectory, { recursive: true });
+  fs.mkdirSync(binDirectory, { recursive: true });
+  for (const packageDirectory of publisherPackageDirectories) {
+    const archiveName = 'global-torque-' + packageDirectory + '-' + publisherCandidate + '.tgz';
+    fs.writeFileSync(path.join(releaseDirectory, archiveName), 'archive:' + packageDirectory + '\n');
+  }
+  writeJson(path.join(releaseDirectory, 'candidate-receipt.json'), {
+    candidate: publisherCandidate,
+    dependencyOrder: packageNames,
+    packages: packageNames.map(name => ({ name })),
+  });
+  const npmPath = path.join(binDirectory, 'npm');
+  const sleepPath = path.join(binDirectory, 'sleep');
+  fs.writeFileSync(npmPath, publisherNpmStub);
+  fs.writeFileSync(sleepPath, publisherSleepStub);
+  fs.chmodSync(npmPath, 0o755);
+  fs.chmodSync(sleepPath, 0o755);
+  return { directory, stateDirectory, binDirectory, mode, packFailures };
+}
+
+function runPublisherLoopFixture(fixture) {
+  return execFileSync('bash', ['-euo', 'pipefail', '-c', publisherStep.run], {
+    cwd: fixture.directory,
+    env: {
+      ...process.env,
+      PATH: fixture.binDirectory + ':' + process.env.PATH,
+      CANDIDATE: publisherCandidate,
+      BOOTSTRAP: 'false',
+      NODE_AUTH_TOKEN: '',
+      RUNNER_TEMP: fixture.directory,
+      PUBLISH_STUB_STATE: fixture.stateDirectory,
+      PUBLISH_STUB_MODE: fixture.mode,
+      PUBLISH_STUB_CANDIDATE: publisherCandidate,
+      PUBLISH_STUB_PACK_FAILURES: String(fixture.packFailures),
+    },
+    encoding: 'utf8',
+    stdio: ['ignore', 'pipe', 'pipe'],
+  });
+}
+
+const readPublisherLines = file => (
+  fs.existsSync(file)
+    ? fs.readFileSync(file, 'utf8').split('\n').map(line => line.trim()).filter(Boolean)
+    : []
+);
+
+function assertPublisherLoopReceipt(fixture) {
+  const receipt = JSON.parse(fs.readFileSync(path.join(fixture.directory, 'publication-receipt.json'), 'utf8'));
+  assert.deepEqual(receipt.dependencyOrder, packageNames);
+  assert.deepEqual(receipt.packages.map(entry => entry.package), packageNames);
+  for (const entry of receipt.packages) {
+    assert.equal(entry.sha512, entry.registrySha512);
+    assert.deepEqual(
+      fs.readFileSync(path.resolve(fixture.directory, entry.archive)),
+      fs.readFileSync(path.join(fixture.directory, 'registry', entry.registryArchive)),
+    );
+  }
+}
+
+const existingPublisherFixture = makePublisherLoopFixture('existing');
+runPublisherLoopFixture(existingPublisherFixture);
+assert.deepEqual(readPublisherLines(path.join(existingPublisherFixture.stateDirectory, 'publish.log')), []);
+assertPublisherLoopReceipt(existingPublisherFixture);
+
+const tamperedPublisherFixture = makePublisherLoopFixture('tampered', { mode: 'tampered' });
+assert.throws(() => runPublisherLoopFixture(tamperedPublisherFixture), undefined, 'Existing registry bytes must be compared');
+assert.deepEqual(readPublisherLines(path.join(tamperedPublisherFixture.stateDirectory, 'publish.log')), []);
+
+const propagationPublisherFixture = makePublisherLoopFixture('propagation', { mode: 'absent', packFailures: 2 });
+runPublisherLoopFixture(propagationPublisherFixture);
+assert.deepEqual(
+  readPublisherLines(path.join(propagationPublisherFixture.stateDirectory, 'publish.log')),
+  publisherPackageDirectories.map(packageDirectory => './release/global-torque-' + packageDirectory + '-' + publisherCandidate + '.tgz'),
+);
+for (const packageDirectory of publisherPackageDirectories) {
+  assert.equal(
+    Number(fs.readFileSync(path.join(propagationPublisherFixture.stateDirectory, 'pack-' + packageDirectory + '.count'), 'utf8')),
+    3,
+  );
+}
+assert.deepEqual(
+  readPublisherLines(path.join(propagationPublisherFixture.stateDirectory, 'sleep.log')).slice(0, 2),
+  ['2', '4'],
+);
+assertPublisherLoopReceipt(propagationPublisherFixture);
+
+const authPublisherFixture = makePublisherLoopFixture('auth', { mode: 'auth' });
+assert.throws(() => runPublisherLoopFixture(authPublisherFixture), undefined, 'Registry auth errors must not be treated as absence');
+assert.deepEqual(readPublisherLines(path.join(authPublisherFixture.stateDirectory, 'publish.log')), []);
+
+const exhaustedPublisherFixture = makePublisherLoopFixture('exhausted', { mode: 'absent', packFailures: 6 });
+assert.throws(() => runPublisherLoopFixture(exhaustedPublisherFixture), undefined, 'Registry propagation retries must be bounded');
+assert.deepEqual(
+  readPublisherLines(path.join(exhaustedPublisherFixture.stateDirectory, 'publish.log')),
+  ['./release/global-torque-domain-types-0.4.0.tgz'],
+);
+assert.equal(
+  Number(fs.readFileSync(path.join(exhaustedPublisherFixture.stateDirectory, 'pack-domain-types.count'), 'utf8')),
+  6,
+);
+assert.deepEqual(
+  readPublisherLines(path.join(exhaustedPublisherFixture.stateDirectory, 'sleep.log')),
+  ['2', '4', '8', '16', '32'],
+);
+
 const dependencyMap = {
   '@global-torque/domain-types': {},
   '@global-torque/invest-core': { '@global-torque/domain-types': '0.4.0' },
