@@ -1,4 +1,5 @@
 export const VaultProtocolStates = {
+  none: 'none',
   unconfirmed: 'unconfirmed',
   pending: 'pending',
   claimable: 'claimable',
