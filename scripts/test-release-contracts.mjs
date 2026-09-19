@@ -84,6 +84,11 @@ assert.match(publisherWorkflow, /id-token:\s*write/u);
 assert.match(publisherWorkflow, /gh release download/u);
 assert.match(publisherWorkflow, /verify-provenance-context\.mjs/u);
 assert.match(publisherWorkflow, /verify-release-bundle\.mjs/u);
+assert.match(
+  publisherWorkflow,
+  /archive="\.\/release\/global-torque-\$\{package\}-\$\{CANDIDATE\}\.tgz"/u,
+  'Publisher must pass an explicit filesystem path to npm publish',
+);
 assert.match(publisherWorkflow, /npm publish "\$archive" --access public --provenance --tag latest/u);
 assert.match(publisherWorkflow, /npm pack "@global-torque\/\$\{package\}@\$\{CANDIDATE\}"/u);
 assert.match(publisherWorkflow, /cmp "\$archive" "registry\/\$registry_archive"/u);

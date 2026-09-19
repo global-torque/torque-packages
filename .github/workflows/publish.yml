@@ -89,7 +89,7 @@ jobs:
           packages=(domain-types invest-core invest-data invest-runtime invest-widgets invest-features invest-shell)
           : > publication-receipt.jsonl
           for package in "${packages[@]}"; do
-            archive="release/global-torque-${package}-${CANDIDATE}.tgz"
+            archive="./release/global-torque-${package}-${CANDIDATE}.tgz"
             test -f "$archive"
             npm publish "$archive" --access public --provenance --tag latest
             registry_archive=$(npm pack "@global-torque/${package}@${CANDIDATE}" --pack-destination registry | tail -n 1)
