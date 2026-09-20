@@ -37,7 +37,7 @@ restored before the candidate is packed, so packed manifests and receipts
 retain the public registry dependency. Omitting the transport release uses the
 frozen public lockfile and requires the UI Kit release to be available.
 
-Candidate 0.4.1 reissues the seven-package cohort with the final
+Candidate 0.4.2 reissues the seven-package cohort with the final
 `price_update` removal retained and the Invest Shell design-token fallback and
 shadow compatibility contract. The retained 0.4.0 candidate remains the source
 and rollback reference.
@@ -45,9 +45,14 @@ Local verification does not authorize publication; the external Alchemy
 TypeScript peer declaration remains a documented owner handoff item in
 [the migration results](dependency-migration-results.md).
 
-The candidate's ordinary immutable release tag is `framework-v0.4.1` for the
-`0.4.1` candidate. Dispatch the candidate workflow from that tag so its
-attestations carry `refs/tags/framework-v0.4.1`. The prior `framework-v0.2.2`
+The immutable `framework-v0.4.1` tag is an abandoned, retained candidate. It
+points to tag object `afb71838354e0208681fe5c8a38970564bf262d4`, peeled commit
+`044a019d4ada61a1dba7245d0fedb288973c0b88`, and failed runs `35539361132` and
+`35539386904` because Chromium was not installed before the browser contract.
+No GitHub release or npm `0.4.1` package exists; never move, delete, or reuse
+that tag. The new ordinary immutable release tag is `framework-v0.4.2` for the
+`0.4.2` candidate. Dispatch the candidate workflow from that tag so its
+attestations carry `refs/tags/framework-v0.4.2`. The prior `framework-v0.2.2`
 source tag, commit, and immutable artifact history remain retained for audit;
 its package bytes and provenance are not replaced. The earlier
 `framework-v0.2.0` run failed before installation, build, or packing; no
@@ -59,7 +64,7 @@ sidecars, and the combined receipt. When the authenticated transport path is
 selected, its six canonical UI Kit transport files and four retained
 lock/workspace overlay files are included as conditional release evidence.
 The ordinary candidate using the public UI Kit dependency therefore produces
-22 release assets; the authenticated transport path conditionally supplies six
+23 release assets including the browser contract report; the authenticated transport path conditionally supplies six
 UI Kit assets and retains the four lock/workspace overlay files.
 Before attestation, the candidate workflow builds the Node helpers and runs
 package, consumer-link, and release contract tests on Node 24. Detached npm

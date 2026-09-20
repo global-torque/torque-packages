@@ -11,12 +11,12 @@ on:
         description: Candidate version in the retained receipt
         required: true
         type: string
-        default: 0.4.1
+        default: 0.4.2
       release_tag:
         description: Immutable GitHub release tag carrying the exact candidate assets
         required: true
         type: string
-        default: framework-v0.4.1
+        default: framework-v0.4.2
       bootstrap:
         description: Use the temporary NPM_BOOTSTRAP_TOKEN for the package cohort's first publication only
         required: true

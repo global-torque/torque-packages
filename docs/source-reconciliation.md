@@ -1,6 +1,6 @@
 # Source and release reconciliation
 
-The `0.4.1` candidate reissues the seven-package cohort with the completed
+The `0.4.2` candidate reissues the seven-package cohort with the completed
 `invest-shell` token fallback and shadow contract. The breaking stablecoin
 redemption contract, including the final `price_update` removal, remains
 unchanged from the retained `0.4.0` source. It also retains the
@@ -28,7 +28,8 @@ must be retained with candidate evidence. This archive is an external input;
 the framework repository never republishes it.
 
 The framework candidate using the public `@global-torque/ui-kit@0.1.4`
-dependency produces 22 release assets. Its authenticated transport consumes
+dependency produces 23 release assets including the retained browser contract
+report. Its authenticated transport consumes
 six conditional UI Kit assets, and the corresponding lock overlay retains four
 canonical/derived YAML files only when that transport path is selected; the
 ordinary public dependency path has no overlay.
@@ -60,3 +61,12 @@ test overlays only and are not a publication authorization. The prior
 `framework-v0.2.0` source tag, commit, and failed-run diagnostic history remain
 retained as history; that run failed before installation, build, or packing,
 so no canonical `0.2.0` package artifacts or rollback proof exist.
+
+The immutable `framework-v0.4.1` tag remains retained as an abandoned
+candidate. It points to annotated tag object
+`afb71838354e0208681fe5c8a38970564bf262d4`, peeled commit
+`044a019d4ada61a1dba7245d0fedb288973c0b88`, and failed candidate runs
+`35539361132` and `35539386904` because Chromium was not installed before the
+Invest Shell browser contract. No GitHub release or npm `0.4.1` package exists;
+the tag is never moved, deleted, or reused. Candidate `0.4.2` is the recovery
+identity and must receive a new immutable tag.

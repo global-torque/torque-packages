@@ -1,8 +1,13 @@
 # Changelog
 
-## 0.4.1 candidate
+## 0.4.2 candidate
 
 - Reissued the cohort with the final `price_update` removal retained.
+
+## 0.4.1 abandoned candidate
+
+- Immutable candidate tag was retained but not published after its browser CI
+  gate lacked a Chromium installation step.
 
 ## 0.4.0 candidate
 

@@ -1,12 +1,20 @@
 # Changelog
 
-## 0.4.1 candidate
+## 0.4.2 candidate
 
 - Reissued the seven-package cohort with the final `price_update` removal
   retained and no transitional pricing-field compatibility.
 - Restored authenticated design-token literal fallbacks in Invest Shell and
   made control, dialog and raised shadows use neutral-950 with UI/semantic
   override precedence.
+- Isolated the Chromium CSS contract from the Node-only package test and bound
+  its retained report to the candidate receipt.
+
+## 0.4.1 abandoned candidate
+
+- Immutable tag `framework-v0.4.1` was retained for audit but not published;
+  candidate runs `35539361132` and `35539386904` failed because Chromium was
+  not installed before the Invest Shell browser contract.
 
 ## 0.4.0 candidate
 

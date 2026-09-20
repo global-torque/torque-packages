@@ -726,7 +726,7 @@ async function verifyBrowser(consumer, manager) {
   }
 }
 
-function verifyPackedCssBrowserContract(consumer) {
+function verifyPackedCssBrowserContract(consumer, manager) {
   const shell = packageRootFromResolved(
     createRequire(path.join(consumer, 'package.json')).resolve('@global-torque/invest-shell/styles/geometry.css', { paths: [consumer] }),
     '@global-torque/invest-shell',
@@ -841,7 +841,7 @@ for (const manager of packageManagers) {
     await verifyNativeNode(consumer);
     verifySingletons(consumer);
     await verifyBuilds(consumer);
-    verifyPackedCssBrowserContract(consumer);
+    verifyPackedCssBrowserContract(consumer, manager);
     await verifyBrowser(consumer, manager);
     await verifyStoreHmr(consumer, evidence);
     console.log(`archive-consumer-pass ${manager}`);
