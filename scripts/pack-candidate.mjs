@@ -158,7 +158,25 @@ assertNodeBuildInventory(root);
 execFileSync('pnpm', ['run', 'check'], { cwd: root, stdio: 'inherit' });
 assertNodeBuildInventory(root);
 
+const browserReportPath = process.env.CSS_BROWSER_REPORT ? path.resolve(process.env.CSS_BROWSER_REPORT) : null;
+if (!browserReportPath || !fs.existsSync(browserReportPath)) throw new Error('A successful Chromium CSS contract report is required for this candidate');
+const browserReportBytes = fs.readFileSync(browserReportPath);
+const browserReport = JSON.parse(browserReportBytes);
+if (browserReport.schemaVersion !== 1 || browserReport.package !== '@global-torque/invest-shell' || browserReport.result !== 'pass') {
+  throw new Error('Chromium CSS contract report is not a successful invest-shell report');
+}
+
 fs.mkdirSync(output, { recursive: true });
+const browserContract = {
+  schemaVersion: 1,
+  package: browserReport.package,
+  file: 'browser-contract-report.json',
+  sha256: hash('sha256', browserReportBytes),
+  result: browserReport.result,
+  playwright: browserReport.playwright,
+  chromium: browserReport.chromium,
+};
+fs.writeFileSync(path.join(output, browserContract.file), browserReportBytes, { mode: 0o600 });
 const packages = [...reconciliation.packages].sort((a, b) => a.releaseOrder - b.releaseOrder);
 const entries = [];
 for (const entry of packages) {
@@ -274,6 +292,7 @@ const receipt = {
   lockfileSha256: lockfile,
   uiKit,
   externalDependencies: externalDependenciesReceipt.dependencies,
+  browserContract,
   packages: entries,
   dependencyOrder: packages.map(entry => entry.name),
   immutable: true,

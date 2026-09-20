@@ -64,7 +64,10 @@ assert.match(releaseWorkflow, /verify-ui-kit-lock-overlay\.mjs/u);
 assert.match(releaseWorkflow, /REQUIRE_CLEAN_SOURCE: 'true'/u);
 assert.match(releaseWorkflow, /pnpm run pack:candidate/u);
 assert.match(releaseWorkflow, /verify-external-dependency\.mjs/u);
-assert.doesNotMatch(releaseWorkflow, /pnpm audit|verify-candidate\.mjs|verify-archive-consumers\.mjs|playwright install/u);
+assert.doesNotMatch(releaseWorkflow, /pnpm audit|verify-candidate\.mjs|verify-archive-consumers\.mjs/u);
+assert.match(releaseWorkflow, /pnpm exec playwright install --with-deps chromium/u);
+assert.match(releaseWorkflow, /test:css-browser/u);
+assert.match(releaseWorkflow, /CSS_BROWSER_REPORT/u);
 assert.doesNotMatch(releaseWorkflow, /- run: pnpm run check/u);
 assert.ok(packCandidateScript.indexOf("['run', 'build:node']") < packCandidateScript.indexOf("['run', 'check']"), 'Node build must precede tests');
 assert.ok(packCandidateScript.indexOf("['run', 'check']") < packCandidateScript.indexOf('fs.mkdirSync(output'), 'Tests must precede output creation');
@@ -136,6 +139,7 @@ assert.match(consumerScript, /Public shell styles entry emitted no typography ru
 assert.match(consumerScript, /Public shell styles entry emitted no responsive rules/u);
 assert.match(consumerScript, /@playwright\/test/u);
 assert.match(consumerScript, /chromium\.launch/u);
+assert.match(consumerScript, /check-css-browser\.mjs/u);
 assert.match(consumerScript, /width: 1280, height: 800/u);
 assert.match(consumerScript, /width: 390, height: 844/u);
 assert.match(consumerScript, /fontSize: '24px'/u);
@@ -575,9 +579,16 @@ function makeCandidate(directory) {
     generatedAt: '2026-01-01T00:00:00.000Z', lockfileSha256: 'b'.repeat(64),
     uiKit: { mode: 'registry', package: '@global-torque/ui-kit', version: '0.1.4' },
     externalDependencies: reconciliation.externalDependencies,
+    browserContract: {
+      schemaVersion: 1, package: '@global-torque/invest-shell', file: 'browser-contract-report.json',
+      sha256: sha256(Buffer.from(JSON.stringify({ schemaVersion: 1, package: '@global-torque/invest-shell', playwright: '1.63.0', chromium: 'chromium', result: 'pass', checks: [] }) + '\n')),
+      result: 'pass', playwright: '1.63.0', chromium: 'chromium',
+    },
     packages,
     dependencyOrder: packageNames, immutable: true, promotable: false,
   };
+  writeJson(path.join(directory, 'browser-contract-report.json'), { schemaVersion: 1, package: '@global-torque/invest-shell', playwright: '1.63.0', chromium: 'chromium', result: 'pass', checks: [] });
+  receipt.browserContract.sha256 = sha256(fs.readFileSync(path.join(directory, 'browser-contract-report.json')));
   writeJson(path.join(directory, 'candidate-receipt.json'), receipt);
   return receipt;
 }
@@ -1006,6 +1017,7 @@ function expectedAssetsForReceipt(receipt) {
   const assets = new Set([
     ...receipt.packages.flatMap(entry => [entry.archive, `${entry.archive}.manifest.json`, `${entry.archive}.sha512`]),
     'candidate-receipt.json',
+    receipt.browserContract.file,
   ]);
   if (receipt.uiKit?.canonical === true) {
     for (const name of [receipt.uiKit.artifact, receipt.uiKit.sidecar, receipt.uiKit.sha512Sidecar, receipt.uiKit.selectedRelease, receipt.uiKit.originalAttestation?.file, 'transport-receipt.json']) assets.add(name);
@@ -1346,7 +1358,7 @@ contextReceipt.sourceRepository = 'fixture/torque-packages';
 contextReceipt.sourceRevision = 'd'.repeat(40);
 contextReceipt.sourceDirty = false;
 writeJson(path.join(contextDirectory, 'candidate-receipt.json'), contextReceipt);
-const expectedContextAssets = contextReceipt.packages.flatMap(entry => [entry.archive, `${entry.archive}.manifest.json`, `${entry.archive}.sha512`]).concat('candidate-receipt.json').sort();
+const expectedContextAssets = contextReceipt.packages.flatMap(entry => [entry.archive, `${entry.archive}.manifest.json`, `${entry.archive}.sha512`]).concat('candidate-receipt.json', contextReceipt.browserContract.file).sort();
 const ghBin = path.join(fixtureRoot, 'bin');
 fs.mkdirSync(ghBin, { recursive: true });
 const ghStub = path.join(ghBin, 'gh');

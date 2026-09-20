@@ -11,7 +11,8 @@
   "scripts": {
     "css:budget": "node scripts/check-css-budget.mjs",
     "typecheck": "vue-tsc --noEmit -p tsconfig.json",
-    "test:run": "node scripts/check-css-contract.mjs && node --test scripts/check-css-budget.test.mjs && NODE_OPTIONS=\"${NODE_OPTIONS:+$NODE_OPTIONS }--no-experimental-webstorage\" vitest run"
+    "test:run": "node scripts/check-css-contract.mjs && node --test scripts/check-css-budget.test.mjs && NODE_OPTIONS=\"${NODE_OPTIONS:+$NODE_OPTIONS }--no-experimental-webstorage\" vitest run",
+    "test:css-browser": "node scripts/check-css-browser.mjs"
   },
   "exports": {
     ".": "./src/index.ts",

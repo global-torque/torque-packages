@@ -100,6 +100,19 @@ if (typeof receipt.sourceDirty !== 'boolean') throw new Error('Receipt source cl
 if (receipt.sourceRevision !== null && !/^[0-9a-f]{40}$/u.test(receipt.sourceRevision)) throw new Error('Receipt source revision is not a full commit or null');
 if (!receipt.sourceDirty && !receipt.sourceRevision) throw new Error('Clean receipt must identify a target-repository commit');
 if (receipt.sourcePackageRevision !== undefined && !/^[0-9a-f]{40}$/u.test(receipt.sourcePackageRevision)) throw new Error('Receipt source package revision is not a full commit');
+if (
+  receipt.browserContract?.schemaVersion !== 1
+  || receipt.browserContract.package !== '@global-torque/invest-shell'
+  || receipt.browserContract.result !== 'pass'
+  || receipt.browserContract.file !== 'browser-contract-report.json'
+  || !/^[0-9a-f]{64}$/u.test(receipt.browserContract.sha256 ?? '')
+) throw new Error('Receipt Chromium CSS contract evidence is missing or invalid');
+const browserReportPath = path.join(path.dirname(receiptPath), receipt.browserContract.file);
+if (!fs.existsSync(browserReportPath)) throw new Error('Receipt Chromium CSS contract report is missing');
+const browserReportBytes = fs.readFileSync(browserReportPath);
+if (crypto.createHash('sha256').update(browserReportBytes).digest('hex') !== receipt.browserContract.sha256) throw new Error('Receipt Chromium CSS contract report digest mismatch');
+const browserReport = JSON.parse(browserReportBytes);
+if (browserReport.schemaVersion !== 1 || browserReport.package !== receipt.browserContract.package || browserReport.result !== 'pass') throw new Error('Receipt Chromium CSS contract report identity mismatch');
 if (!Array.isArray(receipt.packages) || receipt.packages.length !== expectedPackages.length) throw new Error('Receipt must contain all seven framework packages');
 if (JSON.stringify(receipt.dependencyOrder) !== JSON.stringify(expectedPackages)) throw new Error('Receipt dependency order is not the accepted framework order');
 if (new Set(receipt.packages.map(entry => entry.name)).size !== expectedPackages.length || receipt.packages.some(entry => !expectedPackages.includes(entry.name))) throw new Error('Receipt contains an unknown or duplicate package identity');

@@ -165,6 +165,7 @@ jobs:
         env:
           CANDIDATE: ${{ inputs.candidate }}
           REQUIRE_CLEAN_SOURCE: 'true'
+          CSS_BROWSER_REPORT: ${{ runner.temp }}/torque-css-browser-report.json
         run: |
           set -euo pipefail
           external_dir="$RUNNER_TEMP/torque-design-tokens"
@@ -182,6 +183,8 @@ jobs:
             "$external_dir/external-dependencies.json"
           export EXTERNAL_DEPENDENCIES_RECEIPT="$external_dir/external-dependencies.json"
           printf 'EXTERNAL_DEPENDENCIES_RECEIPT=%s\n' "$external_dir/external-dependencies.json" >> "$GITHUB_ENV"
+          pnpm exec playwright install --with-deps chromium
+          CSS_BROWSER_REPORT="$CSS_BROWSER_REPORT" pnpm --filter @global-torque/invest-shell run test:css-browser
           pnpm run pack:candidate -- "$CANDIDATE"
       - name: Attest exact candidate archives
         uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6

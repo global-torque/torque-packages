@@ -87,6 +87,7 @@ if (tagCommit !== receipt.sourceRevision) throw new Error('Framework release tag
 const expectedAssets = new Set([
   ...receipt.packages.flatMap(entry => [entry.archive, `${entry.archive}.manifest.json`, `${entry.archive}.sha512`]),
   'candidate-receipt.json',
+  receipt.browserContract.file,
 ]);
 const uiKit = receipt.uiKit;
 if (uiKit?.canonical === true) {

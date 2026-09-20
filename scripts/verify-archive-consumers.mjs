@@ -726,6 +726,19 @@ async function verifyBrowser(consumer, manager) {
   }
 }
 
+function verifyPackedCssBrowserContract(consumer) {
+  const shell = packageRootFromResolved(
+    createRequire(path.join(consumer, 'package.json')).resolve('@global-torque/invest-shell/styles/geometry.css', { paths: [consumer] }),
+    '@global-torque/invest-shell',
+  );
+  execFileSync(process.execPath, [path.join(root, 'packages/invest-shell/scripts/check-css-browser.mjs')], {
+    cwd: root,
+    env: { ...process.env, CSS_CONTRACT_PACKAGE_DIR: shell },
+    stdio: 'inherit',
+  });
+  console.log(`packed-css-browser-contract-pass ${manager}`);
+}
+
 async function verifyStoreHmr(consumer, evidence) {
   const port = 5400 + (process.pid % 1000);
   const output = { stdout: '', stderr: '' };
@@ -828,6 +841,7 @@ for (const manager of packageManagers) {
     await verifyNativeNode(consumer);
     verifySingletons(consumer);
     await verifyBuilds(consumer);
+    verifyPackedCssBrowserContract(consumer);
     await verifyBrowser(consumer, manager);
     await verifyStoreHmr(consumer, evidence);
     console.log(`archive-consumer-pass ${manager}`);
