@@ -94,6 +94,7 @@ function assertArchiveInventory(archiveFiles, manifest, packageName) {
   return relativeFiles;
 }
 if (receipt.schemaVersion !== 1 || receipt.immutable !== true || receipt.promotable !== false) throw new Error('Receipt is not an immutable non-promotable candidate');
+if (JSON.stringify(receipt.externalDependencies) !== JSON.stringify(reconciliation.externalDependencies)) throw new Error('Receipt external dependency identity differs from source reconciliation');
 if (typeof receipt.sourceRepository !== 'string' || typeof receipt.sourcePackageRepository !== 'string') throw new Error('Receipt source repositories are missing');
 if (typeof receipt.sourceDirty !== 'boolean') throw new Error('Receipt source cleanliness is missing');
 if (receipt.sourceRevision !== null && !/^[0-9a-f]{40}$/u.test(receipt.sourceRevision)) throw new Error('Receipt source revision is not a full commit or null');

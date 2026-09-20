@@ -10,7 +10,7 @@ import {
 } from './node-build-contract.mjs';
 
 const root = path.resolve(new URL('..', import.meta.url).pathname);
-const candidate = process.argv.slice(2).find(argument => argument !== '--') ?? '0.4.0';
+const candidate = process.argv.slice(2).find(argument => argument !== '--') ?? '0.4.1';
 const reconciliation = JSON.parse(fs.readFileSync(path.join(root, 'docs/source-reconciliation.json'), 'utf8'));
 if (candidate !== reconciliation.candidate) throw new Error(`Candidate ${candidate} is not the reviewed ${reconciliation.candidate}`);
 const targetRepository = reconciliation.targetRepository;
@@ -112,6 +112,19 @@ try {
 }
 const uiLockOverlayPath = process.env.UI_KIT_LOCK_OVERLAY_RECEIPT ? path.resolve(process.env.UI_KIT_LOCK_OVERLAY_RECEIPT) : null;
 const uiLockOverlay = uiLockOverlayPath ? JSON.parse(fs.readFileSync(uiLockOverlayPath, 'utf8')) : null;
+const externalDependenciesReceiptPath = process.env.EXTERNAL_DEPENDENCIES_RECEIPT
+  ? path.resolve(process.env.EXTERNAL_DEPENDENCIES_RECEIPT)
+  : null;
+if (!externalDependenciesReceiptPath || !fs.existsSync(externalDependenciesReceiptPath)) {
+  throw new Error('An authenticated external dependency receipt is required for this candidate');
+}
+const externalDependenciesReceipt = JSON.parse(fs.readFileSync(externalDependenciesReceiptPath, 'utf8'));
+if (
+  externalDependenciesReceipt.schemaVersion !== 1
+  || JSON.stringify(externalDependenciesReceipt.dependencies) !== JSON.stringify(reconciliation.externalDependencies)
+  || externalDependenciesReceipt.verified?.['@global-torque/design-tokens']?.integrity
+    !== reconciliation.externalDependencies?.['@global-torque/design-tokens']?.integrity
+) throw new Error('External dependency receipt does not match source reconciliation');
 if (uiLockOverlay) {
   if (uiLockOverlay.schemaVersion !== 1 || uiLockOverlay.mode !== 'authenticated-ui-kit-overlay') throw new Error('UI Kit lock overlay receipt is not authenticated');
   if (
@@ -260,6 +273,7 @@ const receipt = {
   generatedAt: new Date().toISOString(),
   lockfileSha256: lockfile,
   uiKit,
+  externalDependencies: externalDependenciesReceipt.dependencies,
   packages: entries,
   dependencyOrder: packages.map(entry => entry.name),
   immutable: true,

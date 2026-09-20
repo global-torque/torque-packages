@@ -7,7 +7,7 @@ on:
         description: Candidate version to pack from the checked source
         required: true
         type: string
-        default: 0.4.0
+        default: 0.4.1
       ui_kit_transport_release_id:
         description: Optional framework-repository draft release containing the verified UI Kit transport assets
         required: false
@@ -165,7 +165,24 @@ jobs:
         env:
           CANDIDATE: ${{ inputs.candidate }}
           REQUIRE_CLEAN_SOURCE: 'true'
-        run: pnpm run pack:candidate -- "$CANDIDATE"
+        run: |
+          set -euo pipefail
+          external_dir="$RUNNER_TEMP/torque-design-tokens"
+          mkdir -p "$external_dir"
+          packed_name="$(npm pack --silent --pack-destination "$external_dir" '@global-torque/design-tokens@0.3.0')"
+          mv "$external_dir/$(basename "$packed_name")" "$external_dir/design-tokens-0.3.0.tgz"
+          curl --fail --silent --show-error \
+            'https://registry.npmjs.org/-/npm/v1/attestations/@global-torque%2fdesign-tokens@0.3.0' \
+            > "$external_dir/design-tokens-0.3.0-attestation.json"
+          test "$(git ls-remote https://github.com/global-torque/design-tokens.git 'refs/tags/v0.3.0^{}' | cut -f1)" = \
+            c263e35d749b5574d1b919665f3d029081344d7b
+          node scripts/verify-external-dependency.mjs \
+            "$external_dir/design-tokens-0.3.0.tgz" \
+            "$external_dir/design-tokens-0.3.0-attestation.json" \
+            "$external_dir/external-dependencies.json"
+          export EXTERNAL_DEPENDENCIES_RECEIPT="$external_dir/external-dependencies.json"
+          printf 'EXTERNAL_DEPENDENCIES_RECEIPT=%s\n' "$external_dir/external-dependencies.json" >> "$GITHUB_ENV"
+          pnpm run pack:candidate -- "$CANDIDATE"
       - name: Attest exact candidate archives
         uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6
         with:

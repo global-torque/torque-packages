@@ -1,7 +1,7 @@
 {
   "name": "@global-torque/invest-shell",
   "private": false,
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Investment application shell components, navigation, runtime facades, and styles.",
   "license": "MIT",
   "engines": { "node": "^24.21.0" },
@@ -38,6 +38,7 @@
   },
   "devDependencies": {
     "@playwright/test": "1.63.0",
+    "@global-torque/design-tokens": "0.3.0",
     "@vue/server-renderer": "^3.5.39",
     "@vitejs/plugin-vue": "^6.0.9",
     "@vue/test-utils": "^2.5.1",
@@ -52,12 +53,16 @@
     "vue-router": "^5.1.0"
   },
   "peerDependencies": {
+    "@global-torque/design-tokens": ">=0.2.1 <0.4.0",
     "ajv": "^8.20.0",
     "pinia": "^3.0.4 || ^4.0.3",
     "reka-ui": "^2.10.1",
     "sass": "^1.101.0",
     "vue": "^3.5.39",
     "vue-router": "^5.1.0"
+  },
+  "peerDependenciesMeta": {
+    "@global-torque/design-tokens": { "optional": true }
   },
   "files": ["src", "README.md", "LICENSE", "NOTICE.md", "CHANGELOG.md", "SECURITY.md", "SUPPORT.md", "css-budget.json", "scripts", "vite.config.ts", "vitest.config.ts"],
   "repository": {

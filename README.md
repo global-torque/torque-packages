@@ -4,12 +4,12 @@ This repository is the independent source workspace for the seven investment
 framework packages under the `@global-torque` namespace. The workspace root
 is private; each package is an independently reviewed MIT package candidate.
 
-The current candidate is `0.4.0` for all seven packages. It is source based:
+The current candidate is `0.4.1` for all seven packages. It is source based:
 published files contain the explicit `src` exports and the host application
 provides the Vue/Vite toolchain and singleton peers. The candidate is local and
 non-promotable until the primary maintainer completes the accepted release
 gates. Dispatch the candidate workflow from the matching
-`framework-v0.4.0` tag when producing attestations. The previously reviewed
+`framework-v0.4.1` tag when producing attestations. The previously reviewed
 `framework-v0.2.2` source tag, commit, and immutable artifacts remain
 retained as history; no canonical `0.2.0` package artifacts were produced.
 
@@ -28,7 +28,10 @@ packing and retaining the candidate artifacts. Publication is a separate
 trusted-OIDC workflow that uses only those retained tarballs; it never
 rebuilds or repacks source.
 
-This release delivers the breaking stablecoin redemption contract and reissues
+This release reissues the breaking stablecoin redemption contract and completes
+the `invest-shell` token fallback/shadow compatibility contract. The final
+`price_update` removal remains part of the retained redemption contract. It
+also reissues
 the 0.3.0 cohort with selectively sanitized analytics and request diagnostics,
 stable demo-account configuration capture, and local Vite exclusions for the
 public UI Kit peer graph. The dependency migration, dropdown navigation fix, and
@@ -113,7 +116,8 @@ second argument:
 
 ```sh
 CONSUMER_PACKAGE_MANAGERS=npm,pnpm node scripts/verify-archive-consumers.mjs \
-  artifacts "$UI_KIT_TRANSPORT_DIR/global-torque-ui-kit-0.1.4.tgz"
+  artifacts "$UI_KIT_TRANSPORT_DIR/global-torque-ui-kit-0.1.4.tgz" \
+  "$EXTERNAL_DEPENDENCIES_DIR/design-tokens-0.3.0.tgz"
 ```
 
 The script saves each manager's report, screenshots, and failure diagnostics

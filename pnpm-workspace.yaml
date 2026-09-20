@@ -35,3 +35,4 @@ minimumReleaseAgeExclude:
   - '@vueuse/shared@15.0.0'
   - 'prettier@3.9.7'
   - '@global-torque/sdk@0.3.1'
+  - '@global-torque/design-tokens@0.3.0'

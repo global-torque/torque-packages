@@ -33,6 +33,7 @@ const reviewedMigrationVersions = [
   '@types/node@24.13.5', '@vue/test-utils@2.5.1',
   '@vueuse/core@15.0.0', '@vueuse/integrations@15.0.0',
   '@vueuse/metadata@15.0.0', '@vueuse/shared@15.0.0', 'prettier@3.9.7',
+  '@global-torque/design-tokens@0.3.0',
 ];
 const packageManagers = (process.env.CONSUMER_PACKAGE_MANAGERS ?? 'npm,pnpm')
   .split(',')
@@ -84,7 +85,25 @@ function findUiArchive(argument) {
   return archive;
 }
 
+function findDesignTokensArchive(argument) {
+  const supplied = argument || process.env.DESIGN_TOKENS_ARCHIVE;
+  if (!supplied) return undefined;
+  const archive = path.resolve(supplied);
+  if (!fs.existsSync(archive) || path.basename(archive) !== 'design-tokens-0.3.0.tgz') {
+    throw new Error(`Design token archive is missing or has the wrong identity: ${archive}`);
+  }
+  const manifest = JSON.parse(execFileSync('tar', ['-xOzf', archive, 'package/package.json'], { encoding: 'utf8' }));
+  if (manifest.name !== '@global-torque/design-tokens' || manifest.version !== '0.3.0') throw new Error('Design token archive manifest identity mismatch');
+  const expected = receipt.externalDependencies?.['@global-torque/design-tokens'];
+  const bytes = fs.readFileSync(archive);
+  if (!expected || crypto.createHash('sha256').update(bytes).digest('hex') !== expected.archiveSha256 || integrity(bytes) !== expected.integrity) {
+    throw new Error('Design token archive does not match the candidate external dependency receipt');
+  }
+  return archive;
+}
+
 const uiArchive = findUiArchive(positionalArguments[1]);
+const designTokensArchive = findDesignTokensArchive(positionalArguments[2]);
 const frameworkDependencySpecs = Object.fromEntries([...archives].map(([name, archive]) => [name, `file:${archive}`]));
 const directDependencies = {
   ...frameworkDependencySpecs,
@@ -92,7 +111,7 @@ const directDependencies = {
   '@global-torque/ui-primitives': '0.1.3',
   '@global-torque/sdk': '0.3.1',
   '@global-torque/client-error-handling': '0.1.0',
-  '@global-torque/design-tokens': '0.2.1',
+  '@global-torque/design-tokens': designTokensArchive ? `file:${designTokensArchive}` : '0.3.0',
   vue: '3.5.42',
   pinia: profile.pinia,
   'vue-router': profile.router,
@@ -117,6 +136,7 @@ function writeConsumer(consumer) {
   const overrides = {
     ...frameworkDependencySpecs,
     ...(uiArchive ? { '@global-torque/ui-kit': `file:${uiArchive}` } : {}),
+    ...(designTokensArchive ? { '@global-torque/design-tokens': `file:${designTokensArchive}` } : {}),
   };
   const packageJson = {
     name: 'torque-framework-detached-consumer',

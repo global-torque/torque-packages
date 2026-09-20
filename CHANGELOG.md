@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.1 candidate
+
+- Reissued the seven-package cohort with the final `price_update` removal
+  retained and no transitional pricing-field compatibility.
+- Restored authenticated design-token literal fallbacks in Invest Shell and
+  made control, dialog and raised shadows use neutral-950 with UI/semantic
+  override precedence.
+
 ## 0.4.0 candidate
 
 - Breaking redemption contract: business status is now required and limited to

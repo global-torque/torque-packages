@@ -1,7 +1,7 @@
 {
   "name": "@global-torque/invest-runtime",
   "private": false,
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Investment runtime context, session lifecycle, adapters, and PWA services.",
   "license": "MIT",
   "engines": { "node": "^24.21.0" },

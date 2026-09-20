@@ -1,6 +1,9 @@
 # Source and release reconciliation
 
-The `0.4.0` candidate delivers the breaking stablecoin redemption contract and
+The `0.4.1` candidate reissues the seven-package cohort with the completed
+`invest-shell` token fallback and shadow contract. The breaking stablecoin
+redemption contract, including the final `price_update` removal, remains
+unchanged from the retained `0.4.0` source. It also retains the
 the dependency-migrated framework cohort with selective analytics/request
 sanitization, stable demo-account configuration capture, and local Vite UI peer
 exclusions. The accepted `0.2.3` framework SFC
@@ -16,6 +19,13 @@ The seven framework packages are the only source owned by this repository.
 The exact package matrix, external pins, patch hashes, dependency order,
 intermediate compatibility, abort signals, and recovery rule are recorded in
 [`source-reconciliation.json`](./source-reconciliation.json).
+
+The candidate consumes the authenticated external
+`@global-torque/design-tokens@0.3.0` archive. Its exact SRI, archive digest,
+archive inventory digest, source commit/tag and npm publish/SLSA attestations
+are bound in [`source-reconciliation.json`](./source-reconciliation.json) and
+must be retained with candidate evidence. This archive is an external input;
+the framework repository never republishes it.
 
 The framework candidate using the public `@global-torque/ui-kit@0.1.4`
 dependency produces 22 release assets. Its authenticated transport consumes

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.1 candidate
+
+- Reissued the cohort with the final `price_update` removal retained.
+- Added authenticated primitive fallbacks and neutral-950 control/dialog/
+  raised shadow contracts with host override precedence.
+
 ## 0.4.0 candidate
 
 - Reissued the framework cohort for the breaking redemption domain contract;

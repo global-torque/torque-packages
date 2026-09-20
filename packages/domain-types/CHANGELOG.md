@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.1 candidate
+
+- Reissued the cohort with the final `price_update` removal retained.
+
 ## 0.4.0 candidate
 
 - Make redemption status required with the canonical five-value status union.

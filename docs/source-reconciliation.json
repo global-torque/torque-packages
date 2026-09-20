@@ -1,16 +1,16 @@
 {
-  "candidate": "0.4.0",
+  "candidate": "0.4.1",
   "targetRepository": "global-torque/torque-packages",
   "sourceOwner": "global-torque/dashboard.webdevelop.biz",
   "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3",
   "packages": [
-    { "name": "@global-torque/domain-types", "directory": "packages/domain-types", "version": "0.4.0", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 1 },
-    { "name": "@global-torque/invest-core", "directory": "packages/invest-core", "version": "0.4.0", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 2 },
-    { "name": "@global-torque/invest-data", "directory": "packages/invest-data", "version": "0.4.0", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 3 },
-    { "name": "@global-torque/invest-runtime", "directory": "packages/invest-runtime", "version": "0.4.0", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 4 },
-    { "name": "@global-torque/invest-widgets", "directory": "packages/invest-widgets", "version": "0.4.0", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 5 },
-    { "name": "@global-torque/invest-features", "directory": "packages/invest-features", "version": "0.4.0", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 6 },
-    { "name": "@global-torque/invest-shell", "directory": "packages/invest-shell", "version": "0.4.0", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 7 }
+    { "name": "@global-torque/domain-types", "directory": "packages/domain-types", "version": "0.4.1", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 1 },
+    { "name": "@global-torque/invest-core", "directory": "packages/invest-core", "version": "0.4.1", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 2 },
+    { "name": "@global-torque/invest-data", "directory": "packages/invest-data", "version": "0.4.1", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 3 },
+    { "name": "@global-torque/invest-runtime", "directory": "packages/invest-runtime", "version": "0.4.1", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 4 },
+    { "name": "@global-torque/invest-widgets", "directory": "packages/invest-widgets", "version": "0.4.1", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 5 },
+    { "name": "@global-torque/invest-features", "directory": "packages/invest-features", "version": "0.4.1", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 6 },
+    { "name": "@global-torque/invest-shell", "directory": "packages/invest-shell", "version": "0.4.1", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 7 }
   ],
   "nodeExports": {
     "conditionOrder": ["types", "node", "default"],
@@ -67,13 +67,34 @@
   "externalPackages": {
     "@global-torque/sdk": "0.3.1",
     "@global-torque/client-error-handling": "0.1.0",
-    "@global-torque/design-tokens": "0.2.1",
+    "@global-torque/design-tokens": "0.3.0",
     "@global-torque/ui-kit": "0.1.4",
     "@global-torque/ui-primitives": "0.1.3",
     "@global-torque/content-toolkit": "0.2.0",
     "@global-torque/vitepress-toolkit": "0.2.0",
     "@global-torque/markdown-it-wikilinks": "0.2.0",
     "@global-torque/admin-toolkit": "0.2.0"
+  },
+  "externalDependencies": {
+    "@global-torque/design-tokens": {
+      "version": "0.3.0",
+      "sourceRepository": "global-torque/design-tokens",
+      "sourceTag": "v0.3.0",
+      "sourceCommit": "c263e35d749b5574d1b919665f3d029081344d7b",
+      "archive": "design-tokens-0.3.0.tgz",
+      "archiveSha256": "fe47604d05ba1ff7a038acf29051cac2cf48882babe26824e12da5b5651fb187",
+      "integrity": "sha512-eh5fRUsWYcoM+c0O3EoTP52ABQ1MRyafJWzhsyA7x7qxF3Trub7e8PiYDUtnfmpXNmQbvD5uu63iGM8/VP7TsA==",
+      "inventorySha256": "c6beb3de558b6051402717b16b16002e691ca3203b6310d92290879a60a1baf3",
+      "attestation": {
+        "url": "https://registry.npmjs.org/-/npm/v1/attestations/@global-torque%2fdesign-tokens@0.3.0",
+        "sha256": "b71b5642bbef89d1ba8ea98c24d9e3f70b3905c5dd07bb50f0ced55503fb89bb",
+        "predicateTypes": [
+          "https://github.com/npm/attestation/tree/main/specs/publish/v0.1",
+          "https://slsa.dev/provenance/v1"
+        ],
+        "count": 2
+      }
+    }
   },
   "patches": [],
   "assetInventory": {
@@ -87,10 +108,10 @@
     "document": "docs/asset-inventory.md"
   },
   "compatibility": {
-    "internalWorkspaceLinks": "only among the seven packages in this repository during development; pnpm pack must rewrite them to 0.4.0",
+    "internalWorkspaceLinks": "only among the seven packages in this repository during development; pnpm pack must rewrite them to 0.4.1",
     "externalResolution": "installed public releases only; no source copies, file links, catalogs, or private registry references",
     "runtimeSingletons": ["vue", "pinia", "vue-router"],
-    "uiKit": "0.1.4 candidate is selected by vue-ui; primitives remain at 0.1.3; framework widgets are owned here at 0.4.0",
+    "uiKit": "0.1.4 candidate is selected by vue-ui; primitives remain at 0.1.3; framework widgets are owned here at 0.4.1",
     "frameworkReleaseAssets": "The framework candidate using the public @global-torque/ui-kit@0.1.4 dependency produces 22 release assets; the authenticated UI Kit transport uses 6 conditional assets and retains 4 conditional canonical/derived lock-workspace overlay files.",
     "rollout": "domain-types, invest-core, invest-data, invest-runtime, invest-widgets, invest-features, invest-shell; consumers install the complete receipt after all lower packages are available",
     "abortSignals": ["missing public artifact", "workspace or private dependency in packed manifest", "digest mismatch", "source or rights review failure", "runtime singleton duplication"],

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.1 candidate
+
+- Reissued the cohort with the final `price_update` removal retained.
+
 ## 0.4.0 candidate
 
 - Consume the breaking redemption contract without pricing-field projection or

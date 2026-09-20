@@ -7,7 +7,7 @@ import { createServer } from 'vite';
 
 import { FRAMEWORK_PACKAGE_NAMES, frameworkLinkViteConfig } from './consumer-link-vite.mjs';
 
-const cohortVersion = '0.4.0';
+const cohortVersion = '0.4.1';
 
 function createFixture() {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'framework-vite-cohort-'));
