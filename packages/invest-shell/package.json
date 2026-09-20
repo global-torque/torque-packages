@@ -11,7 +11,7 @@
   "scripts": {
     "css:budget": "node scripts/check-css-budget.mjs",
     "typecheck": "vue-tsc --noEmit -p tsconfig.json",
-    "test:run": "node --test scripts/check-css-budget.test.mjs && NODE_OPTIONS=\"${NODE_OPTIONS:+$NODE_OPTIONS }--no-experimental-webstorage\" vitest run"
+    "test:run": "node scripts/check-css-contract.mjs && node --test scripts/check-css-budget.test.mjs && NODE_OPTIONS=\"${NODE_OPTIONS:+$NODE_OPTIONS }--no-experimental-webstorage\" vitest run"
   },
   "exports": {
     ".": "./src/index.ts",
@@ -37,6 +37,7 @@
     "@global-torque/invest-widgets": "workspace:*"
   },
   "devDependencies": {
+    "@playwright/test": "1.63.0",
     "@vue/server-renderer": "^3.5.39",
     "@vitejs/plugin-vue": "^6.0.9",
     "@vue/test-utils": "^2.5.1",

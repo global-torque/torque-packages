@@ -61,6 +61,22 @@ been retired; shell code is owned and tested here.
 - `./styles/geometry.css` and `./styles/components.css`: shared investor geometry
   and component presentation consumed before the SCSS entry by app styles.
 
+Hosts should retain this order for the public shell styles. The shell also
+keeps the authenticated design-token primitive values as literal fallbacks, so
+the geometry remains usable when a host has not loaded the token stylesheet:
+
+```css
+@import '@global-torque/design-tokens/css';
+@import '@global-torque/ui-primitives/styles/theme';
+@import '@global-torque/invest-shell/styles/geometry.css';
+@import '@global-torque/invest-shell/styles/components.css';
+@import '@global-torque/invest-shell/styles';
+```
+
+The control, dialog and raised semantic shadows use neutral-950 (`#12161f`)
+with the public `--ui-shadow-*` hooks taking precedence over `--shadow-*`.
+Sheet and badge elevations remain independent primitive-backed roles.
+
 ## Validation
 
 ```sh
@@ -78,9 +94,9 @@ disk output disabled. The aggregate includes imported styles, but excludes app
 styles, Vue SFC styles, and app Tailwind/design-token generation; it is not an
 application bundle budget.
 
-The reviewed aggregate is 98,507 raw bytes, 18,177 gzip bytes, and zero generated
+The reviewed aggregate is 98,072 raw bytes, 18,357 gzip bytes, and zero generated
 dimension selectors. Caps retain 250 raw bytes and 50 gzip bytes of headroom:
-98,757 raw and 18,227 gzip. Tests pin the raw bytes and SHA-256, require resolved
+98,322 raw and 18,407 gzip. Tests pin the raw bytes and SHA-256, require resolved
 imports and zero generated selectors, and enforce gzip only against its cap
 because supported Node/zlib versions can compress identical CSS differently.
 `css-budget.json` records the reference toolchain and keeps the prior

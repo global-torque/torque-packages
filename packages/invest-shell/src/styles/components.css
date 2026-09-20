@@ -8,16 +8,12 @@
 [data-slot='card'] {
   border-radius: 2px;
   border-color: var(--muted);
-  box-shadow:
-    0 4px 5px -2px color-mix(in srgb, var(--foreground) 5%, transparent),
-    0 6px 25px 2px color-mix(in srgb, var(--foreground) 6%, transparent);
+  box-shadow: var(--ui-shadow-dialog, var(--shadow-dialog));
 }
 
 /* The chart owns a plain inner tooltip inside the Unovis surface. */
 .v-chart-tooltip[data-slot='card'] {
-  box-shadow: var(--ui-chart-tooltip-shadow,
-    0 4px 5px -2px color-mix(in srgb, var(--foreground) 5%, transparent),
-    0 6px 25px 2px color-mix(in srgb, var(--foreground) 6%, transparent));
+  box-shadow: var(--ui-chart-tooltip-shadow, var(--shadow-dialog));
 }
 
 /* Badges: 24 px pill, 8/12 px padding, 12/18 px extra-bold, no border; an
@@ -312,9 +308,7 @@ input[data-slot='input']:focus-visible,
 [data-slot='select-content'],
 [data-slot='popover-content'] {
   border-radius: 2px;
-  box-shadow:
-    0 4px 5px -2px color-mix(in srgb, var(--foreground) 5%, transparent),
-    0 6px 25px 2px color-mix(in srgb, var(--foreground) 6%, transparent);
+  box-shadow: var(--ui-shadow-dialog, var(--shadow-dialog));
 }
 
 /* Dropdown menus: 8 px above and below, at least the trigger's width, the
@@ -384,7 +378,7 @@ input[data-slot='input']:focus-visible,
   background: var(--ui-color-surface, var(--background));
   border-color: var(--primary);
   color: var(--primary);
-  box-shadow: var(--ui-shadow-control, none);
+  box-shadow: var(--ui-shadow-control, var(--shadow-control));
 }
 [data-slot='button'][data-variant='outline']:hover {
   background: var(--primary);
@@ -397,7 +391,7 @@ input[data-slot='input']:focus-visible,
   background: var(--accent);
   color: var(--ui-color-accent, var(--accent-foreground));
   border-color: var(--ui-color-subtle, transparent);
-  box-shadow: var(--ui-shadow-control, none);
+  box-shadow: var(--ui-shadow-control, var(--shadow-control));
 }
 [data-slot='button'][data-variant='ghost']:not([data-size^='icon']):hover {
   background: var(--primary);
@@ -423,9 +417,7 @@ input[data-slot='input']:focus-visible,
   color: var(--foreground);
   font-size: 16px;
   line-height: 26px;
-  box-shadow:
-    0 4px 5px -2px color-mix(in srgb, var(--foreground) 5%, transparent),
-    0 6px 25px 2px color-mix(in srgb, var(--foreground) 6%, transparent);
+  box-shadow: var(--ui-shadow-dialog, var(--shadow-dialog));
 }
 [data-sonner-toaster] [data-sonner-toast][data-styled='true'][data-type='error'] { border-left-color: var(--destructive); }
 [data-sonner-toaster] [data-sonner-toast][data-styled='true'][data-type='success'] { border-left-color: var(--color-status-success, var(--chart-2)); }
@@ -479,9 +471,7 @@ input[data-slot='input']:focus-visible,
   font-size: inherit;
   line-height: inherit;
   text-wrap: initial;
-  box-shadow:
-    0 2px 5px 1px color-mix(in srgb, var(--foreground) 3%, transparent),
-    0 2px 3px -2px color-mix(in srgb, var(--foreground) 15%, transparent);
+  box-shadow: var(--ui-shadow-control, var(--shadow-control));
 }
 [data-slot='tooltip-content'] svg { background: var(--muted); fill: var(--muted); }
 
@@ -505,9 +495,7 @@ input[data-slot='input']:focus-visible,
   padding: 40px;
   border: 0;
   border-radius: 0;
-  box-shadow: var(--ui-shadow-dialog,
-    0 4px 5px -2px color-mix(in srgb, var(--foreground) 5%, transparent),
-    0 6px 25px 2px color-mix(in srgb, var(--foreground) 6%, transparent));
+  box-shadow: var(--ui-shadow-dialog, var(--shadow-dialog));
 }
 [data-slot='dialog-header'] { display: block; text-align: inherit; }
 [data-slot='dialog-title'] { font-size: 24px; line-height: 36px; font-weight: 900; }
@@ -592,17 +580,13 @@ input[data-slot='input']:focus-visible,
 [data-slot='tabs-trigger']:not([data-variant='line'])[data-state='active'] {
   background: var(--background);
   color: var(--foreground);
-  box-shadow:
-    0 2px 5px 1px color-mix(in srgb, var(--foreground) 3%, transparent),
-    0 2px 3px -2px color-mix(in srgb, var(--foreground) 15%, transparent);
+  box-shadow: var(--ui-shadow-control, var(--shadow-control));
 }
 @media (width > 768px) {
   [data-slot='tabs-trigger']:not([data-variant='line']):hover {
     background: var(--background);
     color: var(--foreground);
-    box-shadow:
-      0 2px 5px 1px color-mix(in srgb, var(--foreground) 3%, transparent),
-      0 2px 3px -2px color-mix(in srgb, var(--foreground) 15%, transparent);
+    box-shadow: var(--ui-shadow-control, var(--shadow-control));
   }
 }
 
@@ -615,9 +599,7 @@ input[data-slot='input']:focus-visible,
 [data-slot='button'][data-variant='secondary'],
 [data-slot='button'][data-variant='destructive'] {
   border: 1px solid transparent;
-  box-shadow: var(--ui-shadow-control,
-    0 2px 5px 1px color-mix(in srgb, var(--foreground) 3%, transparent),
-    0 2px 3px -2px color-mix(in srgb, var(--foreground) 15%, transparent));
+  box-shadow: var(--ui-shadow-control, var(--shadow-control));
 }
 [data-slot='button'][data-variant='default']:hover,
 [data-slot='button'][data-variant='secondary']:hover,
