@@ -4,14 +4,18 @@ This repository is the independent source workspace for the seven investment
 framework packages under the `@global-torque` namespace. The workspace root
 is private; each package is an independently reviewed MIT package candidate.
 
-The current candidate is `0.4.2` for all seven packages. It is source based:
+The current candidate is `0.4.3` for all seven packages. It is source based:
 published files contain the explicit `src` exports and the host application
 provides the Vue/Vite toolchain and singleton peers. The candidate is local and
 non-promotable until the primary maintainer completes the accepted release
 gates. Dispatch the candidate workflow from the matching
-`framework-v0.4.2` tag when producing attestations. The previously reviewed
+`framework-v0.4.3` tag when producing attestations. The previously reviewed
 `framework-v0.2.2` source tag, commit, and immutable artifacts remain
 retained as history; no canonical `0.2.0` package artifacts were produced.
+The immutable `framework-v0.4.2` candidate was superseded before publication by
+the accepted CSS-contract recovery. Its tag and successful candidate evidence
+remain retained for audit; it has no GitHub release or npm publication and the
+tag is never moved, deleted, or reused.
 
 Development and package consumption require Node `^24.21.0`; `.node-version`
 and CI pin 24.21.0. Bootstrap pnpm with `corepack enable` and
@@ -31,6 +35,8 @@ rebuilds or repacks source.
 This release reissues the breaking stablecoin redemption contract and completes
 the `invest-shell` token fallback/shadow compatibility contract. The final
 `price_update` removal remains part of the retained redemption contract. It
+also restores the foreground-derived generic shadow contract, the fixed
+component-local neutral fallback, and footer/login public-hook defaults. It
 also reissues
 the 0.3.0 cohort with selectively sanitized analytics and request diagnostics,
 stable demo-account configuration capture, and local Vite exclusions for the

@@ -1,6 +1,13 @@
 # Changelog
 
-## 0.4.2 candidate
+## 0.4.3 candidate
+
+- Corrected generic control, dialog, and raised shadows to derive from the
+  foreground while preserving the fixed neutral fallback for header and offer
+  details surfaces.
+- Restored footer and login accent/text defaults through public UI hooks.
+
+## 0.4.2 abandoned candidate
 
 - Reissued the seven-package cohort with the final `price_update` removal
   retained and no transitional pricing-field compatibility.
@@ -9,6 +16,11 @@
   override precedence.
 - Isolated the Chromium CSS contract from the Node-only package test and bound
   its retained report to the candidate receipt.
+- Immutable tag `framework-v0.4.2` points to tag object
+  `78eabe922bfe704eb60848722f27496917d94b64` and peeled commit
+  `775532c37599f34f6ef3c929d7d033605dafb309`; candidate run `35540413330`
+  succeeded, but the candidate was superseded before publication. No GitHub
+  release or npm package exists and the tag is never moved, deleted, or reused.
 
 ## 0.4.1 abandoned candidate
 

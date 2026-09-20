@@ -37,9 +37,12 @@ restored before the candidate is packed, so packed manifests and receipts
 retain the public registry dependency. Omitting the transport release uses the
 frozen public lockfile and requires the UI Kit release to be available.
 
-Candidate 0.4.2 reissues the seven-package cohort with the final
+Candidate 0.4.3 reissues the seven-package cohort with the final
 `price_update` removal retained and the Invest Shell design-token fallback and
-shadow compatibility contract. The retained 0.4.0 candidate remains the source
+shadow compatibility contract. It corrects generic shadows to remain
+foreground-derived while preserving the fixed neutral fallback only for the
+header and offer-details surfaces, and restores footer/login public-hook
+defaults. The retained 0.4.0 candidate remains the source
 and rollback reference.
 Local verification does not authorize publication; the external Alchemy
 TypeScript peer declaration remains a documented owner handoff item in
@@ -50,9 +53,14 @@ points to tag object `afb71838354e0208681fe5c8a38970564bf262d4`, peeled commit
 `044a019d4ada61a1dba7245d0fedb288973c0b88`, and failed runs `35539361132` and
 `35539386904` because Chromium was not installed before the browser contract.
 No GitHub release or npm `0.4.1` package exists; never move, delete, or reuse
-that tag. The new ordinary immutable release tag is `framework-v0.4.2` for the
-`0.4.2` candidate. Dispatch the candidate workflow from that tag so its
-attestations carry `refs/tags/framework-v0.4.2`. The prior `framework-v0.2.2`
+that tag. The immutable `framework-v0.4.2` candidate is also abandoned. It
+points to tag object `78eabe922bfe704eb60848722f27496917d94b64`, peeled commit
+`775532c37599f34f6ef3c929d7d033605dafb309`, and successful candidate run
+`35540413330`, but was superseded before publication by the accepted CSS
+recovery. No GitHub release or npm `0.4.2` package exists; never move, delete,
+or reuse that tag. The new ordinary immutable release tag is
+`framework-v0.4.3` for the `0.4.3` candidate. Dispatch the candidate workflow
+from that tag so its attestations carry `refs/tags/framework-v0.4.3`. The prior `framework-v0.2.2`
 source tag, commit, and immutable artifact history remain retained for audit;
 its package bytes and provenance are not replaced. The earlier
 `framework-v0.2.0` run failed before installation, build, or packing; no

@@ -1,6 +1,13 @@
 # Changelog
 
-## 0.4.2 candidate
+## 0.4.3 candidate
+
+- Corrected generic shadows to derive from the host foreground while keeping
+  fixed neutral component-local fallbacks for header and offer details.
+- Restored footer and login public-hook defaults and kept the browser contract
+  separate from the Node-only package test.
+
+## 0.4.2 abandoned candidate
 
 - Reissued the cohort with the final `price_update` removal retained.
 - Added authenticated primitive fallbacks and neutral-950 control/dialog/

@@ -1,6 +1,11 @@
 # Changelog
 
-## 0.4.2 candidate
+## 0.4.3 candidate
+
+- Reissued the seven-package cohort after the accepted Invest Shell CSS
+  contract recovery; feature contracts are unchanged.
+
+## 0.4.2 abandoned candidate
 
 - Reissued the cohort with the final `price_update` removal retained.
 
