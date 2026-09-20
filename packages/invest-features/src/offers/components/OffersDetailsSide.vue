@@ -248,7 +248,11 @@ const handleContactUsClick = () => {
     border-radius: 2px;
     border: 1px solid var(--border);
     background: var(--background);
-    box-shadow: var(--shadow-control);
+    box-shadow: var(
+      --ui-shadow-control,
+      0 2px 5px 1px color-mix(in srgb, #12161f 3%, transparent),
+      0 2px 3px -2px color-mix(in srgb, #12161f 15%, transparent)
+    );
     margin-bottom: 20px;
   }
 

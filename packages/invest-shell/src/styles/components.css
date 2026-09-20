@@ -378,7 +378,7 @@ input[data-slot='input']:focus-visible,
   background: var(--ui-color-surface, var(--background));
   border-color: var(--primary);
   color: var(--primary);
-  box-shadow: var(--ui-shadow-control, var(--shadow-control));
+  box-shadow: var(--ui-shadow-control, none);
 }
 [data-slot='button'][data-variant='outline']:hover {
   background: var(--primary);
@@ -391,7 +391,7 @@ input[data-slot='input']:focus-visible,
   background: var(--accent);
   color: var(--ui-color-accent, var(--accent-foreground));
   border-color: var(--ui-color-subtle, transparent);
-  box-shadow: var(--ui-shadow-control, var(--shadow-control));
+  box-shadow: var(--ui-shadow-control, none);
 }
 [data-slot='button'][data-variant='ghost']:not([data-size^='icon']):hover {
   background: var(--primary);

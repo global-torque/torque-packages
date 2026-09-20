@@ -50,18 +50,17 @@
   --color-text-quote: var(--gt-primitive-color-charcoal-500, #333333);
   --color-overlay-page: color-mix(in srgb, var(--gt-primitive-color-charcoal-500, #333333) 20%, transparent);
 
-  /* Elevations. The surface lifts on the authenticated neutral-950 ink. The
-     semantic roles stay host-overridable through --shadow-* and components
-     give --ui-shadow-* the highest precedence. */
+  /* Elevations follow the host foreground. Components expose the public
+     --ui-shadow-* hooks as the highest-precedence override. */
   --shadow-control:
-    0 2px 5px 1px color-mix(in srgb, var(--gt-primitive-color-neutral-950, #12161f) 3%, transparent),
-    0 2px 3px -2px color-mix(in srgb, var(--gt-primitive-color-neutral-950, #12161f) 15%, transparent);
+    0 2px 5px 1px color-mix(in srgb, var(--foreground) 3%, transparent),
+    0 2px 3px -2px color-mix(in srgb, var(--foreground) 15%, transparent);
   --shadow-dialog:
-    0 4px 5px -2px color-mix(in srgb, var(--gt-primitive-color-neutral-950, #12161f) 5%, transparent),
-    0 6px 25px 2px color-mix(in srgb, var(--gt-primitive-color-neutral-950, #12161f) 6%, transparent);
+    0 4px 5px -2px color-mix(in srgb, var(--foreground) 5%, transparent),
+    0 6px 25px 2px color-mix(in srgb, var(--foreground) 6%, transparent);
   --shadow-raised:
-    0 6px 7px -4px color-mix(in srgb, var(--gt-primitive-color-neutral-950, #12161f) 5%, transparent),
-    0 10px 32px 4px color-mix(in srgb, var(--gt-primitive-color-neutral-950, #12161f) 10%, transparent);
+    0 6px 7px -4px color-mix(in srgb, var(--foreground) 5%, transparent),
+    0 10px 32px 4px color-mix(in srgb, var(--foreground) 10%, transparent);
   --shadow-sheet: var(--gt-primitive-shadow-sheet, 0px 25px 50px -12px rgb(0 0 0 / 0.25));
   --shadow-badge: var(--gt-primitive-shadow-badge, 0px 2px 4px 0px rgb(0 0 0 / 0.15));
   --color-skeleton-base: var(--gt-primitive-color-azure-tint-200, rgb(207 219 255 / 0.34));

@@ -11,9 +11,12 @@ const packageDirectory = path.resolve(
 const geometry = await fs.readFile(path.join(packageDirectory, "src/styles/geometry.css"), "utf8");
 const components = await fs.readFile(path.join(packageDirectory, "src/styles/components.css"), "utf8");
 const shadowValues = {
-  control: "0 2px 5px 1px rgb(18 22 31 / 3%), 0 2px 3px -2px rgb(18 22 31 / 15%)",
-  dialog: "0 4px 5px -2px rgb(18 22 31 / 5%), 0 6px 25px 2px rgb(18 22 31 / 6%)",
-  raised: "0 6px 7px -4px rgb(18 22 31 / 5%), 0 10px 32px 4px rgb(18 22 31 / 10%)",
+  redControl: "0 2px 5px 1px rgb(255 0 0 / 3%), 0 2px 3px -2px rgb(255 0 0 / 15%)",
+  greenControl: "0 2px 5px 1px rgb(0 255 0 / 3%), 0 2px 3px -2px rgb(0 255 0 / 15%)",
+  redDialog: "0 4px 5px -2px rgb(255 0 0 / 5%), 0 6px 25px 2px rgb(255 0 0 / 6%)",
+  greenDialog: "0 4px 5px -2px rgb(0 255 0 / 5%), 0 6px 25px 2px rgb(0 255 0 / 6%)",
+  redRaised: "0 6px 7px -4px rgb(255 0 0 / 5%), 0 10px 32px 4px rgb(255 0 0 / 10%)",
+  greenRaised: "0 6px 7px -4px rgb(0 255 0 / 5%), 0 10px 32px 4px rgb(0 255 0 / 10%)",
 };
 
 function splitShadowList(value) {
@@ -57,14 +60,15 @@ function normalizeShadow(value) {
 
 const tokens = `
   :root {
-    --gt-primitive-color-neutral-950: #12161f;
     --gt-primitive-shadow-sheet: 0px 25px 50px -12px rgb(0 0 0 / 0.25);
     --gt-primitive-shadow-badge: 0px 2px 4px 0px rgb(0 0 0 / 0.15);
     --foreground: #ff0000;
   }
 `;
 const probes = `
-  <button id="control" data-slot="button" data-variant="default">Control</button>
+  <button id="control" data-slot="button" data-variant="secondary">Control</button>
+  <button id="outline" data-slot="button" data-variant="outline">Outline</button>
+  <button id="ghost" data-slot="button" data-variant="ghost">Ghost</button>
   <div id="dialog" data-slot="dialog-content">Dialog</div>
   <div id="raised" class="raised">Raised</div>
   <div id="sheet" class="sheet-shadow">Sheet</div>
@@ -98,9 +102,11 @@ try {
   await page.setContent(`<style>${tokens}</style><style>${geometry}</style><style>${components}</style><style>${probeStyle}</style>${probes}`);
   const computed = async (id, property) => page.locator(`#${id}`).evaluate((element, name) => getComputedStyle(element).getPropertyValue(name).trim(), property);
   const checks = [
-    ["control-shadow", normalizeShadow(await computed("control", "box-shadow")), shadowValues.control],
-    ["dialog-shadow", normalizeShadow(await computed("dialog", "box-shadow")), shadowValues.dialog],
-    ["raised-shadow", normalizeShadow(await computed("raised", "box-shadow")), shadowValues.raised],
+    ["control-shadow", normalizeShadow(await computed("control", "box-shadow")), shadowValues.redControl],
+    ["outline-default", await computed("outline", "box-shadow"), "none"],
+    ["ghost-default", await computed("ghost", "box-shadow"), "none"],
+    ["dialog-shadow", normalizeShadow(await computed("dialog", "box-shadow")), shadowValues.redDialog],
+    ["raised-shadow", normalizeShadow(await computed("raised", "box-shadow")), shadowValues.redRaised],
     ["semantic-shadow-override", normalizeShadow(await computed("semantic", "box-shadow")), "0 0 0 0 rgb(1 2 3)"],
     ["ui-shadow-override", normalizeShadow(await computed("ui", "box-shadow")), "0 0 0 0 rgb(4 5 6)"],
     ["literal-colour-fallback", await computed("text", "color"), "rgb(52, 58, 64)"],
@@ -108,6 +114,16 @@ try {
     ["badge-shadow", normalizeShadow(await computed("badge", "box-shadow")), "0 2px 4px 0 rgba(0, 0, 0, 0.15)"],
   ];
   for (const [name, actual, expected] of checks) {
+    assert.equal(actual, expected, `${name} computed value mismatch`);
+    report.checks.push({ name, result: "pass", value: actual });
+  }
+  await page.evaluate(() => document.documentElement.style.setProperty("--foreground", "#00ff00"));
+  for (const [name, id, expected] of [
+    ["control-shadow-host-foreground", "control", shadowValues.greenControl],
+    ["dialog-shadow-host-foreground", "dialog", shadowValues.greenDialog],
+    ["raised-shadow-host-foreground", "raised", shadowValues.greenRaised],
+  ]) {
+    const actual = normalizeShadow(await computed(id, "box-shadow"));
     assert.equal(actual, expected, `${name} computed value mismatch`);
     report.checks.push({ name, result: "pass", value: actual });
   }

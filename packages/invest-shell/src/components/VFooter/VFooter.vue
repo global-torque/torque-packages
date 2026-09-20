@@ -152,9 +152,9 @@ const contactList = computed(() => ([props.contact]));
 .v-footer {
   $root: &;
 
-  background-color: var(--ui-color-surface-inverse, var(--foreground));
+  background-color: var(--ui-color-surface-inverse, #12161f);
   padding: 48px 0;
-  color: var(--ui-color-text-inverse, var(--background));
+  color: var(--ui-color-text-inverse, #fff);
 
   @include media-lte(desktop-lg) {
     padding-bottom: 5px;
@@ -222,7 +222,7 @@ const contactList = computed(() => ([props.contact]));
 
     a {
       display: block;
-      color: var(--ui-color-text-inverse, var(--background));
+      color: var(--ui-color-text-inverse, #fff);
 
       &:hover {
         text-decoration: underline;
@@ -248,7 +248,7 @@ const contactList = computed(() => ([props.contact]));
 }
 
 .footer-bottom {
-  background-color: var(--ui-color-surface-inverse, var(--foreground));
+  background-color: var(--ui-color-surface-inverse, #12161f);
   padding: 10px 0 16px;
 
   @include media-lte(tablet) {
@@ -256,7 +256,7 @@ const contactList = computed(() => ([props.contact]));
   }
 
   p {
-    color: var(--color-text-disabled);
+    color: var(--ui-color-text-inverse, #fff);
   }
 }
 

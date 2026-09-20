@@ -73,9 +73,13 @@ the geometry remains usable when a host has not loaded the token stylesheet:
 @import '@global-torque/invest-shell/styles';
 ```
 
-The control, dialog and raised semantic shadows use neutral-950 (`#12161f`)
-with the public `--ui-shadow-*` hooks taking precedence over `--shadow-*`.
-Sheet and badge elevations remain independent primitive-backed roles.
+The control, dialog and raised semantic shadows derive from the host
+`--foreground`, with the public `--ui-shadow-*` hooks taking precedence over
+`--shadow-*`. Outline and non-icon ghost buttons default to no shadow, while
+filled controls retain the foreground-derived control shadow. The header bar
+and offer-details side card retain their historical neutral-950 (`#12161f`)
+local fallback through the same public control-shadow hook. Sheet and badge
+elevations remain independent primitive-backed roles.
 
 ## Validation
 

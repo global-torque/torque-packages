@@ -101,24 +101,24 @@ const getComponentClass = (item: MenuItem) => {
   }
 
   &__item-not-link {
-    color: var(--muted-foreground);
+    color: var(--ui-color-text-inverse, #fff);
     text-transform: uppercase;
   }
 
   // The footer uses its inverse active role; retain the default brand's
   // primary value when the release does not supply that role.
   &__item.is--active {
-    color: var(--ui-color-accent-inverse, var(--primary)) !important;
+    color: var(--ui-color-accent-inverse, #004fff) !important;
   }
 
   &__item {
     white-space: nowrap;
-    color: var(--ui-color-text-inverse, var(--background));
+    color: var(--ui-color-text-inverse, #fff);
     text-decoration: none;
 
     &:hover,
     &.is--active {
-      color: var(--ui-color-accent-inverse, var(--ui-color-accent, var(--primary)));
+      color: var(--ui-color-accent-inverse, #004fff);
     }
   }
 
