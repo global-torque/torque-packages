@@ -1,7 +1,8 @@
 # Source and release reconciliation
 
-The `0.4.5` candidate reissues the seven-package cohort with the completed
-`invest-shell` inverse-footer token fallback and shadow contract. The breaking stablecoin
+The `0.4.6` candidate reissues the seven-package cohort with the completed
+`invest-shell` token-absent geometry recovery, inverse-footer token fallback,
+and shadow contract. The breaking stablecoin
 redemption contract, including the final `price_update` removal, remains
 unchanged from the retained `0.4.0` source. It also retains the
 the dependency-migrated framework cohort with selective analytics/request
@@ -94,4 +95,10 @@ release or npm package exists. The tag is never moved, deleted, or reused.
 Candidate `0.4.4` was superseded before publication after its visual gate
 exposed a token-cohort footer difference. Its immutable tag and successful
 candidate evidence remain retained; no GitHub release or npm package exists.
-Candidate `0.4.5` is the new immutable release identity.
+Candidate `0.4.5` is also abandoned after its required 0.4.0 plus
+design-tokens 0.2.1 visual parity gate exposed framework geometry fallback
+differences. Its immutable tag points to tag object
+`ccb001fca49fe95b08899417137775fb9fdbf005`, peeled commit
+`cf8002b4ec4316914c952821bd4003fd5ce8ec5e`, and successful candidate run
+`35552606823`; no GitHub release or npm package exists. The tag is never moved,
+deleted, or reused. Candidate `0.4.6` is the new immutable release identity.

@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.4.6 candidate
+
+- Restored framework 0.4.0 plus design-tokens 0.2.1 geometry with reviewed
+  CSS-wide `unset` primitive terminals and transparent page-overlay fallback.
+- Extended static and Chromium coverage for geometry consumers and all three
+  token compatibility modes.
+
+## 0.4.5 abandoned candidate
+
+- Superseded before publication by the 0.4.6 geometry recovery.
+
 ## 0.4.5 candidate
 
 - Kept the public footer UI-role overrides while restoring the inverse-footer

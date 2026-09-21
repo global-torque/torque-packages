@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.4.6 candidate
+
+- Restored the framework 0.4.0 plus design-tokens 0.2.1 computed geometry by
+  replacing direct primitive palette literals with reviewed CSS-wide `unset`
+  terminals and a transparent page-overlay terminal.
+- Expanded static and Chromium characterization for legal/resource text,
+  borders, overlays, header/offer shadows, desktop/PWA footer roles, and the
+  absent, authenticated 0.2.1, and authenticated 0.3.0 token modes.
+
+## 0.4.5 abandoned candidate
+
+- Immutable tag `framework-v0.4.5` points to tag object
+  `ccb001fca49fe95b08899417137775fb9fdbf005` and peeled commit
+  `cf8002b4ec4316914c952821bd4003fd5ce8ec5e`; candidate run `35552606823`
+  succeeded, but the candidate was superseded before publication after visual
+  parity exposed framework geometry fallback differences. No GitHub release or
+  npm package exists and the tag is never moved, deleted, or reused.
+
 ## 0.4.5 candidate
 
 - Restored the inverse-footer disabled-text fallback used by the 0.4.0

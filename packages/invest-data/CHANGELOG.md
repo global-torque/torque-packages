@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.4.6 candidate
+
+- Reissued the seven-package cohort with the Invest Shell geometry recovery and
+  complete token compatibility characterization.
+
+## 0.4.5 abandoned candidate
+
+- Superseded before publication by the 0.4.6 geometry recovery.
+
 ## 0.4.5 candidate
 
 - Reissued the seven-package cohort with the inverse-footer compatibility fix;
