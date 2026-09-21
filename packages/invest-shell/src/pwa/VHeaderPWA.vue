@@ -522,7 +522,7 @@ const headerComponent = computed(() => (
     border: none;
     background: transparent;
     padding: 4px 8px;
-    color: var(--ui-color-accent, #004fff);
+    color: var(--ui-color-accent, var(--primary));
     font-size: 14px;
     font-weight: 600;
     line-height: 20px;

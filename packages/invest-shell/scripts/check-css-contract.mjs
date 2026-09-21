@@ -156,7 +156,18 @@ assert.doesNotMatch(
 );
 assert.match(
   await fs.readFile(path.join(packageDirectory, "src/pwa/assets/pwa-login-arrow.svg"), "utf8"),
-  /var\(--ui-color-accent, #004fff\)/u,
-  "login chevron must use the terminal accent fallback",
+  /var\(--ui-color-accent, var\(--primary\)\)/u,
+  "login chevron must preserve the public accent override and host primary fallback",
+);
+const pwaHeader = await fs.readFile(path.join(packageDirectory, "src/pwa/VHeaderPWA.vue"), "utf8");
+assert.match(
+  pwaHeader,
+  /&__pwa-login:not\(\[data-slot\]\)[^}]*color:\s*var\(--ui-color-accent, var\(--primary\)\);/u,
+  "PWA login text must preserve the public accent override and host primary fallback",
+);
+assert.doesNotMatch(
+  pwaHeader,
+  /&__pwa-login:not\(\[data-slot\]\)[^}]*#004fff/u,
+  "PWA login text must not introduce a component-local accent literal",
 );
 console.log("invest-shell-css-contract-pass");
