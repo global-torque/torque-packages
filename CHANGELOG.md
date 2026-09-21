@@ -1,9 +1,25 @@
 # Changelog
 
-## 0.4.11 candidate
+## 0.4.12 candidate
 
-- Reissued the seven-package cohort with independent installed shell/features
-  CSS contract roots and corrected the detached pnpm layout verification.
+- Reissued the seven-package cohort with a side-effect-free shared resolver for
+  independent installed shell/features CSS contract roots. Release contract
+  tests validate the resolver without launching a browser; dedicated browser
+  gates retain the full Chromium checks.
+
+## 0.4.11 abandoned candidate
+
+- Immutable tag `framework-v0.4.11` points to tag object
+  `3394c545ea6ff3d5cd677fb66b9d369ad952f6c6` and peeled commit
+  `8841e200282ed93d9f4a90ee5231a2ff716cb392`; CI run `35574140527` and
+  candidate run `35574298182` failed because `test:release` launched the
+  browser contract before Playwright/dependency installation. The dedicated
+  CSS-browser job itself passed, no hosted candidate artifact was produced,
+  and no GitHub release or npm package exists. The tag is never moved, deleted,
+  or reused. The immutable tagged source ledger also paired
+  `global-torque/dashboard.webdevelop.biz` with the `torque-packages` source
+  revision `82fe93868d28682211ea21867badcdeb85879970`; no artifact or receipt
+  escaped because the candidate failed.
 
 ## 0.4.10 abandoned candidate
 

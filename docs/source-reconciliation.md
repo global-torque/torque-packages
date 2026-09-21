@@ -1,6 +1,6 @@
 # Source and release reconciliation
 
-The `0.4.11` candidate reissues the seven-package cohort with the completed
+The `0.4.12` candidate reissues the seven-package cohort with the completed
 `invest-shell` token-absent geometry recovery, inverse-footer token fallback,
 shadow, PWA login fallback, and semantic header/offer control-shadow contract.
 The breaking stablecoin
@@ -137,5 +137,15 @@ strict-layout path failed with `ENOENT` for an undeclared sibling package. The
 `ffe335f89e9be5101a2ee5bdf428218126890193`, peeled commit
 `7650c04a5173e4fd644146771829ff252bb2eae7`, candidate run `35571502342`, and
 candidate artifact `10626585626`; no GitHub release or npm package exists and
-the tag is never moved, deleted, or reused. Candidate `0.4.11` is the new
-immutable release identity.
+the tag is never moved, deleted, or reused. Candidate `0.4.11` is abandoned
+because CI run `35574140527` and candidate run `35574298182` launched the
+browser contract before Playwright/dependency installation. The dedicated
+CSS-browser job passed, but no hosted candidate artifact was produced. Its tag
+object is `3394c545ea6ff3d5cd677fb66b9d369ad952f6c6`, peeled commit
+`8841e200282ed93d9f4a90ee5231a2ff716cb392`; no GitHub release or npm package
+exists and the tag is never moved, deleted, or reused. Its immutable tagged
+source ledger also paired `global-torque/dashboard.webdevelop.biz` with the
+`torque-packages` source revision
+`82fe93868d28682211ea21867badcdeb85879970`; no artifact or receipt escaped
+because the candidate failed. Candidate `0.4.12` is the new immutable release
+identity.

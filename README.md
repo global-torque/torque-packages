@@ -4,12 +4,12 @@ This repository is the independent source workspace for the seven investment
 framework packages under the `@global-torque` namespace. The workspace root
 is private; each package is an independently reviewed MIT package candidate.
 
-The current candidate is `0.4.11` for all seven packages. It is source based:
+The current candidate is `0.4.12` for all seven packages. It is source based:
 published files contain the explicit `src` exports and the host application
 provides the Vue/Vite toolchain and singleton peers. The candidate is local and
 non-promotable until the primary maintainer completes the accepted release
 gates. Dispatch the candidate workflow from the matching
-`framework-v0.4.11` tag when producing attestations. The previously reviewed
+`framework-v0.4.12` tag when producing attestations. The previously reviewed
 `framework-v0.2.2` source tag, commit, and immutable artifacts remain
 retained as history; no canonical `0.2.0` package artifacts were produced.
 The immutable `framework-v0.4.2` candidate was superseded before publication by
@@ -65,6 +65,18 @@ object is `ffe335f89e9be5101a2ee5bdf428218126890193`, peeled commit
 `7650c04a5173e4fd644146771829ff252bb2eae7`, candidate run `35571502342`, and
 candidate artifact `10626585626`; it has no GitHub release or npm publication
 and the tag is never moved, deleted, or reused.
+The immutable `framework-v0.4.11` candidate was also superseded before
+publication because its hosted CI run `35574140527` and candidate run
+`35574298182` incorrectly launched the browser contract before the Playwright
+browser/dependency installation gate. The dedicated CSS-browser job itself
+passed its browser gate, but no hosted candidate artifact was produced. Its tag
+object is `3394c545ea6ff3d5cd677fb66b9d369ad952f6c6`, peeled commit
+`8841e200282ed93d9f4a90ee5231a2ff716cb392`; it has no GitHub release or npm
+publication and the tag is never moved, deleted, or reused. The immutable
+tagged source ledger also paired `global-torque/dashboard.webdevelop.biz` with
+the `torque-packages` source revision
+`82fe93868d28682211ea21867badcdeb85879970`; no artifact or receipt escaped
+because the candidate failed.
 
 Development and package consumption require Node `^24.21.0`; `.node-version`
 and CI pin 24.21.0. Bootstrap pnpm with `corepack enable` and

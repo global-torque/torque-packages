@@ -40,7 +40,7 @@ restored before the candidate is packed, so packed manifests and receipts
 retain the public registry dependency. Omitting the transport release uses the
 frozen public lockfile and requires the UI Kit release to be available.
 
-Candidate 0.4.11 reissues the seven-package cohort with the final
+Candidate 0.4.12 reissues the seven-package cohort with the final
 `price_update` removal retained and the Invest Shell inverse-footer fallback
 and shadow compatibility contract. It restores the 0.4.0 plus design-tokens
 0.2.1 geometry by using reviewed CSS-wide `unset` terminals for direct
@@ -123,8 +123,19 @@ sibling package. The 0.2.1 and 0.3.0 paths did not run. It points to tag object
 `7650c04a5173e4fd644146771829ff252bb2eae7`, candidate run `35571502342`, and
 candidate artifact `10626585626`; no GitHub release or npm package exists and
 the tag is never moved, deleted, or reused. The new ordinary immutable release tag is
-`framework-v0.4.11` for the `0.4.11` candidate. Dispatch the candidate workflow
-from that tag so its attestations carry `refs/tags/framework-v0.4.11`. The prior
+The immutable `framework-v0.4.11` candidate is also abandoned because CI run
+`35574140527` and candidate run `35574298182` launched the browser contract
+before Playwright/dependency installation. The dedicated CSS-browser job passed,
+but no hosted candidate artifact was produced. Its tag object is
+`3394c545ea6ff3d5cd677fb66b9d369ad952f6c6`, peeled commit
+`8841e200282ed93d9f4a90ee5231a2ff716cb392`; no GitHub release or npm package
+exists and the tag is never moved, deleted, or reused. Its immutable tagged
+source ledger also paired `global-torque/dashboard.webdevelop.biz` with the
+`torque-packages` source revision
+`82fe93868d28682211ea21867badcdeb85879970`; no artifact or receipt escaped
+because the candidate failed. The new ordinary immutable
+release tag is `framework-v0.4.12` for the `0.4.12` candidate. Dispatch the candidate workflow
+from that tag so its attestations carry `refs/tags/framework-v0.4.12`. The prior
 `framework-v0.2.2`
 source tag, commit, and immutable artifact history remain retained for audit;
 its package bytes and provenance are not replaced. The earlier

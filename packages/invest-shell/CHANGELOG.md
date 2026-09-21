@@ -1,9 +1,18 @@
 # Changelog
 
-## 0.4.11 candidate
+## 0.4.12 candidate
 
-- Reissued the verified installed shell/features CSS contract roots and
-  corrected the detached pnpm layout verification.
+- Reissued the verified installed shell/features CSS contract roots through a
+  side-effect-free shared resolver; release contract tests do not launch a
+  browser.
+
+## 0.4.11 abandoned candidate
+
+- CI run `35574140527` and candidate run `35574298182` launched the browser
+  contract before Playwright/dependency installation; no hosted candidate
+  artifact, GitHub release, or npm package exists. The immutable tagged source
+  ledger paired dashboard.webdevelop.biz with torque-packages sourceRevision
+  `82fe93868d28682211ea21867badcdeb85879970`; no artifact or receipt escaped.
 
 ## 0.4.10 abandoned candidate
 
