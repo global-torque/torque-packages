@@ -4,12 +4,12 @@ This repository is the independent source workspace for the seven investment
 framework packages under the `@global-torque` namespace. The workspace root
 is private; each package is an independently reviewed MIT package candidate.
 
-The current candidate is `0.4.9` for all seven packages. It is source based:
+The current candidate is `0.4.10` for all seven packages. It is source based:
 published files contain the explicit `src` exports and the host application
 provides the Vue/Vite toolchain and singleton peers. The candidate is local and
 non-promotable until the primary maintainer completes the accepted release
 gates. Dispatch the candidate workflow from the matching
-`framework-v0.4.9` tag when producing attestations. The previously reviewed
+`framework-v0.4.10` tag when producing attestations. The previously reviewed
 `framework-v0.2.2` source tag, commit, and immutable artifacts remain
 retained as history; no canonical `0.2.0` package artifacts were produced.
 The immutable `framework-v0.4.2` candidate was superseded before publication by
@@ -41,12 +41,22 @@ exposed invisible footer disclosure and copyright text. Its tag and successful
 candidate evidence remain retained for audit; it has no GitHub release or npm
 publication and the tag is never moved, deleted, or reused.
 The immutable `framework-v0.4.8` candidate was also superseded before
-publication after authenticated visual parity found two differing pixels and
-four channel-level deltas in the header/offer shadow contract. Its tag object
-is `a0822cde56b6f266687e5c2bfe820b5668963851`, peeled commit
+publication after the required public Investor mobile offer parity gate on
+`/tahoe-e2e-fund-766pk7` found 2 differing pixels / 4 channel-level deltas in
+the offer-card shadow; source review found the same fallback defect in
+`VHeaderBar`. Its tag object is
+`a0822cde56b6f266687e5c2bfe820b5668963851`, peeled commit
 `e18d59ced772fe868703e452df30b07c6887e4c9`, and candidate run
 `35565129065`; it has no GitHub release or npm publication and the tag is
 never moved, deleted, or reused.
+The immutable `framework-v0.4.9` candidate was also superseded before
+publication because its immutable release ledger misstated public evidence as
+authenticated and conflated the observed offer-card difference with the
+inferred `VHeaderBar` sibling. Its tag object is
+`f27b758babff4d270c46bbd7d22cf7f9a4626792`, peeled commit
+`46d035c8d8eb604fd14007e121e192aee60c8e9a`, candidate run `35570182365`,
+and candidate artifact `10625980830`; it has no GitHub release or npm
+publication and the tag is never moved, deleted, or reused.
 
 Development and package consumption require Node `^24.21.0`; `.node-version`
 and CI pin 24.21.0. Bootstrap pnpm with `corepack enable` and

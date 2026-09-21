@@ -1,6 +1,6 @@
 # Source and release reconciliation
 
-The `0.4.9` candidate reissues the seven-package cohort with the completed
+The `0.4.10` candidate reissues the seven-package cohort with the completed
 `invest-shell` token-absent geometry recovery, inverse-footer token fallback,
 shadow, PWA login fallback, and semantic header/offer control-shadow contract.
 The breaking stablecoin
@@ -115,12 +115,20 @@ immutable tag points to tag object
 `5741d64dc590a631ab7f54da1a4b19e7c91f0123`, peeled commit
 `b60c4ec7ef46ee29d83d201fc381977c30279e1c`, and successful candidate run
 `35562211887`; no GitHub release or npm package exists and the tag is never
-moved, deleted, or reused. Candidate `0.4.8` is abandoned after its
-authenticated visual parity gate found two differing pixels and four
-channel-level deltas in the header/offer shadow contract. Its immutable tag
+moved, deleted, or reused. Candidate `0.4.8` is abandoned after the required
+public Investor mobile offer parity gate on `/tahoe-e2e-fund-766pk7` found 2
+differing pixels / 4 channel-level deltas in the offer-card shadow; source
+review found the same fallback defect in `VHeaderBar`. Its immutable tag
 points to tag object
 `a0822cde56b6f266687e5c2bfe820b5668963851`, peeled commit
 `e18d59ced772fe868703e452df30b07c6887e4c9`, and candidate run
 `35565129065`; no GitHub release or npm package exists and the tag is never
-moved, deleted, or reused. Candidate `0.4.9` is the new immutable release
-identity.
+moved, deleted, or reused. Candidate `0.4.9` is abandoned because its
+immutable release ledger misstated public evidence as authenticated and
+conflated the observed offer-card difference with the inferred `VHeaderBar`
+sibling. Its tag object is
+`f27b758babff4d270c46bbd7d22cf7f9a4626792`, peeled commit
+`46d035c8d8eb604fd14007e121e192aee60c8e9a`, candidate run `35570182365`, and
+candidate artifact `10625980830`; no GitHub release or npm package exists and
+the tag is never moved, deleted, or reused. Candidate `0.4.10` is the new
+immutable release identity.

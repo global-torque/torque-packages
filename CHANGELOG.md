@@ -1,20 +1,30 @@
 # Changelog
 
-## 0.4.9 candidate
+## 0.4.10 candidate
 
-- Reissued the seven-package cohort after authenticated visual parity exposed
-  two remaining hard-coded header and offer-card shadow fallbacks. These
-  surfaces now use the semantic control-shadow hook, preserving host
-  foreground recomputation and public UI override precedence.
+- Reissued the seven-package cohort with the verified semantic control-shadow
+  fix and corrected the immutable candidate ledger.
+
+## 0.4.9 abandoned candidate
+
+- Immutable tag `framework-v0.4.9` points to tag object
+  `f27b758babff4d270c46bbd7d22cf7f9a4626792` and peeled commit
+  `46d035c8d8eb604fd14007e121e192aee60c8e9a`; candidate run `35570182365`
+  and artifact `10625980830` succeeded, but the immutable release ledger
+  misstated public evidence as authenticated and conflated the observed
+  offer-card difference with the inferred `VHeaderBar` sibling. No GitHub
+  release or npm package exists and the tag is never moved, deleted, or reused.
 
 ## 0.4.8 abandoned candidate
 
 - Immutable tag `framework-v0.4.8` points to tag object
   `a0822cde56b6f266687e5c2bfe820b5668963851` and peeled commit
   `e18d59ced772fe868703e452df30b07c6887e4c9`; candidate run `35565129065`
-  succeeded, but authenticated visual parity found two differing pixels and
-  four channel-level deltas in the header/offer shadow contract. No GitHub
-  release or npm package exists; the tag is never moved, deleted, or reused.
+  succeeded, but the required public Investor mobile offer parity gate on
+  `/tahoe-e2e-fund-766pk7` found 2 differing pixels / 4 channel-level deltas
+  in the offer-card shadow; source review found the same fallback defect in
+  `VHeaderBar`. No GitHub release or npm package exists; the tag is never
+  moved, deleted, or reused.
 
 ## 0.4.8 candidate
 

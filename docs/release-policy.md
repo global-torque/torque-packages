@@ -40,7 +40,7 @@ restored before the candidate is packed, so packed manifests and receipts
 retain the public registry dependency. Omitting the transport release uses the
 frozen public lockfile and requires the UI Kit release to be available.
 
-Candidate 0.4.9 reissues the seven-package cohort with the final
+Candidate 0.4.10 reissues the seven-package cohort with the final
 `price_update` removal retained and the Invest Shell inverse-footer fallback
 and shadow compatibility contract. It restores the 0.4.0 plus design-tokens
 0.2.1 geometry by using reviewed CSS-wide `unset` terminals for direct
@@ -101,14 +101,23 @@ invisible footer disclosure and copyright text. It points to tag object
 `b60c4ec7ef46ee29d83d201fc381977c30279e1c`, and successful candidate run
 `35562211887`. No GitHub release or npm package exists and the tag is never
 moved, deleted, or reused. The immutable `framework-v0.4.8` candidate is also
-abandoned after authenticated visual parity found two differing pixels and
-four channel-level deltas in the header/offer shadow contract. It points to
+abandoned after the required public Investor mobile offer parity gate on
+`/tahoe-e2e-fund-766pk7` found 2 differing pixels / 4 channel-level deltas in
+the offer-card shadow; source review found the same fallback defect in
+`VHeaderBar`. It points to
 tag object `a0822cde56b6f266687e5c2bfe820b5668963851`, peeled commit
 `e18d59ced772fe868703e452df30b07c6887e4c9`, and candidate run `35565129065`;
 no GitHub release or npm package exists and the tag is never moved, deleted, or
-reused. The new ordinary immutable release tag is
-`framework-v0.4.9` for the `0.4.9` candidate. Dispatch the candidate workflow
-from that tag so its attestations carry `refs/tags/framework-v0.4.9`. The prior
+reused. The immutable `framework-v0.4.9` candidate is also abandoned because
+its immutable release ledger misstated public evidence as authenticated and
+conflated the observed offer-card difference with the inferred `VHeaderBar`
+sibling. It points to tag object
+`f27b758babff4d270c46bbd7d22cf7f9a4626792`, peeled commit
+`46d035c8d8eb604fd14007e121e192aee60c8e9a`, candidate run `35570182365`, and
+candidate artifact `10625980830`; no GitHub release or npm package exists and
+the tag is never moved, deleted, or reused. The new ordinary immutable release tag is
+`framework-v0.4.10` for the `0.4.10` candidate. Dispatch the candidate workflow
+from that tag so its attestations carry `refs/tags/framework-v0.4.10`. The prior
 `framework-v0.2.2`
 source tag, commit, and immutable artifact history remain retained for audit;
 its package bytes and provenance are not replaced. The earlier

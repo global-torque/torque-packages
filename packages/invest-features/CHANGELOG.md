@@ -1,15 +1,24 @@
 # Changelog
 
-## 0.4.9 candidate
+## 0.4.10 candidate
 
-- Reissued the seven-package cohort after authenticated visual parity exposed
-  two remaining hard-coded header and offer-card shadow fallbacks.
+- Reissued the seven-package cohort with the verified semantic control-shadow
+  fix and corrected the immutable candidate ledger.
+
+## 0.4.9 abandoned candidate
+
+- Immutable candidate was superseded because the immutable release ledger
+  misstated public evidence as authenticated and conflated the observed
+  offer-card difference with the inferred `VHeaderBar` sibling; no registry
+  package exists.
 
 ## 0.4.8 abandoned candidate
 
-- Immutable candidate was superseded before publication after authenticated
-  visual parity found two differing pixels and four channel-level deltas in
-  the header/offer shadow contract; no registry package exists.
+- Immutable candidate was superseded before publication after the required
+  public Investor mobile offer parity gate on
+  `/tahoe-e2e-fund-766pk7` found 2 differing pixels / 4 channel-level deltas
+  in the offer-card shadow; source review found the same fallback defect in
+  `VHeaderBar`; no registry package exists.
 
 ## 0.4.8 candidate
 
