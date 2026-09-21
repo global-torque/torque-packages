@@ -17,11 +17,13 @@ const footerPaths = [
   "src/components/VFooter/VFooterText.vue",
   "src/pwa/PWAFooterMenu.vue",
 ].map((relativePath) => path.join(packageDirectory, relativePath));
-const footerSource = (await Promise.all(footerPaths.map((footerPath) => fs.readFile(footerPath, "utf8")))).join("\n");
+const footerSources = await Promise.all(footerPaths.map((footerPath) => fs.readFile(footerPath, "utf8")));
+const [vFooterSource, vFooterBottomSource, , vFooterTextSource] = footerSources;
+const footerSource = footerSources.join("\n");
 for (const contract of [
   "var(--ui-color-surface-inverse, var(--foreground))",
   "var(--ui-color-text-inverse, var(--background))",
-  "var(--ui-color-text-disabled, var(--foreground))",
+  "var(--ui-color-text-disabled, var(--color-text-disabled))",
   "var(--muted-foreground)",
   "var(--ui-color-accent-inverse, var(--ui-color-accent, var(--primary)))",
   "var(--ui-color-accent-inverse, var(--primary))",
@@ -30,6 +32,21 @@ for (const contract of [
 ]) {
   assert.ok(footerSource.includes(contract), `footer source contract is missing: ${contract}`);
 }
+assert.match(
+  vFooterSource,
+  /\.footer-bottom\s*\{[\s\S]*?p\s*\{[\s\S]*?color:\s*var\(--color-text-disabled\);/u,
+  "VFooter source must preserve the legacy bottom text token",
+);
+assert.match(
+  vFooterBottomSource,
+  /\.v-footer-bottom[\s\S]*?p\s*\{[\s\S]*?color:\s*var\(--ui-color-text-disabled,\s*var\(--color-text-disabled\)\);/u,
+  "VFooterBottom source must preserve the public role override and legacy host fallback",
+);
+assert.match(
+  vFooterTextSource,
+  /\.v-footer-text\s*\{[\s\S]*?color:\s*var\(--ui-color-text-disabled,\s*var\(--color-text-disabled\)\);/u,
+  "VFooterText source must preserve the public role override and legacy host fallback",
+);
 assert.doesNotMatch(footerSource, /#12161f|#fff|#004fff/u, "footer source must not contain local color literals");
 const shadowValues = {
   redControl: "0 2px 5px 1px rgb(255 0 0 / 3%), 0 2px 3px -2px rgb(255 0 0 / 15%)",
@@ -99,7 +116,7 @@ const footerProbeStyle = `
   }
   #footer-surface { background-color: var(--ui-color-surface-inverse, var(--foreground)); }
   #footer-text { color: var(--ui-color-text-inverse, var(--background)); }
-  #footer-disabled { color: var(--ui-color-text-disabled, var(--foreground)); }
+  #footer-disabled { color: var(--ui-color-text-disabled, var(--color-text-disabled)); }
   #footer-muted { color: var(--muted-foreground); }
   #footer-accent { color: var(--ui-color-accent-inverse, var(--ui-color-accent, var(--primary))); }
   #footer-primary { color: var(--ui-color-accent-inverse, var(--primary)); }
@@ -117,10 +134,38 @@ const footerProbeStyle = `
   }
   #footer-overrides .surface { background-color: var(--ui-color-surface-inverse, var(--foreground)); }
   #footer-overrides .text { color: var(--ui-color-text-inverse, var(--background)); }
-  #footer-overrides .disabled { color: var(--ui-color-text-disabled, var(--foreground)); }
+  #footer-overrides .disabled { color: var(--ui-color-text-disabled, var(--color-text-disabled)); }
   #footer-overrides .accent { color: var(--ui-color-accent-inverse, var(--ui-color-accent, var(--primary))); }
   #footer-overrides .pwa-surface { background-color: var(--ui-color-surface, var(--background)); }
   #footer-overrides .pwa-label { color: var(--ui-color-surface-inverse-muted, var(--color-surface-inverse-muted)); }
+`;
+// This fixture mirrors the public VFooterText and VFooterBottom templates and
+// their compiled role declarations. It is deliberately tied to the source
+// assertions above so the browser check cannot pass against an unrelated
+// synthetic selector.
+const footerComponentStyle = `
+  #actual-footer {
+    --foreground: #12161f;
+    --background: #ffffff;
+    --color-text-disabled: #adb5bd;
+  }
+  #actual-footer .v-footer-text {
+    color: var(--ui-color-text-disabled, var(--color-text-disabled));
+    background-color: var(--ui-color-surface-inverse, var(--foreground));
+  }
+  #actual-footer .v-footer-text p,
+  #actual-footer .v-footer-text li,
+  #actual-footer .v-footer-text ul { color: inherit; }
+  #actual-footer .v-footer-bottom {
+    background-color: var(--ui-color-surface-inverse, var(--foreground));
+  }
+  #actual-footer .v-footer-bottom p {
+    color: var(--ui-color-text-disabled, var(--color-text-disabled));
+  }
+  #actual-footer .footer-bottom {
+    background-color: var(--ui-color-surface-inverse, var(--foreground));
+  }
+  #actual-footer .footer-bottom p { color: var(--color-text-disabled); }
 `;
 const probes = `
   <button id="control" data-slot="button" data-variant="secondary">Control</button>
@@ -159,6 +204,27 @@ const probes = `
     <div id="footer-override-pwa-surface" class="pwa-surface">Override PWA surface</div>
     <div id="footer-override-pwa-label" class="pwa-label">Override PWA label</div>
   </div>
+  <section id="actual-footer">
+    <div id="actual-footer-disclosure" class="VFooterText v-footer-text">
+      <div class="is--container">
+        <p id="actual-footer-disclosure-copy" class="is--small"><strong>Demo website notice:</strong> Disclosure copy.</p>
+      </div>
+    </div>
+    <div id="actual-footer-copyright" class="VFooterBottom v-footer-bottom">
+      <p id="actual-footer-copyright-copy" class="is--container is--small v-footer-bottom__container">© 2026 Demo.</p>
+    </div>
+    <div id="actual-footer-legacy-bottom" class="footer-bottom">
+      <p id="actual-footer-legacy-copy">© 2026 Demo.</p>
+    </div>
+    <div id="actual-footer-ui-override-disclosure" class="VFooterText v-footer-text"
+      style="--ui-color-text-disabled: #112233; --color-text-disabled: #445566;">
+      <div class="is--container"><p id="actual-footer-ui-override-disclosure-copy">Override disclosure copy.</p></div>
+    </div>
+    <div id="actual-footer-ui-override-copyright" class="VFooterBottom v-footer-bottom"
+      style="--ui-color-text-disabled: #112233; --color-text-disabled: #445566;">
+      <p id="actual-footer-ui-override-copyright-copy">Override copyright.</p>
+    </div>
+  </section>
 `;
 const probeStyle = `
   body { color: var(--foreground); }
@@ -191,7 +257,7 @@ const browser = await chromium.launch({ headless: true });
 try {
   report.chromium = await browser.version();
   const page = await browser.newPage({ viewport: { width: 1280, height: 720 } });
-  await page.setContent(`<style>${tokens}</style><style>${geometry}</style><style>${components}</style><style>${footerProbeStyle}</style><style>${probeStyle}</style>${probes}`);
+  await page.setContent(`<style>${tokens}</style><style>${geometry}</style><style>${components}</style><style>${footerProbeStyle}</style><style>${footerComponentStyle}</style><style>${probeStyle}</style>${probes}`);
   const computed = async (id, property) => page.locator(`#${id}`).evaluate((element, name) => getComputedStyle(element).getPropertyValue(name).trim(), property);
   const checks = [
     ["control-shadow", normalizeShadow(await computed("control", "box-shadow")), shadowValues.redControl],
@@ -214,7 +280,7 @@ try {
     ["footer-text-host-background", await computed("footer-text", "color"), "rgb(240, 225, 210)"],
     ["footer-disclaimer-host-background", await computed("footer-disclaimer", "color"), "rgb(255, 0, 0)"],
     ["footer-copyright-host-background", await computed("footer-copyright", "color"), "rgb(255, 0, 0)"],
-    ["footer-disabled-legacy-foreground", await computed("footer-disabled", "color"), "rgb(255, 0, 0)"],
+    ["footer-disabled-host-disabled", await computed("footer-disabled", "color"), "rgb(173, 181, 189)"],
     ["footer-muted-host-muted", await computed("footer-muted", "color"), "rgb(152, 118, 84)"],
     ["footer-accent-host-primary", await computed("footer-accent", "color"), "rgb(101, 67, 33)"],
     ["footer-primary-host-primary", await computed("footer-primary", "color"), "rgb(101, 67, 33)"],
@@ -229,6 +295,11 @@ try {
     ["footer-ui-accent-override", await computed("footer-override-accent", "color"), "rgb(68, 85, 102)"],
     ["pwa-ui-surface-override", await computed("footer-override-pwa-surface", "background-color"), "rgb(255, 238, 221)"],
     ["pwa-ui-inverse-muted-override", await computed("footer-override-pwa-label", "color"), "rgb(204, 187, 170)"],
+    ["footer-disclosure-0.2.1-host-token", await computed("actual-footer-disclosure-copy", "color"), "rgb(173, 181, 189)"],
+    ["footer-copyright-0.2.1-host-token", await computed("actual-footer-copyright-copy", "color"), "rgb(173, 181, 189)"],
+    ["footer-legacy-bottom-0.4.0-host-token", await computed("actual-footer-legacy-copy", "color"), "rgb(173, 181, 189)"],
+    ["footer-disclosure-ui-precedence", await computed("actual-footer-ui-override-disclosure-copy", "color"), "rgb(17, 34, 51)"],
+    ["footer-copyright-ui-precedence", await computed("actual-footer-ui-override-copyright-copy", "color"), "rgb(17, 34, 51)"],
   ];
   for (const [name, actual, expected] of checks) {
     assert.equal(actual, expected, `${name} computed value mismatch`);
@@ -248,14 +319,31 @@ try {
     document.documentElement.style.setProperty("--gt-primitive-color-neutral-950", "#0f172a");
     document.documentElement.style.setProperty("--gt-primitive-color-grey-500", "#18181b");
     document.documentElement.style.setProperty("--color-text-disabled", foreground);
-  }, "#18181b");
+  }, "#adb5bd");
   {
     const textActual = await computed("text", "color");
     assert.equal(textActual, "rgb(255, 0, 0)", "authenticated 0.2.1 neutral tokens must not activate 0.3.0 aliases");
     report.checks.push({ name: "tokens-0.2.1-neutral-only", result: "pass", value: textActual });
     const actual = await computed("footer-disabled", "color");
-    assert.equal(actual, "rgb(255, 0, 0)", "authenticated 0.2.1 disabled token must not change the legacy inverse fallback");
+    assert.equal(actual, "rgb(173, 181, 189)", "authenticated 0.2.1 host disabled token must remain the footer fallback");
     report.checks.push({ name: "tokens-0.2.1-footer-compatibility", result: "pass", value: actual });
+    for (const [name, id] of [
+      ["tokens-0.2.1-disclosure-pixel", "actual-footer-disclosure-copy"],
+      ["tokens-0.2.1-copyright-pixel", "actual-footer-copyright-copy"],
+    ]) {
+      const footerActual = await computed(id, "color");
+      assert.equal(footerActual, "rgb(173, 181, 189)", `${name} must retain the host disabled token`);
+      report.checks.push({ name, result: "pass", value: footerActual });
+    }
+  }
+  await page.evaluate(() => document.documentElement.style.setProperty("--ui-color-text-disabled", "#112233"));
+  for (const [name, id] of [
+    ["tokens-0.3.0-disclosure-role", "actual-footer-disclosure-copy"],
+    ["tokens-0.3.0-copyright-role", "actual-footer-copyright-copy"],
+  ]) {
+    const actual = await computed(id, "color");
+    assert.equal(actual, "rgb(17, 34, 51)", `${name} must honor the 0.3.0 public role`);
+    report.checks.push({ name, result: "pass", value: actual });
   }
   await page.evaluate(() => document.documentElement.style.setProperty("--foreground", "#00ff00"));
   for (const [name, id, expected] of [

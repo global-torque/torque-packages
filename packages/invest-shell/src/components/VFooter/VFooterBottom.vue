@@ -46,9 +46,7 @@ defineProps({
     }
 
     p {
-      // Preserve the 0.2.1 inverse-footer fallback; --ui-* remains the host
-      // override for applications that provide an explicit semantic role.
-      color: var(--ui-color-text-disabled, var(--foreground));
+      color: var(--ui-color-text-disabled, var(--color-text-disabled));
     }
 
     a {

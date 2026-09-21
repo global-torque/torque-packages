@@ -136,10 +136,11 @@ const fixedLocalShadow = /box-shadow:\s*var\(\s*--ui-shadow-control,\s*0 2px 5px
 assert.match(headerBar, fixedLocalShadow, "header bar must retain its neutral-950 local shadow fallback");
 assert.match(offersDetailsSide, fixedLocalShadow, "offer details side must retain its neutral-950 local shadow fallback");
 const footerStyles = footers.join("\n");
+const [vFooter, vFooterBottom, vFooterMenu, vFooterText] = footers;
 const footerContracts = [
   ["inverse surface follows the host foreground", "var(--ui-color-surface-inverse, var(--foreground))"],
   ["inverse text follows the host background", "var(--ui-color-text-inverse, var(--background))"],
-  ["disabled footer text keeps the legacy inverse fallback", "var(--ui-color-text-disabled, var(--foreground))"],
+  ["disabled footer text keeps the legacy host token", "var(--ui-color-text-disabled, var(--color-text-disabled))"],
   ["menu text follows the host muted foreground", "var(--muted-foreground)"],
   ["inverse accent follows the host primary role", "var(--ui-color-accent-inverse, var(--ui-color-accent, var(--primary)))"],
   ["active inverse accent retains the host primary fallback", "var(--ui-color-accent-inverse, var(--primary))"],
@@ -149,6 +150,21 @@ const footerContracts = [
 for (const [description, contract] of footerContracts) {
   assert.ok(footerStyles.includes(contract), `${description} contract is missing`);
 }
+assert.match(
+  vFooter,
+  /\.footer-bottom\s*\{[\s\S]*?p\s*\{[\s\S]*?color:\s*var\(--color-text-disabled\);/u,
+  "legacy VFooter bottom text must retain the 0.4.0 host token",
+);
+assert.match(
+  vFooterBottom,
+  /\.v-footer-bottom[\s\S]*?p\s*\{[\s\S]*?color:\s*var\(--ui-color-text-disabled,\s*var\(--color-text-disabled\)\);/u,
+  "VFooterBottom must preserve the public role override and legacy host fallback",
+);
+assert.match(
+  vFooterText,
+  /\.v-footer-text\s*\{[\s\S]*?color:\s*var\(--ui-color-text-disabled,\s*var\(--color-text-disabled\)\);/u,
+  "VFooterText must preserve the public role override and legacy host fallback",
+);
 assert.doesNotMatch(
   footerStyles,
   /#12161f|#fff|#004fff/u,
