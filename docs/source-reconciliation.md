@@ -1,6 +1,6 @@
 # Source and release reconciliation
 
-The `0.4.10` candidate reissues the seven-package cohort with the completed
+The `0.4.11` candidate reissues the seven-package cohort with the completed
 `invest-shell` token-absent geometry recovery, inverse-footer token fallback,
 shadow, PWA login fallback, and semantic header/offer control-shadow contract.
 The breaking stablecoin
@@ -130,5 +130,12 @@ sibling. Its tag object is
 `f27b758babff4d270c46bbd7d22cf7f9a4626792`, peeled commit
 `46d035c8d8eb604fd14007e121e192aee60c8e9a`, candidate run `35570182365`, and
 candidate artifact `10625980830`; no GitHub release or npm package exists and
-the tag is never moved, deleted, or reused. Candidate `0.4.10` is the new
+the tag is never moved, deleted, or reused. Candidate `0.4.10` is abandoned
+because the absent-token npm path passed, but the corresponding pnpm
+strict-layout path failed with `ENOENT` for an undeclared sibling package. The
+0.2.1 and 0.3.0 paths did not run. Its tag object is
+`ffe335f89e9be5101a2ee5bdf428218126890193`, peeled commit
+`7650c04a5173e4fd644146771829ff252bb2eae7`, candidate run `35571502342`, and
+candidate artifact `10626585626`; no GitHub release or npm package exists and
+the tag is never moved, deleted, or reused. Candidate `0.4.11` is the new
 immutable release identity.

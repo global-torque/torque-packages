@@ -1,9 +1,15 @@
 # Changelog
 
-## 0.4.10 candidate
+## 0.4.11 candidate
 
-- Reissued the seven-package cohort with the verified semantic control-shadow
-  fix and corrected the immutable candidate ledger.
+- Reissued the seven-package cohort with independent installed shell/features
+  CSS contract roots and corrected the detached pnpm layout verification.
+
+## 0.4.10 abandoned candidate
+
+- Immutable candidate passed the absent-token npm path, but the corresponding
+  pnpm strict-layout path failed with `ENOENT` for an undeclared sibling
+  package; the 0.2.1 and 0.3.0 paths did not run; no registry package exists.
 
 ## 0.4.9 abandoned candidate
 

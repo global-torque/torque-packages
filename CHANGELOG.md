@@ -1,9 +1,20 @@
 # Changelog
 
-## 0.4.10 candidate
+## 0.4.11 candidate
 
-- Reissued the seven-package cohort with the verified semantic control-shadow
-  fix and corrected the immutable candidate ledger.
+- Reissued the seven-package cohort with independent installed shell/features
+  CSS contract roots and corrected the detached pnpm layout verification.
+
+## 0.4.10 abandoned candidate
+
+- Immutable tag `framework-v0.4.10` points to tag object
+  `ffe335f89e9be5101a2ee5bdf428218126890193` and peeled commit
+  `7650c04a5173e4fd644146771829ff252bb2eae7`; candidate run `35571502342`
+  and artifact `10626585626` passed the absent-token npm path, but the
+  corresponding pnpm strict-layout path failed with `ENOENT` for an undeclared
+  sibling package. The 0.2.1 and 0.3.0 paths did not run. No GitHub release or
+  npm package exists and the tag is never moved,
+  deleted, or reused.
 
 ## 0.4.9 abandoned candidate
 
