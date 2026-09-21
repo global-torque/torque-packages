@@ -742,13 +742,22 @@ async function verifyBrowser(consumer, manager) {
 }
 
 function verifyPackedCssBrowserContract(consumer, manager) {
+  const requireFromConsumer = createRequire(path.join(consumer, 'package.json'));
   const shell = packageRootFromResolved(
-    createRequire(path.join(consumer, 'package.json')).resolve('@global-torque/invest-shell/styles/geometry.css', { paths: [consumer] }),
+    requireFromConsumer.resolve('@global-torque/invest-shell/styles/geometry.css', { paths: [consumer] }),
     '@global-torque/invest-shell',
+  );
+  const features = packageRootFromResolved(
+    requireFromConsumer.resolve('@global-torque/invest-features/offers', { paths: [consumer] }),
+    '@global-torque/invest-features',
   );
   execFileSync(process.execPath, [path.join(root, 'packages/invest-shell/scripts/check-css-browser.mjs')], {
     cwd: root,
-    env: { ...process.env, CSS_CONTRACT_PACKAGE_DIR: shell },
+    env: {
+      ...process.env,
+      CSS_CONTRACT_PACKAGE_DIR: shell,
+      CSS_CONTRACT_FEATURES_PACKAGE_DIR: features,
+    },
     stdio: 'inherit',
   });
   console.log(`packed-css-browser-contract-pass ${manager}`);

@@ -5,13 +5,31 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { chromium } from "@playwright/test";
 
-const packageDirectory = path.resolve(
-  process.env.CSS_CONTRACT_PACKAGE_DIR ?? path.resolve(path.dirname(fileURLToPath(import.meta.url)), ".."),
+const canonicalPackageDirectory = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const packageDirectoryOverride = process.env.CSS_CONTRACT_PACKAGE_DIR;
+const featuresPackageDirectoryOverride = process.env.CSS_CONTRACT_FEATURES_PACKAGE_DIR;
+const hasPackageDirectoryOverride = packageDirectoryOverride !== undefined;
+const hasFeaturesPackageDirectoryOverride = featuresPackageDirectoryOverride !== undefined;
+if (hasPackageDirectoryOverride !== hasFeaturesPackageDirectoryOverride
+  || (hasPackageDirectoryOverride && (!packageDirectoryOverride.trim() || !featuresPackageDirectoryOverride.trim()))) {
+  throw new Error(
+    "CSS_CONTRACT_PACKAGE_DIR and CSS_CONTRACT_FEATURES_PACKAGE_DIR must be provided together with non-empty values",
+  );
+}
+const packageDirectory = path.resolve(packageDirectoryOverride ?? canonicalPackageDirectory);
+const featuresPackageDirectory = path.resolve(
+  featuresPackageDirectoryOverride ?? path.resolve(canonicalPackageDirectory, "../invest-features"),
 );
+async function validatePackageRoot(directory, packageName) {
+  const manifest = JSON.parse(await fs.readFile(path.join(directory, "package.json"), "utf8"));
+  assert.equal(manifest.name, packageName, `${packageName} contract root must contain its exact package manifest`);
+}
+await validatePackageRoot(packageDirectory, "@global-torque/invest-shell");
+await validatePackageRoot(featuresPackageDirectory, "@global-torque/invest-features");
 const geometry = await fs.readFile(path.join(packageDirectory, "src/styles/geometry.css"), "utf8");
 const components = await fs.readFile(path.join(packageDirectory, "src/styles/components.css"), "utf8");
 const headerBar = await fs.readFile(path.join(packageDirectory, "src/components/VHeaderBar/VHeaderBar.vue"), "utf8");
-const offersDetailsSide = await fs.readFile(path.resolve(packageDirectory, "../invest-features/src/offers/components/OffersDetailsSide.vue"), "utf8");
+const offersDetailsSide = await fs.readFile(path.join(featuresPackageDirectory, "src/offers/components/OffersDetailsSide.vue"), "utf8");
 const oldLocalShadowFallback = /var\(\s*--ui-shadow-control,\s*0 2px 5px 1px color-mix\(in srgb, #12161f 3%, transparent\),\s*0 2px 3px -2px color-mix\(in srgb, #12161f 15%, transparent\)\s*\)/gu;
 assert.equal(
   [...headerBar.matchAll(oldLocalShadowFallback)].length + [...offersDetailsSide.matchAll(oldLocalShadowFallback)].length,
