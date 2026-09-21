@@ -364,10 +364,14 @@ assert.match(publisherStep.run, /if \[\[ "\$\{BOOTSTRAP\}" == "true" \]\]; then[
 assert.match(publisherStep.run, /for package in "\$\{packages\[@\]\}"; do[\s\S]+npm publish "\$archive"/u);
 assert.match(publisherStep.run, /registry_retry_attempts=8/u);
 assert.match(publisherStep.run, /while \(\( pack_attempt <= registry_retry_attempts \)\); do/u);
-assert.match(publisherStep.run, /sleep "\$pack_delay_seconds"[\s\S]+pack_delay_seconds=\$\(\(pack_delay_seconds \* 2\)\)/u);
+assert.match(publisherStep.run, /registry_retry_delay_seconds=2/u);
+assert.match(publisherStep.run, /sleep "\$registry_retry_delay_seconds"/u);
+assert.doesNotMatch(publisherStep.run, /pack_delay_seconds|\* 2\)/u, 'Registry verification must not use exponential per-package waits');
+assert.match(publisherStep.run, /npm publish "\$archive"[\s\S]+npm pack "\$package_spec"/u, 'All publication must precede registry verification');
 assert.match(publisherStep.run, /npm view "\$package_spec" version --json/u);
 assert.match(publisherStep.run, /view_error_text[\s\S]+E404[\s\S]+ETARGET/u);
 assert.match(publisherStep.run, /pack_error_text[\s\S]+E404[\s\S]+ETARGET/u);
+assert.match(publisherStep.run, /--prefer-online --cache "\$registry_state_dir\/\$\{package\}\.npm-cache"/u);
 assert.match(publisherStep.run, /cmp "\$archive" "registry\/\$registry_archive"/u);
 assert.doesNotThrow(
   () => execFileSync('bash', ['-n'], { input: publisherStep.run, encoding: 'utf8' }),
@@ -612,7 +616,15 @@ for (const packageDirectory of publisherPackageDirectories) {
 }
 assert.deepEqual(
   readPublisherLines(path.join(propagationPublisherFixture.stateDirectory, 'sleep.log')).slice(0, 2),
-  ['2', '4'],
+  ['2', '2'],
+);
+assert.equal(
+  readPublisherLines(path.join(propagationPublisherFixture.stateDirectory, 'sleep.log')).length,
+  publisherPackageDirectories.length * 2,
+);
+assert.ok(
+  readPublisherLines(path.join(propagationPublisherFixture.stateDirectory, 'sleep.log')).every(value => value === '2'),
+  'Registry verification must use a bounded fixed delay',
 );
 assertPublisherLoopReceipt(propagationPublisherFixture);
 
@@ -624,7 +636,7 @@ const exhaustedPublisherFixture = makePublisherLoopFixture('exhausted', { mode: 
 assert.throws(() => runPublisherLoopFixture(exhaustedPublisherFixture), undefined, 'Registry propagation retries must be bounded');
 assert.deepEqual(
   readPublisherLines(path.join(exhaustedPublisherFixture.stateDirectory, 'publish.log')),
-  ['./release/global-torque-domain-types-0.4.12.tgz'],
+  publisherPackageDirectories.map(packageDirectory => './release/global-torque-' + packageDirectory + '-' + publisherCandidate + '.tgz'),
 );
 assert.equal(
   Number(fs.readFileSync(path.join(exhaustedPublisherFixture.stateDirectory, 'pack-domain-types.count'), 'utf8')),
@@ -632,7 +644,7 @@ assert.equal(
 );
 assert.deepEqual(
   readPublisherLines(path.join(exhaustedPublisherFixture.stateDirectory, 'sleep.log')),
-  ['2', '4', '8', '16', '32', '64', '128'],
+  ['2', '2', '2', '2', '2', '2', '2'],
 );
 
 const dependencyMap = {
