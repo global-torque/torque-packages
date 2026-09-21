@@ -256,7 +256,10 @@ const contactList = computed(() => ([props.contact]));
   }
 
   p {
-    color: var(--color-text-disabled);
+    // Keep the legacy inverse-footer fallback independent of token-cohort
+    // disabled-text changes. The public ui role still takes precedence in the
+    // concrete footer component.
+    color: var(--ui-color-text-disabled, var(--foreground));
   }
 }
 

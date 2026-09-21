@@ -47,7 +47,11 @@ defineProps<{ brandName: string }>();
 .v-footer-text {
   $root: &;
 
-  color: var(--ui-color-text-disabled, var(--color-text-disabled));
+  // Keep the inverse footer's legacy 0.2.1 appearance when only the public
+  // semantic override is absent. Newer token cohorts changed
+  // --color-text-disabled, but this disclosure copy is intentionally tied to
+  // the inverse surface until consumers migrate that contract.
+  color: var(--ui-color-text-disabled, var(--foreground));
   background-color: var(--ui-color-surface-inverse, var(--foreground));
 
   &__list {

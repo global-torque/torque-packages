@@ -21,7 +21,7 @@ const footerSource = (await Promise.all(footerPaths.map((footerPath) => fs.readF
 for (const contract of [
   "var(--ui-color-surface-inverse, var(--foreground))",
   "var(--ui-color-text-inverse, var(--background))",
-  "var(--ui-color-text-disabled, var(--color-text-disabled))",
+  "var(--ui-color-text-disabled, var(--foreground))",
   "var(--muted-foreground)",
   "var(--ui-color-accent-inverse, var(--ui-color-accent, var(--primary)))",
   "var(--ui-color-accent-inverse, var(--primary))",
@@ -87,19 +87,19 @@ const tokens = `
     --background: #f0e1d2;
     --primary: #654321;
     --muted-foreground: #987654;
-    --color-text-disabled: var(--muted-foreground);
+    --color-text-disabled: #adb5bd;
     --accent: #abcdef;
     --color-surface-inverse-muted: #fedcba;
   }
 `;
 const footerProbeStyle = `
   :root {
-    --color-text-disabled: var(--muted-foreground);
+    --color-text-disabled: #adb5bd;
     --color-surface-inverse-muted: #fedcba;
   }
   #footer-surface { background-color: var(--ui-color-surface-inverse, var(--foreground)); }
   #footer-text { color: var(--ui-color-text-inverse, var(--background)); }
-  #footer-disabled { color: var(--ui-color-text-disabled, var(--color-text-disabled)); }
+  #footer-disabled { color: var(--ui-color-text-disabled, var(--foreground)); }
   #footer-muted { color: var(--muted-foreground); }
   #footer-accent { color: var(--ui-color-accent-inverse, var(--ui-color-accent, var(--primary))); }
   #footer-primary { color: var(--ui-color-accent-inverse, var(--primary)); }
@@ -117,7 +117,7 @@ const footerProbeStyle = `
   }
   #footer-overrides .surface { background-color: var(--ui-color-surface-inverse, var(--foreground)); }
   #footer-overrides .text { color: var(--ui-color-text-inverse, var(--background)); }
-  #footer-overrides .disabled { color: var(--ui-color-text-disabled, var(--color-text-disabled)); }
+  #footer-overrides .disabled { color: var(--ui-color-text-disabled, var(--foreground)); }
   #footer-overrides .accent { color: var(--ui-color-accent-inverse, var(--ui-color-accent, var(--primary))); }
   #footer-overrides .pwa-surface { background-color: var(--ui-color-surface, var(--background)); }
   #footer-overrides .pwa-label { color: var(--ui-color-surface-inverse-muted, var(--color-surface-inverse-muted)); }
@@ -189,7 +189,7 @@ try {
     ["badge-shadow", normalizeShadow(await computed("badge", "box-shadow")), "0 2px 4px 0 rgba(0, 0, 0, 0.15)"],
     ["footer-surface-host-foreground", await computed("footer-surface", "background-color"), "rgb(255, 0, 0)"],
     ["footer-text-host-background", await computed("footer-text", "color"), "rgb(240, 225, 210)"],
-    ["footer-disabled-host-muted", await computed("footer-disabled", "color"), "rgb(152, 118, 84)"],
+    ["footer-disabled-legacy-foreground", await computed("footer-disabled", "color"), "rgb(255, 0, 0)"],
     ["footer-muted-host-muted", await computed("footer-muted", "color"), "rgb(152, 118, 84)"],
     ["footer-accent-host-primary", await computed("footer-accent", "color"), "rgb(101, 67, 33)"],
     ["footer-primary-host-primary", await computed("footer-primary", "color"), "rgb(101, 67, 33)"],
@@ -208,6 +208,22 @@ try {
   for (const [name, actual, expected] of checks) {
     assert.equal(actual, expected, `${name} computed value mismatch`);
     report.checks.push({ name, result: "pass", value: actual });
+  }
+  await page.evaluate(() => document.documentElement.style.setProperty("--gt-primitive-color-grey-800", "#010203"));
+  {
+    const actual = await computed("text", "color");
+    assert.equal(actual, "rgb(1, 2, 3)", "authenticated 0.3.0 primitive must win over its literal fallback");
+    report.checks.push({ name: "tokens-0.3.0-primitive", result: "pass", value: actual });
+  }
+  await page.evaluate((foreground) => {
+    document.documentElement.style.removeProperty("--gt-primitive-color-grey-800");
+    document.documentElement.style.setProperty("--gt-primitive-color-grey-500", "#18181b");
+    document.documentElement.style.setProperty("--color-text-disabled", foreground);
+  }, "#18181b");
+  {
+    const actual = await computed("footer-disabled", "color");
+    assert.equal(actual, "rgb(255, 0, 0)", "authenticated 0.2.1 disabled token must not change the legacy inverse fallback");
+    report.checks.push({ name: "tokens-0.2.1-footer-compatibility", result: "pass", value: actual });
   }
   await page.evaluate(() => document.documentElement.style.setProperty("--foreground", "#00ff00"));
   for (const [name, id, expected] of [

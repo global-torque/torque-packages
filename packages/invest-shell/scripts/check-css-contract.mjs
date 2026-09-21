@@ -122,7 +122,7 @@ const footerStyles = footers.join("\n");
 const footerContracts = [
   ["inverse surface follows the host foreground", "var(--ui-color-surface-inverse, var(--foreground))"],
   ["inverse text follows the host background", "var(--ui-color-text-inverse, var(--background))"],
-  ["disabled text follows the host muted role", "var(--ui-color-text-disabled, var(--color-text-disabled))"],
+  ["disabled footer text keeps the legacy inverse fallback", "var(--ui-color-text-disabled, var(--foreground))"],
   ["menu text follows the host muted foreground", "var(--muted-foreground)"],
   ["inverse accent follows the host primary role", "var(--ui-color-accent-inverse, var(--ui-color-accent, var(--primary)))"],
   ["active inverse accent retains the host primary fallback", "var(--ui-color-accent-inverse, var(--primary))"],
