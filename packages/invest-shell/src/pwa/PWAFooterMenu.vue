@@ -313,13 +313,13 @@ const shouldHideMenu = computed(() => (
 
 :host,
 .pwa-footer-menu {
-  --pwa-footer-menu-background: var(--ui-color-surface-inverse, #12161f);
-  --pwa-footer-menu-border-color: color-mix(in srgb, var(--ui-color-surface-inverse, #12161f) 5%, transparent);
+  --pwa-footer-menu-background: var(--ui-color-surface, var(--background));
+  --pwa-footer-menu-border-color: color-mix(in srgb, var(--ui-color-surface, var(--background)) 5%, transparent);
   --pwa-footer-menu-border-radius: 2px;
   --pwa-footer-menu-shadow: var(--ui-shadow-raised, var(--shadow-raised));
-  --pwa-footer-menu-color: var(--ui-color-text-inverse, #fff);
-  --pwa-footer-menu-link-active-background: var(--ui-color-accent-inverse, #004fff);
-  --pwa-footer-menu-label-active-color: var(--ui-color-text-inverse, #fff);
+  --pwa-footer-menu-color: #{var(--muted-foreground)};
+  --pwa-footer-menu-link-active-background: #{var(--accent)};
+  --pwa-footer-menu-label-active-color: var(--ui-color-surface-inverse-muted, var(--color-surface-inverse-muted));
 }
 
 @media (width <= 768px) {
@@ -386,7 +386,7 @@ const shouldHideMenu = computed(() => (
 
 .pwa-footer-menu__link--active {
   background: var(--pwa-footer-menu-link-active-background);
-  color: var(--ui-color-text-inverse, #fff);
+  color: var(--foreground);
 }
 
 .pwa-footer-menu__icon {

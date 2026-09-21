@@ -38,7 +38,7 @@ defineProps({
 @use '@global-torque/ui-kit/styles/mixins' as *;
 
 .v-footer-bottom {
-    background-color: var(--ui-color-surface-inverse, #12161f);
+    background-color: var(--ui-color-surface-inverse, var(--foreground));
     padding: 16px 0;
 
     @include media-lte(tablet) {
@@ -46,11 +46,11 @@ defineProps({
     }
 
     p {
-      color: var(--ui-color-text-inverse, #fff);
+      color: var(--ui-color-text-disabled, var(--color-text-disabled));
     }
 
     a {
-      color: var(--ui-color-accent-inverse, #004fff);
+      color: var(--ui-color-accent-inverse, var(--ui-color-accent, var(--primary)));
     }
 
     &__container {

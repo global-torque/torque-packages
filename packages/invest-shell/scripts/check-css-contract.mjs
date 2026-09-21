@@ -119,9 +119,24 @@ const fixedLocalShadow = /box-shadow:\s*var\(\s*--ui-shadow-control,\s*0 2px 5px
 assert.match(headerBar, fixedLocalShadow, "header bar must retain its neutral-950 local shadow fallback");
 assert.match(offersDetailsSide, fixedLocalShadow, "offer details side must retain its neutral-950 local shadow fallback");
 const footerStyles = footers.join("\n");
-assert.match(footerStyles, /--ui-color-surface-inverse, #12161f|--pwa-footer-menu-background: var\(--ui-color-surface-inverse, #12161f\)/u);
-assert.match(footerStyles, /--ui-color-text-inverse, #fff|--pwa-footer-menu-color: var\(--ui-color-text-inverse, #fff\)/u);
-assert.match(footerStyles, /--ui-color-accent-inverse, #004fff|--pwa-footer-menu-link-active-background: var\(--ui-color-accent-inverse, #004fff\)/u);
+const footerContracts = [
+  ["inverse surface follows the host foreground", "var(--ui-color-surface-inverse, var(--foreground))"],
+  ["inverse text follows the host background", "var(--ui-color-text-inverse, var(--background))"],
+  ["disabled text follows the host muted role", "var(--ui-color-text-disabled, var(--color-text-disabled))"],
+  ["menu text follows the host muted foreground", "var(--muted-foreground)"],
+  ["inverse accent follows the host primary role", "var(--ui-color-accent-inverse, var(--ui-color-accent, var(--primary)))"],
+  ["active inverse accent retains the host primary fallback", "var(--ui-color-accent-inverse, var(--primary))"],
+  ["PWA surface follows the host background", "var(--ui-color-surface, var(--background))"],
+  ["PWA active label follows the inverse-muted role", "var(--ui-color-surface-inverse-muted, var(--color-surface-inverse-muted))"],
+];
+for (const [description, contract] of footerContracts) {
+  assert.ok(footerStyles.includes(contract), `${description} contract is missing`);
+}
+assert.doesNotMatch(
+  footerStyles,
+  /#12161f|#fff|#004fff/u,
+  "footer roles must not reintroduce component-local color literals",
+);
 assert.match(
   await fs.readFile(path.join(packageDirectory, "src/pwa/assets/pwa-login-arrow.svg"), "utf8"),
   /var\(--ui-color-accent, #004fff\)/u,
