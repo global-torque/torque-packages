@@ -10,6 +10,12 @@ import { chromium } from '@playwright/test';
 import { expectedNodeFiles } from './node-build-contract.mjs';
 
 const root = path.resolve(new URL('..', import.meta.url).pathname);
+const reconciliation = JSON.parse(fs.readFileSync(path.join(root, 'docs/source-reconciliation.json'), 'utf8'));
+const tokenMode = process.env.CONSUMER_TOKEN_MODE ?? '0.3.0';
+const tokenModes = new Set(['absent', '0.2.1', '0.3.0']);
+if (!tokenModes.has(tokenMode)) throw new Error(`Unknown design-token compatibility mode: ${tokenMode}`);
+const tokenEntry = reconciliation.compatibilityMatrix?.designTokens?.find(entry => entry.cohort === tokenMode);
+if (!tokenEntry) throw new Error(`Design-token compatibility identity is missing for mode ${tokenMode}`);
 const positionalArguments = process.argv.slice(2).filter(argument => argument !== '--');
 const artifacts = path.resolve(positionalArguments[0] ?? 'artifacts');
 const expectedPackages = [
@@ -33,6 +39,7 @@ const reviewedMigrationVersions = [
   '@types/node@24.13.5', '@vue/test-utils@2.5.1',
   '@vueuse/core@15.0.0', '@vueuse/integrations@15.0.0',
   '@vueuse/metadata@15.0.0', '@vueuse/shared@15.0.0', 'prettier@3.9.7',
+  '@global-torque/design-tokens@0.2.1',
   '@global-torque/design-tokens@0.3.0',
 ];
 const packageManagers = (process.env.CONSUMER_PACKAGE_MANAGERS ?? 'npm,pnpm')
@@ -87,17 +94,23 @@ function findUiArchive(argument) {
 
 function findDesignTokensArchive(argument) {
   const supplied = argument || process.env.DESIGN_TOKENS_ARCHIVE;
-  if (!supplied) return undefined;
+  if (tokenMode === 'absent') {
+    if (supplied) throw new Error('Absent design-token mode must not receive an archive');
+    return undefined;
+  }
+  if (!supplied) {
+    if (tokenMode === '0.2.1') throw new Error('Design-token 0.2.1 mode requires its retained archive');
+    return undefined;
+  }
   const archive = path.resolve(supplied);
-  if (!fs.existsSync(archive) || path.basename(archive) !== 'design-tokens-0.3.0.tgz') {
+  if (!fs.existsSync(archive) || path.basename(archive) !== tokenEntry.archive) {
     throw new Error(`Design token archive is missing or has the wrong identity: ${archive}`);
   }
   const manifest = JSON.parse(execFileSync('tar', ['-xOzf', archive, 'package/package.json'], { encoding: 'utf8' }));
-  if (manifest.name !== '@global-torque/design-tokens' || manifest.version !== '0.3.0') throw new Error('Design token archive manifest identity mismatch');
-  const expected = receipt.externalDependencies?.['@global-torque/design-tokens'];
+  if (manifest.name !== '@global-torque/design-tokens' || manifest.version !== tokenMode) throw new Error('Design token archive manifest identity mismatch');
   const bytes = fs.readFileSync(archive);
-  if (!expected || crypto.createHash('sha256').update(bytes).digest('hex') !== expected.archiveSha256 || integrity(bytes) !== expected.integrity) {
-    throw new Error('Design token archive does not match the candidate external dependency receipt');
+  if (crypto.createHash('sha256').update(bytes).digest('hex') !== tokenEntry.archiveSha256 || integrity(bytes) !== tokenEntry.integrity) {
+    throw new Error(`Design token archive does not match the reviewed ${tokenMode} compatibility identity`);
   }
   return archive;
 }
@@ -111,7 +124,7 @@ const directDependencies = {
   '@global-torque/ui-primitives': '0.1.3',
   '@global-torque/sdk': '0.3.1',
   '@global-torque/client-error-handling': '0.1.0',
-  '@global-torque/design-tokens': designTokensArchive ? `file:${designTokensArchive}` : '0.3.0',
+  ...(tokenMode === 'absent' ? {} : { '@global-torque/design-tokens': designTokensArchive ? `file:${designTokensArchive}` : tokenMode }),
   vue: '3.5.42',
   pinia: profile.pinia,
   'vue-router': profile.router,
@@ -136,7 +149,7 @@ function writeConsumer(consumer) {
   const overrides = {
     ...frameworkDependencySpecs,
     ...(uiArchive ? { '@global-torque/ui-kit': `file:${uiArchive}` } : {}),
-    ...(designTokensArchive ? { '@global-torque/design-tokens': `file:${designTokensArchive}` } : {}),
+    ...(tokenMode === 'absent' ? {} : { '@global-torque/design-tokens': designTokensArchive ? `file:${designTokensArchive}` : tokenMode }),
   };
   const packageJson = {
     name: 'torque-framework-detached-consumer',
@@ -280,7 +293,8 @@ createApp({ setup() {
   ]);
 } }).use(createPinia()).mount('#app');
 `);
-  fs.writeFileSync(path.join(consumer, 'src/main.ts'), `import '@global-torque/design-tokens/css';
+  const tokenCssImport = tokenMode === 'absent' ? '' : "import '@global-torque/design-tokens/css';\n";
+  fs.writeFileSync(path.join(consumer, 'src/main.ts'), `${tokenCssImport}
 import '@global-torque/invest-shell/styles/geometry.css';
 import '@global-torque/invest-shell/styles/components.css';
 import '@global-torque/invest-shell/styles';
@@ -589,6 +603,7 @@ async function verifyBrowser(consumer, manager) {
   preview.stderr.on('data', chunk => { output.stderr += chunk.toString(); });
   const report = {
     schemaVersion: 1,
+    tokenMode,
     profile: profileName,
     packageManager: manager,
     resolvedVersions: resolvedVersions(consumer),

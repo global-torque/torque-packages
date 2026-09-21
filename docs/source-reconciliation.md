@@ -31,6 +31,15 @@ digest used by the consumer parity gate, plus the absent-token fallback case.
 These archives are external inputs; the framework repository never republishes
 them.
 
+The compatibility receipt is generated into every candidate receipt and must
+retain all three named modes. Run the detached verifier with
+`CONSUMER_TOKEN_MODE=absent` and no token archive, with
+`CONSUMER_TOKEN_MODE=0.2.1 DESIGN_TOKENS_ARCHIVE=<the reviewed 0.2.1 archive>`,
+and with `CONSUMER_TOKEN_MODE=0.3.0` plus the reviewed 0.3.0 archive (or its
+public registry version). Each mode runs the same static, Chromium, packed
+consumer, and SSR checks; an absent mode must not install or import the token
+package.
+
 The framework candidate using the public `@global-torque/ui-kit@0.1.4`
 dependency produces 23 release assets including the retained browser contract
 report. Its authenticated transport consumes

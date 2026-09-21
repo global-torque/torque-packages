@@ -6,6 +6,13 @@ const root = path.resolve(new URL('..', import.meta.url).pathname);
 const candidate = process.argv[2] ?? '0.4.5';
 const reconciliation = JSON.parse(fs.readFileSync(path.join(root, 'docs/source-reconciliation.json'), 'utf8'));
 if (candidate !== reconciliation.candidate) throw new Error(`Candidate ${candidate} is not the reviewed ${reconciliation.candidate}`);
+const tokenMatrix = reconciliation.compatibilityMatrix?.designTokens;
+if (
+  !Array.isArray(tokenMatrix)
+  || JSON.stringify(tokenMatrix.map(entry => entry.cohort)) !== JSON.stringify(['absent', '0.2.1', '0.3.0'])
+  || tokenMatrix.some(entry => entry.cohort !== 'absent' && (!entry.sourceCommit || !entry.archiveSha256 || !entry.integrity || !entry.inventorySha256 || !entry.attestation?.sha256))
+  || tokenMatrix.some(entry => entry.cohort === 'absent' && entry.archive !== null)
+) throw new Error('Candidate compatibility matrix must bind absent, 0.2.1, and 0.3.0 token modes');
 for (const entry of reconciliation.packages) {
   const manifest = JSON.parse(fs.readFileSync(path.join(root, entry.directory, 'package.json'), 'utf8'));
   if (manifest.name !== entry.name || manifest.version !== candidate || manifest.private) {

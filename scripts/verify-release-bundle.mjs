@@ -95,6 +95,22 @@ function assertArchiveInventory(archiveFiles, manifest, packageName) {
 }
 if (receipt.schemaVersion !== 1 || receipt.immutable !== true || receipt.promotable !== false) throw new Error('Receipt is not an immutable non-promotable candidate');
 if (JSON.stringify(receipt.externalDependencies) !== JSON.stringify(reconciliation.externalDependencies)) throw new Error('Receipt external dependency identity differs from source reconciliation');
+if (JSON.stringify(receipt.compatibilityMatrix) !== JSON.stringify(reconciliation.compatibilityMatrix)) throw new Error('Receipt compatibility matrix differs from source reconciliation');
+const tokenMatrix = receipt.compatibilityMatrix?.designTokens;
+if (
+  !Array.isArray(tokenMatrix)
+  || JSON.stringify(tokenMatrix.map(entry => entry.cohort)) !== JSON.stringify(['absent', '0.2.1', '0.3.0'])
+  || tokenMatrix.some(entry => entry.cohort !== 'absent' && (
+    typeof entry.sourceTag !== 'string'
+    || !/^[0-9a-f]{40}$/u.test(entry.sourceCommit ?? '')
+    || typeof entry.archive !== 'string'
+    || !/^[0-9a-f]{64}$/u.test(entry.archiveSha256 ?? '')
+    || !/^sha512-[A-Za-z0-9+/]+=*$/u.test(entry.integrity ?? '')
+    || !/^[0-9a-f]{64}$/u.test(entry.inventorySha256 ?? '')
+    || !/^[0-9a-f]{64}$/u.test(entry.attestation?.sha256 ?? '')
+  ))
+  || tokenMatrix.some(entry => entry.cohort === 'absent' && entry.archive !== null)
+) throw new Error('Receipt compatibility matrix does not bind absent, 0.2.1, and 0.3.0 token identities');
 if (typeof receipt.sourceRepository !== 'string' || typeof receipt.sourcePackageRepository !== 'string') throw new Error('Receipt source repositories are missing');
 if (typeof receipt.sourceDirty !== 'boolean') throw new Error('Receipt source cleanliness is missing');
 if (receipt.sourceRevision !== null && !/^[0-9a-f]{40}$/u.test(receipt.sourceRevision)) throw new Error('Receipt source revision is not a full commit or null');

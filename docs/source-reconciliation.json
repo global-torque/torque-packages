@@ -179,6 +179,15 @@
         "integrity": "sha512-eh5fRUsWYcoM+c0O3EoTP52ABQ1MRyafJWzhsyA7x7qxF3Trub7e8PiYDUtnfmpXNmQbvD5uu63iGM8/VP7TsA==",
         "inventorySha256": "c6beb3de558b6051402717b16b16002e691ca3203b6310d92290879a60a1baf3",
         "attestationSha256": "b71b5642bbef89d1ba8ea98c24d9e3f70b3905c5dd07bb50f0ced55503fb89bb",
+        "attestation": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@global-torque%2fdesign-tokens@0.3.0",
+          "sha256": "b71b5642bbef89d1ba8ea98c24d9e3f70b3905c5dd07bb50f0ced55503fb89bb",
+          "predicateTypes": [
+            "https://github.com/npm/attestation/tree/main/specs/publish/v0.1",
+            "https://slsa.dev/provenance/v1"
+          ],
+          "count": 2
+        },
         "expected": "semantic overrides and primitive resolution remain compatible; visual parity is certified only for the 0.2.1 consumer cohort"
       }
     ],

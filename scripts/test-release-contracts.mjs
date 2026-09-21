@@ -57,6 +57,9 @@ const provenanceWorkflow = fs.readFileSync(path.join(root, '.github/workflows/np
 const publisherWorkflow = fs.readFileSync(path.join(root, '.github/workflows/publish.yml'), 'utf8');
 const consumerScript = fs.readFileSync(path.join(root, 'scripts/verify-archive-consumers.mjs'), 'utf8');
 const packCandidateScript = fs.readFileSync(path.join(root, 'scripts/pack-candidate.mjs'), 'utf8');
+assert.match(consumerScript, /CONSUMER_TOKEN_MODE/u, 'Detached consumers must select an explicit token compatibility mode');
+assert.match(consumerScript, /new Set\(\['absent', '0\.2\.1', '0\.3\.0'\]\)/u, 'Detached consumers must support all reviewed token modes');
+assert.match(packCandidateScript, /compatibilityMatrix: reconciliation\.compatibilityMatrix/u, 'Candidate receipt must bind the complete token compatibility matrix');
 assert.match(releaseWorkflow, /gh api[\s\S]+releases\//u);
 assert.doesNotMatch(releaseWorkflow, /actions\/download-artifact/u);
 assert.match(releaseWorkflow, /global-torque-ui-kit-0\.1\.4\.tgz/u);
@@ -579,6 +582,7 @@ function makeCandidate(directory) {
     generatedAt: '2026-01-01T00:00:00.000Z', lockfileSha256: 'b'.repeat(64),
     uiKit: { mode: 'registry', package: '@global-torque/ui-kit', version: '0.1.4' },
     externalDependencies: reconciliation.externalDependencies,
+    compatibilityMatrix: reconciliation.compatibilityMatrix,
     browserContract: {
       schemaVersion: 1, package: '@global-torque/invest-shell', file: 'browser-contract-report.json',
       sha256: sha256(Buffer.from(JSON.stringify({ schemaVersion: 1, package: '@global-torque/invest-shell', playwright: '1.63.0', chromium: 'chromium', result: 'pass', checks: [] }) + '\n')),

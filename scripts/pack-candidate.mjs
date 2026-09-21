@@ -292,6 +292,7 @@ const receipt = {
   lockfileSha256: lockfile,
   uiKit,
   externalDependencies: externalDependenciesReceipt.dependencies,
+  compatibilityMatrix: reconciliation.compatibilityMatrix,
   browserContract,
   packages: entries,
   dependencyOrder: packages.map(entry => entry.name),

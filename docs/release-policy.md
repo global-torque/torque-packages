@@ -48,6 +48,13 @@ header and offer-details surfaces, and restores footer/login public-hook
 defaults. The retained 0.4.0 plus design-tokens 0.2.1 pair remains the source
 and rollback reference. Absent-token, authenticated 0.2.1 and authenticated
 0.3.0 checks are required before promotion.
+The reproducible detached command is
+`CONSUMER_TOKEN_MODE=<absent|0.2.1|0.3.0> CONSUMER_PACKAGE_MANAGERS=npm,pnpm node scripts/verify-archive-consumers.mjs <candidate-artifacts>`;
+the `absent` mode omits `DESIGN_TOKENS_ARCHIVE`, while `0.2.1` requires the
+retained archive named by the compatibility matrix. The candidate receipt
+copies and cryptographically binds that complete matrix, including both token
+archive identities and the absent-token contract.
+
 Local verification does not authorize publication; the external Alchemy
 TypeScript peer declaration remains a documented owner handoff item in
 [the migration results](dependency-migration-results.md).
