@@ -3,7 +3,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 
 const root = path.resolve(new URL('..', import.meta.url).pathname);
-const candidate = process.argv[2] ?? '0.4.4';
+const candidate = process.argv[2] ?? '0.4.5';
 const reconciliation = JSON.parse(fs.readFileSync(path.join(root, 'docs/source-reconciliation.json'), 'utf8'));
 if (candidate !== reconciliation.candidate) throw new Error(`Candidate ${candidate} is not the reviewed ${reconciliation.candidate}`);
 for (const entry of reconciliation.packages) {

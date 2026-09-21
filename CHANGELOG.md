@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.4.5 candidate
+
+- Restored the inverse-footer disabled-text fallback used by the 0.4.0
+  framework with design-tokens 0.2.1 while retaining public UI-role
+  overrides, price-update contract changes, and the 0.4.4 shadow fixes.
+- Added absent, authenticated 0.2.1, and authenticated 0.3.0 token-matrix
+  coverage to the static and Chromium CSS contracts.
+
+## 0.4.4 abandoned candidate
+
+- Immutable candidate tag `framework-v0.4.4` points to tag object
+  `ea01e06fb017c45b4a0fa68e2e52f4b066a7bbba` and peeled commit
+  `a4096405224dba6cd440129a70c90f8da373d4df`; candidate run `35547808990`
+  succeeded. No GitHub release or npm package exists; the tag is never moved,
+  deleted, or reused.
+
 ## 0.4.4 candidate
 
 - Corrected generic control, dialog, and raised shadows to derive from the

@@ -1,5 +1,5 @@
 {
-  "candidate": "0.4.4",
+  "candidate": "0.4.5",
   "abandonedCandidates": [
     {
       "candidate": "0.4.1",
@@ -33,19 +33,30 @@
       "githubRelease": false,
       "npmPublished": false,
       "recovery": "Never move, delete, or reuse the immutable tag; use a new candidate identity"
+    },
+    {
+      "candidate": "0.4.4",
+      "tag": "framework-v0.4.4",
+      "tagObject": "ea01e06fb017c45b4a0fa68e2e52f4b066a7bbba",
+      "peeledCommit": "a4096405224dba6cd440129a70c90f8da373d4df",
+      "candidateRuns": ["35547808990"],
+      "failure": "Superseded before publication after the required visual comparison exposed a token-cohort footer difference",
+      "githubRelease": false,
+      "npmPublished": false,
+      "recovery": "Never move, delete, or reuse the immutable tag; use a new candidate identity"
     }
   ],
   "targetRepository": "global-torque/torque-packages",
   "sourceOwner": "global-torque/dashboard.webdevelop.biz",
   "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3",
   "packages": [
-    { "name": "@global-torque/domain-types", "directory": "packages/domain-types", "version": "0.4.4", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 1 },
-    { "name": "@global-torque/invest-core", "directory": "packages/invest-core", "version": "0.4.4", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 2 },
-    { "name": "@global-torque/invest-data", "directory": "packages/invest-data", "version": "0.4.4", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 3 },
-    { "name": "@global-torque/invest-runtime", "directory": "packages/invest-runtime", "version": "0.4.4", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 4 },
-    { "name": "@global-torque/invest-widgets", "directory": "packages/invest-widgets", "version": "0.4.4", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 5 },
-    { "name": "@global-torque/invest-features", "directory": "packages/invest-features", "version": "0.4.4", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 6 },
-    { "name": "@global-torque/invest-shell", "directory": "packages/invest-shell", "version": "0.4.4", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 7 }
+    { "name": "@global-torque/domain-types", "directory": "packages/domain-types", "version": "0.4.5", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 1 },
+    { "name": "@global-torque/invest-core", "directory": "packages/invest-core", "version": "0.4.5", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 2 },
+    { "name": "@global-torque/invest-data", "directory": "packages/invest-data", "version": "0.4.5", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 3 },
+    { "name": "@global-torque/invest-runtime", "directory": "packages/invest-runtime", "version": "0.4.5", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 4 },
+    { "name": "@global-torque/invest-widgets", "directory": "packages/invest-widgets", "version": "0.4.5", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 5 },
+    { "name": "@global-torque/invest-features", "directory": "packages/invest-features", "version": "0.4.5", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 6 },
+    { "name": "@global-torque/invest-shell", "directory": "packages/invest-shell", "version": "0.4.5", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 7 }
   ],
   "nodeExports": {
     "conditionOrder": ["types", "node", "default"],
@@ -131,6 +142,48 @@
       }
     }
   },
+  "compatibilityMatrix": {
+    "designTokens": [
+      {
+        "cohort": "absent",
+        "expected": "literal and semantic fallbacks render without unresolved variables",
+        "archive": null
+      },
+      {
+        "cohort": "0.2.1",
+        "sourceRepository": "global-torque/design-tokens",
+        "sourceTag": "v0.2.1",
+        "sourceCommit": "920836ff90931e323ad2180573d9448c00b6fc15",
+        "archive": "global-torque-design-tokens-0.2.1.tgz",
+        "archiveSha256": "0810c99e278efbaf3e37baa2b8c4dc2143d6cef24e4ba1b7686b81a4074e701a",
+        "integrity": "sha512-f/AsQAGbArIwl30kz/WA4yh7z8x4QzpbWmEhkBdRhnGsVb0rUJ7+qHBqTNJH85fFszDG2SiHssz831gnVrYAkw==",
+        "inventorySha256": "ad4d263b0ac8055a88953991e5a92d7020327827d88ff8e874c73fc532874e09",
+        "attestation": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@global-torque%2fdesign-tokens@0.2.1",
+          "sha256": "9dfd387e1c247e529909461be51837b9d2444f92608b05082b0828165839875f",
+          "predicateTypes": [
+            "https://github.com/npm/attestation/tree/main/specs/publish/v0.1",
+            "https://slsa.dev/provenance/v1"
+          ],
+          "count": 2
+        },
+        "expected": "framework 0.4.5 matches the framework 0.4.0 plus design-tokens 0.2.1 rendered contract"
+      },
+      {
+        "cohort": "0.3.0",
+        "sourceRepository": "global-torque/design-tokens",
+        "sourceTag": "v0.3.0",
+        "sourceCommit": "c263e35d749b5574d1b919665f3d029081344d7b",
+        "archive": "design-tokens-0.3.0.tgz",
+        "archiveSha256": "fe47604d05ba1ff7a038acf29051cac2cf48882babe26824e12da5b5651fb187",
+        "integrity": "sha512-eh5fRUsWYcoM+c0O3EoTP52ABQ1MRyafJWzhsyA7x7qxF3Trub7e8PiYDUtnfmpXNmQbvD5uu63iGM8/VP7TsA==",
+        "inventorySha256": "c6beb3de558b6051402717b16b16002e691ca3203b6310d92290879a60a1baf3",
+        "attestationSha256": "b71b5642bbef89d1ba8ea98c24d9e3f70b3905c5dd07bb50f0ced55503fb89bb",
+        "expected": "semantic overrides and primitive resolution remain compatible; visual parity is certified only for the 0.2.1 consumer cohort"
+      }
+    ],
+    "checks": ["static-css-resolution", "browser-computed-colors-and-shadows", "host-semantic-overrides", "packed-detached-consumer", "SSR"]
+  },
   "patches": [],
   "assetInventory": {
     "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3",
@@ -143,10 +196,10 @@
     "document": "docs/asset-inventory.md"
   },
   "compatibility": {
-    "internalWorkspaceLinks": "only among the seven packages in this repository during development; pnpm pack must rewrite them to 0.4.4",
+    "internalWorkspaceLinks": "only among the seven packages in this repository during development; pnpm pack must rewrite them to 0.4.5",
     "externalResolution": "installed public releases only; no source copies, file links, catalogs, or private registry references",
     "runtimeSingletons": ["vue", "pinia", "vue-router"],
-    "uiKit": "0.1.4 candidate is selected by vue-ui; primitives remain at 0.1.3; framework widgets are owned here at 0.4.4",
+    "uiKit": "0.1.4 candidate is selected by vue-ui; primitives remain at 0.1.3; framework widgets are owned here at 0.4.5",
     "frameworkReleaseAssets": "The framework candidate using the public @global-torque/ui-kit@0.1.4 dependency produces 23 release assets including the browser contract report; the authenticated UI Kit transport uses 6 conditional assets and retains 4 conditional canonical/derived lock-workspace overlay files.",
     "rollout": "domain-types, invest-core, invest-data, invest-runtime, invest-widgets, invest-features, invest-shell; consumers install the complete receipt after all lower packages are available",
     "abortSignals": ["missing public artifact", "workspace or private dependency in packed manifest", "digest mismatch", "source or rights review failure", "runtime singleton duplication"],

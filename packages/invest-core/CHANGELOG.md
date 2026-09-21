@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.4.5 candidate
+
+- Reissued the seven-package cohort with the inverse-footer compatibility fix;
+  core contracts and the final `price_update` removal are unchanged.
+
+## 0.4.4 abandoned candidate
+
+- Immutable candidate was superseded before publication; no registry package
+  exists.
+
 ## 0.4.4 candidate
 
 - Reissued the seven-package cohort after the accepted Invest Shell CSS

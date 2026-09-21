@@ -10,6 +10,9 @@ package identity as `sourcePackageRepository`/`sourcePackageRevision`.
 It also records the exact authenticated external dependency receipt for
 `@global-torque/design-tokens@0.3.0`, including archive SRI, archive and
 inventory digests, source tag/commit and npm publish/SLSA attestation digests.
+The 0.4.5 compatibility matrix separately retains the verified 0.2.1 source
+tag/commit, archive SRI, inventory and attestation digest used for consumer
+pixel parity, together with the absent-token case.
 Local extracted workspaces can emit a receipt with `sourceDirty: true` and a
 null target revision; those bytes are test overlays only. The candidate
 workflow requires a clean target checkout and records its full commit before
@@ -37,13 +40,14 @@ restored before the candidate is packed, so packed manifests and receipts
 retain the public registry dependency. Omitting the transport release uses the
 frozen public lockfile and requires the UI Kit release to be available.
 
-Candidate 0.4.4 reissues the seven-package cohort with the final
-`price_update` removal retained and the Invest Shell design-token fallback and
-shadow compatibility contract. It corrects generic shadows to remain
+Candidate 0.4.5 reissues the seven-package cohort with the final
+`price_update` removal retained and the Invest Shell inverse-footer fallback
+and shadow compatibility contract. It corrects generic shadows to remain
 foreground-derived while preserving the fixed neutral fallback only for the
 header and offer-details surfaces, and restores footer/login public-hook
-defaults. The retained 0.4.0 candidate remains the source
-and rollback reference.
+defaults. The retained 0.4.0 plus design-tokens 0.2.1 pair remains the source
+and rollback reference. Absent-token, authenticated 0.2.1 and authenticated
+0.3.0 checks are required before promotion.
 Local verification does not authorize publication; the external Alchemy
 TypeScript peer declaration remains a documented owner handoff item in
 [the migration results](dependency-migration-results.md).
@@ -64,9 +68,12 @@ object `d2def7e456f4e9fe7506e568b4c2d4eb1527a280`, peeled commit
 `1bf1fe05171ba370df506cb3e475775ce765e220`, and successful candidate run
 `35544840055`, but was superseded before publication by the accepted footer
 role recovery. No GitHub release or npm `0.4.3` package exists; never move,
-delete, or reuse that tag. The new ordinary immutable release tag is
-`framework-v0.4.4` for the `0.4.4` candidate. Dispatch the candidate workflow
-from that tag so its attestations carry `refs/tags/framework-v0.4.4`. The prior `framework-v0.2.2`
+delete, or reuse that tag. The immutable `framework-v0.4.4` candidate is also
+abandoned after its required visual comparison exposed a token-cohort footer
+difference; no GitHub release or npm `0.4.4` package exists and its tag is
+never moved, deleted, or reused. The new ordinary immutable release tag is
+`framework-v0.4.5` for the `0.4.5` candidate. Dispatch the candidate workflow
+from that tag so its attestations carry `refs/tags/framework-v0.4.5`. The prior `framework-v0.2.2`
 source tag, commit, and immutable artifact history remain retained for audit;
 its package bytes and provenance are not replaced. The earlier
 `framework-v0.2.0` run failed before installation, build, or packing; no

@@ -1,7 +1,7 @@
 # Source and release reconciliation
 
-The `0.4.4` candidate reissues the seven-package cohort with the completed
-`invest-shell` token fallback and shadow contract. The breaking stablecoin
+The `0.4.5` candidate reissues the seven-package cohort with the completed
+`invest-shell` inverse-footer token fallback and shadow contract. The breaking stablecoin
 redemption contract, including the final `price_update` removal, remains
 unchanged from the retained `0.4.0` source. It also retains the
 the dependency-migrated framework cohort with selective analytics/request
@@ -21,11 +21,15 @@ intermediate compatibility, abort signals, and recovery rule are recorded in
 [`source-reconciliation.json`](./source-reconciliation.json).
 
 The candidate consumes the authenticated external
-`@global-torque/design-tokens@0.3.0` archive. Its exact SRI, archive digest,
-archive inventory digest, source commit/tag and npm publish/SLSA attestations
-are bound in [`source-reconciliation.json`](./source-reconciliation.json) and
-must be retained with candidate evidence. This archive is an external input;
-the framework repository never republishes it.
+`@global-torque/design-tokens@0.3.0` archive for producer development. Its
+exact SRI, archive digest, archive inventory digest, source commit/tag and npm
+publish/SLSA attestations are bound in
+[`source-reconciliation.json`](./source-reconciliation.json) and must be
+retained with candidate evidence. The compatibility matrix also binds the
+verified `0.2.1` archive, source tag/commit, SRI, inventory and attestation
+digest used by the consumer parity gate, plus the absent-token fallback case.
+These archives are external inputs; the framework repository never republishes
+them.
 
 The framework candidate using the public `@global-torque/ui-kit@0.1.4`
 dependency produces 23 release assets including the retained browser contract
@@ -78,4 +82,7 @@ candidate run; it
 points to tag object `d2def7e456f4e9fe7506e568b4c2d4eb1527a280`, peeled commit
 `1bf1fe05171ba370df506cb3e475775ce765e220`, and run `35544840055`. No GitHub
 release or npm package exists. The tag is never moved, deleted, or reused.
-Candidate `0.4.4` is the new immutable release identity.
+Candidate `0.4.4` was superseded before publication after its visual gate
+exposed a token-cohort footer difference. Its immutable tag and successful
+candidate evidence remain retained; no GitHub release or npm package exists.
+Candidate `0.4.5` is the new immutable release identity.

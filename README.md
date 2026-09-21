@@ -4,12 +4,12 @@ This repository is the independent source workspace for the seven investment
 framework packages under the `@global-torque` namespace. The workspace root
 is private; each package is an independently reviewed MIT package candidate.
 
-The current candidate is `0.4.4` for all seven packages. It is source based:
+The current candidate is `0.4.5` for all seven packages. It is source based:
 published files contain the explicit `src` exports and the host application
 provides the Vue/Vite toolchain and singleton peers. The candidate is local and
 non-promotable until the primary maintainer completes the accepted release
 gates. Dispatch the candidate workflow from the matching
-`framework-v0.4.4` tag when producing attestations. The previously reviewed
+`framework-v0.4.5` tag when producing attestations. The previously reviewed
 `framework-v0.2.2` source tag, commit, and immutable artifacts remain
 retained as history; no canonical `0.2.0` package artifacts were produced.
 The immutable `framework-v0.4.2` candidate was superseded before publication by
@@ -20,6 +20,11 @@ The immutable `framework-v0.4.3` candidate was also superseded before
 publication by the accepted footer-role recovery. Its tag and successful
 candidate evidence remain retained for audit; it has no GitHub release or npm
 publication and the tag is never moved, deleted, or reused.
+The immutable `framework-v0.4.4` candidate was superseded before publication
+after its public Invest visual comparison exposed a token-cohort footer
+difference. Its tag and successful candidate evidence remain retained for
+audit; it has no GitHub release or npm publication and the tag is never moved,
+deleted, or reused.
 
 Development and package consumption require Node `^24.21.0`; `.node-version`
 and CI pin 24.21.0. Bootstrap pnpm with `corepack enable` and

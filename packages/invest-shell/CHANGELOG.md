@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.4.5 candidate
+
+- Kept the public footer UI-role overrides while restoring the inverse-footer
+  fallback that produces the framework 0.4.0/design-tokens 0.2.1 pixels.
+- Added explicit absent, 0.2.1, and 0.3.0 token compatibility checks to the
+  static and Chromium CSS contracts.
+
+## 0.4.4 abandoned candidate
+
+- Immutable candidate was superseded before publication; no registry package
+  exists.
+
 ## 0.4.4 candidate
 
 - Corrected generic shadows to derive from the host foreground while keeping
