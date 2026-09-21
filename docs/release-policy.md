@@ -122,7 +122,7 @@ sibling package. The 0.2.1 and 0.3.0 paths did not run. It points to tag object
 `ffe335f89e9be5101a2ee5bdf428218126890193`, peeled commit
 `7650c04a5173e4fd644146771829ff252bb2eae7`, candidate run `35571502342`, and
 candidate artifact `10626585626`; no GitHub release or npm package exists and
-the tag is never moved, deleted, or reused. The new ordinary immutable release tag is
+the tag is never moved, deleted, or reused.
 The immutable `framework-v0.4.11` candidate is also abandoned because CI run
 `35574140527` and candidate run `35574298182` launched the browser contract
 before Playwright/dependency installation. The dedicated CSS-browser job passed,
