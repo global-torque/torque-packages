@@ -1,7 +1,7 @@
 {
   "name": "@global-torque/invest-shell",
   "private": false,
-  "version": "0.4.7",
+  "version": "0.4.8",
   "description": "Investment application shell components, navigation, runtime facades, and styles.",
   "license": "MIT",
   "engines": { "node": "^24.21.0" },

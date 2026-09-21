@@ -1,10 +1,21 @@
 # Changelog
 
-## 0.4.7 candidate
+## 0.4.8 candidate
 
 - Restored the PWA login accent override with the host `--primary` fallback,
   preserving the 0.4.0 visual contract while retaining the 0.4.6 geometry
   recovery and final `price_update` removal.
+- Restored the 0.4.0 footer disclosure and copyright colors through the host
+  `--color-text-disabled` token while preserving public UI-role precedence.
+
+## 0.4.7 abandoned candidate
+
+- Immutable tag `framework-v0.4.7` points to tag object
+  `5741d64dc590a631ab7f54da1a4b19e7c91f0123` and peeled commit
+  `b60c4ec7ef46ee29d83d201fc381977c30279e1c`; candidate run `35562211887`
+  succeeded, but authenticated Platform desktop parity exposed invisible footer
+  disclosure and copyright text. No GitHub release or npm package exists and
+  the tag is never moved, deleted, or reused.
 
 ## 0.4.6 candidate
 

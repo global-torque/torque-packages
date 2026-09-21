@@ -40,7 +40,7 @@ restored before the candidate is packed, so packed manifests and receipts
 retain the public registry dependency. Omitting the transport release uses the
 frozen public lockfile and requires the UI Kit release to be available.
 
-Candidate 0.4.7 reissues the seven-package cohort with the final
+Candidate 0.4.8 reissues the seven-package cohort with the final
 `price_update` removal retained and the Invest Shell inverse-footer fallback
 and shadow compatibility contract. It restores the 0.4.0 plus design-tokens
 0.2.1 geometry by using reviewed CSS-wide `unset` terminals for direct
@@ -91,9 +91,15 @@ never moved, deleted, or reused. The immutable
 `framework-v0.4.6` candidate is also abandoned after its required PWA login
 visual parity gate exposed a fixed accent fallback in the Investor mobile
 header; no GitHub release or npm package exists and its tag is never moved,
-deleted, or reused. The new ordinary immutable release tag is
-`framework-v0.4.7` for the `0.4.7` candidate. Dispatch the candidate workflow
-from that tag so its attestations carry `refs/tags/framework-v0.4.7`. The prior
+deleted, or reused. The immutable `framework-v0.4.7` candidate is also
+abandoned after its authenticated Platform desktop visual parity gate exposed
+invisible footer disclosure and copyright text. It points to tag object
+`5741d64dc590a631ab7f54da1a4b19e7c91f0123`, peeled commit
+`b60c4ec7ef46ee29d83d201fc381977c30279e1c`, and successful candidate run
+`35562211887`. No GitHub release or npm package exists and the tag is never
+moved, deleted, or reused. The new ordinary immutable release tag is
+`framework-v0.4.8` for the `0.4.8` candidate. Dispatch the candidate workflow
+from that tag so its attestations carry `refs/tags/framework-v0.4.8`. The prior
 `framework-v0.2.2`
 source tag, commit, and immutable artifact history remain retained for audit;
 its package bytes and provenance are not replaced. The earlier

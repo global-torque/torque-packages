@@ -1,9 +1,17 @@
 # Changelog
 
-## 0.4.7 candidate
+## 0.4.8 candidate
 
 - Restored the PWA login accent override with the host `--primary` fallback
   for both login text and the login arrow asset.
+- Restored footer disclosure and copyright colors through the host
+  `--color-text-disabled` token while preserving public UI-role precedence.
+
+## 0.4.7 abandoned candidate
+
+- Superseded before publication after authenticated Platform desktop parity
+  exposed invisible footer disclosure and copyright text; no registry package
+  exists.
 
 ## 0.4.6 candidate
 

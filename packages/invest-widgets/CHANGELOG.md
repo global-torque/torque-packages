@@ -1,8 +1,15 @@
 # Changelog
 
-## 0.4.7 candidate
+## 0.4.8 candidate
 
-- Reissued the seven-package cohort with the PWA login fallback correction.
+- Reissued the seven-package cohort with the PWA login and footer compatibility
+  corrections.
+
+## 0.4.7 abandoned candidate
+
+- Superseded before publication after authenticated Platform desktop parity
+  exposed invisible footer disclosure and copyright text; no registry package
+  exists.
 
 ## 0.4.6 candidate
 
