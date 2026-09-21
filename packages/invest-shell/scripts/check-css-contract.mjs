@@ -132,9 +132,17 @@ assert.match(
   /\[data-slot='button'\]\[data-variant='default'\][\s\S]*box-shadow: var\(--ui-shadow-control, var\(--shadow-control\)\)/u,
   "filled controls retain the foreground-derived shadow",
 );
-const fixedLocalShadow = /box-shadow:\s*var\(\s*--ui-shadow-control,\s*0 2px 5px 1px color-mix\(in srgb, #12161f 3%, transparent\),\s*0 2px 3px -2px color-mix\(in srgb, #12161f 15%, transparent\)\s*\)/u;
-assert.match(headerBar, fixedLocalShadow, "header bar must retain its neutral-950 local shadow fallback");
-assert.match(offersDetailsSide, fixedLocalShadow, "offer details side must retain its neutral-950 local shadow fallback");
+const oldLocalShadowFallback = /var\(\s*--ui-shadow-control,\s*0 2px 5px 1px color-mix\(in srgb, #12161f 3%, transparent\),\s*0 2px 3px -2px color-mix\(in srgb, #12161f 15%, transparent\)\s*\)/gu;
+assert.equal(
+  [...headerBar.matchAll(oldLocalShadowFallback)].length + [...offersDetailsSide.matchAll(oldLocalShadowFallback)].length,
+  0,
+  "header and offer surfaces must not retain the hard-coded neutral shadow fallback",
+);
+assert.doesNotMatch(headerBar, /#12161f|color-mix\(in srgb, #12161f/u, "header bar must not contain the old local shadow literal");
+assert.doesNotMatch(offersDetailsSide, /#12161f|color-mix\(in srgb, #12161f/u, "offer details side must not contain the old local shadow literal");
+const semanticLocalShadow = /box-shadow:\s*var\(--ui-shadow-control,\s*var\(--shadow-control\)\)/gu;
+assert.equal([...headerBar.matchAll(semanticLocalShadow)].length, 2, "header bar must use the semantic shadow fallback for fixed and mobile states");
+assert.equal([...offersDetailsSide.matchAll(semanticLocalShadow)].length, 1, "offer details side must use the semantic shadow fallback");
 const footerStyles = footers.join("\n");
 const [vFooter, vFooterBottom, vFooterMenu, vFooterText] = footers;
 const footerContracts = [

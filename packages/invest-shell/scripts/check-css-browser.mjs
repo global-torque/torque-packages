@@ -10,6 +10,19 @@ const packageDirectory = path.resolve(
 );
 const geometry = await fs.readFile(path.join(packageDirectory, "src/styles/geometry.css"), "utf8");
 const components = await fs.readFile(path.join(packageDirectory, "src/styles/components.css"), "utf8");
+const headerBar = await fs.readFile(path.join(packageDirectory, "src/components/VHeaderBar/VHeaderBar.vue"), "utf8");
+const offersDetailsSide = await fs.readFile(path.resolve(packageDirectory, "../invest-features/src/offers/components/OffersDetailsSide.vue"), "utf8");
+const oldLocalShadowFallback = /var\(\s*--ui-shadow-control,\s*0 2px 5px 1px color-mix\(in srgb, #12161f 3%, transparent\),\s*0 2px 3px -2px color-mix\(in srgb, #12161f 15%, transparent\)\s*\)/gu;
+assert.equal(
+  [...headerBar.matchAll(oldLocalShadowFallback)].length + [...offersDetailsSide.matchAll(oldLocalShadowFallback)].length,
+  0,
+  "header and offer surfaces must not retain the hard-coded neutral shadow fallback",
+);
+assert.doesNotMatch(headerBar, /#12161f|color-mix\(in srgb, #12161f/u, "header bar must not contain the old local shadow literal");
+assert.doesNotMatch(offersDetailsSide, /#12161f|color-mix\(in srgb, #12161f/u, "offer details side must not contain the old local shadow literal");
+const semanticLocalShadow = /box-shadow:\s*var\(--ui-shadow-control,\s*var\(--shadow-control\)\)/gu;
+assert.equal([...headerBar.matchAll(semanticLocalShadow)].length, 2, "header bar must use the semantic shadow fallback for fixed and mobile states");
+assert.equal([...offersDetailsSide.matchAll(semanticLocalShadow)].length, 1, "offer details side must use the semantic shadow fallback");
 const footerPaths = [
   "src/components/VFooter/VFooter.vue",
   "src/components/VFooter/VFooterBottom.vue",
@@ -239,9 +252,7 @@ const probeStyle = `
   .border-probe { border-top: 1px solid var(--color-border-strong); }
   .overlay-probe { background-color: var(--color-overlay-page); }
   .local-shadow-probe {
-    box-shadow: var(--ui-shadow-control,
-      0 2px 5px 1px color-mix(in srgb, #12161f 3%, transparent),
-      0 2px 3px -2px color-mix(in srgb, #12161f 15%, transparent));
+    box-shadow: var(--ui-shadow-control, var(--shadow-control));
   }
 `;
 
@@ -272,8 +283,8 @@ try {
     ["resource-text-inherits-host-color", await computed("resource", "color"), "rgb(255, 0, 0)"],
     ["border-fallback-current-color", await computed("border", "border-top-color"), "rgb(255, 0, 0)"],
     ["overlay-fallback-transparent", await computed("overlay", "background-color"), "color(srgb 0 0 0 / 0)"],
-    ["header-local-neutral-shadow", normalizeShadow(await computed("header-local", "box-shadow")), "0 2px 5px 1px rgb(18 22 31 / 3%), 0 2px 3px -2px rgb(18 22 31 / 15%)"],
-    ["offer-local-neutral-shadow", normalizeShadow(await computed("offer-local", "box-shadow")), "0 2px 5px 1px rgb(18 22 31 / 3%), 0 2px 3px -2px rgb(18 22 31 / 15%)"],
+    ["header-local-semantic-shadow", normalizeShadow(await computed("header-local", "box-shadow")), shadowValues.redControl],
+    ["offer-local-semantic-shadow", normalizeShadow(await computed("offer-local", "box-shadow")), shadowValues.redControl],
     ["sheet-shadow", normalizeShadow(await computed("sheet", "box-shadow")), "0 25px 50px -12px rgba(0, 0, 0, 0.25)"],
     ["badge-shadow", normalizeShadow(await computed("badge", "box-shadow")), "0 2px 4px 0 rgba(0, 0, 0, 0.15)"],
     ["footer-surface-host-foreground", await computed("footer-surface", "background-color"), "rgb(255, 0, 0)"],
@@ -350,9 +361,24 @@ try {
     ["control-shadow-host-foreground", "control", shadowValues.greenControl],
     ["dialog-shadow-host-foreground", "dialog", shadowValues.greenDialog],
     ["raised-shadow-host-foreground", "raised", shadowValues.greenRaised],
+    ["header-local-shadow-host-foreground", "header-local", shadowValues.greenControl],
+    ["offer-local-shadow-host-foreground", "offer-local", shadowValues.greenControl],
   ]) {
     const actual = normalizeShadow(await computed(id, "box-shadow"));
     assert.equal(actual, expected, `${name} computed value mismatch`);
+    report.checks.push({ name, result: "pass", value: actual });
+  }
+  await page.evaluate(() => {
+    for (const id of ["header-local", "offer-local"]) {
+      document.getElementById(id)?.style.setProperty("--ui-shadow-control", "0 0 0 0 rgb(4 5 6)");
+    }
+  });
+  for (const [name, id] of [
+    ["header-local-ui-shadow-override", "header-local"],
+    ["offer-local-ui-shadow-override", "offer-local"],
+  ]) {
+    const actual = normalizeShadow(await computed(id, "box-shadow"));
+    assert.equal(actual, "0 0 0 0 rgb(4 5 6)", `${name} must honor the public UI shadow override`);
     report.checks.push({ name, result: "pass", value: actual });
   }
   report.result = "pass";
