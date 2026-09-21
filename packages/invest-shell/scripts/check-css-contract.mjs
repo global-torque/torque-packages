@@ -23,36 +23,53 @@ const headerBar = await fs.readFile(headerBarPath, "utf8");
 const offersDetailsSide = await fs.readFile(offersDetailsSidePath, "utf8");
 const footers = await Promise.all(footerPaths.map((footerPath) => fs.readFile(footerPath, "utf8")));
 
+// 0.2.1 intentionally does not publish these legacy aliases; its neutral
+// dictionary is a supported intermediate host, not a reason to invent a new
+// palette. The CSS-wide `unset` terminal restores 0.4.0's property behavior.
+// 0.3.0 publishes the aliases and therefore wins over the terminal value.
 const primitiveFallbacks = new Map([
-  ["--gt-primitive-color-grey-800", "#343a40"],
-  ["--gt-primitive-color-grey-700", "#495057"],
-  ["--gt-primitive-color-grey-500", "#adb5bd"],
-  ["--gt-primitive-color-grey-400", "#ced4da"],
-  ["--gt-primitive-color-navy-900", "#1a202d"],
-  ["--gt-primitive-color-primary-600", "#0042d4"],
-  ["--gt-primitive-color-secondary-600", "#35bf83"],
-  ["--gt-primitive-color-secondary-100", "#dff9ee"],
-  ["--gt-primitive-color-scarlet-50", "#fff1f1"],
-  ["--gt-primitive-color-gold-400", "#ffc24d"],
-  ["--gt-primitive-color-gold-50", "#fff7e8"],
-  ["--gt-primitive-color-grape-700", "#5014d0"],
-  ["--gt-primitive-color-grape-50", "#f8f5ff"],
-  ["--gt-primitive-color-iris-tint", "rgb(68 79 229 / 0.1255)"],
-  ["--gt-primitive-color-slate-200", "#e2e8f0"],
-  ["--gt-primitive-color-slate-950", "#020618"],
-  ["--gt-primitive-color-charcoal-500", "#333333"],
-  ["--gt-primitive-shadow-sheet", "0px 25px 50px -12px rgb(0 0 0 / 0.25)"],
-  ["--gt-primitive-shadow-badge", "0px 2px 4px 0px rgb(0 0 0 / 0.15)"],
-  ["--gt-primitive-color-azure-tint-200", "rgb(207 219 255 / 0.34)"],
-  ["--gt-primitive-color-azure-tint-100", "rgb(235 243 255 / 0.34)"],
+  ["--gt-primitive-color-grey-800", ["unset"]],
+  ["--gt-primitive-color-grey-700", ["unset"]],
+  ["--gt-primitive-color-grey-500", ["unset"]],
+  ["--gt-primitive-color-grey-400", ["unset"]],
+  ["--gt-primitive-color-navy-900", ["unset"]],
+  ["--gt-primitive-color-primary-600", ["unset"]],
+  ["--gt-primitive-color-secondary-600", ["unset"]],
+  ["--gt-primitive-color-secondary-100", ["unset"]],
+  ["--gt-primitive-color-scarlet-50", ["unset"]],
+  ["--gt-primitive-color-gold-400", ["unset"]],
+  ["--gt-primitive-color-gold-50", ["unset"]],
+  ["--gt-primitive-color-grape-700", ["unset"]],
+  ["--gt-primitive-color-grape-50", ["unset"]],
+  ["--gt-primitive-color-iris-tint", ["unset"]],
+  ["--gt-primitive-color-slate-200", ["unset"]],
+  ["--gt-primitive-color-slate-950", ["unset"]],
+  ["--gt-primitive-color-charcoal-500", ["unset", "transparent"]],
+  ["--gt-primitive-shadow-sheet", ["unset"]],
+  ["--gt-primitive-shadow-badge", ["unset"]],
+  ["--gt-primitive-color-azure-tint-200", ["unset"]],
+  ["--gt-primitive-color-azure-tint-100", ["unset"]],
 ]);
-
-for (const [primitive, fallback] of primitiveFallbacks) {
-  assert.ok(
-    geometry.includes(`var(${primitive}, ${fallback})`),
-    `${primitive} must retain the authenticated literal fallback ${fallback}`,
-  );
+const primitiveReads = [...geometry.matchAll(/var\((--gt-primitive-[a-z0-9-]+),\s*([^)]*)\)/gu)]
+  .map(([, primitive, fallback]) => ({ primitive, fallback: fallback.trim() }));
+assert.ok(primitiveReads.length >= primitiveFallbacks.size, "every reviewed primitive must be referenced");
+for (const [primitive, allowedFallbacks] of primitiveFallbacks) {
+  const reads = primitiveReads.filter((read) => read.primitive === primitive);
+  assert.ok(reads.length > 0, `${primitive} is missing from the static primitive inventory`);
+  for (const read of reads) {
+    assert.ok(allowedFallbacks.includes(read.fallback), `${primitive} has unreviewed terminal ${read.fallback}`);
+  }
 }
+assert.doesNotMatch(
+  geometry,
+  /var\(--gt-primitive-[a-z0-9-]+\)/u,
+  "primitive reads must always have an explicit reviewed terminal",
+);
+assert.match(
+  geometry,
+  /--color-overlay-page:\s*color-mix\(in srgb, var\(--gt-primitive-color-charcoal-500, transparent\) 20%, transparent\)/u,
+  "overlay fallback must remain transparent rather than inventing a palette literal",
+);
 
 assert.doesNotMatch(
   geometry,
@@ -73,11 +90,11 @@ assert.match(
 );
 assert.match(
   geometry,
-  /--shadow-sheet: var\(--gt-primitive-shadow-sheet, 0px 25px 50px -12px rgb\(0 0 0 \/ 0\.25\)\)/u,
+  /--shadow-sheet: var\(--gt-primitive-shadow-sheet, unset\)/u,
 );
 assert.match(
   geometry,
-  /--shadow-badge: var\(--gt-primitive-shadow-badge, 0px 2px 4px 0px rgb\(0 0 0 \/ 0\.15\)\)/u,
+  /--shadow-badge: var\(--gt-primitive-shadow-badge, unset\)/u,
 );
 assert.doesNotMatch(
   components,

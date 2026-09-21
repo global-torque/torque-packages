@@ -3,8 +3,10 @@
    (packages/ui-primitives/src/styles/theme.css). Brand palette, font and
    radius keep coming from the preset. Values only.
    Import order: the host must load @global-torque/design-tokens/css before
-   this file. Every primitive read has the authenticated 0.3.0 value as its
-   literal fallback so hosts can render the shell without a token stylesheet. */
+   this file. Primitive aliases deliberately end in the CSS-wide `unset` value
+   when a host has not supplied the alias. That preserves the 0.4.0 + 0.2.1
+   computed-property behavior; component properties then use their normal
+   inherit/currentColor/transparent/none initial behavior. */
 :root {
   --spacing-control-sm: 2rem;
   --spacing-control-md: 2.5rem;
@@ -31,24 +33,24 @@
   --color-status-success: var(--chart-2);
   --color-status-warning: var(--chart-3);
   --color-status-info: var(--chart-4);
-  --color-text-strong: var(--gt-primitive-color-grey-800, #343a40);
-  --color-text-meta: var(--gt-primitive-color-grey-700, #495057);
-  --color-text-disabled: var(--gt-primitive-color-grey-500, #adb5bd);
-  --color-border-strong: var(--gt-primitive-color-grey-400, #ced4da);
-  --color-surface-inverse-muted: var(--gt-primitive-color-navy-900, #1a202d);
-  --color-accent-strong: var(--gt-primitive-color-primary-600, #0042d4);
-  --color-positive-strong: var(--gt-primitive-color-secondary-600, #35bf83);
-  --color-positive-tint: var(--gt-primitive-color-secondary-100, #dff9ee);
-  --color-negative-tint: var(--gt-primitive-color-scarlet-50, #fff1f1);
-  --color-warning-accent: var(--gt-primitive-color-gold-400, #ffc24d);
-  --color-warning-tint: var(--gt-primitive-color-gold-50, #fff7e8);
-  --color-highlight-strong: var(--gt-primitive-color-grape-700, #5014d0);
-  --color-highlight-tint: var(--gt-primitive-color-grape-50, #f8f5ff);
-  --color-link-highlight: var(--gt-primitive-color-iris-tint, rgb(68 79 229 / 0.1255));
-  --color-sidebar-rule: var(--gt-primitive-color-slate-200, #e2e8f0);
-  --color-overlay-base: var(--gt-primitive-color-slate-950, #020618);
-  --color-text-quote: var(--gt-primitive-color-charcoal-500, #333333);
-  --color-overlay-page: color-mix(in srgb, var(--gt-primitive-color-charcoal-500, #333333) 20%, transparent);
+  --color-text-strong: var(--gt-primitive-color-grey-800, unset);
+  --color-text-meta: var(--gt-primitive-color-grey-700, unset);
+  --color-text-disabled: var(--gt-primitive-color-grey-500, unset);
+  --color-border-strong: var(--gt-primitive-color-grey-400, unset);
+  --color-surface-inverse-muted: var(--gt-primitive-color-navy-900, unset);
+  --color-accent-strong: var(--gt-primitive-color-primary-600, unset);
+  --color-positive-strong: var(--gt-primitive-color-secondary-600, unset);
+  --color-positive-tint: var(--gt-primitive-color-secondary-100, unset);
+  --color-negative-tint: var(--gt-primitive-color-scarlet-50, unset);
+  --color-warning-accent: var(--gt-primitive-color-gold-400, unset);
+  --color-warning-tint: var(--gt-primitive-color-gold-50, unset);
+  --color-highlight-strong: var(--gt-primitive-color-grape-700, unset);
+  --color-highlight-tint: var(--gt-primitive-color-grape-50, unset);
+  --color-link-highlight: var(--gt-primitive-color-iris-tint, unset);
+  --color-sidebar-rule: var(--gt-primitive-color-slate-200, unset);
+  --color-overlay-base: var(--gt-primitive-color-slate-950, unset);
+  --color-text-quote: var(--gt-primitive-color-charcoal-500, unset);
+  --color-overlay-page: color-mix(in srgb, var(--gt-primitive-color-charcoal-500, transparent) 20%, transparent);
 
   /* Elevations follow the host foreground. Components expose the public
      --ui-shadow-* hooks as the highest-precedence override. */
@@ -61,8 +63,8 @@
   --shadow-raised:
     0 6px 7px -4px color-mix(in srgb, var(--foreground) 5%, transparent),
     0 10px 32px 4px color-mix(in srgb, var(--foreground) 10%, transparent);
-  --shadow-sheet: var(--gt-primitive-shadow-sheet, 0px 25px 50px -12px rgb(0 0 0 / 0.25));
-  --shadow-badge: var(--gt-primitive-shadow-badge, 0px 2px 4px 0px rgb(0 0 0 / 0.15));
-  --color-skeleton-base: var(--gt-primitive-color-azure-tint-200, rgb(207 219 255 / 0.34));
-  --color-skeleton-highlight: var(--gt-primitive-color-azure-tint-100, rgb(235 243 255 / 0.34));
+  --shadow-sheet: var(--gt-primitive-shadow-sheet, unset);
+  --shadow-badge: var(--gt-primitive-shadow-badge, unset);
+  --color-skeleton-base: var(--gt-primitive-color-azure-tint-200, unset);
+  --color-skeleton-highlight: var(--gt-primitive-color-azure-tint-100, unset);
 }

@@ -62,8 +62,10 @@ been retired; shell code is owned and tested here.
   and component presentation consumed before the SCSS entry by app styles.
 
 Hosts should retain this order for the public shell styles. The shell also
-keeps the authenticated design-token primitive values as literal fallbacks, so
-the geometry remains usable when a host has not loaded the token stylesheet:
+keeps each authenticated design-token primitive as an explicit alias. When the
+host has not loaded the token stylesheet, the alias ends in a CSS-wide `unset`
+value; the consuming property then retains its established
+inherit/currentColor/transparent/none behavior instead of inventing a palette:
 
 ```css
 @import '@global-torque/design-tokens/css';

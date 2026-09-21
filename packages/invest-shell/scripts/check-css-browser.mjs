@@ -133,8 +133,16 @@ const probes = `
   <div id="semantic" class="shadow-probe">Semantic</div>
   <div id="ui" class="shadow-probe">UI</div>
   <div id="text" class="text-probe">Text</div>
+  <div id="legal" class="semantic-text-probe">Legal resource copy</div>
+  <div id="resource" class="semantic-text-probe">Resource copy</div>
+  <div id="border" class="border-probe">Border</div>
+  <div id="overlay" class="overlay-probe">Overlay</div>
+  <div id="header-local" class="local-shadow-probe">Header</div>
+  <div id="offer-local" class="local-shadow-probe">Offer</div>
   <div id="footer-surface">Footer surface</div>
   <div id="footer-text">Footer text</div>
+  <div id="footer-disclaimer">Footer disclaimer</div>
+  <div id="footer-copyright">Footer copyright</div>
   <div id="footer-disabled">Footer disabled</div>
   <div id="footer-muted">Footer muted</div>
   <div id="footer-accent">Footer accent</div>
@@ -153,6 +161,7 @@ const probes = `
   </div>
 `;
 const probeStyle = `
+  body { color: var(--foreground); }
   .raised { box-shadow: var(--ui-shadow-raised, var(--shadow-raised)); }
   .sheet-shadow { box-shadow: var(--shadow-sheet); }
   .badge-shadow { box-shadow: var(--shadow-badge); }
@@ -160,6 +169,14 @@ const probeStyle = `
   #semantic { --shadow-control: 0 0 0 0 rgb(1 2 3); }
   #ui { --shadow-control: 0 0 0 0 rgb(1 2 3); --ui-shadow-control: 0 0 0 0 rgb(4 5 6); }
   .text-probe { color: var(--color-text-strong); }
+  .semantic-text-probe { color: var(--color-text-strong); }
+  .border-probe { border-top: 1px solid var(--color-border-strong); }
+  .overlay-probe { background-color: var(--color-overlay-page); }
+  .local-shadow-probe {
+    box-shadow: var(--ui-shadow-control,
+      0 2px 5px 1px color-mix(in srgb, #12161f 3%, transparent),
+      0 2px 3px -2px color-mix(in srgb, #12161f 15%, transparent));
+  }
 `;
 
 const report = {
@@ -184,11 +201,19 @@ try {
     ["raised-shadow", normalizeShadow(await computed("raised", "box-shadow")), shadowValues.redRaised],
     ["semantic-shadow-override", normalizeShadow(await computed("semantic", "box-shadow")), "0 0 0 0 rgb(1 2 3)"],
     ["ui-shadow-override", normalizeShadow(await computed("ui", "box-shadow")), "0 0 0 0 rgb(4 5 6)"],
-    ["literal-colour-fallback", await computed("text", "color"), "rgb(52, 58, 64)"],
+    ["absent-primitive-inherits-host-color", await computed("text", "color"), "rgb(255, 0, 0)"],
+    ["legal-resource-text-inherits-host-color", await computed("legal", "color"), "rgb(255, 0, 0)"],
+    ["resource-text-inherits-host-color", await computed("resource", "color"), "rgb(255, 0, 0)"],
+    ["border-fallback-current-color", await computed("border", "border-top-color"), "rgb(255, 0, 0)"],
+    ["overlay-fallback-transparent", await computed("overlay", "background-color"), "color(srgb 0 0 0 / 0)"],
+    ["header-local-neutral-shadow", normalizeShadow(await computed("header-local", "box-shadow")), "0 2px 5px 1px rgb(18 22 31 / 3%), 0 2px 3px -2px rgb(18 22 31 / 15%)"],
+    ["offer-local-neutral-shadow", normalizeShadow(await computed("offer-local", "box-shadow")), "0 2px 5px 1px rgb(18 22 31 / 3%), 0 2px 3px -2px rgb(18 22 31 / 15%)"],
     ["sheet-shadow", normalizeShadow(await computed("sheet", "box-shadow")), "0 25px 50px -12px rgba(0, 0, 0, 0.25)"],
     ["badge-shadow", normalizeShadow(await computed("badge", "box-shadow")), "0 2px 4px 0 rgba(0, 0, 0, 0.15)"],
     ["footer-surface-host-foreground", await computed("footer-surface", "background-color"), "rgb(255, 0, 0)"],
     ["footer-text-host-background", await computed("footer-text", "color"), "rgb(240, 225, 210)"],
+    ["footer-disclaimer-host-background", await computed("footer-disclaimer", "color"), "rgb(255, 0, 0)"],
+    ["footer-copyright-host-background", await computed("footer-copyright", "color"), "rgb(255, 0, 0)"],
     ["footer-disabled-legacy-foreground", await computed("footer-disabled", "color"), "rgb(255, 0, 0)"],
     ["footer-muted-host-muted", await computed("footer-muted", "color"), "rgb(152, 118, 84)"],
     ["footer-accent-host-primary", await computed("footer-accent", "color"), "rgb(101, 67, 33)"],
@@ -217,10 +242,17 @@ try {
   }
   await page.evaluate((foreground) => {
     document.documentElement.style.removeProperty("--gt-primitive-color-grey-800");
+    // The authenticated 0.2.1 archive exposes the neutral dictionary, not the
+    // 0.3.0 grey/navy aliases. It must therefore retain the absent-alias
+    // behavior instead of selecting a producer palette literal.
+    document.documentElement.style.setProperty("--gt-primitive-color-neutral-950", "#0f172a");
     document.documentElement.style.setProperty("--gt-primitive-color-grey-500", "#18181b");
     document.documentElement.style.setProperty("--color-text-disabled", foreground);
   }, "#18181b");
   {
+    const textActual = await computed("text", "color");
+    assert.equal(textActual, "rgb(255, 0, 0)", "authenticated 0.2.1 neutral tokens must not activate 0.3.0 aliases");
+    report.checks.push({ name: "tokens-0.2.1-neutral-only", result: "pass", value: textActual });
     const actual = await computed("footer-disabled", "color");
     assert.equal(actual, "rgb(255, 0, 0)", "authenticated 0.2.1 disabled token must not change the legacy inverse fallback");
     report.checks.push({ name: "tokens-0.2.1-footer-compatibility", result: "pass", value: actual });
