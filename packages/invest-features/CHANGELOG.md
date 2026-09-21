@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.4.9 candidate
+
+- Reissued the seven-package cohort after authenticated visual parity exposed
+  two remaining hard-coded header and offer-card shadow fallbacks.
+
+## 0.4.8 abandoned candidate
+
+- Immutable candidate was superseded before publication after authenticated
+  visual parity found two differing pixels and four channel-level deltas in
+  the header/offer shadow contract; no registry package exists.
+
 ## 0.4.8 candidate
 
 - Reissued the seven-package cohort with the PWA login and footer compatibility

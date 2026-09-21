@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.4.9 candidate
+
+- Replaced the header and offer-details hard-coded neutral shadow fallbacks
+  with the semantic control-shadow hook.
+- Extended static and Chromium contracts for semantic fallback, host
+  foreground recomputation, and UI override precedence.
+
+## 0.4.8 abandoned candidate
+
+- Immutable candidate was superseded before publication after authenticated
+  visual parity found two differing pixels and four channel-level deltas in
+  the header/offer shadow contract; no registry package exists.
+
 ## 0.4.8 candidate
 
 - Restored the PWA login accent override with the host `--primary` fallback

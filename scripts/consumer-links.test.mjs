@@ -25,7 +25,7 @@ function fixture(t) {
     const slug = name.slice('@global-torque/'.length);
     const directory = path.join(canonical, 'packages', slug);
     fs.mkdirSync(directory, { recursive: true });
-    fs.writeFileSync(path.join(directory, 'package.json'), JSON.stringify({ name, version: '0.4.8' }));
+    fs.writeFileSync(path.join(directory, 'package.json'), JSON.stringify({ name, version: '0.4.9' }));
   }
   fs.writeFileSync(path.join(canonical, 'package.json'), JSON.stringify({ private: true }));
   fs.writeFileSync(path.join(canonical, 'pnpm-lock.yaml'), 'lockfileVersion: "9.0"\n');
@@ -579,9 +579,9 @@ test('recovery accepts an intentional current cohort update', t => {
   const appManifest = path.join(consumer, 'apps/app/package.json');
   fs.writeFileSync(appManifest, JSON.stringify({
     name: 'fixture-app',
-    dependencies: Object.fromEntries(FRAMEWORK_PACKAGE_NAMES.map(name => [name, '0.4.8'])),
+    dependencies: Object.fromEntries(FRAMEWORK_PACKAGE_NAMES.map(name => [name, '0.4.9'])),
   }));
-  installRegistryFramework(consumer, { version: '0.4.8' });
+  installRegistryFramework(consumer, { version: '0.4.9' });
   assert.equal(recover(consumer, { install: false }).recovered, true);
 });
 

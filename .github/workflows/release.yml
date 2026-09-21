@@ -7,7 +7,7 @@ on:
         description: Candidate version to pack from the checked source
         required: true
         type: string
-        default: 0.4.8
+        default: 0.4.9
       ui_kit_transport_release_id:
         description: Optional framework-repository draft release containing the verified UI Kit transport assets
         required: false

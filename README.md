@@ -4,12 +4,12 @@ This repository is the independent source workspace for the seven investment
 framework packages under the `@global-torque` namespace. The workspace root
 is private; each package is an independently reviewed MIT package candidate.
 
-The current candidate is `0.4.8` for all seven packages. It is source based:
+The current candidate is `0.4.9` for all seven packages. It is source based:
 published files contain the explicit `src` exports and the host application
 provides the Vue/Vite toolchain and singleton peers. The candidate is local and
 non-promotable until the primary maintainer completes the accepted release
 gates. Dispatch the candidate workflow from the matching
-`framework-v0.4.8` tag when producing attestations. The previously reviewed
+`framework-v0.4.9` tag when producing attestations. The previously reviewed
 `framework-v0.2.2` source tag, commit, and immutable artifacts remain
 retained as history; no canonical `0.2.0` package artifacts were produced.
 The immutable `framework-v0.4.2` candidate was superseded before publication by
@@ -40,6 +40,13 @@ publication after its authenticated Platform desktop visual parity gate
 exposed invisible footer disclosure and copyright text. Its tag and successful
 candidate evidence remain retained for audit; it has no GitHub release or npm
 publication and the tag is never moved, deleted, or reused.
+The immutable `framework-v0.4.8` candidate was also superseded before
+publication after authenticated visual parity found two differing pixels and
+four channel-level deltas in the header/offer shadow contract. Its tag object
+is `a0822cde56b6f266687e5c2bfe820b5668963851`, peeled commit
+`e18d59ced772fe868703e452df30b07c6887e4c9`, and candidate run
+`35565129065`; it has no GitHub release or npm publication and the tag is
+never moved, deleted, or reused.
 
 Development and package consumption require Node `^24.21.0`; `.node-version`
 and CI pin 24.21.0. Bootstrap pnpm with `corepack enable` and
@@ -60,8 +67,9 @@ This release reissues the breaking stablecoin redemption contract and completes
 the `invest-shell` token-absent geometry, token fallback, shadow, and PWA login
 compatibility contract. The final
 `price_update` removal remains part of the retained redemption contract. It
-also restores the foreground-derived generic shadow contract, the fixed
-component-local neutral fallback, and footer/login public-hook defaults. It
+also restores the foreground-derived generic shadow contract, applies the
+semantic control-shadow fallback to header and offer surfaces, and preserves
+footer/login public-hook defaults. It
 also reissues
 the 0.3.0 cohort with selectively sanitized analytics and request diagnostics,
 stable demo-account configuration capture, and local Vite exclusions for the
@@ -120,7 +128,7 @@ runs this build once, runs package and consumer-link tests, revalidates the
 four-file inventory, and then packs all seven packages.
 
 The framework candidate using the public `@global-torque/ui-kit@0.1.4`
-dependency produces 22 release assets. After `@global-torque/ui-kit@0.1.4` is
+dependency produces 23 release assets. After `@global-torque/ui-kit@0.1.4` is
 available from its owning release, run
 `pnpm install --frozen-lockfile`, then `pnpm run build:node` followed by
 `pnpm run check`. Before that release,

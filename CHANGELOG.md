@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.4.9 candidate
+
+- Reissued the seven-package cohort after authenticated visual parity exposed
+  two remaining hard-coded header and offer-card shadow fallbacks. These
+  surfaces now use the semantic control-shadow hook, preserving host
+  foreground recomputation and public UI override precedence.
+
+## 0.4.8 abandoned candidate
+
+- Immutable tag `framework-v0.4.8` points to tag object
+  `a0822cde56b6f266687e5c2bfe820b5668963851` and peeled commit
+  `e18d59ced772fe868703e452df30b07c6887e4c9`; candidate run `35565129065`
+  succeeded, but authenticated visual parity found two differing pixels and
+  four channel-level deltas in the header/offer shadow contract. No GitHub
+  release or npm package exists; the tag is never moved, deleted, or reused.
+
 ## 0.4.8 candidate
 
 - Restored the PWA login accent override with the host `--primary` fallback,

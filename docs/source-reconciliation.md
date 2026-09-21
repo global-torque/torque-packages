@@ -1,8 +1,9 @@
 # Source and release reconciliation
 
-The `0.4.8` candidate reissues the seven-package cohort with the completed
+The `0.4.9` candidate reissues the seven-package cohort with the completed
 `invest-shell` token-absent geometry recovery, inverse-footer token fallback,
-shadow, and PWA login fallback contract. The breaking stablecoin
+shadow, PWA login fallback, and semantic header/offer control-shadow contract.
+The breaking stablecoin
 redemption contract, including the final `price_update` removal, remains
 unchanged from the retained `0.4.0` source. It also retains the
 the dependency-migrated framework cohort with selective analytics/request
@@ -103,13 +104,23 @@ differences. Its immutable tag points to tag object
 `35552606823`; no GitHub release or npm package exists. The tag is never moved,
 deleted, or reused. Candidate `0.4.6` is also abandoned after its required PWA login visual parity
 gate exposed a fixed accent fallback in the Investor mobile header. Its
-immutable tag and successful candidate evidence remain retained; no GitHub
-release or npm package exists. The tag is never moved, deleted, or reused.
+immutable tag points to tag object
+`e40f300b714cc016c9537aa01d49d75171452b6e`, peeled commit
+`fbef60352484263e3723c6609e4d979c8627d128`, and candidate run
+`35555965922`; no GitHub release or npm package exists. The tag is never
+moved, deleted, or reused.
 Candidate `0.4.7` is also abandoned after authenticated Platform desktop
 visual parity exposed invisible footer disclosure and copyright text. Its
 immutable tag points to tag object
 `5741d64dc590a631ab7f54da1a4b19e7c91f0123`, peeled commit
 `b60c4ec7ef46ee29d83d201fc381977c30279e1c`, and successful candidate run
 `35562211887`; no GitHub release or npm package exists and the tag is never
-moved, deleted, or reused. Candidate `0.4.8` is the new immutable release
+moved, deleted, or reused. Candidate `0.4.8` is abandoned after its
+authenticated visual parity gate found two differing pixels and four
+channel-level deltas in the header/offer shadow contract. Its immutable tag
+points to tag object
+`a0822cde56b6f266687e5c2bfe820b5668963851`, peeled commit
+`e18d59ced772fe868703e452df30b07c6887e4c9`, and candidate run
+`35565129065`; no GitHub release or npm package exists and the tag is never
+moved, deleted, or reused. Candidate `0.4.9` is the new immutable release
 identity.
