@@ -10,7 +10,7 @@ import {
 } from './node-build-contract.mjs';
 
 const root = path.resolve(new URL('..', import.meta.url).pathname);
-const candidate = process.argv.slice(2).find(argument => argument !== '--') ?? '0.4.6';
+const candidate = process.argv.slice(2).find(argument => argument !== '--') ?? '0.4.7';
 const reconciliation = JSON.parse(fs.readFileSync(path.join(root, 'docs/source-reconciliation.json'), 'utf8'));
 if (candidate !== reconciliation.candidate) throw new Error(`Candidate ${candidate} is not the reviewed ${reconciliation.candidate}`);
 const targetRepository = reconciliation.targetRepository;

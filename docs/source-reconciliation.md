@@ -1,8 +1,8 @@
 # Source and release reconciliation
 
-The `0.4.6` candidate reissues the seven-package cohort with the completed
+The `0.4.7` candidate reissues the seven-package cohort with the completed
 `invest-shell` token-absent geometry recovery, inverse-footer token fallback,
-and shadow contract. The breaking stablecoin
+shadow, and PWA login fallback contract. The breaking stablecoin
 redemption contract, including the final `price_update` removal, remains
 unchanged from the retained `0.4.0` source. It also retains the
 the dependency-migrated framework cohort with selective analytics/request
@@ -101,4 +101,8 @@ differences. Its immutable tag points to tag object
 `ccb001fca49fe95b08899417137775fb9fdbf005`, peeled commit
 `cf8002b4ec4316914c952821bd4003fd5ce8ec5e`, and successful candidate run
 `35552606823`; no GitHub release or npm package exists. The tag is never moved,
-deleted, or reused. Candidate `0.4.6` is the new immutable release identity.
+deleted, or reused. Candidate `0.4.6` is also abandoned after its required PWA login visual parity
+gate exposed a fixed accent fallback in the Investor mobile header. Its
+immutable tag and successful candidate evidence remain retained; no GitHub
+release or npm package exists. The tag is never moved, deleted, or reused.
+Candidate `0.4.7` is the new immutable release identity.

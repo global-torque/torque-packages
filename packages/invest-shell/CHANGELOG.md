@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.7 candidate
+
+- Restored the PWA login accent override with the host `--primary` fallback
+  for both login text and the login arrow asset.
+
 ## 0.4.6 candidate
 
 - Restored framework 0.4.0 plus design-tokens 0.2.1 geometry with reviewed

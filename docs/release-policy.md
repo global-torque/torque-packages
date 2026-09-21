@@ -40,7 +40,7 @@ restored before the candidate is packed, so packed manifests and receipts
 retain the public registry dependency. Omitting the transport release uses the
 frozen public lockfile and requires the UI Kit release to be available.
 
-Candidate 0.4.6 reissues the seven-package cohort with the final
+Candidate 0.4.7 reissues the seven-package cohort with the final
 `price_update` removal retained and the Invest Shell inverse-footer fallback
 and shadow compatibility contract. It restores the 0.4.0 plus design-tokens
 0.2.1 geometry by using reviewed CSS-wide `unset` terminals for direct
@@ -50,7 +50,10 @@ foreground-derived while the fixed neutral fallback is retained only for the
 header and offer-details surfaces, and footer/login public-hook defaults remain
 intact. The retained 0.4.0 plus design-tokens 0.2.1 pair remains the source
 and rollback reference. Absent-token, authenticated 0.2.1 and authenticated
-0.3.0 checks are required before promotion.
+0.3.0 checks are required before promotion. It also restores the PWA login
+accent hook and host `--primary` fallback for both login text and its arrow
+asset, preserving the 0.4.0 mobile-header pixels while retaining the 0.4.6
+geometry recovery.
 The reproducible detached command is
 `CONSUMER_TOKEN_MODE=<absent|0.2.1|0.3.0> CONSUMER_PACKAGE_MANAGERS=npm,pnpm node scripts/verify-archive-consumers.mjs <candidate-artifacts>`;
 the `absent` mode omits `DESIGN_TOKENS_ARCHIVE`, while `0.2.1` requires the
@@ -84,10 +87,14 @@ difference; no GitHub release or npm `0.4.4` package exists and its tag is
 never moved, deleted, or reused. The immutable `framework-v0.4.5` candidate is
 also abandoned after its required visual parity gate exposed framework geometry
 fallback differences; no GitHub release or npm package exists and its tag is
-never moved, deleted, or reused. The new ordinary immutable release tag is
-`framework-v0.4.6` for the
-`0.4.6` candidate. Dispatch the candidate workflow from that tag so its
-attestations carry `refs/tags/framework-v0.4.6`. The prior `framework-v0.2.2`
+never moved, deleted, or reused. The immutable
+`framework-v0.4.6` candidate is also abandoned after its required PWA login
+visual parity gate exposed a fixed accent fallback in the Investor mobile
+header; no GitHub release or npm package exists and its tag is never moved,
+deleted, or reused. The new ordinary immutable release tag is
+`framework-v0.4.7` for the `0.4.7` candidate. Dispatch the candidate workflow
+from that tag so its attestations carry `refs/tags/framework-v0.4.7`. The prior
+`framework-v0.2.2`
 source tag, commit, and immutable artifact history remain retained for audit;
 its package bytes and provenance are not replaced. The earlier
 `framework-v0.2.0` run failed before installation, build, or packing; no

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.7 candidate
+
+- Reissued the seven-package cohort with the PWA login fallback correction.
+
 ## 0.4.6 candidate
 
 - Reissued the seven-package cohort with the Invest Shell geometry recovery and

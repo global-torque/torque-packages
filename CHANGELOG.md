@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.7 candidate
+
+- Restored the PWA login accent override with the host `--primary` fallback,
+  preserving the 0.4.0 visual contract while retaining the 0.4.6 geometry
+  recovery and final `price_update` removal.
+
 ## 0.4.6 candidate
 
 - Restored the framework 0.4.0 plus design-tokens 0.2.1 computed geometry by
