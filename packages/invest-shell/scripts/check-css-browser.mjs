@@ -4,28 +4,10 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { chromium } from "@playwright/test";
+import { resolveCssContractPackageRoots } from "./css-contract-package-roots.mjs";
 
 const canonicalPackageDirectory = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const packageDirectoryOverride = process.env.CSS_CONTRACT_PACKAGE_DIR;
-const featuresPackageDirectoryOverride = process.env.CSS_CONTRACT_FEATURES_PACKAGE_DIR;
-const hasPackageDirectoryOverride = packageDirectoryOverride !== undefined;
-const hasFeaturesPackageDirectoryOverride = featuresPackageDirectoryOverride !== undefined;
-if (hasPackageDirectoryOverride !== hasFeaturesPackageDirectoryOverride
-  || (hasPackageDirectoryOverride && (!packageDirectoryOverride.trim() || !featuresPackageDirectoryOverride.trim()))) {
-  throw new Error(
-    "CSS_CONTRACT_PACKAGE_DIR and CSS_CONTRACT_FEATURES_PACKAGE_DIR must be provided together with non-empty values",
-  );
-}
-const packageDirectory = path.resolve(packageDirectoryOverride ?? canonicalPackageDirectory);
-const featuresPackageDirectory = path.resolve(
-  featuresPackageDirectoryOverride ?? path.resolve(canonicalPackageDirectory, "../invest-features"),
-);
-async function validatePackageRoot(directory, packageName) {
-  const manifest = JSON.parse(await fs.readFile(path.join(directory, "package.json"), "utf8"));
-  assert.equal(manifest.name, packageName, `${packageName} contract root must contain its exact package manifest`);
-}
-await validatePackageRoot(packageDirectory, "@global-torque/invest-shell");
-await validatePackageRoot(featuresPackageDirectory, "@global-torque/invest-features");
+const { packageDirectory, featuresPackageDirectory } = resolveCssContractPackageRoots({ canonicalPackageDirectory });
 const geometry = await fs.readFile(path.join(packageDirectory, "src/styles/geometry.css"), "utf8");
 const components = await fs.readFile(path.join(packageDirectory, "src/styles/components.css"), "utf8");
 const headerBar = await fs.readFile(path.join(packageDirectory, "src/components/VHeaderBar/VHeaderBar.vue"), "utf8");
