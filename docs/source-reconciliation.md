@@ -1,6 +1,6 @@
 # Source and release reconciliation
 
-The `0.4.3` candidate reissues the seven-package cohort with the completed
+The `0.4.4` candidate reissues the seven-package cohort with the completed
 `invest-shell` token fallback and shadow contract. The breaking stablecoin
 redemption contract, including the final `price_update` removal, remains
 unchanged from the retained `0.4.0` source. It also retains the
@@ -73,4 +73,9 @@ before publication by the accepted CSS-contract recovery. It points to tag
 object `78eabe922bfe704eb60848722f27496917d94b64`, peeled commit
 `775532c37599f34f6ef3c929d7d033605dafb309`, and successful candidate run
 `35540413330`; no GitHub release or npm package exists. The tag is never moved,
-deleted, or reused. Candidate `0.4.3` is the new immutable release identity.
+deleted, or reused. Candidate `0.4.3` is also abandoned after its successful
+candidate run; it
+points to tag object `d2def7e456f4e9fe7506e568b4c2d4eb1527a280`, peeled commit
+`1bf1fe05171ba370df506cb3e475775ce765e220`, and run `35544840055`. No GitHub
+release or npm package exists. The tag is never moved, deleted, or reused.
+Candidate `0.4.4` is the new immutable release identity.

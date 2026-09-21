@@ -1,9 +1,14 @@
 # Changelog
 
-## 0.4.3 candidate
+## 0.4.4 candidate
 
 - Reissued the seven-package cohort after the accepted Invest Shell CSS
   contract recovery; data contracts are unchanged.
+
+## 0.4.3 abandoned candidate
+
+- Immutable candidate tag was retained after a successful candidate run but
+  was superseded before publication by the footer-role recovery.
 
 ## 0.4.2 abandoned candidate
 

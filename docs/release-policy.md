@@ -37,7 +37,7 @@ restored before the candidate is packed, so packed manifests and receipts
 retain the public registry dependency. Omitting the transport release uses the
 frozen public lockfile and requires the UI Kit release to be available.
 
-Candidate 0.4.3 reissues the seven-package cohort with the final
+Candidate 0.4.4 reissues the seven-package cohort with the final
 `price_update` removal retained and the Invest Shell design-token fallback and
 shadow compatibility contract. It corrects generic shadows to remain
 foreground-derived while preserving the fixed neutral fallback only for the
@@ -58,9 +58,15 @@ points to tag object `78eabe922bfe704eb60848722f27496917d94b64`, peeled commit
 `775532c37599f34f6ef3c929d7d033605dafb309`, and successful candidate run
 `35540413330`, but was superseded before publication by the accepted CSS
 recovery. No GitHub release or npm `0.4.2` package exists; never move, delete,
-or reuse that tag. The new ordinary immutable release tag is
-`framework-v0.4.3` for the `0.4.3` candidate. Dispatch the candidate workflow
-from that tag so its attestations carry `refs/tags/framework-v0.4.3`. The prior `framework-v0.2.2`
+or reuse that tag.
+The immutable `framework-v0.4.3` candidate is also abandoned. It points to tag
+object `d2def7e456f4e9fe7506e568b4c2d4eb1527a280`, peeled commit
+`1bf1fe05171ba370df506cb3e475775ce765e220`, and successful candidate run
+`35544840055`, but was superseded before publication by the accepted footer
+role recovery. No GitHub release or npm `0.4.3` package exists; never move,
+delete, or reuse that tag. The new ordinary immutable release tag is
+`framework-v0.4.4` for the `0.4.4` candidate. Dispatch the candidate workflow
+from that tag so its attestations carry `refs/tags/framework-v0.4.4`. The prior `framework-v0.2.2`
 source tag, commit, and immutable artifact history remain retained for audit;
 its package bytes and provenance are not replaced. The earlier
 `framework-v0.2.0` run failed before installation, build, or packing; no

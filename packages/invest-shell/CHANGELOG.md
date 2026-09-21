@@ -1,11 +1,16 @@
 # Changelog
 
-## 0.4.3 candidate
+## 0.4.4 candidate
 
 - Corrected generic shadows to derive from the host foreground while keeping
   fixed neutral component-local fallbacks for header and offer details.
 - Restored footer and login public-hook defaults and kept the browser contract
   separate from the Node-only package test.
+
+## 0.4.3 abandoned candidate
+
+- Immutable candidate tag was retained after a successful candidate run but
+  was superseded before publication by the accepted footer-role recovery.
 
 ## 0.4.2 abandoned candidate
 

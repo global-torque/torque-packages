@@ -1,11 +1,22 @@
 # Changelog
 
-## 0.4.3 candidate
+## 0.4.4 candidate
 
 - Corrected generic control, dialog, and raised shadows to derive from the
   foreground while preserving the fixed neutral fallback for header and offer
   details surfaces.
 - Restored footer and login accent/text defaults through public UI hooks.
+
+## 0.4.3 abandoned candidate
+
+- Corrected generic shadows and restored footer/login public-hook defaults, but
+  the immutable candidate was superseded before publication by the accepted
+  footer-role recovery.
+- Immutable tag `framework-v0.4.3` points to tag object
+  `d2def7e456f4e9fe7506e568b4c2d4eb1527a280` and peeled commit
+  `1bf1fe05171ba370df506cb3e475775ce765e220`; candidate run `35544840055`
+  succeeded. No GitHub release or npm package exists and the tag is never
+  moved, deleted, or reused.
 
 ## 0.4.2 abandoned candidate
 
