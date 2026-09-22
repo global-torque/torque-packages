@@ -250,8 +250,8 @@ importers:
   packages/invest-core:
     dependencies:
       '@global-torque/domain-types':
-        specifier: workspace:*
-        version: link:../domain-types
+        specifier: 0.4.12
+        version: 0.4.12
       '@types/lodash-es':
         specifier: ^4.17.12
         version: 4.17.12
@@ -1440,6 +1440,10 @@ packages:
   '@global-torque/design-tokens@0.3.0':
     resolution: {integrity: sha512-eh5fRUsWYcoM+c0O3EoTP52ABQ1MRyafJWzhsyA7x7qxF3Trub7e8PiYDUtnfmpXNmQbvD5uu63iGM8/VP7TsA==}
     engines: {node: '>=22'}
+
+  '@global-torque/domain-types@0.4.12':
+    resolution: {integrity: sha512-Se4/K9TV7byq5IWugyJ2WELm8LQvVxVUVd31Wj7NeBb/CwI2cNEyEXjpkTBXZj3sUB6hKaqr3cifbrZmSKFEmQ==}
+    engines: {node: ^24.21.0}
 
   '@global-torque/sdk@0.3.1':
     resolution: {integrity: sha512-2JhfziY8llqsg8xL+HXcy+3E4URUyNRCIKqkPzNsRF3i6tNaXUGi8Z3ciaykYCjP9kR4bge3bjnRidoTvtdxnQ==}
@@ -5641,6 +5645,8 @@ snapshots:
   '@global-torque/design-tokens@0.2.0': {}
 
   '@global-torque/design-tokens@0.3.0': {}
+
+  '@global-torque/domain-types@0.4.12': {}
 
   '@global-torque/sdk@0.3.1(typescript@6.0.3)(zod@4.6.2)':
     dependencies:

@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Replace CommonJS Lodash deep imports with ESM `lodash-es` imports so published TypeScript sources load without CommonJS interop in native ESM consumers.
+- Pin `@global-torque/domain-types` to cohort `0.4.12` so Git-subpath installs resolve without workspace links while preserving deliberate future cohort coupling.
 
 ## 0.4.12 candidate
 
