@@ -9,7 +9,7 @@ This package owns deterministic helpers, mappers, formatters, calculations, and 
 ## Allowed Dependencies
 
 - `@global-torque/domain-types`.
-- AJV, `ajv-errors`, `ajv-formats`, lodash, and markdown-it for the published
+- AJV, `ajv-errors`, `ajv-formats`, `lodash-es`, and markdown-it for the published
   investment validation and formatting helpers.
 - TypeScript and platform-standard value types.
 

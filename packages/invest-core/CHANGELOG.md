@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Replace CommonJS Lodash deep imports with ESM `lodash-es` imports so published TypeScript sources load without CommonJS interop in native ESM consumers.
+
 ## 0.4.12 candidate
 
 - Reissued the cohort with a side-effect-free shared CSS contract root resolver;

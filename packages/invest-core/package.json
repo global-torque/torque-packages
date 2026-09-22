@@ -70,12 +70,12 @@
     "./form-validation/investment": "./src/form-validation/investment.ts"
   },
   "dependencies": {
-    "@types/lodash": "^4.17.24",
+    "@types/lodash-es": "^4.17.12",
     "@global-torque/domain-types": "workspace:*",
     "ajv": "^8.20.0",
     "ajv-errors": "^3.0.0",
     "ajv-formats": "^3.0.1",
-    "lodash": "^4.18.1",
+    "lodash-es": "^4.18.1",
     "markdown-it": "^15.0.2"
   },
   "devDependencies": {

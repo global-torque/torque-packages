@@ -1,8 +1,8 @@
-import lodashIsEmpty from 'lodash/isEmpty.js';
-import startCase from 'lodash/startCase.js';
-import toLower from 'lodash/toLower.js';
-import unionBy from 'lodash/unionBy.js';
-import kebabCase from 'lodash/kebabCase.js';
+import lodashIsEmpty from 'lodash-es/isEmpty.js';
+import startCase from 'lodash-es/startCase.js';
+import toLower from 'lodash-es/toLower.js';
+import unionBy from 'lodash-es/unionBy.js';
+import kebabCase from 'lodash-es/kebabCase.js';
 
 export function isEmpty(obj: object) {
   return lodashIsEmpty(obj);
