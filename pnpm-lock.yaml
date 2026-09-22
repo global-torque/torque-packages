@@ -300,20 +300,20 @@ importers:
   packages/invest-features:
     dependencies:
       '@global-torque/domain-types':
-        specifier: workspace:*
-        version: link:../domain-types
+        specifier: 0.4.12
+        version: 0.4.12
       '@global-torque/invest-core':
-        specifier: workspace:*
-        version: link:../invest-core
+        specifier: 0.4.12
+        version: 0.4.12
       '@global-torque/invest-data':
-        specifier: workspace:*
-        version: link:../invest-data
+        specifier: 0.4.12
+        version: 0.4.12(typescript@6.0.3)(zod@4.6.2)
       '@global-torque/invest-runtime':
-        specifier: workspace:*
-        version: link:../invest-runtime
+        specifier: 0.4.12
+        version: 0.4.12(focus-trap@7.8.0)(idb-keyval@6.3.0)(jwt-decode@4.0.0)(pinia@4.0.3(@vue/devtools-api@8.1.5)(typescript@6.0.3)(vue@3.5.42(typescript@6.0.3)))(typescript@6.0.3)(vue-router@5.3.1(@vue/compiler-sfc@3.5.42)(esbuild@0.28.2)(pinia@4.0.3(@vue/devtools-api@8.1.5)(typescript@6.0.3)(vue@3.5.42(typescript@6.0.3)))(rolldown@1.2.8)(rollup@4.63.2)(vite@8.3.0(@types/node@24.13.5)(esbuild@0.28.2)(sass@1.104.1))(vue@3.5.42(typescript@6.0.3)))(vue@3.5.42(typescript@6.0.3))(zod@4.6.2)
       '@global-torque/invest-widgets':
-        specifier: workspace:*
-        version: link:../invest-widgets
+        specifier: 0.4.12
+        version: 0.4.12(embla-carousel@8.6.0)(reka-ui@2.10.4(vue@3.5.42(typescript@6.0.3)))(sass@1.104.1)(typescript@6.0.3)(vue@3.5.42(typescript@6.0.3))
       '@global-torque/ui-kit':
         specifier: 0.1.4
         version: 0.1.4(reka-ui@2.10.4(vue@3.5.42(typescript@6.0.3)))(sass@1.104.1)(typescript@6.0.3)(vue@3.5.42(typescript@6.0.3))
@@ -362,7 +362,7 @@ importers:
         version: 5.1.3(vue@3.5.42(typescript@6.0.3))
       vitepress:
         specifier: ^1.6.4
-        version: 1.6.4(@algolia/client-search@5.59.0)(@types/node@24.13.5)(idb-keyval@6.3.0)(jwt-decode@4.0.0)(lightningcss@1.33.0)(postcss@8.5.23)(sass@1.104.1)(search-insights@2.17.3)(typescript@6.0.3)
+        version: 1.6.4(@algolia/client-search@5.59.0)(@types/node@24.13.5)(idb-keyval@6.3.0)(jwt-decode@4.0.0)(lightningcss@1.33.0)(postcss@8.5.23)(sass@1.104.1)(search-insights@2.17.3)(typescript@6.0.3)(universal-cookie@8.1.2)
       vitest:
         specifier: 'catalog:'
         version: 5.0.1(@types/node@24.13.5)(happy-dom@20.14.5)(jsdom@30.0.1(@noble/hashes@1.8.0))(vite@8.3.0(@types/node@24.13.5)(esbuild@0.28.2)(sass@1.104.1))
@@ -1444,6 +1444,29 @@ packages:
   '@global-torque/domain-types@0.4.12':
     resolution: {integrity: sha512-Se4/K9TV7byq5IWugyJ2WELm8LQvVxVUVd31Wj7NeBb/CwI2cNEyEXjpkTBXZj3sUB6hKaqr3cifbrZmSKFEmQ==}
     engines: {node: ^24.21.0}
+
+  '@global-torque/invest-core@0.4.12':
+    resolution: {integrity: sha512-q6KVBe8Ny8WOygWBH6BH/74N6SUfUC2QR2sT06+bfOmv3Jqh9ZgB/HXIWBBXDN8xMae1qFjfxtl2ewY8Z0yXFQ==}
+    engines: {node: ^24.21.0}
+
+  '@global-torque/invest-data@0.4.12':
+    resolution: {integrity: sha512-pZ53ePrc0SQY5wn6kJJzmyJ/Un9v4quP/zsHjPsCcnMFOJy5tuQ5cATh0VQZIb90YQ2agewOTRxT50X8Ba7zqw==}
+    engines: {node: ^24.21.0}
+
+  '@global-torque/invest-runtime@0.4.12':
+    resolution: {integrity: sha512-AoGkaYEYViukLeBu8yCOFp6Fv8Pl/5Kpu6zSHek0fcBht/qQkwV+w1qae9udHh0WJn3TUm0YIA+XmBCCT/JLUw==}
+    engines: {node: ^24.21.0}
+    peerDependencies:
+      pinia: ^3.0.4 || ^4.0.3
+      vue: ^3.5.39
+      vue-router: ^5.1.0
+
+  '@global-torque/invest-widgets@0.4.12':
+    resolution: {integrity: sha512-YbQ8PrEjfGaTmqEYnIoRG2KVohutV1peAP0U3JQnIZpOZnDfs+U4TDCDEUj35Yx67HkkOIN2/nnZUmXUGwx7Cg==}
+    engines: {node: ^24.21.0}
+    peerDependencies:
+      reka-ui: ^2.10.1
+      vue: ^3.5.39
 
   '@global-torque/sdk@0.3.1':
     resolution: {integrity: sha512-2JhfziY8llqsg8xL+HXcy+3E4URUyNRCIKqkPzNsRF3i6tNaXUGi8Z3ciaykYCjP9kR4bge3bjnRidoTvtdxnQ==}
@@ -3640,6 +3663,9 @@ packages:
   lodash.camelcase@4.3.0:
     resolution: {integrity: sha512-TwuEnCnxbc3rAvhf/LbG7tJUDzhqXyFnv3dtzLOPgCG/hODL7WFnsbwktkD7yUV0RrreP/l1PALq/YSg6VvjlA==}
 
+  lodash@4.18.1:
+    resolution: {integrity: sha512-dMInicTPVE8d1e5otfwmmjlxkZoUpiVLwyeTdUsi/Caj/gfzzblBcCE5sRHV/AsjuCmxWrte2TNGSYuCeCq+0Q==}
+
   long@5.3.2:
     resolution: {integrity: sha512-mNAgZ1GmyNhD7AuqnTG3/VQ26o760+ZYBPKjPvugO8+nLbYfX6TVpJPseBvopbdY+qpZ/lKUnmEc1LeZYS3QAA==}
 
@@ -5648,6 +5674,140 @@ snapshots:
 
   '@global-torque/domain-types@0.4.12': {}
 
+  '@global-torque/invest-core@0.4.12':
+    dependencies:
+      '@global-torque/domain-types': 0.4.12
+      '@types/lodash': 4.17.25
+      ajv: 8.20.0
+      ajv-errors: 3.0.0(ajv@8.20.0)
+      ajv-formats: 3.0.1(ajv@8.20.0)
+      lodash: 4.18.1
+      markdown-it: 15.0.2
+
+  '@global-torque/invest-data@0.4.12(typescript@6.0.3)(zod@4.6.2)':
+    dependencies:
+      '@global-torque/domain-types': 0.4.12
+      '@global-torque/invest-core': 0.4.12
+      '@global-torque/sdk': 0.3.1(typescript@6.0.3)(zod@4.6.2)
+    transitivePeerDependencies:
+      - '@azure/app-configuration'
+      - '@azure/cosmos'
+      - '@azure/data-tables'
+      - '@azure/identity'
+      - '@azure/keyvault-secrets'
+      - '@azure/storage-blob'
+      - '@capacitor/preferences'
+      - '@deno/kv'
+      - '@netlify/blobs'
+      - '@planetscale/database'
+      - '@react-native-async-storage/async-storage'
+      - '@solana/kit'
+      - '@solana/web3.js'
+      - '@turnkey/react-native-passkey-stamper'
+      - '@upstash/redis'
+      - '@vercel/blob'
+      - '@vercel/functions'
+      - '@vercel/kv'
+      - aws4fetch
+      - bufferutil
+      - db0
+      - encoding
+      - ioredis
+      - react-native-keychain
+      - typescript
+      - uploadthing
+      - utf-8-validate
+      - zod
+
+  '@global-torque/invest-runtime@0.4.12(focus-trap@7.8.0)(idb-keyval@6.3.0)(jwt-decode@4.0.0)(pinia@4.0.3(@vue/devtools-api@8.1.5)(typescript@6.0.3)(vue@3.5.42(typescript@6.0.3)))(typescript@6.0.3)(vue-router@5.3.1(@vue/compiler-sfc@3.5.42)(esbuild@0.28.2)(pinia@4.0.3(@vue/devtools-api@8.1.5)(typescript@6.0.3)(vue@3.5.42(typescript@6.0.3)))(rolldown@1.2.8)(rollup@4.63.2)(vite@8.3.0(@types/node@24.13.5)(esbuild@0.28.2)(sass@1.104.1))(vue@3.5.42(typescript@6.0.3)))(vue@3.5.42(typescript@6.0.3))(zod@4.6.2)':
+    dependencies:
+      '@capacitor-firebase/messaging': 8.5.1(@capacitor/core@8.5.2)(firebase@12.19.0)
+      '@capacitor/app': 8.1.1(@capacitor/core@8.5.2)
+      '@capacitor/core': 8.5.2
+      '@capacitor/local-notifications': 8.3.1(@capacitor/core@8.5.2)
+      '@global-torque/client-error-handling': 0.1.0
+      '@global-torque/domain-types': 0.4.12
+      '@global-torque/invest-core': 0.4.12
+      '@global-torque/invest-data': 0.4.12(typescript@6.0.3)(zod@4.6.2)
+      '@global-torque/sdk': 0.3.1(typescript@6.0.3)(zod@4.6.2)
+      '@vueuse/core': 15.0.0(vue@3.5.42(typescript@6.0.3))
+      '@vueuse/integrations': 15.0.0(focus-trap@7.8.0)(idb-keyval@6.3.0)(jwt-decode@4.0.0)(universal-cookie@8.1.2)(vue@3.5.42(typescript@6.0.3))
+      firebase: 12.19.0
+      pinia: 4.0.3(@vue/devtools-api@8.1.5)(typescript@6.0.3)(vue@3.5.42(typescript@6.0.3))
+      universal-cookie: 8.1.2
+      uuid: 14.0.2
+      vue: 3.5.42(typescript@6.0.3)
+      vue-router: 5.3.1(@vue/compiler-sfc@3.5.42)(esbuild@0.28.2)(pinia@4.0.3(@vue/devtools-api@8.1.5)(typescript@6.0.3)(vue@3.5.42(typescript@6.0.3)))(rolldown@1.2.8)(rollup@4.63.2)(vite@8.3.0(@types/node@24.13.5)(esbuild@0.28.2)(sass@1.104.1))(vue@3.5.42(typescript@6.0.3))
+      vue-sonner: 2.0.9
+    transitivePeerDependencies:
+      - '@azure/app-configuration'
+      - '@azure/cosmos'
+      - '@azure/data-tables'
+      - '@azure/identity'
+      - '@azure/keyvault-secrets'
+      - '@azure/storage-blob'
+      - '@capacitor/preferences'
+      - '@deno/kv'
+      - '@netlify/blobs'
+      - '@nuxt/kit'
+      - '@nuxt/schema'
+      - '@planetscale/database'
+      - '@react-native-async-storage/async-storage'
+      - '@solana/kit'
+      - '@solana/web3.js'
+      - '@turnkey/react-native-passkey-stamper'
+      - '@upstash/redis'
+      - '@vercel/blob'
+      - '@vercel/functions'
+      - '@vercel/kv'
+      - async-validator
+      - aws4fetch
+      - axios
+      - bufferutil
+      - change-case
+      - db0
+      - drauu
+      - encoding
+      - focus-trap
+      - fuse.js
+      - idb-keyval
+      - ioredis
+      - jwt-decode
+      - nprogress
+      - nuxt
+      - qrcode
+      - react-native-keychain
+      - sortablejs
+      - typescript
+      - uploadthing
+      - utf-8-validate
+      - zod
+
+  '@global-torque/invest-widgets@0.4.12(embla-carousel@8.6.0)(reka-ui@2.10.4(vue@3.5.42(typescript@6.0.3)))(sass@1.104.1)(typescript@6.0.3)(vue@3.5.42(typescript@6.0.3))':
+    dependencies:
+      '@global-torque/domain-types': 0.4.12
+      '@global-torque/invest-core': 0.4.12
+      '@global-torque/ui-kit': 0.1.4(reka-ui@2.10.4(vue@3.5.42(typescript@6.0.3)))(sass@1.104.1)(typescript@6.0.3)(vue@3.5.42(typescript@6.0.3))
+      '@global-torque/ui-primitives': 0.1.3(reka-ui@2.10.4(vue@3.5.42(typescript@6.0.3)))(typescript@6.0.3)(vue@3.5.42(typescript@6.0.3))
+      '@lucide/vue': 1.46.0(vue@3.5.42(typescript@6.0.3))
+      '@unovis/ts': 1.7.0
+      '@unovis/vue': 1.7.0(@unovis/ts@1.7.0)(vue@3.5.42(typescript@6.0.3))
+      '@vueuse/core': 15.0.0(vue@3.5.42(typescript@6.0.3))
+      embla-carousel-autoplay: 8.6.0(embla-carousel@8.6.0)
+      embla-carousel-fade: 8.6.0(embla-carousel@8.6.0)
+      embla-carousel-vue: 8.6.0(vue@3.5.42(typescript@6.0.3))
+      reka-ui: 2.10.4(vue@3.5.42(typescript@6.0.3))
+      vue: 3.5.42(typescript@6.0.3)
+    transitivePeerDependencies:
+      - '@nuxt/kit'
+      - '@nuxt/schema'
+      - '@vue/composition-api'
+      - embla-carousel
+      - nuxt
+      - sass
+      - supports-color
+      - typescript
+
   '@global-torque/sdk@0.3.1(typescript@6.0.3)(zod@4.6.2)':
     dependencies:
       '@alchemy/wallet-apis': 5.2.0(typescript@6.0.3)(viem@2.56.3(typescript@6.0.3)(zod@4.6.2))
@@ -6908,7 +7068,7 @@ snapshots:
       '@vueuse/shared': 15.0.0(vue@3.5.42(typescript@6.0.3))
       vue: 3.5.42(typescript@6.0.3)
 
-  '@vueuse/integrations@12.8.2(focus-trap@7.8.0)(idb-keyval@6.3.0)(jwt-decode@4.0.0)(typescript@6.0.3)':
+  '@vueuse/integrations@12.8.2(focus-trap@7.8.0)(idb-keyval@6.3.0)(jwt-decode@4.0.0)(typescript@6.0.3)(universal-cookie@8.1.2)':
     dependencies:
       '@vueuse/core': 12.8.2(typescript@6.0.3)
       '@vueuse/shared': 12.8.2(typescript@6.0.3)
@@ -6917,6 +7077,7 @@ snapshots:
       focus-trap: 7.8.0
       idb-keyval: 6.3.0
       jwt-decode: 4.0.0
+      universal-cookie: 8.1.2
     transitivePeerDependencies:
       - typescript
 
@@ -8321,6 +8482,8 @@ snapshots:
 
   lodash.camelcase@4.3.0: {}
 
+  lodash@4.18.1: {}
+
   long@5.3.2: {}
 
   lru-cache@11.5.2: {}
@@ -9179,7 +9342,7 @@ snapshots:
       fsevents: 2.3.3
       sass: 1.104.1
 
-  vitepress@1.6.4(@algolia/client-search@5.59.0)(@types/node@24.13.5)(idb-keyval@6.3.0)(jwt-decode@4.0.0)(lightningcss@1.33.0)(postcss@8.5.23)(sass@1.104.1)(search-insights@2.17.3)(typescript@6.0.3):
+  vitepress@1.6.4(@algolia/client-search@5.59.0)(@types/node@24.13.5)(idb-keyval@6.3.0)(jwt-decode@4.0.0)(lightningcss@1.33.0)(postcss@8.5.23)(sass@1.104.1)(search-insights@2.17.3)(typescript@6.0.3)(universal-cookie@8.1.2):
     dependencies:
       '@docsearch/css': 3.8.2
       '@docsearch/js': 3.8.2(@algolia/client-search@5.59.0)(search-insights@2.17.3)
@@ -9192,7 +9355,7 @@ snapshots:
       '@vue/devtools-api': 7.7.10
       '@vue/shared': 3.5.42
       '@vueuse/core': 12.8.2(typescript@6.0.3)
-      '@vueuse/integrations': 12.8.2(focus-trap@7.8.0)(idb-keyval@6.3.0)(jwt-decode@4.0.0)(typescript@6.0.3)
+      '@vueuse/integrations': 12.8.2(focus-trap@7.8.0)(idb-keyval@6.3.0)(jwt-decode@4.0.0)(typescript@6.0.3)(universal-cookie@8.1.2)
       focus-trap: 7.8.0
       mark.js: 8.11.1
       minisearch: 7.2.0

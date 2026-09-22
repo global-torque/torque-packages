@@ -179,4 +179,45 @@ describe('OffersDetailsSide', () => {
     expect(wrapper.text()).not.toContain('Awaiting finalized supply snapshot');
     expect(wrapper.text()).not.toContain('Pre-money Valuation');
   });
+
+  it('renders finalized NAV as a semantic responsive block with a normalized date', () => {
+    const wrapper = mountSide({
+      isOpenEnded: true,
+      on_chain_summary: {
+        asset_token: {
+          standard: 'ERC-20',
+          symbol: 'OTHER',
+          name: 'Other token',
+          decimals: 18,
+        },
+        latest_finalized_nav: {
+          nav_usdc_raw: '10000000',
+          valuation_as_of: '2026-08-25T12:00:00-04:00',
+        },
+      },
+    });
+
+    const block = wrapper.get('dl[data-testid="offer-finalized-nav"]');
+    expect(block.get('dt').text()).toBe('Latest Finalized NAV');
+    expect(block.get('[data-testid="offer-finalized-nav-amount"]').text()).toBe('10 USDC');
+    expect(block.get('time').text()).toBe('As of Aug 25, 2026');
+    expect(block.get('time').attributes('datetime')).toBe('2026-08-25T16:00:00.000Z');
+    expect(wrapper.text()).not.toContain('0.00000000001 USDC');
+    expect(wrapper.text()).not.toContain('Latest Finalized NAV:');
+  });
+
+  it('does not show a pending notice for malformed finalized NAV data', () => {
+    const wrapper = mountSide({
+      isOpenEnded: true,
+      on_chain_summary: {
+        latest_finalized_nav: {
+          nav_usdc_raw: 'not-a-number',
+          valuation_as_of: '2026-08-25T12:00:00Z',
+        },
+      },
+    });
+
+    expect(wrapper.find('[data-testid="offer-finalized-nav"]').exists()).toBe(false);
+    expect(wrapper.find('[data-testid="offer-nav-notice"]').exists()).toBe(false);
+  });
 });

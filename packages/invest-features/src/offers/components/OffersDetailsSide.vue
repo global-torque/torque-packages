@@ -30,6 +30,7 @@ defineEmits(['invest']);
 const offerRef = computed(() => props.offer);
 const {
   readOnlyInfo,
+  latestFinalizedNav,
   openEndedNavNotice,
   onChainDetails,
   investmentDocUrl,
@@ -99,6 +100,28 @@ const handleContactUsClick = () => {
             {{ openEndedNavNotice.text }}
           </p>
         </aside>
+        <dl
+          v-if="latestFinalizedNav"
+          class="offer-details-side__finalized-nav"
+          data-testid="offer-finalized-nav"
+        >
+          <dt class="offer-details-side__finalized-nav-label is--h6__title">
+            Latest Finalized NAV
+          </dt>
+          <dd class="offer-details-side__finalized-nav-value">
+            <span class="offer-details-side__finalized-nav-amount is--h4__title" data-testid="offer-finalized-nav-amount">
+              {{ latestFinalizedNav.amount }} {{ latestFinalizedNav.symbol }}
+            </span>
+            <time
+              v-if="latestFinalizedNav.asOf"
+              class="offer-details-side__finalized-nav-as-of is--small"
+              :datetime="latestFinalizedNav.asOf.dateTime"
+              data-testid="offer-finalized-nav-date"
+            >
+              {{ latestFinalizedNav.asOf.label }}
+            </time>
+          </dd>
+        </dl>
         <template
           v-for="(item, index) in readOnlyInfo"
           :key="index"
@@ -265,6 +288,7 @@ const handleContactUsClick = () => {
     display: flex;
     justify-content: space-between;
     width: 100%;
+    min-width: 0;
     align-items: center;
 
     & + & {
@@ -297,6 +321,45 @@ const handleContactUsClick = () => {
     margin: 4px 0 0;
   }
 
+  &__finalized-nav {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-width: 0;
+    margin: 0 0 18px;
+    padding: 0 0 18px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  &__finalized-nav-label,
+  &__finalized-nav-value {
+    min-width: 0;
+  }
+
+  &__finalized-nav-label {
+    color: var(--color-text-meta);
+  }
+
+  &__finalized-nav-value {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px 10px;
+    margin: 4px 0 0;
+    overflow-wrap: anywhere;
+  }
+
+  &__finalized-nav-amount {
+    min-width: 0;
+    color: var(--color-text-strong);
+    overflow-wrap: anywhere;
+  }
+
+  &__finalized-nav-as-of {
+    color: var(--color-text-meta);
+    overflow-wrap: anywhere;
+  }
+
   &__on-chain {
     width: 100%;
     margin-top: 18px;
@@ -316,6 +379,7 @@ const handleContactUsClick = () => {
   &__details-value {
     color: var(--color-text-strong);
     width: fit-content;
+    min-width: 0;
     display: flex;
     text-align: end;
     gap: 6px;
