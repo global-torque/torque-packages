@@ -199,6 +199,8 @@ describe('OffersDetailsSide', () => {
 
     const block = wrapper.get('dl[data-testid="offer-finalized-nav"]');
     expect(block.get('dt').text()).toBe('Latest Finalized NAV');
+    expect(block.attributes('role')).toBeUndefined();
+    expect(block.attributes('aria-live')).toBeUndefined();
     expect(block.get('[data-testid="offer-finalized-nav-amount"]').text()).toBe('10 USDC');
     expect(block.get('time').text()).toBe('As of Aug 25, 2026');
     expect(block.get('time').attributes('datetime')).toBe('2026-08-25T16:00:00.000Z');
