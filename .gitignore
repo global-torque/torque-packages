@@ -2,5 +2,13 @@ node_modules/
 artifacts/
 coverage/
 dist/
+!packages/invest-core/dist/
+!packages/invest-core/dist/node/
+!packages/invest-core/dist/node/app/
+!packages/invest-core/dist/node/app/config.js
+!packages/invest-core/dist/node/helpers/
+!packages/invest-core/dist/node/helpers/text.js
+!packages/invest-core/dist/node/markdown/
+!packages/invest-core/dist/node/markdown/tableWrap.js
 .vite/
 *.tsbuildinfo

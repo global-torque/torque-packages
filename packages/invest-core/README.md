@@ -27,6 +27,8 @@ TypeScript browser and type targets and additionally provide exact generated
 candidate packer emits only these three Node files; all other exports remain
 source based.
 
+`pnpm run build:node` owns regeneration of exactly these three tracked Node files for Git-subpath consumers; the candidate packer emits the same inventory and all other exports remain source based.
+
 - `analytics/analyticsBody`: analytics request body normalization with exact
   credential-field redaction. User, business, numeric, URL, and diagnostic
   values are retained unless assigned to a known credential field.
