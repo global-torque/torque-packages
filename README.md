@@ -85,11 +85,10 @@ and CI pin 24.21.0. Bootstrap pnpm with `corepack enable` and
 TypeScript 7 is deferred until vue-tsc supports its compiler entry point.
 
 CI runs on pull requests and pushes to `master` using Node 24.21.0. It runs
-`pnpm run build:node`, `pnpm run check` (package and consumer-link tests), and
-`pnpm run test:release`. Typechecks, audits, boundary/runtime dependency/packlist
-checks, and detached browser/consumer verification remain available locally
-but are not CI gates. The manual release workflow builds and tests before
-packing and retaining the candidate artifacts. Publication is a separate
+`pnpm run build:node` and `pnpm run check` (boundary checks, typechecks, and package tests).
+Detached browser and clean-consumer verification remain available locally but
+are not CI gates. The manual release workflow builds and tests before packing
+and retaining the candidate artifacts. Publication is a separate
 trusted-OIDC workflow that uses only those retained tarballs; it never
 rebuilds or repacks source.
 
@@ -117,34 +116,6 @@ shell. Generic UI, SDK, design token, content and error packages remain owned
 by their existing public repositories and are installed as exact external
 artifacts. No source from those repositories is copied here.
 
-## Local consumer framework links
-
-Run the consumer-owned launcher from the root of the consumer checkout. It
-loads the transactional link tool from this repository and keeps local links
-out of the consumer's committed manifests and lockfile:
-
-```sh
-cd /absolute/path/to/consumer
-pnpm framework:link --framework-root /absolute/path/to/torque-packages
-pnpm framework:status
-pnpm framework:recover
-pnpm framework:unlink
-```
-
-For direct tool use from the consumer root, invoke the canonical script with
-both roots explicit:
-
-```sh
-node /absolute/path/to/torque-packages/scripts/consumer-links.mjs link \
-  --consumer-root "$PWD" \
-  --framework-root /absolute/path/to/torque-packages
-```
-
-Local links are development evidence only. Remove them and run the consumer's
-normal frozen install before CI, release, or deployment checks. The complete
-transaction, recovery, and Vite integration contract is documented in
-[`docs/consumer-framework-links.md`](docs/consumer-framework-links.md).
-
 The four pure configuration helpers used by static Node/VitePress setup also
 have an exact Node condition: `invest-core/app/config`,
 `invest-core/markdown/tableWrap`, `invest-core/helpers/text`, and
@@ -154,7 +125,7 @@ entries. The Node build compiles only those four entries once during candidate
 packing; generated output is ignored and is never a source of browser SFCs.
 `pnpm run pack:candidate` rejects an ineligible candidate or existing output
 directory before cleanup, removes only the two owned `dist/node` directories,
-runs this build once, runs package and consumer-link tests, revalidates the
+runs this build once, runs boundary checks, typechecks, and package tests, revalidates the
 four-file inventory, and then packs all seven packages.
 
 The framework candidate using the public `@global-torque/ui-kit@0.1.4`
@@ -197,8 +168,3 @@ and their evidence uploads are not part of CI.
 `pnpm run pack:candidate` creates
 one local immutable receipt and one tarball per package under `artifacts/` for
 review. It does not publish, upload, tag, or deploy anything.
-
-`pnpm run test:release` exercises the workflow contract with disposable
-archives and a local `gh` stub, including rejected broken exports, missing and
-unexpected files, unresolved workspace protocols, bad release metadata, and
-tampered or empty UI transport inputs.

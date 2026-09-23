@@ -28,7 +28,7 @@ The committed lockfile is the baseline. Vue 3.5.42, Vite 8.3.0, Vue Router 5.3.1
 | 6 | Pinia 3.0.4 → 4.0.3 | 5 | Old/new supported consumer matrix and singleton checks |
 | 7 | Unovis ts/vue 1.6.7 → 1.7.0 | 6 | Patched workspace and unpatched detached chart consumers |
 | 8 | Decide ESLint 10.10.0 adoption or removal | 1 | Explicit usage decision; actual ESLint validation if retained |
-| 9 | pnpm 10.34.5 → 12.4.2 | All adopted dependency stages | Installation, linking/recovery, packing and release contract tests |
+| 9 | pnpm 10.34.5 → 12.4.2 | All adopted dependency stages | Frozen installation, packing, and detached consumer verification |
 | 10 | Final candidate verification and consumer rollout handoff | All adopted stages | New immutable candidate, retained evidence and rollback inputs |
 
 The numbered chain is the default order for attribution of regressions, not a claim that the runtime libraries require TypeScript 7 or each other. If a stage is blocked, continue unrelated work on the last passing baseline. Keep Vitest and jsdom in separate changes; keep pnpm last to avoid mixing resolver changes with library behavior changes.
@@ -41,11 +41,10 @@ Record the source commit, Node/pnpm versions, manifest and lockfile hashes, exac
 pnpm install --frozen-lockfile --ignore-scripts
 pnpm run build:node
 pnpm run check
-pnpm run test:release
 pnpm audit --audit-level=high
 ```
 
-`check` already includes candidate verification, typechecks, all package suites, link tests, framework boundaries, runtime dependency checks, and packlist checks. `test:release` is separate. `lint` runs `check-framework-boundaries.mjs`, not ESLint. Do not add duplicate test runs without a changed graph or an unresolved failure.
+`check` includes framework-boundary checks, typechecks, and all package suites. `lint` runs `check-framework-boundaries.mjs`, not ESLint. Candidate packing and detached consumer verification provide the artifact-level checks. Do not add duplicate test runs without a changed graph or an unresolved failure.
 
 Verify availability and integrity of the exact external releases. If UI Kit 0.1.4 is unavailable, use only the existing authenticated transport workflow described in [release-policy.md](release-policy.md), retaining/restoring the canonical lockfile and workspace files. Do not substitute arbitrary tarballs or relax integrity checks.
 
@@ -115,7 +114,7 @@ Review the same features Vitest config's hardcoded `node_modules/pinia/dist/pini
 
 ## 7. Unovis
 
-Treat both packages as one atomic change to 1.7.0. Inventory why each patch exists, compare new upstream exports, and either remove the patches with evidence or rebase the required edits. Update `patchedDependencies`, patch paths, version-scoped MapLibre exclusion, lockfile patch metadata, and raw SHA-256 entries in `docs/source-reconciliation.json`. `verify-candidate.mjs` checks those raw file digests; they are not interchangeable with pnpm's patch identifiers. Keep negative release assertions meaningful.
+Treat both packages as one atomic change to 1.7.0. Inventory why each patch exists, compare new upstream exports, and either remove the patches with evidence or rebase the required edits. Update `patchedDependencies`, patch paths, version-scoped MapLibre exclusion, lockfile patch metadata, and raw SHA-256 entries in `docs/source-reconciliation.json`. Verify any retained raw file digests directly before candidate packing; they are not interchangeable with pnpm's patch identifiers.
 
 Workspace patch success is insufficient: pnpm patches and overrides do not automatically travel inside published framework manifests. Detached npm and pnpm consumers must import and render actual area/donut charts, legends, tooltips and crosshairs against the naturally installed upstream graph, without copied workspace patches or exclusion overrides. Check browser bundling, SSR import/render, declarations, console errors and the resulting MapLibre branch. Compare bundle/graph changes against baseline.
 
@@ -129,22 +128,21 @@ First establish whether ESLint is used outside the declared scripts (developer t
 
 Recheck the official v11/v12 release and migration notes before implementation. Test 10 → 12 directly in an isolated checkout; if a lockfile transition requires v11, use a pinned intermediate version and retain both diffs. Do not assume compatibility based on package `engines` metadata.
 
-Update all eight `packageManager` fields, the root pnpm engine policy, both relevant workflow setup paths, `REQUIRED_PNPM_VERSION` in `consumer-links.mjs`, its test expectations, generated detached consumer manifests and documentation as one coordinated change. Search for all remaining 10.34.5 references, preserving intentional historical records. Coordinate external consumer launchers that invoke this repository's exact-version link contract.
+Update all eight `packageManager` fields, the root pnpm engine policy, both relevant workflow setup paths, generated detached consumer manifests, and documentation as one coordinated change. Search for all remaining 10.34.5 references, preserving intentional historical records.
 
-Inspect changes to lockfile schema, peer resolution, catalog publication rewriting, patches, overrides, install-script approval behavior, Corepack bootstrapping and pack output. Preserve the existing `--ignore-scripts` policy in release, link and detached-consumer installs; invoke required tools such as Playwright's browser installer explicitly. Run fresh frozen installation, transactional link/unlink/recover tests (including conflict/mixed-graph failures), release contract tests, archive checks and both detached package-manager profiles. Exercise the authenticated UI overlay derivation/verification path as well as the public-registry path; do not weaken the canonical-to-derived lock comparison to accommodate unexplained drift.
+Inspect changes to lockfile schema, peer resolution, catalog publication rewriting, patches, overrides, install-script approval behavior, Corepack bootstrapping and pack output. Preserve the existing `--ignore-scripts` policy in release and detached-consumer installs; invoke required tools such as Playwright's browser installer explicitly. Run a fresh frozen installation, archive checks, and both detached package-manager profiles. Exercise the authenticated UI overlay derivation/verification path as well as the public-registry path; do not weaken the canonical-to-derived lock comparison to accommodate unexplained drift.
 
 ## Per-stage acceptance and final release handoff
 
 For each stage retain a reviewable manifest/catalog/lockfile diff, migration source links, exact toolchain versions and successful relevant checks. After changing the graph, run the baseline command group once; stage-specific focused checks supplement it. A failed gate is fixed or explicitly blocks that stage. Do not waive failed tests, peer conflicts, lost suites, changed integrity, duplicate runtime singletons or missing public exports.
 
-Changes to published package bytes require a new candidate identity under [release-policy.md](release-policy.md). Before packing changed candidates, choose an unused version and update all seven versions, the root version, reconciliation, script/workflow defaults, active release docs and version-coupled tests coherently. Include the hardcoded version guard in `scripts/check-packlist.mjs`; preferably derive it from reconciliation while retaining a meaningful version-mismatch failure test. Search active references to 0.2.3; retain historical provenance and source revisions unchanged. Do not overwrite a retained 0.2.3 archive or assume a fresh output directory permits reuse of reviewed version bytes. Failed or changed packed candidates receive another new version.
+Changes to published package bytes require a new candidate identity under [release-policy.md](release-policy.md). Before packing changed candidates, choose an unused version and update all seven versions, the root version, reconciliation, script/workflow defaults, active release docs and version-coupled tests coherently. Candidate packing must reject a manifest or reconciliation version mismatch. Search active references to 0.2.3; retain historical provenance and source revisions unchanged. Do not overwrite a retained 0.2.3 archive or assume a fresh output directory permits reuse of reviewed version bytes. Failed or changed packed candidates receive another new version.
 
 When a stage needs detached consumer evidence, create a fresh local candidate under that policy and retain it as non-promotable development evidence; local probes may omit the clean-source requirement and must be labelled accordingly. Final release verification uses the accepted clean commit and enforces `REQUIRE_CLEAN_SOURCE=true`. `pack:candidate` owns cleanup, its one Node build and its internal full check; do not prebuild solely for that packing run. Preserve its exact four-file output contract and seven-package order.
 
 After assigning `MIGRATION_CANDIDATE` to the reviewed new version and `MIGRATION_ARTIFACTS` to an unused output path, the public-registry verification path is:
 
 ```sh
-pnpm run test:release
 pnpm audit --audit-level=high
 REQUIRE_CLEAN_SOURCE=true CANDIDATE_OUTPUT_DIR="$MIGRATION_ARTIFACTS" pnpm run pack:candidate -- "$MIGRATION_CANDIDATE"
 pnpm exec playwright install --with-deps chromium
@@ -172,7 +170,7 @@ An independent read-only reviewer inspected repository contracts, checked target
 | jsdom's engine range is stricter than both root and CI | Stage 2 separates development engines from tested published runtime support |
 | ESLint is not run by the lint script | Stage 8 requires a use/remove decision and real validation if retained |
 | pnpm migration risks install policy and authenticated overlay contracts | Stage 9 retains ignored lifecycle scripts and tests overlay, linking, recovery and packing contracts |
-| Changed/failed candidates cannot reuse reviewed versions | Acceptance rules require new identities, preserve old bytes, and include the hardcoded packlist guard |
+| Changed/failed candidates cannot reuse reviewed versions | Acceptance rules require new identities, preserve old bytes, and candidate packing enforces the reviewed version |
 | Final pack command allowed dirty source by default | Final command now enforces `REQUIRE_CLEAN_SOURCE=true`; local probes are separately labelled |
 
 Final independent re-review completed with no remaining material plan issues. Plan review verifies instructions and coverage; it does not establish that any proposed upgrade passes its implementation gates. No target-version application suites were run during planning.

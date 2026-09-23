@@ -17,6 +17,7 @@ const failures = [];
 for (const file of sourceFiles) {
   const source = fs.readFileSync(file, 'utf8');
   const relative = path.relative(root, file);
+  if (source.includes('@webdevelop-pro/')) failures.push(`${relative}: source uses the retired framework namespace`);
   if (/@global-torque\/ui-kit\/form-validation\//u.test(source)) failures.push(`${relative}: UI validation must use the public barrel`);
   if (/@global-torque\/ui-kit\/url-sync\//u.test(source)) failures.push(`${relative}: URL sync must use the public barrel`);
   if (/https?:\/\/[^'"\s]*(?:webdevelop-pro|global-torque)[^'"\s]*/iu.test(source) && /invest-widgets\/src\/socials\/socials\.ts$/u.test(file)) {

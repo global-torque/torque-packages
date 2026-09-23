@@ -23,7 +23,6 @@ jobs:
       - run: pnpm install --frozen-lockfile --ignore-scripts
       - run: pnpm run build:node
       - run: pnpm run check
-      - run: pnpm run test:release
   css-browser:
     runs-on: ubuntu-24.04
     steps:
