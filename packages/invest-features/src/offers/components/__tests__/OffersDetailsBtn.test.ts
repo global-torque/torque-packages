@@ -160,6 +160,33 @@ describe('OffersDetailsBtn', () => {
     expect(sendEvent).toHaveBeenCalledOnce();
   });
 
+  it('shows the fully subscribed disabled state without an investment action', async () => {
+    const wrapper = mount(OffersDetailsBtn, {
+      props: {
+        isSharesReached: true,
+        loading: false,
+      },
+      global: {
+        stubs: {
+          VButton: {
+            emits: ['click'],
+            template: '<button type="button" :disabled="disabled" @click="$emit(\'click\')"><slot /></button>',
+          },
+          VKycActionButton: offerKycActionButtonStub,
+        },
+      },
+    });
+
+    await nextTick();
+    const button = wrapper.get('button');
+    expect(button.text()).toBe('100% Subscribed');
+    expect(button.attributes('disabled')).toBeDefined();
+    expect(wrapper.text()).not.toContain('Offer already reached subscription');
+
+    await button.trigger('click');
+    expect(wrapper.emitted('invest')).toBeUndefined();
+  });
+
   it('reports rejected analytics after preserving the investment intent', async () => {
     selectedUserProfileData.value = { isKycApproved: true };
     const analyticsError = new Error('analytics unavailable');

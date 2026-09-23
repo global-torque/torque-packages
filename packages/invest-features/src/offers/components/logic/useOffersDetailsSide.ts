@@ -90,11 +90,11 @@ export function useOffersDetailsSide(offerRef: Ref<IOfferFormatted | undefined>)
 
     const valuationDate = formatValuationDate(nav?.valuation_as_of);
     const finalizedNav = nav && Number.isInteger(assetDecimals)
-      ? [
-          `${formatRawAmount(nav.nav_usdc_raw, assetDecimals!)} ${assetSymbol}`,
-          valuationDate ? `as of ${valuationDate}` : undefined,
-        ].filter(Boolean).join(' · ')
+      ? `${formatRawAmount(nav.nav_usdc_raw, assetDecimals!)} ${assetSymbol}`
       : undefined;
+    const navTooltip = valuationDate
+      ? `As of ${valuationDate}. NAV is the fund’s latest finalized net asset value per share.`
+      : 'NAV is the fund’s latest finalized net asset value per share.';
 
     return [
       {
@@ -112,6 +112,7 @@ export function useOffersDetailsSide(offerRef: Ref<IOfferFormatted | undefined>)
       {
         title: 'Latest Finalized NAV:',
         text: finalizedNav,
+        tooltip: finalizedNav ? navTooltip : undefined,
         show: !!finalizedNav,
       },
       { title: 'Fund Structure:', text: 'Open-ended' },

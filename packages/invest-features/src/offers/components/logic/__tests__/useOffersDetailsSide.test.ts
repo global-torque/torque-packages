@@ -260,8 +260,12 @@ describe('useOffersDetailsSide', () => {
       'Subscriptions:': 'Open',
       'Share Price:': '$100.00',
       'Fund Structure:': 'Open-ended',
-      'Latest Finalized NAV:': '1.25 USDC · as of Jul 31, 2026',
+      'Latest Finalized NAV:': '1.25 USDC',
     });
+    const navRow = composable.readOnlyInfo.value.find(item => item.title === 'Latest Finalized NAV:');
+    expect(navRow?.tooltip).toBe(
+      'As of Jul 31, 2026. NAV is the fund’s latest finalized net asset value per share.',
+    );
     expect(composable.openEndedNavNotice.value).toBeUndefined();
 
     const technicalRows = Object.fromEntries((composable.onChainDetails.value ?? [])
@@ -273,6 +277,31 @@ describe('useOffersDetailsSide', () => {
     });
     expect(buildExplorerAddressUrl('base', vaultAddress))
       .toBe(`https://basescan.org/address/${vaultAddress}`);
+  });
+
+  it('keeps NAV text clean and explains the value without an invalid valuation date', () => {
+    const offerRef = ref({
+      isOpenEnded: true,
+      on_chain_summary: {
+        asset_token: {
+          decimals: 6,
+          symbol: 'USDC',
+        },
+        latest_finalized_nav: {
+          nav_usdc_raw: '1250000',
+          valuation_as_of: 'not-a-date',
+        },
+      },
+    } as any);
+
+    const navRow = useOffersDetailsSide(offerRef).readOnlyInfo.value
+      .find(item => item.title === 'Latest Finalized NAV:');
+
+    expect(navRow).toMatchObject({
+      text: '1.25 USDC',
+      tooltip: 'NAV is the fund’s latest finalized net asset value per share.',
+    });
+    expect(navRow?.tooltip).not.toContain('as of');
   });
 
   it('explains the initial share price once while the first NAV is pending', () => {

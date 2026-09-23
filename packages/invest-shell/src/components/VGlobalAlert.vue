@@ -45,13 +45,13 @@ const alertVariant = computed(() => alertTones[variant.value ?? 'error'] ?? 'def
   display: flex;
   justify-content: center;
   position: fixed;
-  bottom: -20px;
+  bottom: 0;
   z-index: 11;
-  background: color-mix(in srgb, var(--background) 60%, transparent);
 
   &__alert {
-    width: 100%;
+    width: calc(100% - 32px);
     max-width: 1280px;
+    margin-bottom: 16px;
   }
 }
 </style>

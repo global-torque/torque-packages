@@ -120,7 +120,10 @@ const handleContactUsClick = () => {
               <Tooltip>
                 <TooltipTrigger>
                   <span class="offer-details-side__details-value is--body is--tooltip">
-                    <infoIcon class="offer-details-side__info-icon" />
+                    <infoIcon
+                      class="offer-details-side__info-icon"
+                      aria-hidden="true"
+                    />
                     {{ item.text }}
                   </span>
                 </TooltipTrigger>

@@ -179,4 +179,39 @@ describe('OffersDetailsSide', () => {
     expect(wrapper.text()).not.toContain('Awaiting finalized supply snapshot');
     expect(wrapper.text()).not.toContain('Pre-money Valuation');
   });
+
+  it('renders finalized NAV with the shared information tooltip trigger used by Security Type', () => {
+    const wrapper = mountSide({
+      isOpenEnded: true,
+      securityTypeTooltip: 'Security type information.',
+      on_chain_summary: {
+        asset_token: {
+          decimals: 6,
+          symbol: 'USDC',
+        },
+        latest_finalized_nav: {
+          nav_usdc_raw: '1250000',
+          valuation_as_of: '2026-07-31T12:00:00Z',
+        },
+      },
+    });
+
+    const navRow = wrapper.findAll('.offer-details-side__side-details-info')
+      .find(row => row.text().includes('Latest Finalized NAV:'));
+    expect(navRow).toBeDefined();
+    expect(navRow!.text()).toContain('1.25 USDC');
+    expect(navRow!.text()).not.toContain('as of');
+
+    const navTrigger = navRow!.get('[data-slot="tooltip-trigger"]');
+    const securityRow = wrapper.findAll('.offer-details-side__side-details-info')
+      .find(row => row.text().includes('Security Type:'));
+    expect(securityRow).toBeDefined();
+    const securityTrigger = securityRow!.get('[data-slot="tooltip-trigger"]');
+    const navIcon = navTrigger.get('.offer-details-side__info-icon');
+    const securityIcon = securityTrigger.get('.offer-details-side__info-icon');
+
+    expect(navTrigger.element.tagName).toBe('BUTTON');
+    expect(navIcon.element.tagName).toBe('svg');
+    expect(navIcon.classes()).toEqual(securityIcon.classes());
+  });
 });

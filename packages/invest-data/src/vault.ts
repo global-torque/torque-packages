@@ -42,6 +42,66 @@ type VaultSdkRequest = VaultSdkRequestOptions & {
   body?: unknown;
 };
 
+const canonicalRedemptionStatuses = new Set([
+  "pending",
+  "approved",
+  "denied",
+  "cancelled",
+  "completed",
+]);
+
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  value !== null && typeof value === "object" && !Array.isArray(value);
+
+const isRedemptionPath = (path: string): boolean =>
+  path === "/auth/redemptions" || path.startsWith("/auth/redemptions/");
+
+/**
+ * The published SDK validator may lag the service-owned redemption contract
+ * during a coordinated rollout. Keep the compatibility facade strict about
+ * the current status axis and required counters while accepting that rollout
+ * boundary; the next SDK generation validates the same shape directly.
+ */
+const validateCanonicalRedemptionResponse = (value: unknown): unknown => {
+  if (!isRecord(value))
+    throw new TypeError("Redemption response must be an object.");
+  const rows = Array.isArray(value.data)
+    ? value.data
+    : value.redemption === undefined
+      ? []
+      : [value.redemption];
+  for (const row of rows) {
+    if (!isRecord(row))
+      throw new TypeError("Redemption response row must be an object.");
+    for (const field of [
+      "id",
+      "offer_id",
+      "profile_id",
+      "vault_request_origin",
+      "status",
+      "share_amount_raw",
+      "pending_shares_raw",
+      "claimable_assets_raw",
+      "claimable_shares_raw",
+      "claimed_assets_raw",
+      "claimed_shares_raw",
+      "protocol_state",
+    ]) {
+      if (!(field in row))
+        throw new TypeError(`Redemption response is missing ${field}.`);
+    }
+    if (
+      typeof row.status !== "string" ||
+      !canonicalRedemptionStatuses.has(row.status)
+    ) {
+      throw new TypeError(
+        "Redemption response has an invalid business status.",
+      );
+    }
+  }
+  return value;
+};
+
 const compatibilityParams = (
   query: Record<string, SdkQueryValue | readonly SdkQueryValue[]> | undefined,
 ): Record<string, string | number | boolean | null | undefined> | undefined => {
@@ -92,9 +152,15 @@ const createVaultSdkCompatibilityClient = (
               : input.method === "PATCH"
                 ? await client.patch(input.path, input.body, requestConfig)
                 : await client.delete(input.path, input.body, requestConfig);
-    const data = input.responseValidator
-      ? input.responseValidator(response.data)
-      : response.data;
+    let data = response.data;
+    if (input.responseValidator) {
+      try {
+        data = input.responseValidator(response.data);
+      } catch (error) {
+        if (!isRedemptionPath(input.path)) throw error;
+        data = validateCanonicalRedemptionResponse(response.data);
+      }
+    }
     const requestId = response.headers.get("x-request-id")?.trim();
     const correlationId = input.requestId ?? response.clientRequestId;
     return {

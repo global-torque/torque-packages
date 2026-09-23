@@ -209,7 +209,7 @@ onUnmounted(() => {
         @click="investClickHandler"
         size="lg"
       >
-        Invest Now
+        {{ isSharesReached ? '100% Subscribed' : 'Invest Now' }}
       </Button>
       <VKycActionButton
         v-else-if="showKycBtn"
@@ -221,12 +221,6 @@ onUnmounted(() => {
         class="offer-details-btn__info is--small"
       >
         You haven't passed KYC!
-      </p>
-      <p
-        v-if="isSharesReached && showInvestBtn"
-        class="offer-details-btn__info is--small"
-      >
-        Offer already reached subscription
       </p>
     </template>
   </div>
