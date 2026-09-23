@@ -4,6 +4,7 @@
 
 - Improved the global error alert layout and added an accessible close button while preserving click-to-dismiss behavior.
 - Switched the shell's four internal runtime edges to exact versions so full-SHA Git subdirectory installs resolve without the workspace protocol; local development continues to link matching workspace packages.
+- Switched the success roles to the fixed mint primitives of design-tokens 0.3.1: `--color-status-success`, `--color-positive-strong` and `--color-positive-tint` read `--gt-primitive-color-mint-500`, `-600` and `-100`, and older dictionaries resolve them to `unset`. The skeleton shimmer now follows the host `--primary` and `--background`, and `.text-secondary` outline and ghost buttons read `--ui-color-positive-accent`, then `--secondary`, where they used the success role.
 
 ## 0.4.12 candidate
 

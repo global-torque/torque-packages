@@ -29,7 +29,7 @@
   --color-label-foreground: var(--muted-foreground);
   --color-badge-foreground: var(--muted-foreground);
   --color-field-error: var(--destructive);
-  --color-status-success: var(--chart-2);
+  --color-status-success: var(--gt-primitive-color-mint-500, unset);
   --color-status-warning: var(--chart-3);
   --color-status-info: var(--chart-4);
   --color-text-strong: var(--gt-primitive-color-grey-800, unset);
@@ -38,8 +38,8 @@
   --color-border-strong: var(--gt-primitive-color-grey-400, unset);
   --color-surface-inverse-muted: var(--gt-primitive-color-navy-900, unset);
   --color-accent-strong: var(--gt-primitive-color-primary-600, unset);
-  --color-positive-strong: var(--gt-primitive-color-secondary-600, unset);
-  --color-positive-tint: var(--gt-primitive-color-secondary-100, unset);
+  --color-positive-strong: var(--gt-primitive-color-mint-600, unset);
+  --color-positive-tint: var(--gt-primitive-color-mint-100, unset);
   --color-negative-tint: var(--gt-primitive-color-scarlet-50, unset);
   --color-warning-accent: var(--gt-primitive-color-gold-400, unset);
   --color-warning-tint: var(--gt-primitive-color-gold-50, unset);
@@ -64,6 +64,6 @@
     0 10px 32px 4px color-mix(in srgb, var(--foreground) 10%, transparent);
   --shadow-sheet: var(--gt-primitive-shadow-sheet, unset);
   --shadow-badge: var(--gt-primitive-shadow-badge, unset);
-  --color-skeleton-base: var(--gt-primitive-color-azure-tint-200, unset);
-  --color-skeleton-highlight: var(--gt-primitive-color-azure-tint-100, unset);
+  --color-skeleton-base: color-mix(in srgb, color-mix(in srgb, var(--primary) 19.5%, var(--background)) 34%, transparent);
+  --color-skeleton-highlight: color-mix(in srgb, color-mix(in srgb, var(--primary) 7.4%, var(--background)) 34%, transparent);
 }

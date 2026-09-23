@@ -38,10 +38,10 @@
     }
   },
   "current": {
-    "rawBytes": 97734,
-    "gzipBytes": 18216,
+    "rawBytes": 97767,
+    "gzipBytes": 18233,
     "generatedSelectorOccurrences": 0,
-    "sha256": "27ec3710e3bc4bbf0fcb069f7037d3b65ba3816756e35c03f6f0f9b5017fcbc6"
+    "sha256": "5edd48802419f027f2578bb2fe36fca6d93ceb9241111f7b2cdb6b70f4e07857"
   },
   "referenceToolchain": {
     "node": "v24.14.0",
@@ -50,8 +50,8 @@
     "pnpm": "10.34.5"
   },
   "maximum": {
-    "rawBytes": 97984,
-    "gzipBytes": 18266,
+    "rawBytes": 98017,
+    "gzipBytes": 18283,
     "generatedSelectorOccurrences": 0
   }
 }

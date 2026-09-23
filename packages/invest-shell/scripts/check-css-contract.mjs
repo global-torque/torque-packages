@@ -39,8 +39,9 @@ const primitiveFallbacks = new Map([
   ["--gt-primitive-color-grey-400", ["unset"]],
   ["--gt-primitive-color-navy-900", ["unset"]],
   ["--gt-primitive-color-primary-600", ["unset"]],
-  ["--gt-primitive-color-secondary-600", ["unset"]],
-  ["--gt-primitive-color-secondary-100", ["unset"]],
+  ["--gt-primitive-color-mint-600", ["unset"]],
+  ["--gt-primitive-color-mint-100", ["unset"]],
+  ["--gt-primitive-color-mint-500", ["unset"]],
   ["--gt-primitive-color-scarlet-50", ["unset"]],
   ["--gt-primitive-color-gold-400", ["unset"]],
   ["--gt-primitive-color-gold-50", ["unset"]],
@@ -52,8 +53,6 @@ const primitiveFallbacks = new Map([
   ["--gt-primitive-color-charcoal-500", ["unset", "transparent"]],
   ["--gt-primitive-shadow-sheet", ["unset"]],
   ["--gt-primitive-shadow-badge", ["unset"]],
-  ["--gt-primitive-color-azure-tint-200", ["unset"]],
-  ["--gt-primitive-color-azure-tint-100", ["unset"]],
 ]);
 const primitiveReads = [...geometry.matchAll(/var\((--gt-primitive-[a-z0-9-]+),\s*([^)]*)\)/gu)]
   .map(([, primitive, fallback]) => ({ primitive, fallback: fallback.trim() }));
