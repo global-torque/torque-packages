@@ -4,15 +4,29 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { chromium } from "@playwright/test";
+import { compileString } from "sass";
 import { resolveCssContractPackageRoots } from "./css-contract-package-roots.mjs";
 
 const canonicalPackageDirectory = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const { packageDirectory, featuresPackageDirectory } = resolveCssContractPackageRoots({ canonicalPackageDirectory });
 const geometry = await fs.readFile(path.join(packageDirectory, "src/styles/geometry.css"), "utf8");
 const components = await fs.readFile(path.join(packageDirectory, "src/styles/components.css"), "utf8");
+const logoSource = await fs.readFile(path.join(packageDirectory, "src/components/VLogo.vue"), "utf8");
+const loaderSource = await fs.readFile(path.join(packageDirectory, "src/components/VLoader.vue"), "utf8");
 const headerBar = await fs.readFile(path.join(packageDirectory, "src/components/VHeaderBar/VHeaderBar.vue"), "utf8");
 const offersDetailsSide = await fs.readFile(path.join(featuresPackageDirectory, "src/offers/components/OffersDetailsSide.vue"), "utf8");
 const oldLocalShadowFallback = /var\(\s*--ui-shadow-control,\s*0 2px 5px 1px color-mix\(in srgb, #12161f 3%, transparent\),\s*0 2px 3px -2px color-mix\(in srgb, #12161f 15%, transparent\)\s*\)/gu;
+const logoStyle = logoSource.match(/<style lang="scss">([\s\S]*?)<\/style>/u)?.[1];
+const loaderStyle = loaderSource.match(/<style lang="scss">([\s\S]*?)<\/style>/u)?.[1];
+assert.ok(logoStyle, "VLogo source must expose its SCSS contract");
+assert.ok(loaderStyle, "VLoader source must expose its SCSS contract");
+const compiledLogoStyle = compileString(logoStyle).css;
+const compiledLoaderStyle = compileString(loaderStyle).css;
+assert.match(
+  headerBar,
+  /&__logo\s*\{[\s\S]*?max-width:\s*211px;/u,
+  "desktop header must retain its 211px logo constraint",
+);
 assert.equal(
   [...headerBar.matchAll(oldLocalShadowFallback)].length + [...offersDetailsSide.matchAll(oldLocalShadowFallback)].length,
   0,
@@ -194,6 +208,7 @@ const probes = `
   <div id="legal" class="semantic-text-probe">Legal resource copy</div>
   <div id="resource" class="semantic-text-probe">Resource copy</div>
   <div id="border" class="border-probe">Border</div>
+  <div id="sidebar-border" class="sidebar-border-probe">Sidebar border</div>
   <div id="overlay" class="overlay-probe">Overlay</div>
   <div id="header-local" class="local-shadow-probe">Header</div>
   <div id="offer-local" class="local-shadow-probe">Offer</div>
@@ -238,6 +253,18 @@ const probes = `
       <p id="actual-footer-ui-override-copyright-copy">Override copyright.</p>
     </div>
   </section>
+  <div id="desktop-logo" class="v-logo">
+    <span class="v-logo__desktop"><span id="desktop-logo-full" class="v-logo__full"></span></span>
+    <span id="desktop-logo-mobile" class="v-logo__mobile"></span>
+  </div>
+  <div id="header-logo" class="v-logo v-header__logo">
+    <span class="v-logo__desktop"><span id="header-logo-full" class="v-logo__full"></span></span>
+    <span class="v-logo__mobile"></span>
+  </div>
+  <div id="loader-logo" class="the-loader__logo v-logo">
+    <span class="v-logo__desktop"><span class="v-logo__full" id="loader-logo-full"></span></span>
+    <span class="v-logo__mobile"></span>
+  </div>
 `;
 const probeStyle = `
   body { color: var(--foreground); }
@@ -250,7 +277,10 @@ const probeStyle = `
   .text-probe { color: var(--color-text-strong); }
   .semantic-text-probe { color: var(--color-text-strong); }
   .border-probe { border-top: 1px solid var(--color-border-strong); }
+  .sidebar-border-probe { border-top: 1px solid var(--ui-color-border, var(--color-sidebar-rule)); }
   .overlay-probe { background-color: var(--color-overlay-page); }
+  .v-header__logo { max-width: 211px; }
+  #desktop-logo-mobile { display: block !important; }
   .local-shadow-probe {
     box-shadow: var(--ui-shadow-control, var(--shadow-control));
   }
@@ -268,7 +298,7 @@ const browser = await chromium.launch({ headless: true });
 try {
   report.chromium = await browser.version();
   const page = await browser.newPage({ viewport: { width: 1280, height: 720 } });
-  await page.setContent(`<style>${tokens}</style><style>${geometry}</style><style>${components}</style><style>${footerProbeStyle}</style><style>${footerComponentStyle}</style><style>${probeStyle}</style>${probes}`);
+  await page.setContent(`<style>${tokens}</style><style>${geometry}</style><style>${components}</style><style>${compiledLogoStyle}</style><style>${compiledLoaderStyle}</style><style>${footerProbeStyle}</style><style>${footerComponentStyle}</style><style>${probeStyle}</style>${probes}`);
   const computed = async (id, property) => page.locator(`#${id}`).evaluate((element, name) => getComputedStyle(element).getPropertyValue(name).trim(), property);
   const checks = [
     ["control-shadow", normalizeShadow(await computed("control", "box-shadow")), shadowValues.redControl],
@@ -282,6 +312,8 @@ try {
     ["legal-resource-text-inherits-host-color", await computed("legal", "color"), "rgb(255, 0, 0)"],
     ["resource-text-inherits-host-color", await computed("resource", "color"), "rgb(255, 0, 0)"],
     ["border-fallback-current-color", await computed("border", "border-top-color"), "rgb(255, 0, 0)"],
+    ["sidebar-border-fallback-neutral", await computed("sidebar-border", "border-top-color"), "rgb(226, 232, 240)"],
+    ["logo-mobile-mark", `${(await page.locator("#desktop-logo-mobile").boundingBox())?.width}x${(await page.locator("#desktop-logo-mobile").boundingBox())?.height}`, "36x36"],
     ["overlay-fallback-transparent", await computed("overlay", "background-color"), "color(srgb 0 0 0 / 0)"],
     ["header-local-semantic-shadow", normalizeShadow(await computed("header-local", "box-shadow")), shadowValues.redControl],
     ["offer-local-semantic-shadow", normalizeShadow(await computed("offer-local", "box-shadow")), shadowValues.redControl],
@@ -316,6 +348,23 @@ try {
     assert.equal(actual, expected, `${name} computed value mismatch`);
     report.checks.push({ name, result: "pass", value: actual });
   }
+  for (const [name, id, expected] of [
+    ["logo-desktop-intrinsic-ratio", "desktop-logo-full", { width: 214.2, height: 36 }],
+    ["logo-header-max-width", "header-logo-full", { width: 211, height: 36 }],
+    ["logo-loader-proportional-ratio", "loader-logo-full", { width: 357, height: 60 }],
+  ]) {
+    const box = await page.locator(`#${id}`).boundingBox();
+    assert.ok(box, `${name} element must be measurable`);
+    assert.ok(Math.abs(box.width - expected.width) < 0.1, `${name} width mismatch: ${box.width}`);
+    assert.ok(Math.abs(box.height - expected.height) < 0.1, `${name} height mismatch: ${box.height}`);
+    report.checks.push({ name, result: "pass", value: `${box.width}x${box.height}` });
+  }
+  await page.evaluate(() => document.documentElement.style.setProperty("--gt-primitive-color-slate-200", "#123456"));
+  {
+    const actual = await computed("sidebar-border", "border-top-color");
+    assert.equal(actual, "rgb(18, 52, 86)", "authenticated slate primitive must override the neutral sidebar fallback");
+    report.checks.push({ name: "sidebar-border-token-override", result: "pass", value: actual });
+  }
   await page.evaluate(() => document.documentElement.style.setProperty("--gt-primitive-color-grey-800", "#010203"));
   {
     const actual = await computed("text", "color");
@@ -324,6 +373,7 @@ try {
   }
   await page.evaluate((foreground) => {
     document.documentElement.style.removeProperty("--gt-primitive-color-grey-800");
+    document.documentElement.style.removeProperty("--gt-primitive-color-slate-200");
     // The authenticated 0.2.1 archive exposes the neutral dictionary, not the
     // 0.3.0 grey/navy aliases. It must therefore retain the absent-alias
     // behavior instead of selecting a producer palette literal.

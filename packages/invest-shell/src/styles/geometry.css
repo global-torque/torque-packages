@@ -3,10 +3,9 @@
    (packages/ui-primitives/src/styles/theme.css). Brand palette, font and
    radius keep coming from the preset. Values only.
    Import order: the host must load @global-torque/design-tokens/css before
-   this file. Primitive aliases deliberately end in the CSS-wide `unset` value
-   when a host has not supplied the alias. That preserves the 0.4.0 + 0.2.1
-   computed-property behavior; component properties then use their normal
-   inherit/currentColor/transparent/none initial behavior. */
+   this file. Primitive aliases normally end in the CSS-wide `unset` value
+   when absent; the structural sidebar rule retains its neutral slate fallback
+   so shell borders remain visible without an authenticated primitive sheet. */
 :root {
   --spacing-control-sm: 2rem;
   --spacing-control-md: 2.5rem;
@@ -47,7 +46,7 @@
   --color-highlight-strong: var(--gt-primitive-color-grape-700, unset);
   --color-highlight-tint: var(--gt-primitive-color-grape-50, unset);
   --color-link-highlight: var(--gt-primitive-color-iris-tint, unset);
-  --color-sidebar-rule: var(--gt-primitive-color-slate-200, unset);
+  --color-sidebar-rule: var(--gt-primitive-color-slate-200, #e2e8f0);
   --color-overlay-base: var(--gt-primitive-color-slate-950, unset);
   --color-text-quote: var(--gt-primitive-color-charcoal-500, unset);
   --color-overlay-page: color-mix(in srgb, var(--gt-primitive-color-charcoal-500, transparent) 20%, transparent);

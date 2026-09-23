@@ -89,7 +89,7 @@ const mobileLogo = computed(() => (
     width: auto;
     max-width: 100%;
     height: 36px;
-    min-width: 120px;
+    aspect-ratio: var(--ui-brand-logo-aspect-ratio, 238 / 40);
     flex-shrink: 0;
     display: block;
     background-position: center;
