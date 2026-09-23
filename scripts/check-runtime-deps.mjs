@@ -18,6 +18,16 @@ const shellRuntimeDependencies = new Map([
   ['@global-torque/invest-runtime', 'invest-runtime'],
   ['@global-torque/invest-widgets', 'invest-widgets'],
 ]);
+const cohortPinnedDependencies = new Map([
+  ['invest-core', new Set(['@global-torque/domain-types'])],
+  ['invest-features', new Set([
+    '@global-torque/domain-types',
+    '@global-torque/invest-core',
+    '@global-torque/invest-data',
+    '@global-torque/invest-runtime',
+    '@global-torque/invest-widgets',
+  ])],
+]);
 const failures = [];
 const bareImport = /(?:import|export)\s+(?:[^'";]*?\s+from\s+)?['"]([^'".][^'"]*)['"]|import\(\s*['"]([^'"]+)['"]\s*\)/gu;
 
@@ -113,7 +123,11 @@ for (const directory of packages) {
     if (name.startsWith('@webdevelop-pro/')) failures.push(`${directory.name}: forbidden old framework dependency ${name}`);
     if (name.startsWith('@global-torque/') && !packageNames.has(name) && !externalPackageNames.has(name)) failures.push(`${directory.name}: unknown @global-torque dependency ${name}`);
     if (typeof version === 'string' && /^(workspace:|file:|link:|catalog:)/u.test(version) && !packageNames.has(name)) failures.push(`${directory.name}: external dependency ${name} uses ${version}`);
-    if (packageNames.has(name) && !(directory.name === 'invest-shell' && shellRuntimeDependencies.has(name)) && typeof version === 'string' && /^(?:\^|~|>=|<=|>|<)?\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?$/u.test(version)) {
+    const pinnedForCohort = cohortPinnedDependencies.get(directory.name)?.has(name) ?? false;
+    if (pinnedForCohort && version !== manifests.get(name)?.manifest.version) {
+      failures.push(`${directory.name}: cohort-pinned internal dependency ${name} must match ${manifests.get(name)?.manifest.version}, found ${version}`);
+    }
+    if (packageNames.has(name) && !(directory.name === 'invest-shell' && shellRuntimeDependencies.has(name)) && !pinnedForCohort && typeof version === 'string' && /^(?:\^|~|>=|<=|>|<)?\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?$/u.test(version)) {
       failures.push(`${directory.name}: internal dependency ${name} uses ordinary semver ${version}; use workspace protocol`);
     }
   }
