@@ -8,6 +8,8 @@ const packageDirectory = path.resolve(
 );
 const geometryPath = path.join(packageDirectory, "src/styles/geometry.css");
 const componentsPath = path.join(packageDirectory, "src/styles/components.css");
+const logoPath = path.join(packageDirectory, "src/components/VLogo.vue");
+const loaderPath = path.join(packageDirectory, "src/components/VLoader.vue");
 const headerBarPath = path.join(packageDirectory, "src/components/VHeaderBar/VHeaderBar.vue");
 const offersDetailsSidePath = path.resolve(packageDirectory, "../invest-features/src/offers/components/OffersDetailsSide.vue");
 const footerPaths = [
@@ -19,14 +21,17 @@ const footerPaths = [
 ].map((relativePath) => path.join(packageDirectory, relativePath));
 const geometry = await fs.readFile(geometryPath, "utf8");
 const components = await fs.readFile(componentsPath, "utf8");
+const logo = await fs.readFile(logoPath, "utf8");
+const loader = await fs.readFile(loaderPath, "utf8");
 const headerBar = await fs.readFile(headerBarPath, "utf8");
 const offersDetailsSide = await fs.readFile(offersDetailsSidePath, "utf8");
 const footers = await Promise.all(footerPaths.map((footerPath) => fs.readFile(footerPath, "utf8")));
 
 // 0.2.1 intentionally does not publish these legacy aliases; its neutral
 // dictionary is a supported intermediate host, not a reason to invent a new
-// palette. The CSS-wide `unset` terminal restores 0.4.0's property behavior.
-// 0.3.0 publishes the aliases and therefore wins over the terminal value.
+// palette. The CSS-wide `unset` terminal restores 0.4.0's property behavior,
+// while the shell's structural sidebar rule retains its former neutral slate
+// fallback so absent aliases cannot turn borders into currentColor.
 const primitiveFallbacks = new Map([
   ["--gt-primitive-color-grey-800", ["unset"]],
   ["--gt-primitive-color-grey-700", ["unset"]],
@@ -42,7 +47,7 @@ const primitiveFallbacks = new Map([
   ["--gt-primitive-color-grape-700", ["unset"]],
   ["--gt-primitive-color-grape-50", ["unset"]],
   ["--gt-primitive-color-iris-tint", ["unset"]],
-  ["--gt-primitive-color-slate-200", ["unset"]],
+  ["--gt-primitive-color-slate-200", ["#e2e8f0"]],
   ["--gt-primitive-color-slate-950", ["unset"]],
   ["--gt-primitive-color-charcoal-500", ["unset", "transparent"]],
   ["--gt-primitive-shadow-sheet", ["unset"]],
@@ -75,6 +80,31 @@ assert.doesNotMatch(
   geometry,
   /var\(--gt-primitive-[^,()]+\)/u,
   "primitive reads must never be unresolved",
+);
+assert.match(
+  logo,
+  /&__full\s*\{[\s\S]*?aspect-ratio:\s*var\(--ui-brand-logo-aspect-ratio,\s*238\s*\/\s*40\);/u,
+  "desktop logo must preserve its intrinsic 238:40 ratio with a host override",
+);
+assert.doesNotMatch(
+  logo,
+  /&__full\s*\{[\s\S]*?min-width:\s*120px;/u,
+  "desktop logo must not use the shrunken migration minimum width",
+);
+assert.match(
+  logo,
+  /&__mobile\s*\{[\s\S]*?width:\s*36px;[\s\S]*?height:\s*36px;/u,
+  "mobile logo mark must remain 36 by 36",
+);
+assert.match(
+  loader,
+  /&__logo\s*\{[\s\S]*?\.v-logo__full\s*\{[\s\S]*?height:\s*60px;/u,
+  "loader must retain its 60px desktop logo override",
+);
+assert.match(
+  headerBar,
+  /&__logo\s*\{[\s\S]*?max-width:\s*211px;/u,
+  "desktop header must retain its 211px logo constraint",
 );
 for (const [role, percentage] of [["control", "3%"], ["dialog", "5%"], ["raised", "5%"]]) {
   assert.match(
