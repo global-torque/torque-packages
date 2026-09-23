@@ -219,7 +219,7 @@ describe('useOffersDetailsSide', () => {
     )).toBeUndefined();
   });
 
-  it('prioritizes open-ended subscription status and dated finalized NAV without client math', () => {
+  it('presents finalized NAV with the fixed USDC scale instead of asset token metadata', () => {
     const offerRef = ref({
       isOpenEnded: true,
       pricePerShareFormatted: '$100.00',
@@ -227,10 +227,10 @@ describe('useOffersDetailsSide', () => {
         network: 'base',
         asset_token: {
           standard: 'ERC-20',
-          symbol: 'USDC',
+          symbol: 'OTHER',
           name: 'USD Coin',
           address: assetAddress,
-          decimals: 6,
+          decimals: 18,
         },
         vault: {
           standard: 'ERC-7540',
@@ -260,12 +260,16 @@ describe('useOffersDetailsSide', () => {
       'Subscriptions:': 'Open',
       'Share Price:': '$100.00',
       'Fund Structure:': 'Open-ended',
-      'Latest Finalized NAV:': '1.25 USDC',
     });
-    const navRow = composable.readOnlyInfo.value.find(item => item.title === 'Latest Finalized NAV:');
-    expect(navRow?.tooltip).toBe(
-      'As of Jul 31, 2026. NAV is the fund’s latest finalized net asset value per share.',
-    );
+    expect(rows['Latest Finalized NAV:']).toBeUndefined();
+    expect(composable.latestFinalizedNav.value).toEqual({
+      amount: '1.25',
+      symbol: 'USDC',
+      asOf: {
+        label: 'As of Jul 31, 2026',
+        dateTime: '2026-07-31T12:00:00.000Z',
+      },
+    });
     expect(composable.openEndedNavNotice.value).toBeUndefined();
 
     const technicalRows = Object.fromEntries((composable.onChainDetails.value ?? [])
@@ -279,29 +283,42 @@ describe('useOffersDetailsSide', () => {
       .toBe(`https://basescan.org/address/${vaultAddress}`);
   });
 
-  it('keeps NAV text clean and explains the value without an invalid valuation date', () => {
+  it('keeps a valid NAV when its valuation date is absent or invalid', () => {
     const offerRef = ref({
       isOpenEnded: true,
       on_chain_summary: {
-        asset_token: {
-          decimals: 6,
-          symbol: 'USDC',
-        },
         latest_finalized_nav: {
-          nav_usdc_raw: '1250000',
+          nav_usdc_raw: '10000000',
           valuation_as_of: 'not-a-date',
         },
       },
     } as any);
 
-    const navRow = useOffersDetailsSide(offerRef).readOnlyInfo.value
-      .find(item => item.title === 'Latest Finalized NAV:');
+    const composable = useOffersDetailsSide(offerRef);
 
-    expect(navRow).toMatchObject({
-      text: '1.25 USDC',
-      tooltip: 'NAV is the fund’s latest finalized net asset value per share.',
+    expect(composable.latestFinalizedNav.value).toEqual({
+      amount: '10',
+      symbol: 'USDC',
+      asOf: undefined,
     });
-    expect(navRow?.tooltip).not.toContain('as of');
+    expect(composable.openEndedNavNotice.value).toBeUndefined();
+  });
+
+  it('does not present malformed NAV data or a pending notice for a malformed record', () => {
+    const offerRef = ref({
+      isOpenEnded: true,
+      on_chain_summary: {
+        latest_finalized_nav: {
+          nav_usdc_raw: 'invalid',
+          valuation_as_of: '2026-08-25T00:00:00Z',
+        },
+      },
+    } as any);
+
+    const composable = useOffersDetailsSide(offerRef);
+
+    expect(composable.latestFinalizedNav.value).toBeUndefined();
+    expect(composable.openEndedNavNotice.value).toBeUndefined();
   });
 
   it('explains the initial share price once while the first NAV is pending', () => {

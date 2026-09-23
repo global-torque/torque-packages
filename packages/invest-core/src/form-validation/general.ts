@@ -1,8 +1,8 @@
 import type { JSONSchemaType } from 'ajv/dist/types/json-schema';
-import cloneDeep from 'lodash/cloneDeep.js';
-import get from 'lodash/get.js';
-import pick from 'lodash/pick.js';
-import set from 'lodash/set.js';
+import cloneDeep from 'lodash-es/cloneDeep.js';
+import get from 'lodash-es/get.js';
+import pick from 'lodash-es/pick.js';
+import set from 'lodash-es/set.js';
 
 interface FilteredObjectElement {
   $ref?: string;

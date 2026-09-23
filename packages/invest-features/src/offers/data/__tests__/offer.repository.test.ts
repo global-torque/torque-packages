@@ -229,6 +229,77 @@ describe('useRepositoryOffer', () => {
     );
   });
 
+  it('refreshes cached detail data when tokenization and finalized NAV fields change', async () => {
+    const firstOffer = createOffer({
+      tokenization_engine: 'ERC-7540',
+      tokenization_model: 'legacy',
+      on_chain_summary: {
+        network: 'Ethereum Sepolia',
+        vault: {
+          standard: 'ERC-7540',
+          address: '0x1111111111111111111111111111111111111111',
+          share_decimals: 18,
+          share_symbol: 'OLD',
+        },
+        latest_finalized_nav: {
+          id: 1,
+          version: 1,
+          nav_usdc_raw: '1000000',
+          vault_total_supply_raw: '2000000000000000000',
+          nav_share_supply_raw: '1500000000000000000',
+          valuation_block_number: '100',
+          valuation_as_of: '2026-08-25T12:00:00Z',
+          finalized_at: '2026-08-25T12:01:00Z',
+        },
+        subscription_availability: {
+          available: false,
+          reason: 'vault_not_deployed',
+        },
+      },
+    });
+    const secondOffer = createOffer({
+      tokenization_engine: 'ERC-7943',
+      tokenization_model: 'current',
+      on_chain_summary: {
+        network: 'Base',
+        vault: {
+          standard: 'ERC-7540',
+          address: '0x2222222222222222222222222222222222222222',
+          share_decimals: 6,
+          share_symbol: 'NEW',
+        },
+        latest_finalized_nav: {
+          id: 2,
+          version: 2,
+          nav_usdc_raw: '1250000',
+          vault_total_supply_raw: '3000000',
+          nav_share_supply_raw: '2750000',
+          valuation_block_number: '200',
+          valuation_as_of: '2026-09-01T12:00:00Z',
+          finalized_at: '2026-09-01T12:01:00Z',
+        },
+        subscription_availability: {
+          available: true,
+          reason: null,
+        },
+      },
+    });
+
+    apiGetMock
+      .mockResolvedValueOnce({ data: firstOffer, headers: new Headers() })
+      .mockResolvedValueOnce({ data: secondOffer, headers: new Headers() });
+
+    const store = useRepositoryOffer();
+    await store.getOfferOne(firstOffer.slug);
+    await store.getOfferOne(secondOffer.slug);
+
+    expect(store.getOfferOneState.data).toMatchObject({
+      tokenization_engine: secondOffer.tokenization_engine,
+      tokenization_model: secondOffer.tokenization_model,
+      on_chain_summary: secondOffer.on_chain_summary,
+    });
+  });
+
   it('invalidates cached offers when fund structure changes', async () => {
     apiGetMock
       .mockResolvedValueOnce({

@@ -1,6 +1,6 @@
 import type { JSONSchemaType } from 'ajv/dist/types/json-schema';
-import cloneDeep from 'lodash/cloneDeep.js';
-import merge from 'lodash/merge.js';
+import cloneDeep from 'lodash-es/cloneDeep.js';
+import merge from 'lodash-es/merge.js';
 import { undefinedEmptyProp } from './general.ts';
 
 export type InvestmentSchema<T extends object = object> = JSONSchemaType<T> & Record<string, unknown>;

@@ -8,8 +8,8 @@ This package owns deterministic helpers, mappers, formatters, calculations, and 
 
 ## Allowed Dependencies
 
-- `@global-torque/domain-types`.
-- AJV, `ajv-errors`, `ajv-formats`, lodash, and markdown-it for the published
+- `@global-torque/domain-types` at exact `0.4.12`; the fixed cohort version keeps Git-subpath installs portable without workspace links and couples this source branch to the matching domain contract until the next cohort.
+- AJV, `ajv-errors`, `ajv-formats`, `lodash-es`, and markdown-it for the published
   investment validation and formatting helpers.
 - TypeScript and platform-standard value types.
 
@@ -26,6 +26,8 @@ TypeScript browser and type targets and additionally provide exact generated
 `dist/node` JavaScript for plain Node/VitePress configuration consumers. The
 candidate packer emits only these three Node files; all other exports remain
 source based.
+
+`pnpm run build:node` owns regeneration of exactly these three tracked Node files for Git-subpath consumers; the candidate packer emits the same inventory and all other exports remain source based.
 
 - `analytics/analyticsBody`: analytics request body normalization with exact
   credential-field redaction. User, business, numeric, URL, and diagnostic

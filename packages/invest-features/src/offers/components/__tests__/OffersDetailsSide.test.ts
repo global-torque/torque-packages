@@ -180,38 +180,52 @@ describe('OffersDetailsSide', () => {
     expect(wrapper.text()).not.toContain('Pre-money Valuation');
   });
 
-  it('renders finalized NAV with the shared information tooltip trigger used by Security Type', () => {
+  it('renders finalized NAV as a semantic responsive block with a normalized date', () => {
     const wrapper = mountSide({
       isOpenEnded: true,
       securityTypeTooltip: 'Security type information.',
       on_chain_summary: {
         asset_token: {
-          decimals: 6,
-          symbol: 'USDC',
+          standard: 'ERC-20',
+          symbol: 'OTHER',
+          name: 'Other token',
+          decimals: 18,
         },
         latest_finalized_nav: {
-          nav_usdc_raw: '1250000',
-          valuation_as_of: '2026-07-31T12:00:00Z',
+          nav_usdc_raw: '10000000',
+          valuation_as_of: '2026-08-25T12:00:00-04:00',
         },
       },
     });
 
-    const navRow = wrapper.findAll('.offer-details-side__side-details-info')
-      .find(row => row.text().includes('Latest Finalized NAV:'));
-    expect(navRow).toBeDefined();
-    expect(navRow!.text()).toContain('1.25 USDC');
-    expect(navRow!.text()).not.toContain('as of');
+    const block = wrapper.get('dl[data-testid="offer-finalized-nav"]');
+    expect(block.get('dt').text()).toBe('Latest Finalized NAV');
+    expect(block.attributes('role')).toBeUndefined();
+    expect(block.attributes('aria-live')).toBeUndefined();
+    expect(block.get('[data-testid="offer-finalized-nav-amount"]').text()).toBe('10 USDC');
+    expect(block.get('time').text()).toBe('As of Aug 25, 2026');
+    expect(block.get('time').attributes('datetime')).toBe('2026-08-25T16:00:00.000Z');
+    expect(wrapper.text()).not.toContain('0.00000000001 USDC');
+    expect(wrapper.text()).not.toContain('Latest Finalized NAV:');
 
-    const navTrigger = navRow!.get('[data-slot="tooltip-trigger"]');
     const securityRow = wrapper.findAll('.offer-details-side__side-details-info')
       .find(row => row.text().includes('Security Type:'));
     expect(securityRow).toBeDefined();
-    const securityTrigger = securityRow!.get('[data-slot="tooltip-trigger"]');
-    const navIcon = navTrigger.get('.offer-details-side__info-icon');
-    const securityIcon = securityTrigger.get('.offer-details-side__info-icon');
+    expect(securityRow!.get('.offer-details-side__info-icon').attributes('aria-hidden')).toBe('true');
+  });
 
-    expect(navTrigger.element.tagName).toBe('BUTTON');
-    expect(navIcon.element.tagName).toBe('svg');
-    expect(navIcon.classes()).toEqual(securityIcon.classes());
+  it('does not show a pending notice for malformed finalized NAV data', () => {
+    const wrapper = mountSide({
+      isOpenEnded: true,
+      on_chain_summary: {
+        latest_finalized_nav: {
+          nav_usdc_raw: 'not-a-number',
+          valuation_as_of: '2026-08-25T12:00:00Z',
+        },
+      },
+    });
+
+    expect(wrapper.find('[data-testid="offer-finalized-nav"]').exists()).toBe(false);
+    expect(wrapper.find('[data-testid="offer-nav-notice"]').exists()).toBe(false);
   });
 });

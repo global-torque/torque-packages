@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Render finalized USDC NAV with the fixed six-decimal contract in a dedicated responsive semantic block, preserving pending and malformed-record behavior.
+- Pin internal investment-package dependencies to the exact published cohort so Git subpath consumers can install the package without workspace resolution; regenerate these pins with each cohort release.
+
 ## 0.4.12 candidate
 
 - Reissued the cohort with a side-effect-free shared CSS contract root resolver;

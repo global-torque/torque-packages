@@ -1,7 +1,7 @@
 import { JSONSchemaType } from 'ajv/dist/types/json-schema';
-import cloneDeep from 'lodash/cloneDeep.js';
-import defaults from 'lodash/defaults.js';
-import pick from 'lodash/pick.js';
+import cloneDeep from 'lodash-es/cloneDeep.js';
+import defaults from 'lodash-es/defaults.js';
+import pick from 'lodash-es/pick.js';
 import { capitalizeFirstLetter } from './text';
 
 export function populateModel<T extends object>(source: Partial<T>, defaultsObj: T): T {

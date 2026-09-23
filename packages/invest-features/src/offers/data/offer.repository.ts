@@ -128,6 +128,8 @@ export const useRepositoryOffer = defineStore('repository-offer', () => {
       amount_raised: offer.amount_raised ?? 0,
       target_raise: offer.target_raise ?? 0,
       reg_type: offer.reg_type ?? '',
+      tokenization_engine: offer.tokenization_engine ?? '',
+      tokenization_model: offer.tokenization_model ?? '',
       on_chain_summary: onChainSummary
         ? {
             network: onChainSummary.network ?? '',
@@ -152,6 +154,29 @@ export const useRepositoryOffer = defineStore('repository-offer', () => {
                   standard: onChainSummary.vault.standard ?? '',
                   address: onChainSummary.vault.address ?? '',
                   explorer_url: onChainSummary.vault.explorer_url ?? '',
+                  share_decimals: onChainSummary.vault.share_decimals ?? '',
+                  share_symbol: onChainSummary.vault.share_symbol ?? '',
+                }
+              : undefined,
+            latest_finalized_nav: onChainSummary.latest_finalized_nav
+              ? {
+                  id: onChainSummary.latest_finalized_nav.id ?? 0,
+                  version: onChainSummary.latest_finalized_nav.version ?? 0,
+                  nav_usdc_raw: onChainSummary.latest_finalized_nav.nav_usdc_raw ?? '',
+                  vault_total_supply_raw:
+                    onChainSummary.latest_finalized_nav.vault_total_supply_raw ?? '',
+                  nav_share_supply_raw:
+                    onChainSummary.latest_finalized_nav.nav_share_supply_raw ?? '',
+                  valuation_block_number:
+                    onChainSummary.latest_finalized_nav.valuation_block_number ?? '',
+                  valuation_as_of: onChainSummary.latest_finalized_nav.valuation_as_of ?? '',
+                  finalized_at: onChainSummary.latest_finalized_nav.finalized_at ?? '',
+                }
+              : onChainSummary.latest_finalized_nav,
+            subscription_availability: onChainSummary.subscription_availability
+              ? {
+                  available: onChainSummary.subscription_availability.available ?? false,
+                  reason: onChainSummary.subscription_availability.reason ?? null,
                 }
               : undefined,
           }

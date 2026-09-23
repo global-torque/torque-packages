@@ -13,6 +13,18 @@ export interface ReadOnlyInfoItem {
   show?: boolean;
 }
 
+export interface LatestFinalizedNavPresentation {
+  amount: string;
+  symbol: 'USDC';
+  asOf?: {
+    label: string;
+    dateTime: string;
+  };
+}
+
+const NAV_USDC_DECIMALS = 6;
+const NAV_USDC_SYMBOL = 'USDC' as const;
+
 export interface OnChainDetailsItem {
   key: 'current-supply' | 'nav-supply' | 'nav-version' | 'asset-token' | 'vault';
   title: string;
@@ -26,12 +38,15 @@ function formatValuationDate(value: string | undefined) {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return undefined;
 
-  return new Intl.DateTimeFormat('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-    timeZone: 'UTC',
-  }).format(date);
+  return {
+    label: `As of ${new Intl.DateTimeFormat('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+      timeZone: 'UTC',
+    }).format(date)}`,
+    dateTime: date.toISOString(),
+  };
 }
 
 export function buildExplorerAddressUrl(
@@ -74,9 +89,6 @@ export function useOffersDetailsSide(offerRef: Ref<IOfferFormatted | undefined>)
   const openEndedProtocolInfo = computed<ReadOnlyInfoItem[]>(() => {
     if (!isOpenEnded.value) return [];
     const summary = offerRef.value?.on_chain_summary;
-    const nav = summary?.latest_finalized_nav;
-    const assetDecimals = summary?.asset_token?.decimals;
-    const assetSymbol = summary?.asset_token?.symbol ?? 'USDC';
     const availability = summary?.subscription_availability;
     const erc7943VaultReady = offerRef.value?.tokenization_engine === 'ERC-7943'
       && availability?.reason === 'unsupported_tokenization_engine'
@@ -88,14 +100,6 @@ export function useOffersDetailsSide(offerRef: Ref<IOfferFormatted | undefined>)
       vault_not_deployed: 'Unavailable — Vault is not deployed',
     };
 
-    const valuationDate = formatValuationDate(nav?.valuation_as_of);
-    const finalizedNav = nav && Number.isInteger(assetDecimals)
-      ? `${formatRawAmount(nav.nav_usdc_raw, assetDecimals!)} ${assetSymbol}`
-      : undefined;
-    const navTooltip = valuationDate
-      ? `As of ${valuationDate}. NAV is the fund’s latest finalized net asset value per share.`
-      : 'NAV is the fund’s latest finalized net asset value per share.';
-
     return [
       {
         title: 'Subscriptions:',
@@ -106,14 +110,8 @@ export function useOffersDetailsSide(offerRef: Ref<IOfferFormatted | undefined>)
             : 'Availability pending',
       },
       {
-        title: nav ? 'Share Price:' : 'Initial Share Price:',
+        title: summary?.latest_finalized_nav ? 'Share Price:' : 'Initial Share Price:',
         text: offerRef.value?.pricePerShareFormatted,
-      },
-      {
-        title: 'Latest Finalized NAV:',
-        text: finalizedNav,
-        tooltip: finalizedNav ? navTooltip : undefined,
-        show: !!finalizedNav,
       },
       { title: 'Fund Structure:', text: 'Open-ended' },
       {
@@ -129,6 +127,26 @@ export function useOffersDetailsSide(offerRef: Ref<IOfferFormatted | undefined>)
         text: offerRef.value?.data?.estimated_hold_period,
       },
     ];
+  });
+
+  const latestFinalizedNav = computed<LatestFinalizedNavPresentation | undefined>(() => {
+    if (!isOpenEnded.value) return undefined;
+
+    const nav = offerRef.value?.on_chain_summary?.latest_finalized_nav;
+    if (!nav) return undefined;
+
+    const amount = typeof nav.nav_usdc_raw === 'string'
+      ? formatRawAmount(nav.nav_usdc_raw, NAV_USDC_DECIMALS)
+      : '';
+    if (!amount) return undefined;
+
+    return {
+      amount,
+      symbol: NAV_USDC_SYMBOL,
+      asOf: typeof nav.valuation_as_of === 'string'
+        ? formatValuationDate(nav.valuation_as_of)
+        : undefined,
+    };
   });
 
   const openEndedNavNotice = computed(() => {
@@ -331,6 +349,7 @@ export function useOffersDetailsSide(offerRef: Ref<IOfferFormatted | undefined>)
   return {
     filesFormatted,
     readOnlyInfo,
+    latestFinalizedNav,
     openEndedNavNotice,
     onChainDetails,
     investmentDocUrl,
