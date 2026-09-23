@@ -79,19 +79,6 @@ for (const packageName of expectedPackages) {
   archives.set(packageName, archive);
 }
 
-function findUiArchive(argument) {
-  const supplied = argument || process.env.UI_KIT_ARCHIVE || process.env.UI_KIT_TRANSPORT_DIR;
-  if (!supplied) return undefined;
-  const resolved = path.resolve(supplied);
-  const archive = fs.statSync(resolved).isDirectory()
-    ? path.join(resolved, 'global-torque-ui-kit-0.1.4.tgz')
-    : resolved;
-  if (!fs.existsSync(archive)) throw new Error(`UI Kit archive is missing: ${archive}`);
-  const name = path.basename(archive);
-  if (name !== 'global-torque-ui-kit-0.1.4.tgz') throw new Error(`Unexpected UI Kit archive identity: ${name}`);
-  return archive;
-}
-
 function findDesignTokensArchive(argument) {
   const supplied = argument || process.env.DESIGN_TOKENS_ARCHIVE;
   if (tokenMode === 'absent') {
@@ -115,12 +102,11 @@ function findDesignTokensArchive(argument) {
   return archive;
 }
 
-const uiArchive = findUiArchive(positionalArguments[1]);
-const designTokensArchive = findDesignTokensArchive(positionalArguments[2]);
+const designTokensArchive = findDesignTokensArchive(positionalArguments[1]);
 const frameworkDependencySpecs = Object.fromEntries([...archives].map(([name, archive]) => [name, `file:${archive}`]));
 const directDependencies = {
   ...frameworkDependencySpecs,
-  '@global-torque/ui-kit': uiArchive ? `file:${uiArchive}` : '0.1.4',
+  '@global-torque/ui-kit': '0.1.4',
   '@global-torque/ui-primitives': '0.1.3',
   '@global-torque/sdk': '0.3.1',
   '@global-torque/client-error-handling': '0.1.0',

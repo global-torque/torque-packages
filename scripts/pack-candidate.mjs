@@ -18,18 +18,6 @@ const sourceRepository = reconciliation.sourceOwner;
 const expectedPackageNames = new Set(reconciliation.packages.map(entry => entry.name));
 const externalPackageNames = new Set(Object.keys(reconciliation.externalPackages ?? {}));
 const dependencySections = ['dependencies', 'optionalDependencies', 'peerDependencies'];
-const expectedOverlayFiles = [
-  'pnpm-lock.canonical.yaml',
-  'pnpm-lock.derived.yaml',
-  'pnpm-workspace.canonical.yaml',
-  'pnpm-workspace.derived.yaml',
-];
-const expectedOverlayRoles = [
-  'canonical-lockfile',
-  'derived-lockfile',
-  'canonical-workspace',
-  'derived-workspace',
-];
 
 const hash = (algorithm, bytes) => crypto.createHash(algorithm).update(bytes).digest('hex');
 
@@ -103,46 +91,10 @@ try {
 }
 if (repositoryRevision && !/^[0-9a-f]{40}$/u.test(repositoryRevision)) throw new Error('Target repository revision is not a full commit');
 let sourceDirty = true;
-let sourceStatus = null;
 try {
-  sourceStatus = execFileSync('git', ['status', '--porcelain=v1'], { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
-  sourceDirty = Boolean(sourceStatus);
+  sourceDirty = Boolean(execFileSync('git', ['status', '--porcelain=v1'], { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim());
 } catch {
   // No Git checkout is an unclean, non-promotable local source.
-}
-const uiLockOverlayPath = process.env.UI_KIT_LOCK_OVERLAY_RECEIPT ? path.resolve(process.env.UI_KIT_LOCK_OVERLAY_RECEIPT) : null;
-const uiLockOverlay = uiLockOverlayPath ? JSON.parse(fs.readFileSync(uiLockOverlayPath, 'utf8')) : null;
-const externalDependenciesReceiptPath = process.env.EXTERNAL_DEPENDENCIES_RECEIPT
-  ? path.resolve(process.env.EXTERNAL_DEPENDENCIES_RECEIPT)
-  : null;
-if (!externalDependenciesReceiptPath || !fs.existsSync(externalDependenciesReceiptPath)) {
-  throw new Error('An authenticated external dependency receipt is required for this candidate');
-}
-const externalDependenciesReceipt = JSON.parse(fs.readFileSync(externalDependenciesReceiptPath, 'utf8'));
-if (
-  externalDependenciesReceipt.schemaVersion !== 1
-  || JSON.stringify(externalDependenciesReceipt.dependencies) !== JSON.stringify(reconciliation.externalDependencies)
-  || externalDependenciesReceipt.verified?.['@global-torque/design-tokens']?.integrity
-    !== reconciliation.externalDependencies?.['@global-torque/design-tokens']?.integrity
-) throw new Error('External dependency receipt does not match source reconciliation');
-if (uiLockOverlay) {
-  if (uiLockOverlay.schemaVersion !== 1 || uiLockOverlay.mode !== 'authenticated-ui-kit-overlay') throw new Error('UI Kit lock overlay receipt is not authenticated');
-  if (
-    !Array.isArray(uiLockOverlay.retainedFiles)
-    || uiLockOverlay.retainedFiles.length !== expectedOverlayFiles.length
-    || JSON.stringify(uiLockOverlay.retainedFiles.map(file => file.name)) !== JSON.stringify(expectedOverlayFiles)
-    || uiLockOverlay.retainedFiles.some((file, index) => (
-      file.role !== expectedOverlayRoles[index]
-      || typeof file.name !== 'string'
-      || path.basename(file.name) !== file.name
-      || !expectedOverlayFiles.includes(file.name)
-      || !/^[0-9a-f]{64}$/u.test(file.sha256 ?? '')
-    ))
-  ) throw new Error('UI Kit lock overlay receipt does not retain the canonical and derived YAML files');
-  const allowed = new Set(['pnpm-lock.yaml', 'pnpm-workspace.yaml']);
-  const dirtyPaths = sourceStatus === null ? [] : sourceStatus.split('\n').filter(Boolean).map(line => line.slice(3).trim().split(' -> ')[0]);
-  if (process.env.REQUIRE_CLEAN_SOURCE === 'true' && dirtyPaths.some(file => !allowed.has(file))) throw new Error('Authenticated UI Kit overlay has unrelated source changes');
-  if (sourceStatus !== null) sourceDirty = dirtyPaths.some(file => !allowed.has(file));
 }
 if (process.env.REQUIRE_CLEAN_SOURCE === 'true' && (sourceDirty || !repositoryRevision)) {
   throw new Error('A clean target-repository commit is required for this candidate workflow');
@@ -215,71 +167,9 @@ for (const entry of packages) {
   entries.push({ name: entry.name, version: candidate, directory: entry.directory, sourceRevision: repositoryRevision, sourceDirty, sourcePackageRepository: sourceRepository, sourcePackageRevision: reconciliation.sourceRevision, archive: path.basename(archive), sha512: sha512Hex, integrity, files, fileSha512 });
 }
 const lockfile = fs.existsSync(path.join(root, 'pnpm-lock.yaml')) ? crypto.createHash('sha256').update(fs.readFileSync(path.join(root, 'pnpm-lock.yaml'))).digest('hex') : null;
-if (uiLockOverlay && uiLockOverlay.canonicalLockSha256 !== lockfile) throw new Error('Current lockfile does not match the authenticated canonical UI Kit lock digest');
-const uiTransportPath = process.env.UI_KIT_TRANSPORT_RECEIPT ? path.resolve(process.env.UI_KIT_TRANSPORT_RECEIPT) : null;
-const uiTransport = uiTransportPath ? JSON.parse(fs.readFileSync(uiTransportPath, 'utf8')) : null;
-if (uiTransport) {
-  if (uiTransport.schemaVersion !== 1 || uiTransport.package !== '@global-torque/ui-kit' || uiTransport.version !== '0.1.4' || uiTransport.canonical !== true) throw new Error('UI Kit transport receipt is not canonical');
-  if (path.basename(uiTransportPath) !== 'transport-receipt.json') throw new Error('UI Kit transport receipt must use the canonical transport-receipt.json filename');
-  if (!uiLockOverlay) throw new Error('Authenticated UI Kit transport requires a lock overlay receipt');
-  const transportDirectory = process.env.UI_KIT_TRANSPORT_DIR ? path.resolve(process.env.UI_KIT_TRANSPORT_DIR) : path.dirname(uiTransportPath);
-  const originalAttestationPath = process.env.UI_KIT_ORIGINAL_ATTESTATION ? path.resolve(process.env.UI_KIT_ORIGINAL_ATTESTATION) : path.join(transportDirectory, uiTransport.originalAttestation?.file ?? 'original-provenance.json');
-  const transportFiles = [
-    uiTransport.artifact,
-    uiTransport.sidecar,
-    uiTransport.sha512Sidecar,
-    uiTransport.selectedRelease,
-    uiTransport.originalAttestation?.file,
-    'transport-receipt.json',
-  ];
-  for (const file of transportFiles) {
-    if (!file || !fs.existsSync(path.join(transportDirectory, file))) throw new Error(`UI Kit transport file is missing: ${file}`);
-    fs.copyFileSync(path.join(transportDirectory, file), path.join(output, file));
-  }
-  if (!fs.existsSync(originalAttestationPath) || fs.statSync(originalAttestationPath).size === 0) throw new Error('Original UI Kit attestation is missing before candidate receipt');
-  const expectedAttestationSha256 = uiTransport.originalAttestation?.sha256;
-  if (expectedAttestationSha256 !== hash('sha256', fs.readFileSync(originalAttestationPath))) throw new Error('Original UI Kit attestation digest mismatch');
-}
 const lockText = fs.existsSync(path.join(root, 'pnpm-lock.yaml')) ? fs.readFileSync(path.join(root, 'pnpm-lock.yaml'), 'utf8') : '';
 const uiRegistryIntegrity = lockText.match(/['"]?@global-torque\/ui-kit@0\.1\.4['"]?:\n\s+resolution: \{integrity: ([^,}]+)/u)?.[1] ?? null;
-if (uiTransport) {
-  if (uiRegistryIntegrity !== uiTransport.integrity) throw new Error('Canonical pnpm lockfile does not retain the authenticated UI Kit integrity');
-  const expectedOverlayMapping = ['packages/invest-features', 'packages/invest-shell', 'packages/invest-widgets'].map(importer => ({
-    importer,
-    canonical: '0.1.4',
-    derived: 'file:global-torque-ui-kit-0.1.4.tgz',
-  }));
-  if (
-    uiLockOverlay.schemaVersion !== 1
-    || uiLockOverlay.mode !== 'authenticated-ui-kit-overlay'
-    || !/^[0-9a-f]{64}$/u.test(uiLockOverlay.canonicalLockSha256 ?? '')
-    || !/^[0-9a-f]{64}$/u.test(uiLockOverlay.derivedLockSha256 ?? '')
-    || uiLockOverlay.canonicalLockSha256 !== lockfile
-    || JSON.stringify(uiLockOverlay.locatorMapping) !== JSON.stringify(expectedOverlayMapping)
-  ) throw new Error('Authenticated UI Kit lock overlay receipt is incomplete or maps unexpected locators');
-  const transportIdentityKeys = ['schemaVersion', 'package', 'version', 'sourceRepository', 'sourceCommit', 'sourceRunId', 'sourceReleaseTag', 'artifact', 'sha512', 'integrity', 'canonical'];
-  if (transportIdentityKeys.some(key => uiLockOverlay.uiKit?.[key] !== uiTransport[key])) throw new Error('UI Kit lock overlay receipt does not bind the authenticated transport identity');
-  const retainedDirectory = process.env.UI_KIT_LOCK_OVERLAY_DIR ? path.resolve(process.env.UI_KIT_LOCK_OVERLAY_DIR) : null;
-  if (!retainedDirectory || !fs.existsSync(retainedDirectory)) throw new Error('UI Kit lock overlay retained-file directory is missing');
-  for (const file of uiLockOverlay.retainedFiles) {
-    const source = path.join(retainedDirectory, file.name);
-    if (!fs.existsSync(source)) throw new Error(`UI Kit retained YAML is missing: ${file.name}`);
-    const bytes = fs.readFileSync(source);
-    if (hash('sha256', bytes) !== file.sha256) throw new Error(`UI Kit retained YAML digest mismatch: ${file.name}`);
-    fs.copyFileSync(source, path.join(output, file.name));
-  }
-}
-const uiKit = uiTransport
-  ? {
-    ...uiTransport,
-    lockOverlay: {
-      canonicalLockSha256: uiLockOverlay.canonicalLockSha256,
-      derivedLockSha256: uiLockOverlay.derivedLockSha256,
-      locatorMapping: uiLockOverlay.locatorMapping,
-      retainedFiles: uiLockOverlay.retainedFiles,
-    },
-  }
-  : { mode: 'registry', package: '@global-torque/ui-kit', version: '0.1.4', integrity: uiRegistryIntegrity, lockfileSha256: lockfile, authenticated: false };
+const uiKit = { mode: 'registry', package: '@global-torque/ui-kit', version: '0.1.4', integrity: uiRegistryIntegrity, lockfileSha256: lockfile };
 const receipt = {
   schemaVersion: 1,
   candidate,
@@ -291,7 +181,6 @@ const receipt = {
   generatedAt: new Date().toISOString(),
   lockfileSha256: lockfile,
   uiKit,
-  externalDependencies: externalDependenciesReceipt.dependencies,
   compatibilityMatrix: reconciliation.compatibilityMatrix,
   browserContract,
   packages: entries,

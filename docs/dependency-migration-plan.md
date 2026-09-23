@@ -44,7 +44,7 @@ pnpm run check
 pnpm audit --audit-level=high
 ```
 
-`check` includes framework-boundary checks, typechecks, and all package suites. `lint` runs `check-framework-boundaries.mjs`, not ESLint. Candidate packing and detached consumer verification provide the artifact-level checks. Do not add duplicate test runs without a changed graph or an unresolved failure.
+`check` includes typechecks and all package suites. Candidate packing and detached consumer verification provide the artifact-level checks. Do not add duplicate test runs without a changed graph or an unresolved failure.
 
 Verify availability and integrity of the exact external releases. If UI Kit 0.1.4 is unavailable, use only the existing authenticated transport workflow described in [release-policy.md](release-policy.md), retaining/restoring the canonical lockfile and workspace files. Do not substitute arbitrary tarballs or relax integrity checks.
 
@@ -130,7 +130,7 @@ Recheck the official v11/v12 release and migration notes before implementation. 
 
 Update all eight `packageManager` fields, the root pnpm engine policy, both relevant workflow setup paths, generated detached consumer manifests, and documentation as one coordinated change. Search for all remaining 10.34.5 references, preserving intentional historical records.
 
-Inspect changes to lockfile schema, peer resolution, catalog publication rewriting, patches, overrides, install-script approval behavior, Corepack bootstrapping and pack output. Preserve the existing `--ignore-scripts` policy in release and detached-consumer installs; invoke required tools such as Playwright's browser installer explicitly. Run a fresh frozen installation, archive checks, and both detached package-manager profiles. Exercise the authenticated UI overlay derivation/verification path as well as the public-registry path; do not weaken the canonical-to-derived lock comparison to accommodate unexplained drift.
+Inspect changes to lockfile schema, peer resolution, catalog publication rewriting, patches, overrides, install-script approval behavior, Corepack bootstrapping and pack output. Preserve the existing `--ignore-scripts` policy in release and detached-consumer installs; invoke required tools such as Playwright's browser installer explicitly. Run a fresh frozen installation, archive checks, and both detached package-manager profiles against the published dependency graph.
 
 ## Per-stage acceptance and final release handoff
 
@@ -149,7 +149,7 @@ pnpm exec playwright install --with-deps chromium
 CONSUMER_PACKAGE_MANAGERS=npm,pnpm node scripts/verify-archive-consumers.mjs "$MIGRATION_ARTIFACTS"
 ```
 
-Run the detached command for every supported profile once profile selection is implemented; its exact CLI must be documented in that change. It already invokes the release-bundle verifier. For authenticated UI transport, follow the existing workflow's verified archive/receipt environment and pass the verified archive as the second detached-consumer argument. The shortened commands above are not a replacement for that authentication flow.
+Run the detached command for every supported profile once profile selection is implemented; its exact CLI must be documented in that change. It already invokes the release-bundle verifier.
 
 Keep receipts, tarballs, lockfiles, toolchain metadata, browser reports/screenshots and the last known-good application artifacts. Runtime migration acceptance also requires an identified consuming application's install/build/typecheck/SSR and relevant auth/profile/offer/chart smoke results; the host repository and credentials are implementation inputs, not available evidence from this planning task. No host verification is claimed until supplied and run.
 

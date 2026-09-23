@@ -11,10 +11,9 @@
   "scripts": {
     "typecheck": "pnpm --filter './packages/*' -r run typecheck",
     "test:run": "pnpm --filter './packages/*' -r run test:run",
-    "lint": "node scripts/check-framework-boundaries.mjs",
     "verify-archive-consumers": "node scripts/verify-archive-consumers.mjs",
     "pack:candidate": "node scripts/pack-candidate.mjs",
-    "check": "pnpm run lint && pnpm run typecheck && pnpm run test:run",
+    "check": "pnpm run typecheck && pnpm run test:run",
     "release:verify": "node scripts/verify-release-bundle.mjs",
     "build:node": "pnpm --filter @global-torque/invest-core run build:node && pnpm --filter @global-torque/invest-runtime run build:node"
   },

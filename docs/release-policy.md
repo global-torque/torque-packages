@@ -7,9 +7,6 @@ candidate/receipt before any publication decision.
 The receipt records the target repository identity and commit used by hosted
 attestation as `sourceRepository`/`sourceRevision`, and the pinned producer
 package identity as `sourcePackageRepository`/`sourcePackageRevision`.
-It also records the exact authenticated external dependency receipt for
-`@global-torque/design-tokens@0.3.0`, including archive SRI, archive and
-inventory digests, source tag/commit and npm publish/SLSA attestation digests.
 The 0.4.5 compatibility matrix separately retains the verified 0.2.1 source
 tag/commit, archive SRI, inventory and attestation digest used for consumer
 pixel parity, together with the absent-token case.
@@ -18,27 +15,10 @@ null target revision; those bytes are test overlays only. The candidate
 workflow requires a clean target checkout and records its full commit before
 packing.
 
-When the selected `@global-torque/ui-kit@0.1.4` candidate is not yet in npm,
-the primary maintainer places the already verified UI Kit inputs in the
-framework repository's draft release `ui-kit-transport-v0.1.4`. That draft
-contains exactly `global-torque-ui-kit-0.1.4.tgz`, its `.manifest.json` and
-`.sha512` sidecars, `selected-release.json`, the raw Sigstore bundle as
-`original-provenance.json`, and `transport-receipt.json`. The framework
-workflow downloads those assets with the repository `GITHUB_TOKEN`, verifies
-the source tag, commit, workflow run, archive, sidecars, and raw attestation
-(including offline cryptographic verification with `gh attestation verify
---bundle`), then uses the archive only as a temporary install overlay. It compares the derived
-overlay lockfile with the committed canonical lockfile, retaining the
-authenticated UI Kit integrity and allowing only the expected UI Kit locator
-mapping. The combined receipt binds the SHA-256 digests of the canonical and
-derived lockfiles and workspace files, retained as
-`pnpm-lock.canonical.yaml`, `pnpm-lock.derived.yaml`,
-`pnpm-workspace.canonical.yaml`, and `pnpm-workspace.derived.yaml`. Those four
-files are included in the exact release asset set and are byte-checked before
-any matrix identity attestation. The canonical lockfile and workspace file are
-restored before the candidate is packed, so packed manifests and receipts
-retain the public registry dependency. Omitting the transport release uses the
-frozen public lockfile and requires the UI Kit release to be available.
+The selected `@global-torque/ui-kit@0.1.4` and
+`@global-torque/design-tokens@0.3.0` dependencies are published registry
+packages. Candidate creation installs them through the committed frozen
+lockfile; no draft transport or derived lockfile overlay is supported.
 
 Candidate 0.4.12 reissues the seven-package cohort with the final
 `price_update` removal retained and the Invest Shell inverse-footer fallback

@@ -85,7 +85,7 @@ and CI pin 24.21.0. Bootstrap pnpm with `corepack enable` and
 TypeScript 7 is deferred until vue-tsc supports its compiler entry point.
 
 CI runs on pull requests and pushes to `master` using Node 24.21.0. It runs
-`pnpm run build:node` and `pnpm run check` (boundary checks, typechecks, and package tests).
+`pnpm run build:node` and `pnpm run check` (typechecks and package tests).
 Detached browser and clean-consumer verification remain available locally but
 are not CI gates. The manual release workflow builds and tests before packing
 and retaining the candidate artifacts. Publication is a separate
@@ -125,23 +125,13 @@ entries. The Node build compiles only those four entries once during candidate
 packing; generated output is ignored and is never a source of browser SFCs.
 `pnpm run pack:candidate` rejects an ineligible candidate or existing output
 directory before cleanup, removes only the two owned `dist/node` directories,
-runs this build once, runs boundary checks, typechecks, and package tests, revalidates the
+runs this build once, runs typechecks and package tests, revalidates the
 four-file inventory, and then packs all seven packages.
 
 The framework candidate using the public `@global-torque/ui-kit@0.1.4`
-dependency produces 23 release assets. After `@global-torque/ui-kit@0.1.4` is
-available from its owning release, run
+dependency produces 23 release assets. Run
 `pnpm install --frozen-lockfile`, then `pnpm run build:node` followed by
-`pnpm run check`. Before that release,
-the framework candidate workflow accepts the framework repository's draft
-`ui-kit-transport-v0.1.4` release, downloads its six exact transport assets with
-the repository token, and verifies the UI archive against its source tag,
-commit, hosted run, and raw Sigstore bundle (including `gh attestation verify
---bundle`). It temporarily installs that verified tarball, checks the derived lockfile against the committed canonical
-lockfile, restores the canonical files, and keeps the framework manifest and
-lockfile pinned to public `0.1.4`. The authenticated path conditionally retains
-four canonical and derived lock/workspace overlay files; the ordinary public path
-does not add those overlays.
+`pnpm run check`. The frozen lockfile supplies the published UI Kit dependency.
 
 Optional local detached npm and pnpm verification requires Chromium and its
 checked system dependencies:
@@ -149,15 +139,6 @@ checked system dependencies:
 ```sh
 pnpm exec playwright install --with-deps chromium
 CONSUMER_PACKAGE_MANAGERS=npm,pnpm node scripts/verify-archive-consumers.mjs artifacts
-```
-
-When the authenticated UI Kit transport is selected, pass its archive as the
-second argument:
-
-```sh
-CONSUMER_PACKAGE_MANAGERS=npm,pnpm node scripts/verify-archive-consumers.mjs \
-  artifacts "$UI_KIT_TRANSPORT_DIR/global-torque-ui-kit-0.1.4.tgz" \
-  "$EXTERNAL_DEPENDENCIES_DIR/design-tokens-0.3.0.tgz"
 ```
 
 The script saves each manager's report, screenshots, and failure diagnostics

@@ -44,10 +44,7 @@ package.
 
 The framework candidate using the public `@global-torque/ui-kit@0.1.4`
 dependency produces 23 release assets including the retained browser contract
-report. Its authenticated transport consumes
-six conditional UI Kit assets, and the corresponding lock overlay retains four
-canonical/derived YAML files only when that transport path is selected; the
-ordinary public dependency path has no overlay.
+report. The published registry dependency is installed from the frozen lockfile.
 
 The package owner is responsible for pure domain contracts and investment
 framework behavior. Generic UI, SDK, token, content, Markdown, and error

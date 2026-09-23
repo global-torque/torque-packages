@@ -54,9 +54,7 @@ jobs:
             --pattern '*.tgz' --pattern '*.tgz.manifest.json' --pattern '*.tgz.sha512' \
             --pattern 'candidate-receipt.json' --pattern 'browser-contract-report.json' \
             --pattern 'selected-release.json' \
-            --pattern 'original-provenance.json' --pattern 'transport-receipt.json' \
-            --pattern 'pnpm-lock.canonical.yaml' --pattern 'pnpm-lock.derived.yaml' \
-            --pattern 'pnpm-workspace.canonical.yaml' --pattern 'pnpm-workspace.derived.yaml'
+            --pattern 'original-provenance.json'
           gh release verify "$RELEASE_TAG"
           for asset in release/*; do
             gh release verify-asset "$RELEASE_TAG" "$asset"
