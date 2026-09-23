@@ -20,7 +20,7 @@
     "test:links": "node --test scripts/consumer-links.test.mjs scripts/consumer-link-vite-cohort.test.mjs",
     "test:release": "node scripts/test-release-contracts.mjs",
     "pack:candidate": "node scripts/pack-candidate.mjs",
-    "check": "pnpm run test:run && pnpm run test:links",
+    "check": "pnpm run test:run && pnpm run test:links && pnpm run check:runtime-deps",
     "release:verify": "node scripts/verify-release-bundle.mjs",
     "build:node": "pnpm --filter @global-torque/invest-core run build:node && pnpm --filter @global-torque/invest-runtime run build:node"
   },

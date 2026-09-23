@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Improved the global error alert layout and added an accessible close button while preserving click-to-dismiss behavior.
+- Switched the shell's four internal runtime edges to exact versions so full-SHA Git subdirectory installs resolve without the workspace protocol; local development continues to link matching workspace packages.
+
 ## 0.4.12 candidate
 
 - Reissued the verified installed shell/features CSS contract roots through a
