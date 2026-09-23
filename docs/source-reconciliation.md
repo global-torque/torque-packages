@@ -65,11 +65,10 @@ The complete 105-path initial audit, retained 81-path candidate inventory,
 producer path mapping, host-owned third-party mark transfer, and FW07 removals
 are recorded in [`asset-inventory.md`](./asset-inventory.md).
 
-Candidate packing is dependency first. `pnpm run pack:candidate` packs each
-package once, computes SHA-512 and file inventories, and writes the combined
-receipt. A candidate directory is immutable for its version: a failed or
-changed candidate receives a new version. The local receipt and tarballs are
-test overlays only and are not a publication authorization. The prior
+Release packing is dependency first. A pushed `framework-vX.Y.Z` tag runs the
+checks and packs each package once with `pnpm pack`; GitHub retains and attests
+the resulting tarballs. A failed or changed release receives a new version and
+tag. The prior
 `framework-v0.2.0` source tag, commit, and failed-run diagnostic history remain
 retained as history; that run failed before installation, build, or packing,
 so no canonical `0.2.0` package artifacts or rollback proof exist.

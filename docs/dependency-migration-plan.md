@@ -44,13 +44,11 @@ pnpm run check
 pnpm audit --audit-level=high
 ```
 
-`check` includes typechecks and all package suites. Candidate packing and detached consumer verification provide the artifact-level checks. Do not add duplicate test runs without a changed graph or an unresolved failure.
+`check` includes typechecks and all package suites. The tag release workflow adds Node builds, Chromium CSS verification, native package packing, and GitHub attestation. Do not add duplicate test runs without a changed graph or an unresolved failure.
 
 Verify availability and integrity of the exact external releases. If UI Kit 0.1.4 is unavailable, use only the existing authenticated transport workflow described in [release-policy.md](release-policy.md), retaining/restoring the canonical lockfile and workspace files. Do not substitute arbitrary tarballs or relax integrity checks.
 
-Extend `scripts/verify-archive-consumers.mjs` to select explicit named dependency profiles. Today it pins TypeScript 6.0.3, Pinia 3.0.4, pnpm 10.34.5 and several older Vite/plugin versions, so changing workspace manifests does not exercise upgraded consumers. Retain the current profile where support is claimed and add a migration-target profile as each stage lands. Record the actual resolved versions with each profile's results, and run each supported profile under both npm and pnpm. Keep Vue/compiler/server-renderer versions aligned.
-
-The matrix must exercise source SFC typechecking with its existing negative public-prop witness, browser production builds, SSR, four Node helper imports, CSS/assets, and Vue/Pinia/router singleton resolution. Add chart and stateful Pinia/SSR fixtures where the existing generic fixture lacks that behavior. Add focused behavioral coverage for specific migration risks, not tests that merely assert version strings.
+Exercise dependency migrations through the package suites and the pinned Invest and Dashboard consumers. Verify source SFC typechecking, browser production builds, SSR, the four Node helper imports, CSS/assets, and Vue/Pinia/router singleton resolution. Add focused behavioral coverage for specific migration risks, not tests that merely assert version strings.
 
 ## 1. Small updates
 
@@ -86,7 +84,7 @@ Once that entry gate passes, update root, package-specific ranges, consumer prof
 
 Review `tsconfig.base.json` and every extending config for removed/deprecated options, especially `baseUrl` and `ignoreDeprecations: "6.0"`. Replace path-resolution assumptions explicitly. Verify native compiler installation/execution in Linux CI and on macOS with the existing install-script policy. Do not change generated browser/source export structure or commit generated output.
 
-Run all `tsc` and `vue-tsc` checks, then both `tsconfig.node.json` builds. `scripts/node-build-contract.mjs` must still observe exactly the four allowed JavaScript outputs with the same condition order. Typecheck packed source with both TypeScript 6.0.3 and 7.0.2 while claiming support for both; use the target consumer profile to avoid a false pass on the old compiler only. If a public source/type requirement excludes TS6, document the new consumer requirement and remove the old support claim only with evidence.
+Run all `tsc` and `vue-tsc` checks, then both `tsconfig.node.json` builds. The package exports must still expose exactly the four supported Node helpers with the same condition order. Typecheck packed source with both TypeScript 6.0.3 and 7.0.2 while claiming support for both; use the target consumer profile to avoid a false pass on the old compiler only. If a public source/type requirement excludes TS6, document the new consumer requirement and remove the old support claim only with evidence.
 
 ## 4. Markdown
 
@@ -128,30 +126,27 @@ First establish whether ESLint is used outside the declared scripts (developer t
 
 Recheck the official v11/v12 release and migration notes before implementation. Test 10 → 12 directly in an isolated checkout; if a lockfile transition requires v11, use a pinned intermediate version and retain both diffs. Do not assume compatibility based on package `engines` metadata.
 
-Update all eight `packageManager` fields, the root pnpm engine policy, both relevant workflow setup paths, generated detached consumer manifests, and documentation as one coordinated change. Search for all remaining 10.34.5 references, preserving intentional historical records.
+Update all eight `packageManager` fields, the root pnpm engine policy, relevant workflow setup paths, and documentation as one coordinated change. Search for all remaining 10.34.5 references, preserving intentional historical records.
 
-Inspect changes to lockfile schema, peer resolution, catalog publication rewriting, patches, overrides, install-script approval behavior, Corepack bootstrapping and pack output. Preserve the existing `--ignore-scripts` policy in release and detached-consumer installs; invoke required tools such as Playwright's browser installer explicitly. Run a fresh frozen installation, archive checks, and both detached package-manager profiles against the published dependency graph.
+Inspect changes to lockfile schema, peer resolution, catalog publication rewriting, patches, overrides, install-script approval behavior, Corepack bootstrapping and pack output. Preserve the existing `--ignore-scripts` policy in release installs; invoke required tools such as Playwright's browser installer explicitly. Run a fresh frozen installation, package checks, Node builds, and the tagged release checks against the published dependency graph.
 
 ## Per-stage acceptance and final release handoff
 
 For each stage retain a reviewable manifest/catalog/lockfile diff, migration source links, exact toolchain versions and successful relevant checks. After changing the graph, run the baseline command group once; stage-specific focused checks supplement it. A failed gate is fixed or explicitly blocks that stage. Do not waive failed tests, peer conflicts, lost suites, changed integrity, duplicate runtime singletons or missing public exports.
 
-Changes to published package bytes require a new candidate identity under [release-policy.md](release-policy.md). Before packing changed candidates, choose an unused version and update all seven versions, the root version, reconciliation, script/workflow defaults, active release docs and version-coupled tests coherently. Candidate packing must reject a manifest or reconciliation version mismatch. Search active references to 0.2.3; retain historical provenance and source revisions unchanged. Do not overwrite a retained 0.2.3 archive or assume a fresh output directory permits reuse of reviewed version bytes. Failed or changed packed candidates receive another new version.
+Changes to published package bytes require a new candidate identity under [release-policy.md](release-policy.md). Before releasing changed packages, choose an unused version and update all seven versions, the root version, reconciliation, workflow defaults, active release docs and version-coupled tests coherently. The release workflow rejects a manifest version that differs from its tag. Search active references to 0.2.3; retain historical provenance and source revisions unchanged. Do not overwrite a retained 0.2.3 archive or reuse reviewed version bytes. Failed or changed releases receive another new version.
 
-When a stage needs detached consumer evidence, create a fresh local candidate under that policy and retain it as non-promotable development evidence; local probes may omit the clean-source requirement and must be labelled accordingly. Final release verification uses the accepted clean commit and enforces `REQUIRE_CLEAN_SOURCE=true`. `pack:candidate` owns cleanup, its one Node build and its internal full check; do not prebuild solely for that packing run. Preserve its exact four-file output contract and seven-package order.
-
-After assigning `MIGRATION_CANDIDATE` to the reviewed new version and `MIGRATION_ARTIFACTS` to an unused output path, the public-registry verification path is:
+After assigning the reviewed new version, the release path is:
 
 ```sh
 pnpm audit --audit-level=high
-REQUIRE_CLEAN_SOURCE=true CANDIDATE_OUTPUT_DIR="$MIGRATION_ARTIFACTS" pnpm run pack:candidate -- "$MIGRATION_CANDIDATE"
-pnpm exec playwright install --with-deps chromium
-CONSUMER_PACKAGE_MANAGERS=npm,pnpm node scripts/verify-archive-consumers.mjs "$MIGRATION_ARTIFACTS"
+pnpm run check
+pnpm run build:node
+git tag "framework-v$MIGRATION_CANDIDATE"
+git push origin "framework-v$MIGRATION_CANDIDATE"
 ```
 
-Run the detached command for every supported profile once profile selection is implemented; its exact CLI must be documented in that change. It already invokes the release-bundle verifier.
-
-Keep receipts, tarballs, lockfiles, toolchain metadata, browser reports/screenshots and the last known-good application artifacts. Runtime migration acceptance also requires an identified consuming application's install/build/typecheck/SSR and relevant auth/profile/offer/chart smoke results; the host repository and credentials are implementation inputs, not available evidence from this planning task. No host verification is claimed until supplied and run.
+Keep the tagged GitHub Release, attestations, lockfiles, browser reports/screenshots and the last known-good application artifacts. Runtime migration acceptance also requires an identified consuming application's install/build/typecheck/SSR and relevant auth/profile/offer/chart smoke results; the host repository and credentials are implementation inputs, not available evidence from this planning task. No host verification is claimed until supplied and run.
 
 Roll out the complete seven-package set in dependency order: domain-types, invest-core, invest-data, invest-runtime, invest-widgets, invest-features, invest-shell. If adoption fails, restore the previous complete consumer lockfile and retained application artifact; do not mix package generations or rebuild old release bytes. Before publication, the existing maintainer release process still applies.
 

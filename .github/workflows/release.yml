@@ -1,56 +1,71 @@
-name: Framework package candidate
+name: Framework release by tag
 
 on:
-  workflow_dispatch:
-    inputs:
-      candidate:
-        description: Candidate version to pack from the checked source
-        required: true
-        type: string
-        default: 0.4.12
+  push:
+    tags:
+      - 'framework-v*'
 
 permissions:
   contents: read
 
 jobs:
-  candidate:
+  release:
     runs-on: ubuntu-24.04
     permissions:
-      contents: read
+      contents: write
       attestations: write
       artifact-metadata: write
       id-token: write
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
+          fetch-depth: 0
           persist-credentials: false
       - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
         with:
           node-version: '24.21.0'
       - run: corepack enable && corepack prepare pnpm@12.4.2 --activate
-      - name: Install checked dependency graph
+      - name: Validate release tag
         run: |
           set -euo pipefail
-          test -z "$(git status --porcelain=v1)"
+          [[ "$GITHUB_REF_NAME" =~ ^framework-v([0-9]+\.[0-9]+\.[0-9]+)$ ]]
+          version="${BASH_REMATCH[1]}"
+          test "$(jq -er '.version' package.json)" = "$version"
+          for package in domain-types invest-core invest-data invest-runtime invest-widgets invest-features invest-shell; do
+            test "$(jq -er '.version' "packages/$package/package.json")" = "$version"
+          done
+          printf 'RELEASE_VERSION=%s\n' "$version" >> "$GITHUB_ENV"
+      - name: Install and verify
+        run: |
+          set -euo pipefail
           pnpm install --frozen-lockfile --ignore-scripts
-      - name: Pack the exact candidate once
+          test -z "$(git status --porcelain=v1)"
+          pnpm run check
+          pnpm run build:node
+      - name: Pack release archives
         env:
-          CANDIDATE: ${{ inputs.candidate }}
-          REQUIRE_CLEAN_SOURCE: 'true'
-          CSS_BROWSER_REPORT: ${{ runner.temp }}/torque-css-browser-report.json
+          CSS_BROWSER_REPORT: ${{ github.workspace }}/artifacts/browser-contract-report.json
         run: |
           set -euo pipefail
+          mkdir -p artifacts
           pnpm exec playwright install --with-deps chromium
-          CSS_BROWSER_REPORT="$CSS_BROWSER_REPORT" pnpm --filter @global-torque/invest-shell run test:css-browser
-          pnpm run pack:candidate -- "$CANDIDATE"
-      - name: Attest exact candidate archives
+          pnpm --filter @global-torque/invest-shell run test:css-browser
+          for package in domain-types invest-core invest-data invest-runtime invest-widgets invest-features invest-shell; do
+            pnpm --dir "packages/$package" pack --pack-destination "$GITHUB_WORKSPACE/artifacts"
+          done
+          test "$(find artifacts -maxdepth 1 -type f -name '*.tgz' | wc -l)" -eq 7
+      - name: Attest release archives
         uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6
         with:
           subject-path: artifacts/*.tgz
-      - name: Retain exact candidate and combined receipt
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" artifacts/* --verify-tag --generate-notes --title "$GITHUB_REF_NAME"
+      - name: Retain release archives
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
         with:
-          name: torque-framework-candidate-${{ inputs.candidate }}
+          name: torque-framework-${{ env.RELEASE_VERSION }}
           path: artifacts/
           if-no-files-found: error
           retention-days: 90

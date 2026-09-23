@@ -8,8 +8,8 @@ The current candidate is `0.4.12` for all seven packages. It is source based:
 published files contain the explicit `src` exports and the host application
 provides the Vue/Vite toolchain and singleton peers. The candidate is local and
 non-promotable until the primary maintainer completes the accepted release
-gates. Dispatch the candidate workflow from the matching
-`framework-v0.4.12` tag when producing attestations. The previously reviewed
+gates. Push the matching `framework-v0.4.12` tag to run the release workflow
+and produce the GitHub Release and attestations. The previously reviewed
 `framework-v0.2.2` source tag, commit, and immutable artifacts remain
 retained as history; no canonical `0.2.0` package artifacts were produced.
 The immutable `framework-v0.4.2` candidate was superseded before publication by
@@ -86,10 +86,12 @@ TypeScript 7 is deferred until vue-tsc supports its compiler entry point.
 
 CI runs on pull requests and pushes to `master` using Node 24.21.0. It runs
 `pnpm run build:node` and `pnpm run check` (typechecks and package tests).
-Detached browser and clean-consumer verification remain available locally but
-are not CI gates. The manual release workflow builds and tests before packing
-and retaining the candidate artifacts. Publication is a separate
-trusted-OIDC workflow that uses only those retained tarballs; it never
+Pushing a stable `framework-vX.Y.Z` tag runs the release workflow. It requires
+the root and all seven package versions to match the tag, runs the package
+checks and Node builds, runs the Chromium CSS contract, packs each package with
+`pnpm pack`, attests the tarballs, and creates the GitHub Release. Publication
+is a separate trusted-OIDC workflow that downloads and verifies those exact
+release tarballs before passing them to `npm publish --provenance`; it never
 rebuilds or repacks source.
 
 This release reissues the breaking stablecoin redemption contract and completes
@@ -123,29 +125,19 @@ have an exact Node condition: `invest-core/app/config`,
 plain Node while browser bundlers and TypeScript continue to use the source
 entries. The Node build compiles only those four entries once during candidate
 packing; generated output is ignored and is never a source of browser SFCs.
-`pnpm run pack:candidate` rejects an ineligible candidate or existing output
-directory before cleanup, removes only the two owned `dist/node` directories,
-runs this build once, runs typechecks and package tests, revalidates the
-four-file inventory, and then packs all seven packages.
 
-The framework candidate using the public `@global-torque/ui-kit@0.1.4`
-dependency produces 23 release assets. Run
+The framework release uses the public `@global-torque/ui-kit@0.1.4`
+dependency. Run
 `pnpm install --frozen-lockfile`, then `pnpm run build:node` followed by
 `pnpm run check`. The frozen lockfile supplies the published UI Kit dependency.
 
-Optional local detached npm and pnpm verification requires Chromium and its
-checked system dependencies:
+Create a release by pushing a matching version tag:
 
 ```sh
-pnpm exec playwright install --with-deps chromium
-CONSUMER_PACKAGE_MANAGERS=npm,pnpm node scripts/verify-archive-consumers.mjs artifacts
+git tag framework-v0.4.12
+git push origin framework-v0.4.12
 ```
 
-The script saves each manager's report, screenshots, and failure diagnostics
-under `$RUNNER_TEMP/torque-framework-consumer-evidence/npm/` and
-`$RUNNER_TEMP/torque-framework-consumer-evidence/pnpm/`. These optional checks
-and their evidence uploads are not part of CI.
-
-`pnpm run pack:candidate` creates
-one local immutable receipt and one tarball per package under `artifacts/` for
-review. It does not publish, upload, tag, or deploy anything.
+Use the `Verify framework release provenance` workflow for an explicit
+attestation check. Use `Publish tagged framework release to npm` only when the
+tagged tarballs should also be published to npm.

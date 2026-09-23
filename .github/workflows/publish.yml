@@ -1,27 +1,13 @@
-name: Publish verified framework release to npm
+name: Publish tagged framework release to npm
 
 on:
   workflow_dispatch:
     inputs:
-      candidate_run_id:
-        description: Successful candidate workflow run containing the retained tarballs
-        required: true
-        type: string
-      candidate:
-        description: Candidate version in the retained receipt
-        required: true
-        type: string
-        default: 0.4.12
       release_tag:
-        description: Immutable GitHub release tag carrying the exact candidate assets
+        description: Immutable framework release tag to publish
         required: true
         type: string
         default: framework-v0.4.12
-      bootstrap:
-        description: Use the temporary NPM_BOOTSTRAP_TOKEN for the package cohort's first publication only
-        required: true
-        default: false
-        type: boolean
 
 permissions:
   contents: read
@@ -34,154 +20,39 @@ jobs:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           ref: ${{ inputs.release_tag }}
+          fetch-depth: 0
           persist-credentials: false
       - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
         with:
           node-version: '24.21.0'
           registry-url: https://registry.npmjs.org
           package-manager-cache: false
-      - name: Download and reverify the exact retained candidate
+      - name: Download and verify tagged release
         env:
           GH_TOKEN: ${{ github.token }}
-          CANDIDATE_RUN_ID: ${{ inputs.candidate_run_id }}
-          CANDIDATE: ${{ inputs.candidate }}
           RELEASE_TAG: ${{ inputs.release_tag }}
         run: |
           set -euo pipefail
-          rm -rf release
-          mkdir release
-          gh release download "$RELEASE_TAG" --dir release \
-            --pattern '*.tgz' --pattern '*.tgz.manifest.json' --pattern '*.tgz.sha512' \
-            --pattern 'candidate-receipt.json' --pattern 'browser-contract-report.json' \
-            --pattern 'selected-release.json' \
-            --pattern 'original-provenance.json'
+          [[ "$RELEASE_TAG" =~ ^framework-v([0-9]+\.[0-9]+\.[0-9]+)$ ]]
+          version="${BASH_REMATCH[1]}"
+          source_sha=$(git rev-parse "$RELEASE_TAG^{commit}")
+          printf 'RELEASE_VERSION=%s\n' "$version" >> "$GITHUB_ENV"
+          mkdir -p release
+          gh release download "$RELEASE_TAG" --dir release --pattern '*.tgz'
           gh release verify "$RELEASE_TAG"
-          for asset in release/*; do
-            gh release verify-asset "$RELEASE_TAG" "$asset"
+          for package in domain-types invest-core invest-data invest-runtime invest-widgets invest-features invest-shell; do
+            archive="release/global-torque-${package}-${version}.tgz"
+            test -f "$archive"
+            gh release verify-asset "$RELEASE_TAG" "$archive"
+            gh attestation verify "$archive" --repo "$GITHUB_REPOSITORY" \
+              --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/release.yml" \
+              --signer-digest "$source_sha" --source-digest "$source_sha" \
+              --source-ref "refs/tags/$RELEASE_TAG" --deny-self-hosted-runners
           done
-          node scripts/verify-provenance-context.mjs \
-            release/candidate-receipt.json "$CANDIDATE_RUN_ID" "$RELEASE_TAG" \
-            "$GITHUB_REPOSITORY" "$RUNNER_TEMP/framework-publish-context.json"
-          node scripts/verify-release-bundle.mjs release/candidate-receipt.json
-      - name: Publish exact retained tarballs sequentially with trusted OIDC
-        env:
-          CANDIDATE: ${{ inputs.candidate }}
-          BOOTSTRAP: ${{ inputs.bootstrap }}
-          NODE_AUTH_TOKEN: ${{ inputs.bootstrap && secrets.NPM_BOOTSTRAP_TOKEN || '' }}
+          test "$(find release -maxdepth 1 -type f -name '*.tgz' | wc -l)" -eq 7
+      - name: Publish with npm trusted publishing
         run: |
           set -euo pipefail
-          if [[ "${BOOTSTRAP}" == "true" ]]; then
-            test -n "${NODE_AUTH_TOKEN}"
-          else
-            unset NODE_AUTH_TOKEN
-          fi
-          receipt="release/candidate-receipt.json"
-          test "$(node -p "JSON.parse(require('fs').readFileSync('$receipt', 'utf8')).candidate")" = "$CANDIDATE"
-          mkdir -p registry
-          registry_retry_attempts=8
-          registry_retry_delay_seconds=2
-          registry_state_dir="$RUNNER_TEMP/framework-publish-registry"
-          mkdir -p "$registry_state_dir"
-          node --input-type=module <<'JS'
-          import fs from 'node:fs';
-          const receipt = JSON.parse(fs.readFileSync('release/candidate-receipt.json', 'utf8'));
-          const expected = [
-            '@global-torque/domain-types',
-            '@global-torque/invest-core',
-            '@global-torque/invest-data',
-            '@global-torque/invest-runtime',
-            '@global-torque/invest-widgets',
-            '@global-torque/invest-features',
-            '@global-torque/invest-shell',
-          ];
-          if (JSON.stringify(receipt.dependencyOrder) !== JSON.stringify(expected)) {
-            throw new Error('Candidate dependency order is not the reviewed framework order.');
-          }
-          if (receipt.packages.some((entry, index) => entry.name !== expected[index])) {
-            throw new Error('Candidate package entries are not ordered for publication.');
-          }
-          JS
-          packages=(domain-types invest-core invest-data invest-runtime invest-widgets invest-features invest-shell)
-          : > publication-receipt.jsonl
-          for package in "${packages[@]}"; do
-            archive="./release/global-torque-${package}-${CANDIDATE}.tgz"
-            test -f "$archive"
-            package_spec="@global-torque/${package}@${CANDIDATE}"
-            view_output="$registry_state_dir/${package}.view"
-            view_error="$registry_state_dir/${package}.view.error"
-            registry_visible=false
-            view_status=0
-            if npm view "$package_spec" version --json >"$view_output" 2>"$view_error"; then
-              registry_version=$(tr -d '[:space:]"' < "$view_output")
-              test "$registry_version" = "$CANDIDATE"
-              registry_visible=true
-            else
-              view_status=$?
-              view_error_text=$(<"$view_error")
-              if [[ "$view_error_text" != *E404* && "$view_error_text" != *ETARGET* ]]; then
-                cat "$view_error" >&2
-                exit "$view_status"
-              fi
-            fi
-            if [[ "$registry_visible" != true ]]; then
-              npm publish "$archive" --access public --provenance --tag latest
-            fi
+          for package in domain-types invest-core invest-data invest-runtime invest-widgets invest-features invest-shell; do
+            npm publish "release/global-torque-${package}-${RELEASE_VERSION}.tgz" --access public --provenance --tag latest
           done
-          : > publication-receipt.jsonl
-          for package in "${packages[@]}"; do
-            archive="./release/global-torque-${package}-${CANDIDATE}.tgz"
-            package_spec="@global-torque/${package}@${CANDIDATE}"
-            registry_archive=''
-            pack_attempt=1
-            while (( pack_attempt <= registry_retry_attempts )); do
-              pack_error="$registry_state_dir/${package}.pack.error"
-              pack_status=0
-              registry_archive=$(npm pack "$package_spec" --pack-destination registry --prefer-online --cache "$registry_state_dir/${package}.npm-cache" 2>"$pack_error" | tail -n 1) || pack_status=$?
-              if (( pack_status == 0 )) && [[ -n "$registry_archive" && -f "registry/$registry_archive" ]]; then
-                break
-              fi
-              pack_error_text=$(<"$pack_error")
-              if [[ "$pack_error_text" != *E404* && "$pack_error_text" != *ETARGET* ]]; then
-                cat "$pack_error" >&2
-                failure_status=$pack_status
-                if (( failure_status == 0 )); then
-                  failure_status=1
-                fi
-                exit "$failure_status"
-              fi
-              if (( pack_attempt == registry_retry_attempts )); then
-                cat "$pack_error" >&2
-                failure_status=$pack_status
-                if (( failure_status == 0 )); then
-                  failure_status=1
-                fi
-                exit "$failure_status"
-              fi
-              sleep "$registry_retry_delay_seconds"
-              pack_attempt=$((pack_attempt + 1))
-            done
-            test -n "$registry_archive"
-            test -f "registry/$registry_archive"
-            cmp "$archive" "registry/$registry_archive"
-            node --input-type=module - "$archive" "$registry_archive" "$package" "$CANDIDATE" <<'JS' >> publication-receipt.jsonl
-            import crypto from 'node:crypto';
-            import fs from 'node:fs';
-            const [, , archive, registryArchive, packageName, version] = process.argv;
-            const digest = file => crypto.createHash('sha512').update(fs.readFileSync(file)).digest('hex');
-            console.log(JSON.stringify({ package: `@global-torque/${packageName}`, version, archive, sha512: digest(archive), registryArchive, registrySha512: digest(`registry/${registryArchive}`) }));
-          JS
-          done
-          node --input-type=module <<'JS'
-          import fs from 'node:fs';
-          import crypto from 'node:crypto';
-          const lines = fs.readFileSync('publication-receipt.jsonl', 'utf8').trim().split('\n').filter(Boolean).map(line => JSON.parse(line));
-          if (lines.length !== 7 || lines.some(entry => entry.sha512 !== entry.registrySha512)) throw new Error('Registry byte verification is incomplete.');
-          fs.writeFileSync('publication-receipt.json', `${JSON.stringify({ schemaVersion: 1, candidate: process.env.CANDIDATE, dependencyOrder: lines.map(entry => entry.package), packages: lines, receiptSha256: crypto.createHash('sha256').update(fs.readFileSync('release/candidate-receipt.json')).digest('hex') }, null, 2)}\n`);
-          JS
-      - name: Retain publication receipt
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
-        with:
-          name: torque-framework-publication-${{ inputs.candidate }}
-          path: publication-receipt.json
-          if-no-files-found: error
-          retention-days: 90

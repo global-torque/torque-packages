@@ -2,18 +2,12 @@
 
 Each package has explicit source exports, package files, MIT metadata, runtime
 dependencies, singleton peers, and public repository metadata. The workspace
-root remains private. The CI workflows pack once and retain the exact
-candidate/receipt before any publication decision.
-The receipt records the target repository identity and commit used by hosted
-attestation as `sourceRepository`/`sourceRevision`, and the pinned producer
-package identity as `sourcePackageRepository`/`sourcePackageRevision`.
-The 0.4.5 compatibility matrix separately retains the verified 0.2.1 source
-tag/commit, archive SRI, inventory and attestation digest used for consumer
-pixel parity, together with the absent-token case.
-Local extracted workspaces can emit a receipt with `sourceDirty: true` and a
-null target revision; those bytes are test overlays only. The candidate
-workflow requires a clean target checkout and records its full commit before
-packing.
+root remains private. A pushed stable `framework-vX.Y.Z` tag is the release
+identity. The release workflow requires every package version to equal the tag,
+runs the repository and browser checks, packs once with `pnpm pack`, creates
+the GitHub Release, and uses GitHub artifact attestations for source provenance.
+The npm publication workflow downloads and verifies those tagged assets and
+publishes the same tarballs with npm trusted publishing and provenance.
 
 The selected `@global-torque/ui-kit@0.1.4` and
 `@global-torque/design-tokens@0.3.0` dependencies are published registry
@@ -34,12 +28,10 @@ and rollback reference. Absent-token, authenticated 0.2.1 and authenticated
 accent hook and host `--primary` fallback for both login text and its arrow
 asset, preserving the 0.4.0 mobile-header pixels while retaining the 0.4.6
 geometry recovery.
-The reproducible detached command is
-`CONSUMER_TOKEN_MODE=<absent|0.2.1|0.3.0> CONSUMER_PACKAGE_MANAGERS=npm,pnpm node scripts/verify-archive-consumers.mjs <candidate-artifacts>`;
-the `absent` mode omits `DESIGN_TOKENS_ARCHIVE`, while `0.2.1` requires the
-retained archive named by the compatibility matrix. The candidate receipt
-copies and cryptographically binds that complete matrix, including both token
-archive identities and the absent-token contract.
+The retained historical compatibility evidence remains available for audit;
+new releases use the normal package tests, Chromium CSS contract, GitHub
+attestation, and pinned real-consumer Git dependencies instead of a custom
+receipt format.
 
 Local verification does not authorize publication; the external Alchemy
 TypeScript peer declaration remains a documented owner handoff item in
@@ -114,40 +106,24 @@ source ledger also paired `global-torque/dashboard.webdevelop.biz` with the
 `torque-packages` source revision
 `82fe93868d28682211ea21867badcdeb85879970`; no artifact or receipt escaped
 because the candidate failed. The new ordinary immutable
-release tag is `framework-v0.4.12` for the `0.4.12` candidate. Dispatch the candidate workflow
-from that tag so its attestations carry `refs/tags/framework-v0.4.12`. The prior
-`framework-v0.2.2`
+release tag is `framework-v0.4.12` for the `0.4.12` candidate. Push that tag so
+the release workflow checks, packs, attests, and creates the GitHub Release from
+`refs/tags/framework-v0.4.12`. The prior `framework-v0.2.2`
 source tag, commit, and immutable artifact history remain retained for audit;
 its package bytes and provenance are not replaced. The earlier
 `framework-v0.2.0` run failed before installation, build, or packing; no
-canonical `0.2.0` package artifacts or rollback proof exist. The provenance
-workflow requires that stable tag to resolve to the exact clean candidate
-commit, the candidate workflow run to be completed successfully, and the release
-to contain exactly the seven archives, their
-sidecars, and the combined receipt. When the authenticated transport path is
-selected, its six canonical UI Kit transport files and four retained
-lock/workspace overlay files are included as conditional release evidence.
-The ordinary candidate using the public UI Kit dependency therefore produces
-23 release assets including the browser contract report; the authenticated transport path conditionally supplies six
-UI Kit assets and retains the four lock/workspace overlay files.
-Before attestation, the candidate workflow builds the Node helpers and runs
-package, consumer-link, and release contract tests on Node 24. Detached npm
-and pnpm consumer verification is an optional local check; audits, typechecks,
-and standalone source policy checks are not CI gates.
+canonical `0.2.0` package artifacts or rollback proof exist.
 
-The release workflow does not publish npm packages, create tags, deploy apps,
-or promote ordinary releases. The provenance workflow accepts a retained CI
-candidate run, verifies every receipt digest, and creates signed npm package
-identity attestations using GitHub hosted OIDC. The separate manual
-`.github/workflows/publish.yml` workflow is the only publication path. It
-downloads and verifies the immutable release assets, verifies the full
-candidate receipt, then publishes the exact retained tarballs sequentially in
+Before attestation, the release workflow builds the Node helpers and runs the
+package and Chromium CSS checks on Node 24. It creates the GitHub Release but
+does not publish npm packages or deploy apps. The provenance workflow verifies
+the tagged release and GitHub attestations. The separate manual
+`.github/workflows/publish.yml` workflow is the only npm publication path. It
+downloads and verifies the tagged tarballs, then publishes them sequentially in
 dependency order with npm trusted publishing (`npm publish <tgz> --provenance`).
-It never builds or packs source. After each publication it downloads the
-registry tarball and byte-compares it with the retained archive; a final
-publication receipt is retained as a workflow artifact. A failed package stops
-the sequence and no later package is published.
+It never builds or repacks source. A failed package stops the sequence and no
+later package is published.
 
 Never repack or replace bytes under a previously reviewed version. Missing
-provenance, a digest mismatch, private or workspace dependencies in a packed
-manifest, unresolved rights, or a duplicate runtime singleton aborts promotion.
+provenance, unresolved rights, or a duplicate runtime singleton aborts
+promotion.
