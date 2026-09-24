@@ -643,10 +643,10 @@ input[data-slot='input']:focus-visible,
 [data-slot='button'][data-variant='link'].text-destructive { color: var(--destructive); }
 [data-slot='button']:is([data-variant='outline'], [data-variant='ghost']).text-destructive:hover { background: var(--ui-destructive, var(--primary)); border-color: var(--ui-destructive, var(--primary)); color: var(--ui-color-negative-foreground, var(--primary-foreground)); box-shadow: none; }
 [data-slot='button'][data-variant='link'].text-destructive:hover { background: var(--ui-color-negative-background, color-mix(in srgb, var(--primary) 12%, var(--background))); }
-[data-slot='button'][data-variant='outline'].text-secondary { color: var(--ui-color-text, var(--primary)); border-color: var(--color-status-success, var(--ui-color-positive-accent, var(--primary))); }
+[data-slot='button'][data-variant='outline'].text-secondary { color: var(--ui-color-text, var(--primary)); border-color: var(--ui-color-positive-accent, var(--secondary)); }
 [data-slot='button'][data-variant='ghost'].text-secondary { color: var(--ui-color-text, var(--accent-foreground)); }
 [data-slot='button'][data-variant='link'].text-secondary { color: var(--ui-color-text, var(--secondary)); }
-[data-slot='button']:is([data-variant='outline'], [data-variant='ghost']).text-secondary:hover { background: var(--color-status-success, var(--ui-color-positive-accent, var(--primary))); border-color: var(--color-status-success, var(--ui-color-positive-accent, var(--primary))); color: var(--ui-color-positive-foreground, var(--primary-foreground)); box-shadow: none; }
+[data-slot='button']:is([data-variant='outline'], [data-variant='ghost']).text-secondary:hover { background: var(--ui-color-positive-accent, var(--secondary)); border-color: var(--ui-color-positive-accent, var(--secondary)); color: var(--ui-color-positive-foreground, var(--primary-foreground)); box-shadow: none; }
 [data-slot='button'][data-variant='link'].text-secondary:hover { background: var(--ui-color-positive-background, color-mix(in srgb, var(--primary) 12%, var(--background))); }
 [data-slot='button'][data-variant='outline']:hover { box-shadow: none; }
 

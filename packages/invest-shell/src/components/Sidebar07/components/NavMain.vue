@@ -192,6 +192,11 @@ function handleSelect(item: SidebarNavItem, options: SelectOptions = {}) {
     height: 18px;
   }
 
+  // Follow the active hover fill's foreground; hosts without the hook keep text-slate-400.
+  [data-sidebar='menu-button'][data-active='true']:hover &__chevron {
+    color: var(--ui-color-accent-foreground, var(--color-slate-400));
+  }
+
   &__submenu {
     margin: 4px 0 0 28px;
     padding-left: 12px;
