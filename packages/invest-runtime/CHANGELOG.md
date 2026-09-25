@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.13 candidate
+
+- Add the public `createSdkAnalyticsAdapter` factory so hosts can connect the
+  application-context analytics SDK resource to runtime event and error
+  reporting without app-local transport duplicates.
+
 ## 0.4.12 candidate
 
 - Reissued the cohort with a side-effect-free shared CSS contract root resolver;

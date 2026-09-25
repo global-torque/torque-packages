@@ -16,7 +16,8 @@ no approved `@global-torque/sdk-runtime` destination.
 - Auth redirects, route preload guards, and logout redirect helpers.
 - Browser navigation with typed query parameters through `./navigation`.
 - PWA/offline policy, IndexedDB persistence, and runtime API-client hooks.
-- Analytics event/error reporting adapters.
+- Analytics event/error reporting adapters, including `createSdkAnalyticsAdapter`
+  for wiring the context-owned SDK analytics resource into the runtime.
 - Native Android/iOS Firebase Messaging push bridge and logout cleanup.
 - Lifecycle reset registries, full/profile reset helpers, global error handling,
   chunk handling, and runtime install functions.
@@ -74,7 +75,8 @@ their source behavior.
 - Auth, profile, investment, and preload guards are exported through the
   runtime root and their owning public subpaths; there is no `./redirects`
   entrypoint.
-- `./analytics`: analytics event/error helpers.
+- `./analytics`: analytics event/error helpers and
+  `createSdkAnalyticsAdapter(context)` for the SDK-backed runtime adapter.
 - `./error-handling` and `./error/*`: global error setup, idempotent
   framework/global handlers, `reportError`, and UI-only reporter hooks.
 - `./native-push` and `./native-push/core`: native push bridge/core helpers.

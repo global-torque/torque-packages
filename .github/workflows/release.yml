@@ -54,6 +54,13 @@ jobs:
             pnpm --dir "packages/$package" pack --pack-destination "$GITHUB_WORKSPACE/artifacts"
           done
           test "$(find artifacts -maxdepth 1 -type f -name '*.tgz' | wc -l)" -eq 7
+      - name: Validate packed release archives
+        run: |
+          set -euo pipefail
+          pnpm run test:release-archives
+          node scripts/validate-release-archives.mjs \
+            "$GITHUB_WORKSPACE/artifacts" \
+            "$RELEASE_VERSION"
       - name: Attest release archives
         uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6
         with:

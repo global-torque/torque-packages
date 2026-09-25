@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.13 candidate
+
+- Added typed redemption lifecycle contracts for business and protocol status,
+  vault reasons, operation finality, and exact raw-amount presentation.
+- Reissued the framework cohort with the shared SDK-backed analytics adapter
+  and truthful mutation telemetry contracts.
+
 ## 0.4.12 candidate
 
 - Reissued the cohort with a side-effect-free shared CSS contract root resolver;

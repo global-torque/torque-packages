@@ -1,6 +1,6 @@
 {
   "name": "@global-torque/torque-packages-workspace",
-  "version": "0.4.12",
+  "version": "0.4.13",
   "private": true,
   "type": "module",
   "packageManager": "pnpm@12.4.2",
@@ -12,7 +12,8 @@
     "typecheck": "pnpm --filter './packages/*' -r run typecheck",
     "test:run": "pnpm --filter './packages/*' -r run test:run",
     "check": "pnpm run typecheck && pnpm run test:run",
-    "build:node": "pnpm --filter @global-torque/invest-core run build:node && pnpm --filter @global-torque/invest-runtime run build:node"
+    "build:node": "pnpm --filter @global-torque/invest-core run build:node && pnpm --filter @global-torque/invest-runtime run build:node",
+    "test:release-archives": "node --test scripts/validate-release-archives.test.mjs"
   },
   "devDependencies": {
     "@vue/devtools-api": "8.1.5",

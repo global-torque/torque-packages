@@ -9,7 +9,7 @@ been retired; shell code is owned and tested here.
 
 ## Dependency contract
 
-The shell declares its four internal framework dependencies at the exact matching `0.4.12` version. Full-SHA GitHub subdirectory consumers resolve those dependencies from the registry, while this repository enables `linkWorkspacePackages` so local development continues to link matching workspace packages. The shell source manifest therefore does not rely on the `workspace:*` protocol.
+The shell declares its four internal framework dependencies at the exact matching `0.4.13` version. Full-SHA GitHub subdirectory consumers resolve those dependencies from the registry, while this repository enables `linkWorkspacePackages` so local development continues to link matching workspace packages. The shell source manifest therefore does not rely on the `workspace:*` protocol.
 
 ## Ownership
 

@@ -1,7 +1,7 @@
 {
   "name": "@global-torque/invest-data",
   "private": false,
-  "version": "0.4.12",
+  "version": "0.4.13",
   "description": "Framework-free investment data clients and repository state helpers.",
   "license": "MIT",
   "engines": { "node": "^24.21.0" },

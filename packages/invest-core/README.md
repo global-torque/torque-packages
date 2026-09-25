@@ -8,7 +8,7 @@ This package owns deterministic helpers, mappers, formatters, calculations, and 
 
 ## Allowed Dependencies
 
-- `@global-torque/domain-types` at exact `0.4.12`; the fixed cohort version keeps Git-subpath installs portable without workspace links and couples this source branch to the matching domain contract until the next cohort.
+- `@global-torque/domain-types` at exact `0.4.13`; the fixed cohort version keeps Git-subpath installs portable without workspace links and couples this source branch to the matching domain contract until the next cohort.
 - AJV, `ajv-errors`, `ajv-formats`, `lodash-es`, and markdown-it for the published
   investment validation and formatting helpers.
 - TypeScript and platform-standard value types.

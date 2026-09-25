@@ -1,8 +1,10 @@
 # Source and release reconciliation
 
-The `0.4.12` candidate reissues the seven-package cohort with the completed
-`invest-shell` token-absent geometry recovery, inverse-footer token fallback,
-shadow, PWA login fallback, and semantic header/offer control-shadow contract.
+The `0.4.13` candidate reissues the seven-package cohort with the shared
+SDK-backed runtime analytics adapter and regulated-field telemetry sanitizer,
+while retaining the completed `invest-shell` token-absent geometry recovery,
+inverse-footer token fallback, shadow, PWA login fallback, and semantic
+header/offer control-shadow contract.
 The breaking stablecoin
 redemption contract, including the final `price_update` removal, remains
 unchanged from the retained `0.4.0` source. It also retains the
@@ -33,8 +35,9 @@ digest used by the consumer parity gate, plus the absent-token fallback case.
 These archives are external inputs; the framework repository never republishes
 them.
 
-The compatibility receipt is generated into every candidate receipt and must
-retain all three named modes. Run the detached verifier with
+The compatibility checks retain all three named modes and are recorded in the
+candidate's native release evidence; no custom receipt is generated. Run the
+detached verifier with
 `CONSUMER_TOKEN_MODE=absent` and no token archive, with
 `CONSUMER_TOKEN_MODE=0.2.1 DESIGN_TOKENS_ARCHIVE=<the reviewed 0.2.1 archive>`,
 and with `CONSUMER_TOKEN_MODE=0.3.0` plus the reviewed 0.3.0 archive (or its
@@ -43,8 +46,11 @@ consumer, and SSR checks; an absent mode must not install or import the token
 package.
 
 The framework candidate using the public `@global-torque/ui-kit@0.1.4`
-dependency produces 23 release assets including the retained browser contract
-report. The published registry dependency is installed from the frozen lockfile.
+dependency produces exactly eight native GitHub Release assets: seven
+dependency-ordered package `.tgz` archives and `browser-contract-report.json`.
+Only the seven package archives are GitHub-attested; the browser contract report
+is retained as release evidence and is not attested. The published registry
+dependency is installed from the frozen lockfile.
 
 The package owner is responsible for pure domain contracts and investment
 framework behavior. Generic UI, SDK, token, content, Markdown, and error
@@ -66,9 +72,12 @@ producer path mapping, host-owned third-party mark transfer, and FW07 removals
 are recorded in [`asset-inventory.md`](./asset-inventory.md).
 
 Release packing is dependency first. A pushed `framework-vX.Y.Z` tag runs the
-checks and packs each package once with `pnpm pack`; GitHub retains and attests
-the resulting tarballs. A failed or changed release receives a new version and
-tag. The prior
+frozen install, package checks, and Node build; installs Chromium; runs the
+browser contract and writes `browser-contract-report.json`; packs each package
+once with `pnpm pack`; runs `test:release-archives` and the packed-archive
+validator; attests only the seven package tarballs; and creates a native
+GitHub Release containing those seven archives plus the browser report. A
+failed or changed release receives a new version and tag. The prior
 `framework-v0.2.0` source tag, commit, and failed-run diagnostic history remain
 retained as history; that run failed before installation, build, or packing,
 so no canonical `0.2.0` package artifacts or rollback proof exist.
@@ -143,5 +152,8 @@ exists and the tag is never moved, deleted, or reused. Its immutable tagged
 source ledger also paired `global-torque/dashboard.webdevelop.biz` with the
 `torque-packages` source revision
 `82fe93868d28682211ea21867badcdeb85879970`; no artifact or receipt escaped
-because the candidate failed. Candidate `0.4.12` is the new immutable release
-identity.
+because the candidate failed. Candidate `0.4.13` is the new immutable release
+identity; its active candidate and package matrix are finalized when the
+candidate commit is tagged. The `sourceRevision` fields retain upstream
+provenance for the transferred source and are not rewritten as release tags
+are created.

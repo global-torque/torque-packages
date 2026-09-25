@@ -4,11 +4,11 @@ This repository is the independent source workspace for the seven investment
 framework packages under the `@global-torque` namespace. The workspace root
 is private; each package is an independently reviewed MIT package candidate.
 
-The current candidate is `0.4.12` for all seven packages. It is source based:
+The current candidate is `0.4.13` for all seven packages. It is source based:
 published files contain the explicit `src` exports and the host application
 provides the Vue/Vite toolchain and singleton peers. The candidate is local and
 non-promotable until the primary maintainer completes the accepted release
-gates. Push the matching `framework-v0.4.12` tag to run the release workflow
+gates. Push the matching `framework-v0.4.13` tag to run the release workflow
 and produce the GitHub Release and attestations. The previously reviewed
 `framework-v0.2.2` source tag, commit, and immutable artifacts remain
 retained as history; no canonical `0.2.0` package artifacts were produced.
@@ -134,8 +134,8 @@ dependency. Run
 Create a release by pushing a matching version tag:
 
 ```sh
-git tag framework-v0.4.12
-git push origin framework-v0.4.12
+git tag framework-v0.4.13
+git push origin framework-v0.4.13
 ```
 
 Use the `Verify framework release provenance` workflow for an explicit

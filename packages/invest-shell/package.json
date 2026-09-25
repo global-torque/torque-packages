@@ -1,7 +1,7 @@
 {
   "name": "@global-torque/invest-shell",
   "private": false,
-  "version": "0.4.12",
+  "version": "0.4.13",
   "description": "Investment application shell components, navigation, runtime facades, and styles.",
   "license": "MIT",
   "engines": { "node": "^24.21.0" },
@@ -32,10 +32,10 @@
     "@global-torque/ui-primitives": "0.1.3",
     "@lucide/vue": "^1.46.0",
     "@vueuse/core": "^15.0.0",
-    "@global-torque/domain-types": "0.4.12",
-    "@global-torque/invest-core": "0.4.12",
-    "@global-torque/invest-runtime": "0.4.12",
-    "@global-torque/invest-widgets": "0.4.12"
+    "@global-torque/domain-types": "0.4.13",
+    "@global-torque/invest-core": "0.4.13",
+    "@global-torque/invest-runtime": "0.4.13",
+    "@global-torque/invest-widgets": "0.4.13"
   },
   "devDependencies": {
     "@playwright/test": "1.63.0",

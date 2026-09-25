@@ -1,8 +1,10 @@
 # Changelog
 
-## Unreleased
+## 0.4.13 candidate
 
-- Render finalized USDC NAV with the fixed six-decimal contract in a dedicated responsive semantic block, preserving pending and malformed-record behavior.
+- Refresh finalized NAV cache selection for offer details and render finalized
+  USDC NAV with the fixed six-decimal contract in a dedicated responsive
+  semantic block, preserving pending and malformed-record behavior.
 - Pin internal investment-package dependencies to the exact published cohort so Git subpath consumers can install the package without workspace resolution; regenerate these pins with each cohort release.
 
 ## 0.4.12 candidate

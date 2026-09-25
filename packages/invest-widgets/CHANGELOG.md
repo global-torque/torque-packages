@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.13 candidate
+
+- Reissued the framework cohort with the shared SDK-backed analytics adapter
+  and truthful mutation telemetry contracts.
+
 ## 0.4.12 candidate
 
 - Reissued the cohort with a side-effect-free shared CSS contract root resolver;

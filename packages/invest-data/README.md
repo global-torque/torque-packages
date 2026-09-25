@@ -20,6 +20,8 @@ helpers.
   debug flags, and third-party data adapter keys.
 - Framework-free endpoint factories such as the EVM wallet repository and
   ERC-7540 Vault lifecycle clients.
+- A validated redemption lifecycle client with explicit network versus
+  offline-cache source metadata and last-synced timestamps.
 - Pure `ActionState` shapes and state-transition helpers.
 
 Vue/Pinia repository wrappers live in their owning app or bounded feature. This
@@ -61,8 +63,11 @@ package exposes only framework-free clients and repository-state helpers.
   `close_at` validation exclusion, backed by the pinned SDK validator for all
   other fields.
 - `./evm` and `./investDataClient`: EVM endpoint repository factories.
+- `./redemptions`: validated, offline-aware redemption lifecycle client and
+  typed lifecycle result.
 - `./vault`: exact-string investment/redemption intent, investor
-  prepare/status, and fund-manager fulfillment client.
+  prepare/status, lifecycle access, and fund-manager fulfillment/signing
+  payload client.
 
 ## Example
 

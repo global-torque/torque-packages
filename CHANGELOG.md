@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.4.13 candidate
+
+- Added typed redemption lifecycle contracts for business/protocol status,
+  operation finality, vault reasons, and exact raw-amount presentation.
+- Added a validated, offline-aware redemption lifecycle client and extended
+  the Vault facade with access, lifecycle, and signing-payload operations.
+- Switched core formatter imports to ESM Lodash and tracked the generated Node
+  entrypoints used by native ESM and VitePress consumers.
+- Refreshed finalized USDC NAV cache and offer presentation with the fixed
+  six-decimal display contract.
+- Improved shell alert dismissal, sidebar active-state contrast, branded logo
+  proportions, and success-role/skeleton fallbacks across token cohorts.
+- Added the public SDK-backed runtime analytics adapter so Invest and Dashboard
+  hosts share one context-owned transport boundary.
+- Extended shared analytics body normalization to redact regulated identity and
+  payment fields while preserving business telemetry values.
+- Synchronized the seven-package cohort and exact internal dependency pins for
+  the `framework-v0.4.13` release candidate.
+
 ## 0.4.12 candidate
 
 - Reissued the seven-package cohort with a side-effect-free shared resolver for

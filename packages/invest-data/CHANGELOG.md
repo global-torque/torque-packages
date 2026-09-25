@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.4.13 candidate
+
+- Added a validated, offline-aware redemption lifecycle client with explicit
+  network/cache source and synchronization metadata.
+- Extended the Vault facade with lifecycle access and exact-string
+  redemption, fulfillment, claim, and signing-payload operations.
+- Reissued the framework cohort with the shared SDK-backed analytics adapter
+  and truthful mutation telemetry contracts.
+
 ## 0.4.12 candidate
 
 - Reissued the cohort with a side-effect-free shared CSS contract root resolver;

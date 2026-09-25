@@ -1,10 +1,11 @@
 # Changelog
 
-## Unreleased
+## 0.4.13 candidate
 
 - Replace CommonJS Lodash deep imports with ESM `lodash-es` imports so published TypeScript sources load without CommonJS interop in native ESM consumers.
-- Pin `@global-torque/domain-types` to cohort `0.4.12` so Git-subpath installs resolve without workspace links while preserving deliberate future cohort coupling.
+- Pin `@global-torque/domain-types` to cohort `0.4.13` so Git-subpath installs resolve without workspace links while preserving deliberate future cohort coupling.
 - Track the three generated `dist/node` entrypoints owned by `pnpm run build:node` so Git-subpath Node/VitePress consumers resolve the existing public exports.
+- Extend the shared analytics body normalization policy to redact regulated identity and payment fields in event and error telemetry.
 
 ## 0.4.12 candidate
 
