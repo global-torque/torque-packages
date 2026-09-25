@@ -52,38 +52,6 @@ export type RedemptionVaultStatusReason =
   | 'claim_operation_fenced'
   | 'finalized_block_unavailable'
   | 'vault_liquidity_unavailable';
-export type RedemptionOperationStatus = 'created' | 'submitted' | 'confirmed' | 'failed';
-export type RedemptionOperationScope = 'direct' | 'controller_cohort';
-
-export interface RedemptionLifecycleFinality {
-  block_number: number;
-  block_hash: string;
-  confirmation_count: number;
-  confirmation_target: number;
-  finalized: boolean;
-}
-
-export interface RedemptionLifecycleOperation {
-  id: number;
-  status: RedemptionOperationStatus;
-  failure_reason: string;
-  transaction_hash: string;
-  scope: RedemptionOperationScope;
-  finality: RedemptionLifecycleFinality;
-}
-
-export interface RedemptionLifecycleTokenDisplay {
-  address: string;
-  symbol: string;
-  decimals: number;
-}
-
-export interface RedemptionLifecycleDisplay {
-  offer: { name: string };
-  asset: RedemptionLifecycleTokenDisplay | null;
-  share: RedemptionLifecycleTokenDisplay | null;
-}
-
 export interface RedemptionLifecycleItem {
   redemption_id: number;
   offer_id: number;
@@ -105,10 +73,6 @@ export interface RedemptionLifecycleItem {
   claimed_at: string | null;
   created_at: string;
   updated_at: string;
-  display: RedemptionLifecycleDisplay;
-  request_operation: RedemptionLifecycleOperation | null;
-  fulfillment_operation: RedemptionLifecycleOperation | null;
-  claim_operation: RedemptionLifecycleOperation | null;
 }
 
 export interface RedemptionLifecycleResponse {

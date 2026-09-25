@@ -3,7 +3,7 @@
 ## 0.4.13 candidate
 
 - Added typed redemption lifecycle contracts for business and protocol status,
-  vault reasons, operation finality, and exact raw-amount presentation.
+  vault reasons, and exact raw-amount list values.
 - Reissued the framework cohort with the shared SDK-backed analytics adapter
   and truthful mutation telemetry contracts.
 

@@ -4,6 +4,8 @@
 
 - Added a validated, offline-aware redemption lifecycle client with explicit
   network/cache source and synchronization metadata.
+- Aligned the redemption lifecycle client with the read-only list response,
+  which no longer includes display or operation payloads.
 - Extended the Vault facade with lifecycle access and exact-string
   redemption, fulfillment, claim, and signing-payload operations.
 - Reissued the framework cohort with the shared SDK-backed analytics adapter

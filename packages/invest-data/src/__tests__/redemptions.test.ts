@@ -15,20 +15,13 @@ const item = (overrides: Record<string, unknown> = {}) => ({
   claimable_assets_raw: '0', claimable_shares_raw: '0', claimed_assets_raw: '0', claimed_shares_raw: '0',
   requested_at: null, claimable_at: null, claimed_at: null,
   created_at: '2026-01-01T00:00:00Z', updated_at: '2026-01-01T00:00:00Z',
-  display: {
-    offer: { name: 'Offer' },
-    asset: { address: '0xasset', symbol: 'USDC', decimals: 0 },
-    share: null,
-  },
-  request_operation: null, fulfillment_operation: null, claim_operation: null,
   ...overrides,
 });
 
 describe('redemption lifecycle client', () => {
-  it('preserves zero decimals and nullable display metadata', () => {
+  it('accepts the read-only lifecycle response without display or operation payloads', () => {
     const parsed = validateRedemptionLifecycleResponse({ profile_id: 9, items: [item()] });
-    expect(parsed.items[0].display.asset?.decimals).toBe(0);
-    expect(parsed.items[0].display.share).toBeNull();
+    expect(parsed.items[0]).toEqual(item());
   });
 
   it('passes profile, abort signal, and offline fallback to the EVM client', async () => {

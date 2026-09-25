@@ -1,13 +1,7 @@
 import type {
   RedemptionBusinessStatus,
-  RedemptionLifecycleDisplay,
-  RedemptionLifecycleFinality,
   RedemptionLifecycleItem,
-  RedemptionLifecycleOperation,
   RedemptionLifecycleResponse,
-  RedemptionLifecycleTokenDisplay,
-  RedemptionOperationScope,
-  RedemptionOperationStatus,
   RedemptionVaultStatus,
 } from '@global-torque/domain-types/redemptionLifecycleTypes';
 import { createInvestDataApiClient } from './service/dataClientConfig.ts';
@@ -63,52 +57,6 @@ const oneOf = <T extends string>(value: unknown, values: readonly T[], label: st
 const nullableString = (value: unknown, label: string): string | null => (
   value === null ? null : stringValue(value, label)
 );
-
-const parseFinality = (value: unknown, label: string): RedemptionLifecycleFinality => {
-  const row = object(value, label);
-  if (typeof row.finalized !== 'boolean') throw new TypeError(`${label}.finalized must be a boolean.`);
-  return {
-    block_number: nonnegativeInteger(row.block_number, `${label}.block_number`),
-    block_hash: stringValue(row.block_hash, `${label}.block_hash`),
-    confirmation_count: nonnegativeInteger(row.confirmation_count, `${label}.confirmation_count`),
-    confirmation_target: nonnegativeInteger(row.confirmation_target, `${label}.confirmation_target`),
-    finalized: row.finalized,
-  };
-};
-
-const parseOperation = (value: unknown, label: string): RedemptionLifecycleOperation | null => {
-  if (value === null) return null;
-  const row = object(value, label);
-  return {
-    id: positiveInteger(row.id, `${label}.id`),
-    status: oneOf(row.status, ['created', 'submitted', 'confirmed', 'failed'] as const, `${label}.status`) as RedemptionOperationStatus,
-    failure_reason: stringValue(row.failure_reason, `${label}.failure_reason`),
-    transaction_hash: stringValue(row.transaction_hash, `${label}.transaction_hash`),
-    scope: oneOf(row.scope, ['direct', 'controller_cohort'] as const, `${label}.scope`) as RedemptionOperationScope,
-    finality: parseFinality(row.finality, `${label}.finality`),
-  };
-};
-
-const parseToken = (value: unknown, label: string): RedemptionLifecycleTokenDisplay | null => {
-  if (value === null) return null;
-  const row = object(value, label);
-  const address = stringValue(row.address, `${label}.address`);
-  const symbol = stringValue(row.symbol, `${label}.symbol`);
-  if (!address.trim() || !symbol.trim()) throw new TypeError(`${label} must be complete.`);
-  return { address, symbol, decimals: nonnegativeInteger(row.decimals, `${label}.decimals`) };
-};
-
-const parseDisplay = (value: unknown, label: string): RedemptionLifecycleDisplay => {
-  const row = object(value, label);
-  const offer = object(row.offer, `${label}.offer`);
-  const name = stringValue(offer.name, `${label}.offer.name`);
-  if (!name.trim()) throw new TypeError(`${label}.offer.name must be complete.`);
-  return {
-    offer: { name },
-    asset: parseToken(row.asset, `${label}.asset`),
-    share: parseToken(row.share, `${label}.share`),
-  };
-};
 
 const parseItem = (value: unknown, index: number): RedemptionLifecycleItem => {
   const label = `items[${index}]`;
@@ -169,10 +117,6 @@ const parseItem = (value: unknown, index: number): RedemptionLifecycleItem => {
     claimed_at: nullableString(row.claimed_at, `${label}.claimed_at`),
     created_at: stringValue(row.created_at, `${label}.created_at`),
     updated_at: stringValue(row.updated_at, `${label}.updated_at`),
-    display: parseDisplay(row.display, `${label}.display`),
-    request_operation: parseOperation(row.request_operation, `${label}.request_operation`),
-    fulfillment_operation: parseOperation(row.fulfillment_operation, `${label}.fulfillment_operation`),
-    claim_operation: parseOperation(row.claim_operation, `${label}.claim_operation`),
   };
 };
 
