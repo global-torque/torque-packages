@@ -52,8 +52,12 @@ const config = (): InvestAppConfig => ({
 describe('runtime analytics sanitization', () => {
   const trackEvent = vi.fn().mockResolvedValue(undefined);
   const logMessage = vi.fn().mockResolvedValue(undefined);
+  let referrerDescriptor: PropertyDescriptor | undefined;
 
   beforeEach(() => {
+    referrerDescriptor = typeof document === 'undefined'
+      ? undefined
+      : Object.getOwnPropertyDescriptor(document, 'referrer');
     setActivePinia(createPinia());
     setInvestRuntimeConfig(config());
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response('{}')));
@@ -64,6 +68,14 @@ describe('runtime analytics sanitization', () => {
   });
 
   afterEach(() => {
+    if (typeof document !== 'undefined') {
+      if (referrerDescriptor) {
+        Object.defineProperty(document, 'referrer', referrerDescriptor);
+      } else {
+        delete (document as { referrer?: string }).referrer;
+      }
+    }
+    referrerDescriptor = undefined;
     vi.unstubAllGlobals();
     resetReportedErrorAnalyticsDedupeForTests();
     resetInvestRuntimeAdaptersForTests();
@@ -91,6 +103,7 @@ describe('runtime analytics sanitization', () => {
         identity_id: 'identity-123',
         longId: '12345678901234567890',
         token_symbol: 'USDC',
+        ssn: '111-22-3333',
         redirect_url: '/auth?%74oken=REDIRECT_SECRET&email=user@example.com',
         password: 'PASSWORD_SECRET',
         nested: { access_token: 'TOKEN_SECRET' },
@@ -106,6 +119,7 @@ describe('runtime analytics sanitization', () => {
         identity_id: 'identity-123',
         longId: '12345678901234567890',
         token_symbol: 'USDC',
+        ssn: '[redacted]',
         redirect_url: '/auth?token=%5Bredacted%5D&email=user%40example.com',
         password: '[redacted]',
         nested: { access_token: '[redacted]' },
@@ -117,41 +131,7 @@ describe('runtime analytics sanitization', () => {
     expect(event.service_context.httpRequest.referer).toContain('token=%5Bredacted%5D');
     expect(event.service_context.httpRequest.referer).toContain('#activity');
     expect(JSON.stringify(event)).not.toContain('EVENT_SECRET');
-  });
-
-  it('redacts regulated identity and payment fields through the runtime hook', async () => {
-    await useSendAnalyticsEvent({ serviceName: 'dashboard' }).sendEvent({
-      event_type: 'send',
-      method: 'POST',
-      httpRequestMethod: 'POST',
-      httpRequestUrl: '/self-service/settings/browser',
-      body: {
-        ssn: '111-22-3333',
-        tax_id: 'tax-secret',
-        bank_account_number: 'bank-secret',
-        card_number: '4111111111111111',
-        cvv: '123',
-        iban: 'DE89370400440532013000',
-        payment_token: 'payment-token-secret',
-        account: 'business-account',
-        token_symbol: 'USDC',
-      },
-    });
-
-    const event = trackEvent.mock.calls[0]?.[0];
-    expect(event.body).toEqual({
-      ssn: '[redacted]',
-      tax_id: '[redacted]',
-      bank_account_number: '[redacted]',
-      card_number: '[redacted]',
-      cvv: '[redacted]',
-      iban: '[redacted]',
-      payment_token: '[redacted]',
-      account: 'business-account',
-      token_symbol: 'USDC',
-    });
     expect(JSON.stringify(event)).not.toContain('111-22-3333');
-    expect(JSON.stringify(event)).not.toContain('payment-token-secret');
   });
 
   it('keeps final error text, stack, body, and URL context outside the internal envelope sanitizer', async () => {

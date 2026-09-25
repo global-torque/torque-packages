@@ -250,7 +250,7 @@ importers:
   packages/invest-core:
     dependencies:
       '@global-torque/domain-types':
-        specifier: 0.4.13
+        specifier: 0.4.14
         version: link:../domain-types
       '@types/lodash-es':
         specifier: ^4.17.12
@@ -300,19 +300,19 @@ importers:
   packages/invest-features:
     dependencies:
       '@global-torque/domain-types':
-        specifier: 0.4.13
+        specifier: 0.4.14
         version: link:../domain-types
       '@global-torque/invest-core':
-        specifier: 0.4.13
+        specifier: 0.4.14
         version: link:../invest-core
       '@global-torque/invest-data':
-        specifier: 0.4.13
+        specifier: 0.4.14
         version: link:../invest-data
       '@global-torque/invest-runtime':
-        specifier: 0.4.13
+        specifier: 0.4.14
         version: link:../invest-runtime
       '@global-torque/invest-widgets':
-        specifier: 0.4.13
+        specifier: 0.4.14
         version: link:../invest-widgets
       '@global-torque/ui-kit':
         specifier: 0.1.4
@@ -452,16 +452,16 @@ importers:
   packages/invest-shell:
     dependencies:
       '@global-torque/domain-types':
-        specifier: 0.4.13
+        specifier: 0.4.14
         version: link:../domain-types
       '@global-torque/invest-core':
-        specifier: 0.4.13
+        specifier: 0.4.14
         version: link:../invest-core
       '@global-torque/invest-runtime':
-        specifier: 0.4.13
+        specifier: 0.4.14
         version: link:../invest-runtime
       '@global-torque/invest-widgets':
-        specifier: 0.4.13
+        specifier: 0.4.14
         version: link:../invest-widgets
       '@global-torque/ui-kit':
         specifier: 0.1.4

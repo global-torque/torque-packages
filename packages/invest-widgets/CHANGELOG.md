@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.14 candidate
+
+- Reissued the cumulative 0.4.13 framework cohort with the shared runtime
+  analytics boundary and truthful mutation telemetry contracts.
+
 ## 0.4.13 candidate
 
 - Reissued the framework cohort with the shared SDK-backed analytics adapter

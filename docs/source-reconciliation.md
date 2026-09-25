@@ -1,10 +1,12 @@
 # Source and release reconciliation
 
-The `0.4.13` candidate reissues the seven-package cohort with the shared
-SDK-backed runtime analytics adapter and regulated-field telemetry sanitizer,
-while retaining the completed `invest-shell` token-absent geometry recovery,
-inverse-footer token fallback, shadow, PWA login fallback, and semantic
-header/offer control-shadow contract.
+The `0.4.14` candidate reissues the seven-package cohort with the cumulative
+0.4.13 analytics, feature, shell, and runtime changes, then reduces the
+read-only redemption lifecycle contract to its returned status, amount, and
+timestamp fields. Display and operation payload types and parsers are removed
+without compatibility aliases. The completed `invest-shell` token-absent
+geometry recovery, inverse-footer token fallback, shadow, PWA login fallback,
+and semantic header/offer control-shadow contract remain retained.
 The breaking stablecoin
 redemption contract, including the final `price_update` removal, remains
 unchanged from the retained `0.4.0` source. It also retains the
@@ -152,8 +154,12 @@ exists and the tag is never moved, deleted, or reused. Its immutable tagged
 source ledger also paired `global-torque/dashboard.webdevelop.biz` with the
 `torque-packages` source revision
 `82fe93868d28682211ea21867badcdeb85879970`; no artifact or receipt escaped
-because the candidate failed. Candidate `0.4.13` is the new immutable release
-identity; its active candidate and package matrix are finalized when the
-candidate commit is tagged. The `sourceRevision` fields retain upstream
+because the candidate failed. The immutable `framework-v0.4.13` release at
+source commit `7d86d208e32967f177f881ae7ad78d382ca3534f` completed its GitHub
+Release but was superseded before npm rollout when the redemption list contract
+changed; `npmPublished` is false and its tag, release bytes, and attestations
+are never moved, reused, or repacked. Candidate `0.4.14` is the new immutable
+release identity; its active candidate and package matrix are finalized when
+the candidate commit is tagged. The `sourceRevision` fields retain upstream
 provenance for the transferred source and are not rewritten as release tags
 are created.

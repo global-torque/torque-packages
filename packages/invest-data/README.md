@@ -21,7 +21,9 @@ helpers.
 - Framework-free endpoint factories such as the EVM wallet repository and
   ERC-7540 Vault lifecycle clients.
 - A validated redemption lifecycle client with explicit network versus
-  offline-cache source metadata and last-synced timestamps.
+  offline-cache source metadata and last-synced timestamps. Its read-only list
+  decoder returns status, amount, and timestamp fields without display or
+  operation payloads.
 - Pure `ActionState` shapes and state-transition helpers.
 
 Vue/Pinia repository wrappers live in their owning app or bounded feature. This

@@ -40,7 +40,8 @@ This package owns DTOs, status constants, request/response shapes, and data-shap
 - `redemptionDigest`: Global Torque Canonical JSON Grammar v1 encoding, SHA-256 helpers, and
   the typed `CanonicalJsonError` validation contract.
 - `redemptionLifecycleTypes`: typed redemption business/protocol statuses,
-  vault lifecycle reasons, and exact raw-amount list contracts.
+  vault lifecycle reasons, and exact raw-amount list contracts. The read-only
+  lifecycle item intentionally excludes display and operation payloads.
 - `settingsTypes`: session activity and formatted session contracts.
 - `walletTypes`: custodial wallet status constants, funding-source, wallet, transaction, and Plaid response contracts.
 - `vaultTypes`: ERC-7540 deployment, position, redemption, signing, operation,

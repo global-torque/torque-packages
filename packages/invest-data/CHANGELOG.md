@@ -1,11 +1,16 @@
 # Changelog
 
+## 0.4.14 candidate
+
+- Reduced the validated redemption lifecycle list decoder to the read-only
+  response fields, ignoring removed display and operation payloads.
+- Carries forward the offline-aware lifecycle client, Vault lifecycle access,
+  and exact-string redemption operations from the 0.4.13 cohort.
+
 ## 0.4.13 candidate
 
 - Added a validated, offline-aware redemption lifecycle client with explicit
   network/cache source and synchronization metadata.
-- Aligned the redemption lifecycle client with the read-only list response,
-  which no longer includes display or operation payloads.
 - Extended the Vault facade with lifecycle access and exact-string
   redemption, fulfillment, claim, and signing-payload operations.
 - Reissued the framework cohort with the shared SDK-backed analytics adapter

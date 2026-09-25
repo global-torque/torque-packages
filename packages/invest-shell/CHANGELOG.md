@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.14 candidate
+
+- Reissued the cumulative 0.4.13 shell cohort, including alert dismissal,
+  branded-logo proportions, sidebar contrast, token fallbacks, and exact pins.
+
 ## 0.4.13 candidate
 
 - Improved the global error alert layout and added an accessible close button while preserving click-to-dismiss behavior.

@@ -1,9 +1,16 @@
 # Changelog
 
+## 0.4.14 candidate
+
+- Reduced `RedemptionLifecycleItem` to the read-only list fields and removed
+  display, operation, finality, token-display, and operation-scope contracts.
+- Preserved the business/protocol status and vault status-reason string values
+  while carrying forward the cumulative 0.4.13 domain contracts.
+
 ## 0.4.13 candidate
 
 - Added typed redemption lifecycle contracts for business and protocol status,
-  vault reasons, and exact raw-amount list values.
+  vault reasons, operation finality, and exact raw-amount presentation.
 - Reissued the framework cohort with the shared SDK-backed analytics adapter
   and truthful mutation telemetry contracts.
 

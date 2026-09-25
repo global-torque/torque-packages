@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.14 candidate
+
+- Reissued the cumulative 0.4.13 feature cohort, including finalized NAV cache
+  selection, fixed six-decimal USDC presentation, and exact package pins.
+
 ## 0.4.13 candidate
 
 - Refresh finalized NAV cache selection for offer details and render finalized

@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.4.14 candidate
+
+- Reduced the read-only redemption lifecycle contract to its returned status,
+  amount, and timestamp fields; removed display and operation payload types and
+  parsers without compatibility aliases.
+- Carries forward the 0.4.13 SDK-backed runtime analytics adapter, regulated
+  identity/payment redaction, finalized NAV, shell, and generated Node changes.
+- Corrected the tagged npm publication path to address local tarballs and clear
+  `NODE_AUTH_TOKEN` so trusted OIDC publication can run without a bootstrap
+  token.
+
 ## 0.4.13 candidate
 
 - Added typed redemption lifecycle contracts for business/protocol status,

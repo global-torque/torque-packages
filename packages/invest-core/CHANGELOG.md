@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.14 candidate
+
+- Carries forward the ESM Lodash imports, generated Node exports, exact cohort
+  dependency, and regulated identity/payment analytics redaction from 0.4.13.
+
 ## 0.4.13 candidate
 
 - Replace CommonJS Lodash deep imports with ESM `lodash-es` imports so published TypeScript sources load without CommonJS interop in native ESM consumers.

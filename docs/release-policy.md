@@ -8,16 +8,19 @@ runs the repository and browser checks, packs once with `pnpm pack`, creates
 the GitHub Release, and uses GitHub artifact attestations for source provenance.
 The npm publication workflow downloads and verifies those tagged assets and
 publishes the same tarballs with npm trusted publishing and provenance.
+The publish loop addresses each downloaded archive with an explicit `./` local
+path and clears `NODE_AUTH_TOKEN` before npm runs so trusted OIDC remains the
+active registry authentication path.
 
 The selected `@global-torque/ui-kit@0.1.4` and
 `@global-torque/design-tokens@0.3.0` dependencies are published registry
 packages. Candidate creation installs them through the committed frozen
 lockfile; no draft transport or derived lockfile overlay is supported.
 
-Candidate 0.4.13 reissues the seven-package cohort with the shared SDK-backed
-analytics adapter and truthful mutation telemetry contracts. It also retains
-the final
-`price_update` removal retained and the Invest Shell inverse-footer fallback
+Candidate 0.4.14 reissues the seven-package cohort with the cumulative 0.4.13
+analytics adapter, sanitizer, lifecycle, feature, and shell changes, then
+reduces the redemption list contract to its read-only fields. It also retains
+the final `price_update` removal and the Invest Shell inverse-footer fallback
 and shadow compatibility contract. It restores the 0.4.0 plus design-tokens
 0.2.1 geometry by using reviewed CSS-wide `unset` terminals for direct
 primitive aliases, with transparent overlay fallback and existing component
@@ -107,10 +110,13 @@ exists and the tag is never moved, deleted, or reused. Its immutable tagged
 source ledger also paired `global-torque/dashboard.webdevelop.biz` with the
 `torque-packages` source revision
 `82fe93868d28682211ea21867badcdeb85879970`; no artifact or receipt escaped
-because the candidate failed. The new ordinary immutable
-release tag is `framework-v0.4.13` for the `0.4.13` candidate. Push that tag so
+because the candidate failed. The immutable `framework-v0.4.13` release at
+source commit `7d86d208e32967f177f881ae7ad78d382ca3534f` completed its GitHub
+Release but was superseded before npm rollout when the redemption list contract
+changed; its tag and release bytes are never moved, reused, or repacked. The
+new ordinary immutable release tag is `framework-v0.4.14` for the `0.4.14` candidate. Push that tag so
 the release workflow checks, packs, attests, and creates the GitHub Release from
-`refs/tags/framework-v0.4.13`. The prior `framework-v0.2.2`
+`refs/tags/framework-v0.4.14`. The prior `framework-v0.2.2`
 source tag, commit, and immutable artifact history remain retained for audit;
 its package bytes and provenance are not replaced. The earlier
 `framework-v0.2.0` run failed before installation, build, or packing; no

@@ -7,7 +7,7 @@ on:
         description: Immutable framework release tag to verify
         required: true
         type: string
-        default: framework-v0.4.13
+        default: framework-v0.4.14
 
 permissions:
   contents: read

@@ -65,6 +65,25 @@ const DEPENDENCY_FIELDS = [
 const INTERNAL_PACKAGE_NAMES = new Set(PACKAGE_SPECS.map((spec) => spec.name));
 const FORBIDDEN_SPECIFIER = /^(?:workspace:|file:|link:|local:)/i;
 
+export const AUTHORITATIVE_SOURCE_CONTRACTS = Object.freeze({
+  '@global-torque/domain-types': Object.freeze({
+    sourcePath: 'src/redemptionLifecycleTypes.ts',
+    archivePath: 'package/src/redemptionLifecycleTypes.ts',
+  }),
+  '@global-torque/invest-data': Object.freeze({
+    sourcePath: 'src/redemptions.ts',
+    archivePath: 'package/src/redemptions.ts',
+  }),
+  '@global-torque/invest-core': Object.freeze({
+    sourcePath: 'src/analytics/analyticsBody.ts',
+    archivePath: 'package/src/analytics/analyticsBody.ts',
+  }),
+  '@global-torque/invest-runtime': Object.freeze({
+    sourcePath: 'src/analytics/createSdkAnalyticsAdapter.ts',
+    archivePath: 'package/src/analytics/createSdkAnalyticsAdapter.ts',
+  }),
+});
+
 const archiveNameFor = (spec, version) =>
   `${spec.name.replace(/^@/, '').replace('/', '-')}-${version}.tgz`;
 
@@ -156,6 +175,10 @@ export const readReleaseArchive = async (archivePath) => {
     archiveName: basename(archivePath),
     packageJson: JSON.parse(Buffer.from(manifestEntry.content).toString('utf8')),
     files: new Set(entries.map((entry) => entry.path)),
+    contents: new Map(entries.map((entry) => [
+      entry.path,
+      Buffer.from(entry.content),
+    ])),
   };
 };
 
@@ -179,9 +202,20 @@ export const readReleaseInputs = async ({
       manifest: JSON.parse(await readFile(join(packageRoot, spec.directory, 'package.json'), 'utf8')),
     })),
   );
+  const sourceContents = new Map(await Promise.all(
+    Object.entries(AUTHORITATIVE_SOURCE_CONTRACTS).map(async ([packageName, contract]) => {
+      const spec = packageSpecFor(packageName);
+      if (!spec) throw new Error(`authoritative source contract has unknown package ${packageName}`);
+      return [
+        packageName,
+        await readFile(join(packageRoot, spec.directory, contract.sourcePath)),
+      ];
+    }),
+  ));
   return {
     archives,
     packageManifests,
+    sourceContents,
     rootManifest: JSON.parse(await readFile(rootManifestPath, 'utf8')),
     ledger: JSON.parse(await readFile(ledgerPath, 'utf8')),
   };
@@ -285,10 +319,33 @@ const validateExports = (errors, archive) => {
   }
 };
 
+const validatePackedSourceContracts = (errors, archive, sourceContents) => {
+  const packageName = archive.packageJson?.name;
+  const contract = AUTHORITATIVE_SOURCE_CONTRACTS[packageName];
+  if (!contract) return;
+
+  const localSource = sourceContents instanceof Map ? sourceContents.get(packageName) : undefined;
+  if (!Buffer.isBuffer(localSource)) {
+    addError(errors, `${packageName} is missing local authoritative source bytes`);
+  }
+
+  const packedSource = archive.contents instanceof Map
+    ? archive.contents.get(contract.archivePath)
+    : undefined;
+  if (!Buffer.isBuffer(packedSource)) {
+    addError(errors, `${packageName} archive is missing packed source bytes at ${contract.archivePath}`);
+  }
+
+  if (Buffer.isBuffer(localSource) && Buffer.isBuffer(packedSource) && !localSource.equals(packedSource)) {
+    addError(errors, `${packageName} packed source bytes do not match local authoritative source bytes at ${contract.sourcePath}`);
+  }
+};
+
 /** Pure validation of packed archive data and release reconciliation metadata. */
 export const validateReleaseArchives = ({
   archives,
   packageManifests,
+  sourceContents,
   rootManifest,
   ledger,
   tagVersion,
@@ -324,6 +381,7 @@ export const validateReleaseArchives = ({
     }
     validateDependencies(errors, manifest, tagVersion);
     validateExports(errors, archive);
+    validatePackedSourceContracts(errors, archive, sourceContents);
   }
   validateLedger(errors, { ledger, packageManifests, rootManifest, tagVersion });
   return errors;

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.14 candidate
+
+- Carries forward the public `createSdkAnalyticsAdapter` factory for wiring
+  context-owned SDK analytics into runtime event and error reporting.
+- Carries forward shared analytics body normalization and regulated-field
+  redaction from the 0.4.13 cohort.
+
 ## 0.4.13 candidate
 
 - Add the public `createSdkAnalyticsAdapter` factory so hosts can connect the

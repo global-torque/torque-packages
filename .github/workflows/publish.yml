@@ -7,7 +7,7 @@ on:
         description: Immutable framework release tag to publish
         required: true
         type: string
-        default: framework-v0.4.13
+        default: framework-v0.4.14
 
 permissions:
   contents: read
@@ -53,6 +53,7 @@ jobs:
       - name: Publish with npm trusted publishing
         run: |
           set -euo pipefail
+          unset NODE_AUTH_TOKEN
           for package in domain-types invest-core invest-data invest-runtime invest-widgets invest-features invest-shell; do
             npm publish "./release/global-torque-${package}-${RELEASE_VERSION}.tgz" --access public --provenance --tag latest
           done
