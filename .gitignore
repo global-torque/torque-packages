@@ -4,3 +4,4 @@ coverage/
 dist/
 .vite/
 *.tsbuildinfo
+.codegraph
