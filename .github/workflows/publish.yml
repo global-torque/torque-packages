@@ -54,5 +54,5 @@ jobs:
         run: |
           set -euo pipefail
           for package in domain-types invest-core invest-data invest-runtime invest-widgets invest-features invest-shell; do
-            npm publish "release/global-torque-${package}-${RELEASE_VERSION}.tgz" --access public --provenance --tag latest
+            npm publish "./release/global-torque-${package}-${RELEASE_VERSION}.tgz" --access public --provenance --tag latest
           done
