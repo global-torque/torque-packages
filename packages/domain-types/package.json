@@ -35,6 +35,7 @@
     "./profileTypes": "./src/profileTypes.ts",
     "./vaultTypes": "./src/vaultTypes.ts",
     "./redemptionDigest": "./src/redemptionDigest.ts",
+    "./redemptionLifecycleTypes": "./src/redemptionLifecycleTypes.ts",
     "./settingsTypes": "./src/settingsTypes.ts",
     "./walletTypes": "./src/walletTypes.ts"
   },

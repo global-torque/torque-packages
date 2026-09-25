@@ -22,6 +22,7 @@ import {
 } from "@global-torque/sdk/resources/vault";
 import type { ApiClient } from "./service/apiClient.ts";
 import { createInvestDataApiClient } from "./service/dataClientConfig.ts";
+import { createRedemptionLifecycleClient } from "./redemptions.ts";
 
 export interface VaultApiClients {
   investment: ApiClient;
@@ -390,6 +391,7 @@ export const createVaultClient = (clients: Partial<VaultApiClients> = {}) => {
   const investment =
     clients.investment ?? createInvestDataApiClient("investment");
   const evm = clients.evm ?? createInvestDataApiClient("evm");
+  const redemptionLifecycle = createRedemptionLifecycleClient(evm);
   const vault =
     clients.vault ??
     createVaultResource(createVaultSdkCompatibilityClient(investment));
@@ -406,6 +408,7 @@ export const createVaultClient = (clients: Partial<VaultApiClients> = {}) => {
   };
 
   return {
+    listRedemptionLifecycles: redemptionLifecycle.listRedemptionLifecycles,
     createRedemption: (
       request: CreateVaultRedemptionRequest,
       idempotencyKey: string,
@@ -485,6 +488,13 @@ export const createVaultClient = (clients: Partial<VaultApiClients> = {}) => {
     prepareRedemptionRequest: (redemptionId: number) =>
       responseData<VaultSigningPayload>(
         evm.post(`/auth/redemptions/${redemptionId}/request`, {}),
+      ),
+
+    getCreatedClaimSigningPayload: (operationId: number) =>
+      responseData<VaultSigningPayload>(
+        evm.get(`/auth/vault/operations/${operationId}/signing-payload`, {
+          offlineFallback: false,
+        }),
       ),
 
     getRedemptionRequestStatus: (redemptionId: number) =>

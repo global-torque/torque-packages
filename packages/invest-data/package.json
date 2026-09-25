@@ -17,6 +17,7 @@
     "./investDataClient": "./src/investDataClient.ts",
     "./settings": "./src/settings.ts",
     "./vault": "./src/vault.ts",
+    "./redemptions": "./src/redemptions.ts",
     "./vault/direct-transaction": "./src/vault/directTransaction.ts",
     "./migration/sdkReadCompatibility": "./src/migration/sdkReadCompatibility.ts",
     "./repository": "./src/repository.ts",

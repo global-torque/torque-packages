@@ -4,6 +4,7 @@ export * from './filer.ts';
 export * from './investDataClient.ts';
 export * from './settings.ts';
 export * from './vault.ts';
+export * from './redemptions.ts';
 export { ApiClient } from './service/apiClient.ts';
 export {
   configureApiClientHooks,
