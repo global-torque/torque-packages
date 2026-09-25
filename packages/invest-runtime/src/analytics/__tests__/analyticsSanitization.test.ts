@@ -119,6 +119,41 @@ describe('runtime analytics sanitization', () => {
     expect(JSON.stringify(event)).not.toContain('EVENT_SECRET');
   });
 
+  it('redacts regulated identity and payment fields through the runtime hook', async () => {
+    await useSendAnalyticsEvent({ serviceName: 'dashboard' }).sendEvent({
+      event_type: 'send',
+      method: 'POST',
+      httpRequestMethod: 'POST',
+      httpRequestUrl: '/self-service/settings/browser',
+      body: {
+        ssn: '111-22-3333',
+        tax_id: 'tax-secret',
+        bank_account_number: 'bank-secret',
+        card_number: '4111111111111111',
+        cvv: '123',
+        iban: 'DE89370400440532013000',
+        payment_token: 'payment-token-secret',
+        account: 'business-account',
+        token_symbol: 'USDC',
+      },
+    });
+
+    const event = trackEvent.mock.calls[0]?.[0];
+    expect(event.body).toEqual({
+      ssn: '[redacted]',
+      tax_id: '[redacted]',
+      bank_account_number: '[redacted]',
+      card_number: '[redacted]',
+      cvv: '[redacted]',
+      iban: '[redacted]',
+      payment_token: '[redacted]',
+      account: 'business-account',
+      token_symbol: 'USDC',
+    });
+    expect(JSON.stringify(event)).not.toContain('111-22-3333');
+    expect(JSON.stringify(event)).not.toContain('payment-token-secret');
+  });
+
   it('keeps final error text, stack, body, and URL context outside the internal envelope sanitizer', async () => {
     const reportOptions = {
       serviceName: 'dashboard',

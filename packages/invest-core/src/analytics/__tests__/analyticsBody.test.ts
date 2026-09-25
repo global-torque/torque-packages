@@ -49,6 +49,48 @@ describe('analyticsBody', () => {
     expect(input.nested.jwtToken).toBe('jwt-secret');
   });
 
+  it('redacts exact regulated payment and identity fields without broad near-name matching', () => {
+    const input = {
+      ssn: '111-22-3333',
+      socialSecurityNumber: '222-33-4444',
+      taxId: 'tax-secret',
+      taxpayerIdentificationNumber: 'tin-secret',
+      bankAccountNumber: 'bank-secret',
+      routingNumber: 'routing-secret',
+      cardNumber: '4111111111111111',
+      creditCardNumber: '4222222222222222',
+      cvv: '123',
+      cvc: '456',
+      iban: 'DE89370400440532013000',
+      paymentToken: 'payment-token-secret',
+      account: 'business-account',
+      accountType: 'checking',
+      token_symbol: 'USDC',
+      tokenNote: 'business token note',
+    };
+
+    expect(normalizeAnalyticsBody(input)).toEqual({
+      ssn: '[redacted]',
+      socialSecurityNumber: '[redacted]',
+      taxId: '[redacted]',
+      taxpayerIdentificationNumber: '[redacted]',
+      bankAccountNumber: '[redacted]',
+      routingNumber: '[redacted]',
+      cardNumber: '[redacted]',
+      creditCardNumber: '[redacted]',
+      cvv: '[redacted]',
+      cvc: '[redacted]',
+      iban: '[redacted]',
+      paymentToken: '[redacted]',
+      account: 'business-account',
+      accountType: 'checking',
+      token_symbol: 'USDC',
+      tokenNote: 'business token note',
+    });
+    expect(input.ssn).toBe('111-22-3333');
+    expect(input.paymentToken).toBe('payment-token-secret');
+  });
+
   it('normalizes JSON strings and retains GET bodies', () => {
     expect(normalizeAnalyticsBody('{"email":"user@example.com","token":"secret","keep":1}')).toEqual({
       email: 'user@example.com',
