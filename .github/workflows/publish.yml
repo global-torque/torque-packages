@@ -8,6 +8,11 @@ on:
         required: true
         type: string
         default: framework-v0.4.14
+      bootstrap:
+        description: Use the emergency npm token instead of trusted publishing
+        required: true
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -50,10 +55,114 @@ jobs:
               --source-ref "refs/tags/$RELEASE_TAG" --deny-self-hosted-runners
           done
           test "$(find release -maxdepth 1 -type f -name '*.tgz' | wc -l)" -eq 7
-      - name: Publish with npm trusted publishing
+          node scripts/validate-release-archives.mjs release "$version"
+      - name: Reconcile and publish package archives
+        env:
+          BOOTSTRAP: ${{ inputs.bootstrap }}
+          NODE_AUTH_TOKEN: ${{ inputs.bootstrap && secrets.NPM_BOOTSTRAP_TOKEN || '' }}
         run: |
           set -euo pipefail
-          unset NODE_AUTH_TOKEN
+          if [[ "$BOOTSTRAP" == "true" ]]; then
+            [[ -n "${NODE_AUTH_TOKEN:-}" ]] || {
+              echo 'bootstrap=true requires the NPM_BOOTSTRAP_TOKEN secret' >&2
+              exit 1
+            }
+          else
+            unset NODE_AUTH_TOKEN
+          fi
+
+          die() {
+            echo "::error::$*" >&2
+            exit 1
+          }
+
+          registry_version() {
+            local package="$1"
+            local version="$2"
+            local view_output
+            local actual_version
+            if view_output="$(npm view "$package@$version" version --json 2>&1)"; then
+              actual_version="$(printf '%s' "$view_output" | node -e '
+                let input = "";
+                process.stdin.on("data", (chunk) => { input += chunk; });
+                process.stdin.on("end", () => {
+                  try {
+                    const value = JSON.parse(input);
+                    if (typeof value !== "string") throw new Error("registry version is not a string");
+                    process.stdout.write(value);
+                  } catch (error) {
+                    console.error(error instanceof Error ? error.message : error);
+                    process.exitCode = 1;
+                  }
+                });
+              ')" || die "could not parse npm view response for $package@$version"
+              [[ "$actual_version" == "$version" ]] || die "registry returned $package@$actual_version while checking $package@$version"
+              return 0
+            else
+              local view_exit=$?
+              if [[ "$view_output" == *E404* || "$view_output" == *ETARGET* ]]; then
+                return 1
+              fi
+              printf '%s\n' "$view_output" >&2
+              die "npm view failed for $package@$version (exit $view_exit)"
+            fi
+          }
+
+          compare_registry_archive() {
+            local package="$1"
+            local version="$2"
+            local release_archive="$3"
+            local reconcile_dir="$4"
+            local archive_name="${release_archive##*/}"
+            local registry_archive="$reconcile_dir/$archive_name"
+            local pack_output
+            rm -f -- "$registry_archive"
+            if pack_output="$(npm pack "$package@$version" --pack-destination "$reconcile_dir" 2>&1)"; then
+              :
+            else
+              local pack_exit=$?
+              if [[ "$pack_output" == *E404* || "$pack_output" == *ETARGET* ]]; then
+                echo "registry tarball for $package@$version is not yet available after metadata propagation" >&2
+                return 1
+              fi
+              printf '%s\n' "$pack_output" >&2
+              die "npm pack failed for $package@$version (exit $pack_exit)"
+            fi
+            test -f "$registry_archive" || die "npm pack did not download $package@$version as $archive_name"
+            cmp -- "$release_archive" "$registry_archive" || die "registry bytes for $package@$version do not match $release_archive"
+          }
+
+          wait_for_registry_archive() {
+            local package="$1"
+            local version="$2"
+            local release_archive="$3"
+            local reconcile_dir="$4"
+            local attempt
+            for attempt in {1..12}; do
+              if registry_version "$package" "$version"; then
+                if compare_registry_archive "$package" "$version" "$release_archive" "$reconcile_dir"; then
+                  return 0
+                fi
+              fi
+              echo "waiting for $package@$version registry metadata/tarball propagation (attempt $attempt/12)"
+              sleep 5
+            done
+            die "timed out waiting for $package@$version on npm"
+          }
+
+          reconcile_dir="$(mktemp -d)"
+          trap 'find "$reconcile_dir" -maxdepth 1 -type f -delete; rmdir "$reconcile_dir"' EXIT
           for package in domain-types invest-core invest-data invest-runtime invest-widgets invest-features invest-shell; do
-            npm publish "./release/global-torque-${package}-${RELEASE_VERSION}.tgz" --access public --provenance --tag latest
+            package_name="@global-torque/$package"
+            release_archive="./release/global-torque-${package}-${RELEASE_VERSION}.tgz"
+            if registry_version "$package_name" "$RELEASE_VERSION"; then
+              if compare_registry_archive "$package_name" "$RELEASE_VERSION" "$release_archive" "$reconcile_dir"; then
+                echo "$package_name@$RELEASE_VERSION is already published with matching bytes"
+                continue
+              fi
+              wait_for_registry_archive "$package_name" "$RELEASE_VERSION" "$release_archive" "$reconcile_dir"
+              continue
+            fi
+            npm publish "$release_archive" --access public --provenance --tag latest
+            wait_for_registry_archive "$package_name" "$RELEASE_VERSION" "$release_archive" "$reconcile_dir"
           done
