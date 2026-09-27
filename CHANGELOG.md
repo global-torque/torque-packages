@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.4.15 candidate
+
+- Reissued the seven-package cohort with the shared UI portal-layer contract:
+  dialogs and ordinary portaled surfaces default to `--ui-dialog-z-index` at
+  `1100`, select supports `--ui-select-popup-z-index`, and the shell carries a
+  temporary bridge for the published `@global-torque/ui-primitives@0.1.3` and
+  `@global-torque/ui-kit@0.1.4` packages. Mobile Sheets remain at their
+  existing layer. Remove the bridge only after the released UI pair and the
+  real-consumer browser gate prove the shared ownership.
+
 ## 0.4.14 candidate
 
 - Reduced the read-only redemption lifecycle contract to its returned status,

@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.15 candidate
+
+- Reissued the framework cohort with the shared UI portal-layer and exact
+  dependency pins; data contracts are unchanged.
+
 ## 0.4.14 candidate
 
 - Reduced the validated redemption lifecycle list decoder to the read-only

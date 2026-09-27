@@ -1,5 +1,13 @@
 # Source and release reconciliation
 
+The `0.4.15` candidate reissues the seven-package cohort with a temporary
+shared UI portal-layer bridge for the published
+`@global-torque/ui-primitives@0.1.3` and `@global-torque/ui-kit@0.1.4`
+packages. Dialogs and ordinary portaled surfaces default to
+`--ui-dialog-z-index` at `1100`, select supports `--ui-select-popup-z-index`,
+and Mobile Sheets retain their lower layer. Remove the bridge only after the
+released UI pair owns those layers and the real-consumer browser gate proves
+the replacement; source changes do not publish UI packages or deploy apps.
 The `0.4.14` candidate reissues the seven-package cohort with the cumulative
 0.4.13 analytics, feature, shell, and runtime changes, then reduces the
 read-only redemption lifecycle contract to its returned status, amount, and
@@ -158,7 +166,7 @@ because the candidate failed. The immutable `framework-v0.4.13` release at
 source commit `7d86d208e32967f177f881ae7ad78d382ca3534f` completed its GitHub
 Release but was superseded before npm rollout when the redemption list contract
 changed; `npmPublished` is false and its tag, release bytes, and attestations
-are never moved, reused, or repacked. Candidate `0.4.14` is the new immutable
+are never moved, reused, or repacked. Candidate `0.4.15` is the new immutable
 release identity; its active candidate and package matrix are finalized when
 the candidate commit is tagged. The `sourceRevision` fields retain upstream
 provenance for the transferred source and are not rewritten as release tags

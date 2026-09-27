@@ -9,6 +9,7 @@ import { resolveCssContractPackageRoots } from "./css-contract-package-roots.mjs
 
 const canonicalPackageDirectory = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const { packageDirectory, featuresPackageDirectory } = resolveCssContractPackageRoots({ canonicalPackageDirectory });
+const workspaceDirectory = path.resolve(packageDirectory, "../..");
 const geometry = await fs.readFile(path.join(packageDirectory, "src/styles/geometry.css"), "utf8");
 const components = await fs.readFile(path.join(packageDirectory, "src/styles/components.css"), "utf8");
 const logoSource = await fs.readFile(path.join(packageDirectory, "src/components/VLogo.vue"), "utf8");
@@ -286,6 +287,310 @@ const probeStyle = `
   }
 `;
 
+async function runInstalledArtifactFixture(browser, report) {
+  const { createServer } = await import("vite");
+  const { default: vue } = await import("@vitejs/plugin-vue");
+  const fixtureDirectory = await fs.mkdtemp(path.join(packageDirectory, ".css-browser-fixture-"));
+  const packageRequire = (await import("node:module")).createRequire(import.meta.url);
+  const packageEntries = [
+    ["@global-torque/ui-primitives", "dialog"],
+    ["@global-torque/ui-kit", "form"],
+  ];
+  const installedPackages = [];
+  for (const [packageName, entry] of packageEntries) {
+    const resolvedEntry = packageRequire.resolve(`${packageName}/${entry}`);
+    const sourceMarker = `${path.sep}src${path.sep}`;
+    const sourceIndex = resolvedEntry.indexOf(sourceMarker);
+    assert.ok(sourceIndex > 0, `${packageName} must resolve to its installed source tree`);
+    const packageRoot = resolvedEntry.slice(0, sourceIndex);
+    const realPackageRoot = await fs.realpath(packageRoot);
+    const packageManifest = JSON.parse(await fs.readFile(path.join(packageRoot, "package.json"), "utf8"));
+    assert.equal(packageManifest.version, packageName === "@global-torque/ui-primitives" ? "0.1.3" : "0.1.4");
+    assert.doesNotMatch(realPackageRoot, /(?:vue-ui|torque-packages)[\\/]packages[\\/]/u, `${packageName} must not resolve through a workspace package`);
+    installedPackages.push({ name: packageName, version: packageManifest.version, root: realPackageRoot });
+  }
+  assert.equal(
+    JSON.parse(await fs.readFile(path.join(installedPackages[1].root, "package.json"), "utf8")).dependencies["@global-torque/ui-primitives"],
+    "0.1.3",
+    "installed UI Kit must retain the published primitive dependency",
+  );
+  report.checks.push({ name: "installed-ui-artifacts", result: "pass", value: installedPackages.map(({ name, version }) => `${name}@${version}`).join(", ") });
+
+  // The published UI Kit 0.1.4 form barrel omits these legacy component
+  // exports; these imports are test-only aliases to the resolved installed
+  // package files, never app-local implementations.
+  const installedKitRoot = installedPackages[1].root;
+  const appSource = `<script setup>
+import { ref } from 'vue';
+import { Dialog, DialogContent, DialogDescription, DialogScrollContent, DialogTitle } from '@global-torque/ui-primitives/dialog';
+import { Sheet, SheetContent, SheetDescription, SheetTitle } from '@global-torque/ui-primitives/sheet';
+import {
+  Select as PrimitiveSelect, SelectContent as PrimitiveSelectContent,
+  SelectItem as PrimitiveSelectItem, SelectTrigger as PrimitiveSelectTrigger,
+  SelectValue as PrimitiveSelectValue,
+} from '@global-torque/ui-primitives/select';
+import {
+  VSelect, VSelectContent, VSelectItem, VSelectTrigger, VSelectValue,
+} from ${JSON.stringify(path.join(installedKitRoot, "src/form/VSelect/index.ts"))};
+import {
+  VCombobox, VComboboxAnchor, VComboboxContent, VComboboxInput, VComboboxItem, VComboboxTrigger,
+} from ${JSON.stringify(path.join(installedKitRoot, "src/form/VCombobox/index.ts"))};
+
+const selectValue = ref('');
+const primitiveSelectValue = ref('');
+const comboValue = ref('');
+const selectOpen = ref(false);
+const primitiveSelectOpen = ref(false);
+const comboOpen = ref(false);
+const dialogOpen = ref(true);
+const scrollDialogOpen = ref(false);
+const sheetOpen = ref(false);
+</script>
+
+<template>
+  <div id="fixture-root">
+    <button id="show-scroll" type="button" @click="dialogOpen = false; scrollDialogOpen = true">Show scroll dialog</button>
+    <button id="show-sheet" type="button" @click="scrollDialogOpen = false; sheetOpen = true">Show sheet</button>
+    <output id="select-value">{{ selectValue }}</output>
+    <output id="primitive-select-value">{{ primitiveSelectValue }}</output>
+    <output id="combo-value">{{ comboValue }}</output>
+
+    <Dialog :open="dialogOpen">
+      <DialogContent data-testid="normal-dialog-content" id="fixture-dialog" :show-close-button="false" class="fixture-dialog">
+        <DialogTitle>Layer fixture</DialogTitle>
+        <DialogDescription>Portal layer verification</DialogDescription>
+        <VSelect v-model="selectValue" :open="selectOpen" @update:open="selectOpen = $event">
+          <VSelectTrigger id="select-trigger"><VSelectValue placeholder="Choose" /></VSelectTrigger>
+          <VSelectContent data-testid="select-content">
+            <VSelectItem value="alpha">Alpha</VSelectItem>
+            <VSelectItem value="gamma">Gamma</VSelectItem>
+          </VSelectContent>
+        </VSelect>
+        <PrimitiveSelect v-model="primitiveSelectValue" :open="primitiveSelectOpen" @update:open="primitiveSelectOpen = $event">
+          <PrimitiveSelectTrigger id="primitive-select-trigger">
+            <PrimitiveSelectValue placeholder="Primitive choose" />
+          </PrimitiveSelectTrigger>
+          <PrimitiveSelectContent data-testid="primitive-select-content">
+            <PrimitiveSelectItem class="primitive-select-item" value="primitive-alpha">Primitive Alpha</PrimitiveSelectItem>
+            <PrimitiveSelectItem class="primitive-select-item" value="primitive-gamma">Primitive Gamma</PrimitiveSelectItem>
+          </PrimitiveSelectContent>
+        </PrimitiveSelect>
+        <VCombobox v-model="comboValue" :open="comboOpen" @update:open="comboOpen = $event">
+          <VComboboxAnchor>
+            <VComboboxInput id="combo-input" placeholder="Search" />
+            <VComboboxTrigger />
+          </VComboboxAnchor>
+          <VComboboxContent data-testid="combo-content">
+            <VComboboxItem value="beta">Beta</VComboboxItem>
+            <VComboboxItem value="delta">Delta</VComboboxItem>
+          </VComboboxContent>
+        </VCombobox>
+      </DialogContent>
+    </Dialog>
+
+    <Dialog :open="scrollDialogOpen">
+      <DialogScrollContent data-testid="scroll-dialog-content" class="fixture-dialog">
+        <DialogTitle>Scroll layer</DialogTitle>
+        <DialogDescription>Scroll layer verification</DialogDescription>
+      </DialogScrollContent>
+    </Dialog>
+
+    <Sheet :open="sheetOpen">
+      <SheetContent data-testid="sheet-content" :show-close-button="false"><SheetTitle>Sheet layer</SheetTitle><SheetDescription>Sheet layer verification</SheetDescription></SheetContent>
+    </Sheet>
+  </div>
+</template>
+
+<style>
+html, body, #app { margin: 0; width: 100%; min-height: 100%; }
+#fixture-header { position: fixed; inset: 0 0 auto; height: 56px; z-index: 100; pointer-events: auto; background: #f8fafc; }
+#select-value, #combo-value { position: fixed; left: 16px; top: 120px; }
+#select-value { top: 140px; }
+#combo-value { top: 160px; }
+#primitive-select-value { top: 180px; }
+.fixture-dialog { width: 520px; max-width: 520px; }
+.v-select-trigger, .v-combobox-anchor { position: relative; z-index: 1; }
+</style>
+`;
+  const entrySource = `import { createApp } from 'vue';
+import App from './App.vue';
+import './tailwind-utilities.css';
+import ${JSON.stringify(path.join(packageDirectory, "src/styles/geometry.css"))};
+import ${JSON.stringify(path.join(packageDirectory, "src/styles/components.css"))};
+createApp(App).mount('#app');
+`;
+  let server;
+  let page;
+  try {
+    await fs.writeFile(path.join(fixtureDirectory, "App.vue"), appSource);
+    await fs.writeFile(path.join(fixtureDirectory, "main.ts"), entrySource);
+    // This is the host's compiled Tailwind utility output for the published
+    // primitive class. The shell bridge must override it only for ordinary
+    // portaled surfaces; Sheet intentionally remains at this baseline layer.
+    await fs.writeFile(
+      path.join(fixtureDirectory, "tailwind-utilities.css"),
+      "@layer utilities { .fixed { position: fixed; } .inset-0 { inset: 0; } .top-\\[50\\%\\] { top: 50%; } .left-\\[50\\%\\] { left: 50%; } .translate-x-\\[-50\\%\\] { transform: translateX(-50%); } .translate-y-\\[-50\\%\\] { transform: translateY(-50%); } .translate-x-\\[-50\\%\\].translate-y-\\[-50\\%\\] { transform: translate(-50%, -50%); } .w-full { width: 100%; } .z-50 { z-index: 50; } }\n",
+    );
+    await fs.writeFile(
+      path.join(fixtureDirectory, "index.html"),
+      '<header id="fixture-header" class="v-header" data-clicks="0" onclick="this.dataset.clicks = String(Number(this.dataset.clicks) + 1)">Fixed header</header><div id="app"></div><script type="module" src="/main.ts"></script>',
+    );
+    server = await createServer({
+      root: fixtureDirectory,
+      plugins: [vue()],
+      resolve: { dedupe: ["vue"] },
+      server: { host: "127.0.0.1", port: 0, strictPort: false, fs: { allow: [packageDirectory, workspaceDirectory, ...installedPackages.map(({ root }) => root)] } },
+      optimizeDeps: { exclude: ["@global-torque/ui-primitives", "@global-torque/ui-kit"] },
+    });
+    await server.listen();
+    const localUrl = server.resolvedUrls?.local?.[0];
+    assert.ok(localUrl, "fixture Vite server must expose a local URL");
+    page = await browser.newPage({ viewport: { width: 1280, height: 720 } });
+    await page.goto(localUrl, { waitUntil: "domcontentloaded" });
+    await page.waitForSelector("[data-testid='normal-dialog-content']");
+    const computedLayer = async (selector) => page.locator(selector).first().evaluate((element) => getComputedStyle(element).zIndex);
+    const defaultLayers = {
+      header: await computedLayer("#fixture-header"),
+      dialogOverlay: await computedLayer("[data-slot='dialog-overlay']"),
+      dialogContent: await computedLayer("[data-slot='dialog-content']"),
+    };
+    assert.deepEqual(defaultLayers, { header: "100", dialogOverlay: "1100", dialogContent: "1100" });
+    report.checks.push({ name: "installed-dialog-and-sheet-layers", result: "pass", value: defaultLayers });
+    await page.mouse.click(8, 8);
+    assert.equal(await page.locator("#fixture-header").getAttribute("data-clicks"), "0", "dialog overlay must block header interaction");
+    assert.equal(
+      await page.evaluate(() => document.elementFromPoint(8, 8)?.getAttribute("data-slot")),
+      "dialog-overlay",
+      "dialog overlay must paint above the fixed header",
+    );
+    report.checks.push({ name: "dialog-overlay-paint-order", result: "pass", value: "dialog-overlay above header" });
+
+    const triggerBox = await page.locator("#select-trigger").boundingBox();
+    assert.ok(triggerBox, "select trigger must be measurable inside the dialog");
+    const triggerPaint = await page.evaluate(({ x, y }) => {
+      const element = document.elementFromPoint(x, y);
+      const content = document.querySelector("[data-slot='dialog-content']");
+      const overlay = document.querySelector("[data-slot='dialog-overlay']");
+      const describe = (node) => node && {
+        id: node.id,
+        slot: node.getAttribute("data-slot"),
+        rect: node.getBoundingClientRect().toJSON(),
+        zIndex: getComputedStyle(node).zIndex,
+        pointerEvents: getComputedStyle(node).pointerEvents,
+      };
+      return { id: element?.id, slot: element?.getAttribute("data-slot"), tag: element?.tagName, content: describe(content), overlay: describe(overlay) };
+    }, { x: triggerBox.x + triggerBox.width / 2, y: triggerBox.y + triggerBox.height / 2 });
+    assert.equal(triggerPaint.id, "select-trigger", `dialog content must paint above its overlay at the Select trigger (${JSON.stringify({ triggerBox, triggerPaint })})`);
+    await page.locator("#select-trigger").click();
+    await page.waitForSelector("[data-testid='select-content']");
+    assert.equal(await computedLayer("[data-testid='select-content']"), "1100");
+    await page.locator(".v-select-item").filter({ hasText: "Alpha" }).click();
+    await page.waitForFunction(() => document.querySelector("#select-value")?.textContent?.trim() === "alpha");
+    report.checks.push({ name: "installed-select-pointer-selection", result: "pass", value: "alpha" });
+
+    await page.locator("#primitive-select-trigger").click();
+    await page.waitForSelector("[data-testid='primitive-select-content']");
+    assert.equal(await computedLayer("[data-testid='primitive-select-content']"), "1100");
+    const primitiveSelectBox = await page.locator("[data-testid='primitive-select-content']").boundingBox();
+    assert.ok(primitiveSelectBox, "primitive Select popup must be measurable");
+    assert.equal(
+      await page.evaluate(({ x, y }) => document.elementFromPoint(x, y)?.closest("[data-testid='primitive-select-content']")?.getAttribute("data-testid"), { x: primitiveSelectBox.x + primitiveSelectBox.width / 2, y: primitiveSelectBox.y + primitiveSelectBox.height / 2 }),
+      "primitive-select-content",
+      "primitive Select popup must be hit-testable above the dialog layer",
+    );
+    await page.locator(".primitive-select-item").filter({ hasText: "Primitive Alpha" }).click();
+    await page.waitForFunction(() => document.querySelector("#primitive-select-value")?.textContent?.trim() === "primitive-alpha");
+    report.checks.push({ name: "installed-primitive-select-pointer-selection", result: "pass", value: "primitive-alpha" });
+
+    await page.locator(".v-combobox-trigger").click();
+    await page.waitForSelector("[data-testid='combo-content']");
+    assert.equal(await computedLayer("[data-testid='combo-content']"), "1100");
+    const comboBox = await page.locator("[data-testid='combo-content']").boundingBox();
+    assert.ok(comboBox, "Combobox popup must be measurable");
+    assert.equal(
+      await page.evaluate(({ x, y }) => document.elementFromPoint(x, y)?.closest("[data-testid='combo-content']")?.getAttribute("data-testid"), { x: comboBox.x + comboBox.width / 2, y: comboBox.y + comboBox.height / 2 }),
+      "combo-content",
+      "Combobox popup must be hit-testable above the dialog layer",
+    );
+    await page.locator(".v-combobox-item").filter({ hasText: "Beta" }).click();
+    await page.waitForFunction(() => document.querySelector("#combo-value")?.textContent?.trim() === "beta");
+    report.checks.push({ name: "installed-combobox-pointer-selection", result: "pass", value: "beta" });
+
+    await page.evaluate(() => {
+      document.documentElement.style.removeProperty("--ui-dialog-z-index");
+      document.documentElement.style.removeProperty("--ui-select-popup-z-index");
+      document.querySelector("#show-scroll")?.click();
+    });
+    await page.waitForSelector("[data-testid='scroll-dialog-content']");
+    const scrollContent = page.locator("[data-testid='scroll-dialog-content']");
+    const scrollOverlay = scrollContent.locator("xpath=..");
+    const scrollLayers = {
+      header: await computedLayer("#fixture-header"),
+      overlay: await scrollOverlay.evaluate((element) => getComputedStyle(element).zIndex),
+      content: await computedLayer("[data-testid='scroll-dialog-content']"),
+    };
+    assert.deepEqual(scrollLayers, { header: "100", overlay: "1100", content: "1100" });
+    assert.equal(
+      await page.evaluate(() => document.elementFromPoint(8, 8) === document.querySelector("[data-testid='scroll-dialog-content']")?.parentElement),
+      true,
+      "legacy scroll overlay must paint above the fixed header",
+    );
+    await page.mouse.click(8, 8);
+    assert.equal(await page.locator("#fixture-header").getAttribute("data-clicks"), "0", "legacy scroll overlay must block header interaction");
+    report.checks.push({ name: "legacy-scroll-dialog-layer-and-hit-test", result: "pass", value: scrollLayers });
+
+    await page.evaluate(() => {
+      document.documentElement.style.setProperty("--ui-dialog-z-index", "2400");
+    });
+    await page.waitForFunction(() => getComputedStyle(document.querySelector("[data-testid='scroll-dialog-content']")).zIndex === "2400");
+    const overriddenScrollLayers = {
+      overlay: await scrollOverlay.evaluate((element) => getComputedStyle(element).zIndex),
+      content: await computedLayer("[data-testid='scroll-dialog-content']"),
+    };
+    assert.deepEqual(overriddenScrollLayers, { overlay: "2400", content: "2400" });
+    assert.equal(
+      await page.evaluate(() => document.elementFromPoint(8, 8) === document.querySelector("[data-testid='scroll-dialog-content']")?.parentElement),
+      true,
+      "host-overridden scroll overlay must remain above the fixed header",
+    );
+    await page.mouse.click(8, 8);
+    assert.equal(await page.locator("#fixture-header").getAttribute("data-clicks"), "0", "host-overridden scroll overlay must block header interaction");
+    report.checks.push({ name: "legacy-scroll-dialog-host-override", result: "pass", value: overriddenScrollLayers });
+
+    await page.evaluate(() => document.querySelector("#show-sheet")?.click());
+    await page.waitForSelector("[data-testid='sheet-content']");
+    const sheetContent = page.locator("[data-testid='sheet-content']");
+    const sheetOverlay = sheetContent.locator("xpath=preceding-sibling::*[1]");
+    const sheetLayers = {
+      header: await computedLayer("#fixture-header"),
+      sheetOverlay: await sheetOverlay.evaluate((element) => getComputedStyle(element).zIndex),
+      sheetContent: await computedLayer("[data-testid='sheet-content']"),
+    };
+    assert.deepEqual(sheetLayers, { header: "100", sheetOverlay: "50", sheetContent: "50" });
+    const sheetPaint = await page.evaluate(() => {
+      const element = document.elementFromPoint(8, 8);
+      const header = document.querySelector("#fixture-header");
+      const overlay = document.querySelector("[data-testid='sheet-content']")?.previousElementSibling;
+      const describe = (node) => node && {
+        id: node.id,
+        testId: node.getAttribute("data-testid"),
+        zIndex: getComputedStyle(node).zIndex,
+        pointerEvents: getComputedStyle(node).pointerEvents,
+        inert: node.inert,
+      };
+      return { element: describe(element), header: describe(header), overlay: describe(overlay) };
+    });
+    assert.equal(sheetPaint.element?.id, "fixture-header", `Sheet overlay must paint below the fixed header (${JSON.stringify(sheetPaint)})`);
+    await page.mouse.click(8, 8);
+    assert.equal(await page.locator("#fixture-header").getAttribute("data-clicks"), "1", "Sheet layer below header must preserve header interaction");
+    report.checks.push({ name: "sheet-layer-and-paint-order", result: "pass", value: sheetLayers });
+  } finally {
+    await page?.close();
+    await server?.close();
+    await fs.rm(fixtureDirectory, { recursive: true, force: true });
+  }
+}
+
 const report = {
   schemaVersion: 1,
   package: "@global-torque/invest-shell",
@@ -431,6 +736,7 @@ try {
     assert.equal(actual, "0 0 0 0 rgb(4 5 6)", `${name} must honor the public UI shadow override`);
     report.checks.push({ name, result: "pass", value: actual });
   }
+  await runInstalledArtifactFixture(browser, report);
   report.result = "pass";
 } finally {
   await browser.close();

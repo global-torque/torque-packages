@@ -11,7 +11,7 @@ import {
   validateReleaseArchives,
 } from './validate-release-archives.mjs';
 
-const VERSION = '0.4.14';
+const VERSION = '0.4.15';
 
 const archiveNameFor = (spec) =>
   `${spec.name.replace(/^@/, '').replace('/', '-')}-${VERSION}.tgz`;
@@ -176,7 +176,7 @@ test('rejects missing or wrong internal cohort dependencies', () => {
     ...wrongInput.archives[1].packageJson,
     dependencies: { '@global-torque/domain-types': '0.4.13' },
   };
-  assertContains(wrongInput, 'must be exactly 0.4.14');
+  assertContains(wrongInput, 'must be exactly 0.4.15');
 
   const unexpectedInput = validInput();
   unexpectedInput.archives[0].packageJson = {

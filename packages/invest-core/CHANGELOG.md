@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.15 candidate
+
+- Reissued the framework cohort with the shared UI portal-layer and exact
+  dependency pins; core contracts are unchanged.
+
 ## 0.4.14 candidate
 
 - Carries forward the ESM Lodash imports, generated Node exports, exact cohort

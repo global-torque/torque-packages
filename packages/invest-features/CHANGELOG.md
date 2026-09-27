@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.15 candidate
+
+- Reissued the feature cohort against the published UI package pair while the
+  Invest Shell carries the removable shared portal-layer bridge.
+
 ## 0.4.14 candidate
 
 - Reissued the cumulative 0.4.13 feature cohort, including finalized NAV cache

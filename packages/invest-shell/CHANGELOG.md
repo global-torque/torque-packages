@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.15 candidate
+
+- Added a temporary shell bridge for the published UI package pair so dialogs,
+  menus, popovers, tooltips, comboboxes and selects cover the fixed header while
+  mobile Sheets retain their lower layer. Remove it only after the released UI
+  pair owns the layer and the real-consumer browser gate passes.
+
 ## 0.4.14 candidate
 
 - Reissued the cumulative 0.4.13 shell cohort, including alert dismissal,

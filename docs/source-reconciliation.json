@@ -1,5 +1,5 @@
 {
-  "candidate": "0.4.14",
+  "candidate": "0.4.15",
   "abandonedCandidates": [
     {
       "candidate": "0.4.1",
@@ -141,13 +141,13 @@
   "sourceOwner": "global-torque/dashboard.webdevelop.biz",
   "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3",
   "packages": [
-    { "name": "@global-torque/domain-types", "directory": "packages/domain-types", "version": "0.4.14", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 1 },
-    { "name": "@global-torque/invest-core", "directory": "packages/invest-core", "version": "0.4.14", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 2 },
-    { "name": "@global-torque/invest-data", "directory": "packages/invest-data", "version": "0.4.14", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 3 },
-    { "name": "@global-torque/invest-runtime", "directory": "packages/invest-runtime", "version": "0.4.14", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 4 },
-    { "name": "@global-torque/invest-widgets", "directory": "packages/invest-widgets", "version": "0.4.14", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 5 },
-    { "name": "@global-torque/invest-features", "directory": "packages/invest-features", "version": "0.4.14", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 6 },
-    { "name": "@global-torque/invest-shell", "directory": "packages/invest-shell", "version": "0.4.14", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 7 }
+    { "name": "@global-torque/domain-types", "directory": "packages/domain-types", "version": "0.4.15", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 1 },
+    { "name": "@global-torque/invest-core", "directory": "packages/invest-core", "version": "0.4.15", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 2 },
+    { "name": "@global-torque/invest-data", "directory": "packages/invest-data", "version": "0.4.15", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 3 },
+    { "name": "@global-torque/invest-runtime", "directory": "packages/invest-runtime", "version": "0.4.15", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 4 },
+    { "name": "@global-torque/invest-widgets", "directory": "packages/invest-widgets", "version": "0.4.15", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 5 },
+    { "name": "@global-torque/invest-features", "directory": "packages/invest-features", "version": "0.4.15", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 6 },
+    { "name": "@global-torque/invest-shell", "directory": "packages/invest-shell", "version": "0.4.15", "sourceRevision": "9f35aa0882b765e202538ce7c7d5e82eb1b452d3", "releaseOrder": 7 }
   ],
   "nodeExports": {
     "conditionOrder": ["types", "node", "default"],
@@ -258,7 +258,7 @@
           ],
           "count": 2
         },
-        "expected": "framework 0.4.14 matches the framework 0.4.0 plus design-tokens 0.2.1 rendered contract"
+        "expected": "framework 0.4.15 matches the framework 0.4.0 plus design-tokens 0.2.1 rendered contract"
       },
       {
         "cohort": "0.3.0",
@@ -296,10 +296,10 @@
     "document": "docs/asset-inventory.md"
   },
   "compatibility": {
-    "internalWorkspaceLinks": "only among the seven packages in this repository during development; pnpm pack must rewrite them to 0.4.14",
+    "internalWorkspaceLinks": "only among the seven packages in this repository during development; pnpm pack must rewrite them to 0.4.15",
     "externalResolution": "installed public releases only; no source copies, file links, catalogs, or private registry references",
     "runtimeSingletons": ["vue", "pinia", "vue-router"],
-    "uiKit": "0.1.4 candidate is selected by vue-ui; primitives remain at 0.1.3; framework widgets are owned here at 0.4.14",
+    "uiKit": "published ui-kit 0.1.4 and ui-primitives 0.1.3 remain installed while the removable shell bridge covers the shared portal layer; remove it only after the released UI pair and real-consumer browser gate pass; framework widgets are owned here at 0.4.15",
     "frameworkReleaseAssets": {
       "count": 8,
       "assets": [

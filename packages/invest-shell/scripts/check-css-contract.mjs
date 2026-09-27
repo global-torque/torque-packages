@@ -27,6 +27,56 @@ const headerBar = await fs.readFile(headerBarPath, "utf8");
 const offersDetailsSide = await fs.readFile(offersDetailsSidePath, "utf8");
 const footers = await Promise.all(footerPaths.map((footerPath) => fs.readFile(footerPath, "utf8")));
 
+for (const [bridge, selector] of [
+  [/\[data-slot='dialog-overlay'\][^\{]*\{[^}]*z-index:\s*var\(--ui-dialog-z-index,\s*1100\);/u, "dialog overlay"],
+  [/\[data-slot='dialog-content'\][^\{]*\{[^}]*z-index:\s*var\(--ui-dialog-z-index,\s*1100\);/u, "dialog content"],
+  [/\[data-slot='dropdown-menu-content'\][^\{]*\{[^}]*z-index:\s*var\(--ui-dialog-z-index,\s*1100\);/u, "dropdown menu content"],
+  [/\[data-slot='dropdown-menu-sub-content'\][^\{]*\{[^}]*z-index:\s*var\(--ui-dialog-z-index,\s*1100\);/u, "dropdown menu subcontent"],
+  [/\[data-slot='popover-content'\][^\{]*\{[^}]*z-index:\s*var\(--ui-dialog-z-index,\s*1100\);/u, "popover content"],
+  [/\[data-slot='tooltip-content'\][^\{]*\{[^}]*z-index:\s*var\(--ui-dialog-z-index,\s*1100\);/u, "tooltip content"],
+  [/\[data-slot='combobox-list'\][^\{]*\{[^}]*z-index:\s*var\(--ui-dialog-z-index,\s*1100\);/u, "primitive combobox list"],
+]) {
+  assert.match(
+    components,
+    bridge,
+    `${selector} must retain the temporary dialog-layer bridge`,
+  );
+}
+assert.match(
+  components,
+  /\[data-slot='select-content'\],[\s\S]*?\.v-select-content\.v-select-content\s*\{\s*z-index:\s*var\(--ui-select-popup-z-index,\s*var\(--ui-dialog-z-index,\s*1100\)\);/u,
+  "select content must retain the host override bridge for both public implementations",
+);
+assert.match(
+  components,
+  /\.v-combobox-content\.v-combobox-content[^\{]*\{[^}]*z-index:\s*var\(--ui-dialog-z-index,\s*1100\);/u,
+  "UI Kit combobox content must retain the temporary dialog-layer bridge",
+);
+const temporaryPortalBridgeStart = components.indexOf("/* Temporary bridge for published UI packages:");
+const temporaryPortalBridgeEnd = components.indexOf("/* Dropdown menus:", temporaryPortalBridgeStart);
+assert.ok(temporaryPortalBridgeStart >= 0 && temporaryPortalBridgeEnd > temporaryPortalBridgeStart, "temporary portal bridge must remain a bounded CSS block");
+const temporaryPortalBridge = components.slice(temporaryPortalBridgeStart, temporaryPortalBridgeEnd);
+assert.match(
+  temporaryPortalBridge,
+  /\[data-state\]:not\(\[data-slot\]\)\[class~='fixed'\]\[class~='inset-0'\]\[class~='grid'\]\[class~='place-items-center'\]\[class~='overflow-y-auto'\],[\s\n]*\[data-state\]:not\(\[data-slot\]\)\[class~='fixed'\]\[class~='inset-0'\]\[class~='grid'\]\[class~='place-items-center'\]\[class~='overflow-y-auto'\] > \[role='dialog'\]\[data-state\]:not\(\[data-slot\]\)\s*\{\s*z-index:\s*var\(--ui-dialog-z-index,\s*1100\);/u,
+  "legacy scroll dialog bridge must stay narrow and explicit",
+);
+assert.doesNotMatch(
+  temporaryPortalBridge,
+  /\[data-state\]:not\(\[data-slot\]\) > \[role='dialog'\]\[data-state\]:not\(\[data-slot\]\)/u,
+  "legacy scroll dialog bridge must not use the shortened broad content selector",
+);
+assert.doesNotMatch(temporaryPortalBridge, /\.z-50|sheet-(?:overlay|content)/u, "temporary portal bridge must not broaden to utility or Sheet selectors");
+const appearanceBlockStart = components.indexOf("/* Menus, select lists and popovers:");
+const appearanceBlockEnd = components.indexOf("/* Temporary bridge for published UI packages:", appearanceBlockStart);
+assert.ok(appearanceBlockStart >= 0 && appearanceBlockEnd > appearanceBlockStart, "portal appearance block must remain bounded");
+assert.doesNotMatch(
+  components.slice(appearanceBlockStart, appearanceBlockEnd),
+  /dialog-overlay|dialog-content|tooltip-content|combobox-list|\.v-combobox-content/u,
+  "portal appearance block must not own shared-layer-only selectors",
+);
+assert.match(headerBar, /\.v-header\s*\{[\s\S]*?z-index:\s*100;/u, "fixed header must remain at z-index 100");
+
 // 0.2.1 intentionally does not publish these legacy aliases; its neutral
 // dictionary is a supported intermediate host, not a reason to invent a new
 // palette. The CSS-wide `unset` terminal restores 0.4.0's property behavior,

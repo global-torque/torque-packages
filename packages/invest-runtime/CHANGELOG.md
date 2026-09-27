@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.15 candidate
+
+- Reissued the framework cohort with the shared UI portal-layer and exact
+  dependency pins; runtime contracts are unchanged.
+
 ## 0.4.14 candidate
 
 - Carries forward the public `createSdkAnalyticsAdapter` factory for wiring

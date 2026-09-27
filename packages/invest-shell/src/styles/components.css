@@ -311,6 +311,21 @@ input[data-slot='input']:focus-visible,
   box-shadow: var(--ui-shadow-dialog, var(--shadow-dialog));
 }
 
+/* Temporary bridge for published UI packages: keep shared portaled surfaces
+   above the fixed header until the next UI package pair is released. */
+[data-slot='dialog-overlay'],
+[data-slot='dialog-content'],
+[data-slot='dropdown-menu-content'],
+[data-slot='dropdown-menu-sub-content'],
+[data-slot='popover-content'],
+[data-slot='tooltip-content'],
+[data-slot='combobox-list'],
+.v-combobox-content.v-combobox-content,
+[data-state]:not([data-slot])[class~='fixed'][class~='inset-0'][class~='grid'][class~='place-items-center'][class~='overflow-y-auto'],
+[data-state]:not([data-slot])[class~='fixed'][class~='inset-0'][class~='grid'][class~='place-items-center'][class~='overflow-y-auto'] > [role='dialog'][data-state]:not([data-slot]) {
+  z-index: var(--ui-dialog-z-index, 1100);
+}
+
 /* Dropdown menus: 8 px above and below, at least the trigger's width, the
    items are the legacy 8/12 px h6 rows with a grey fill when highlighted. */
 [data-slot='dropdown-menu-content'],
@@ -339,7 +354,10 @@ input[data-slot='input']:focus-visible,
 [data-slot='select-content'] {
   background: var(--ui-color-canvas, var(--muted));
   border-color: var(--ui-color-border-subtle, var(--border));
-  z-index: var(--ui-select-popup-z-index, 50);
+}
+[data-slot='select-content'],
+.v-select-content.v-select-content {
+  z-index: var(--ui-select-popup-z-index, var(--ui-dialog-z-index, 1100));
 }
 [data-reka-select-viewport] { padding: 0; }
 [data-slot='select-item'] {
@@ -482,11 +500,9 @@ input[data-slot='input']:focus-visible,
 [data-slot='sheet-overlay'] { background: color-mix(in srgb, var(--foreground) 40%, transparent); }
 [data-slot='dialog-overlay'] {
   background: var(--ui-dialog-overlay, color-mix(in srgb, var(--foreground) 40%, transparent));
-  z-index: var(--ui-dialog-z-index, 50);
 }
 [data-slot='dialog-content'] {
   background: var(--ui-dialog-background, var(--background));
-  z-index: var(--ui-dialog-z-index, 50);
   display: block;
   width: 100%;
   max-width: 700px;
