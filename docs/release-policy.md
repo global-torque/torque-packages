@@ -134,7 +134,7 @@ Before attestation, the release workflow builds the Node helpers and runs the
 package and Chromium CSS checks on Node 24. It creates the GitHub Release but
 does not publish npm packages or deploy apps. The provenance workflow verifies
 the tagged release and GitHub attestations. The separate manual
-`.github/workflows/publish.yml` workflow is the only npm publication path. It downloads and verifies the tagged tarballs, then reconciles the exact versions sequentially in dependency order: an already visible version must byte-match the downloaded tarball, while a missing version is published from that tarball and polled until the registry metadata and tarball are available and the registry copy byte-matches. It never builds or repacks source. Trusted publishing is the default and unsets `NODE_AUTH_TOKEN`; the explicit `bootstrap` input may use the `NPM_BOOTSTRAP_TOKEN` secret for an emergency token-based publication. A failed package or byte mismatch stops the sequence and no later package is published.
+`.github/workflows/publish.yml` workflow is the only npm publication path. It downloads and verifies the tagged tarballs, then publishes each exact archive once sequentially in dependency order with npm trusted publishing. It never builds or repacks source, retries, resumes, compares registry contents, or uses a fallback credential path; `NODE_AUTH_TOKEN` is unset before npm runs. A failed or partial cohort is abandoned and requires a new package version and immutable release tag.
 
 Never repack or replace bytes under a previously reviewed version. Missing
 provenance, unresolved rights, or a duplicate runtime singleton aborts
