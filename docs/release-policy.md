@@ -25,6 +25,10 @@ surfaces default to `--ui-dialog-z-index` at `1100`, select supports
 bridge is removable only after the released UI pair owns those layers and the
 real-consumer browser gate proves the replacement; no UI package publication
 or application deployment is implied by this candidate.
+The candidate also moves `invest-data` and `invest-runtime` to the
+`@global-torque/sdk` 0.5.0 GitHub Release archive. That SDK transport sends a
+default `Idempotency-Key` header on eligible POST requests. The Kratos clients
+turn that default off because the Kratos CORS rules reject the header.
 Candidate 0.4.14 reissues the seven-package cohort with the cumulative 0.4.13
 analytics adapter, sanitizer, lifecycle, feature, and shell changes, then
 reduces the redemption list contract to its read-only fields. It also retains

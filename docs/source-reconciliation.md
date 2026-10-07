@@ -8,6 +8,10 @@ packages. Dialogs and ordinary portaled surfaces default to
 and Mobile Sheets retain their lower layer. Remove the bridge only after the
 released UI pair owns those layers and the real-consumer browser gate proves
 the replacement; source changes do not publish UI packages or deploy apps.
+The candidate also moves `invest-data` and `invest-runtime` to the
+`@global-torque/sdk` 0.5.0 GitHub Release archive. That SDK transport sends a
+default `Idempotency-Key` header on eligible POST requests. The Kratos clients
+turn that default off because the Kratos CORS rules reject the header.
 The `0.4.14` candidate reissues the seven-package cohort with the cumulative
 0.4.13 analytics, feature, shell, and runtime changes, then reduces the
 read-only redemption lifecycle contract to its returned status, amount, and
