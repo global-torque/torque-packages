@@ -112,6 +112,17 @@ clients stay keyless. The keyed compatibility client rejects caller key
 overrides and absolute request URLs on any origin other than its configured
 service origin.
 
+The `@global-torque/sdk` 0.5.0 transport sends a default `Idempotency-Key`
+header on eligible POST requests. `context.createApiClient('kratos')` turns
+this default off, because the Kratos CORS rules reject the header.
+`createApiClient(...)` for every other service key keeps the default.
+`createApiClientForBaseUrl(...)`, `createKeyedApiClient(...)`,
+`createKeyedApiClientForBaseUrl(...)`, and `createSdkServiceClient(...)` also
+keep it. A direct `new ApiClient(url)` from `@global-torque/invest-data` keeps
+it too. If another host's CORS rules reject the header, create its client with
+`new ApiClient(url, { defaultIdempotencyKeys: false })`. The invest-data README
+describes which POST requests get the default key.
+
 Migrated resources use `context.createSdkServiceClient(...)` and must choose
 `applicationAuth` and user auth explicitly. The context caches equivalent
 service clients, forwards runtime request IDs, and disposes every owned SDK

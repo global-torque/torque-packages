@@ -40,6 +40,7 @@ export type CanonicalCompatibilityRequest = {
   responseMode: SdkResponseMode;
   requestId?: string;
   idempotencyKey?: string;
+  defaultIdempotencyKeys?: boolean;
   signal?: AbortSignal;
   timeoutMs?: number | null;
   fetch: typeof fetch;
@@ -80,6 +81,7 @@ export const executeCanonicalCompatibilityRequest = async <T>({
   responseMode,
   requestId: explicitRequestId,
   idempotencyKey,
+  defaultIdempotencyKeys,
   signal,
   timeoutMs = null,
   fetch: fetchImplementation,
@@ -153,6 +155,7 @@ export const executeCanonicalCompatibilityRequest = async <T>({
     fetch: captureFetch,
     createRequestId: () => requestId ?? createCompatibilityRequestId(),
     retry: { maxRetries: 0, delayMs: 0 },
+    defaultIdempotencyKeys,
     allowInsecureOrigins:
       allowedInsecureOrigins.length > 0 ? [...new Set(allowedInsecureOrigins)] : undefined,
     services: {

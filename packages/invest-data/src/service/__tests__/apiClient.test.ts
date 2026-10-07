@@ -11,6 +11,7 @@ import {
   configureApiClientHooks,
   resetApiClientHooks,
 } from '../apiClientHooks.ts';
+import { createInvestDataApiClient } from '../dataClientConfig.ts';
 import { OfflineRequestError } from '../handlers/offlineRequestError.ts';
 import { NetworkRequestError } from '../handlers/networkRequestError.ts';
 
@@ -230,6 +231,27 @@ describe('legacy ApiClient', () => {
       },
     });
     expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('sends a default Idempotency-Key on POST, except through the Kratos client', async () => {
+    fetchMock.mockImplementation(async () => new Response(JSON.stringify({ ok: true }), {
+      status: 200,
+      headers: { 'content-type': 'application/json' },
+    }));
+    const config = {
+      apiUrls: {
+        kratos: 'https://kratos.example.test',
+        user: 'https://user.example.test',
+      },
+    };
+
+    await createInvestDataApiClient('kratos', config).post('/self-service/login?flow=1', { method: 'password' });
+    await createInvestDataApiClient('user', config).post('/auth/profile', { name: 'Ada' });
+
+    const kratosHeaders = new Headers(fetchMock.mock.calls[0]?.[1]?.headers);
+    const userHeaders = new Headers(fetchMock.mock.calls[1]?.[1]?.headers);
+    expect(kratosHeaders.has('idempotency-key')).toBe(false);
+    expect(userHeaders.get('idempotency-key')).toBeTruthy();
   });
 
   it('preserves aborted requests as native abort errors', async () => {

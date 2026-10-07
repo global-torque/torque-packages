@@ -73,6 +73,11 @@ const normalizeRequest = (request: CapturedRequest) => ({
         'x-request-id',
         ...(request.body === undefined ? ['content-type'] : []),
       ].includes(name))
+      // A default key is random, so both sides must send one, but its value is not compared.
+      .map(([name, value]): [string, string] => [
+        name,
+        name === 'idempotency-key' ? '<default-idempotency-key>' : value,
+      ])
       .sort(([left], [right]) => left.localeCompare(right)),
   ),
 });

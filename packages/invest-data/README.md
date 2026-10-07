@@ -94,3 +94,27 @@ the package framework-free while preserving failed request context. HTTP
 failures expose method, URL, path, status, and selectively redacted body metadata;
 raw fetch failures are wrapped as `NetworkRequestError` unless the request was
 aborted.
+
+## Default idempotency keys
+
+`ApiClient` uses the `@global-torque/sdk` 0.5.0 transport, which sends a
+default `Idempotency-Key` header on POST requests. A POST gets the default key
+when it has no `idempotencyKey`, does not use `simple: true`, and has a string
+body, such as the JSON that `post()` sends, or no body. The runtime must also
+provide `crypto.randomUUID`. Other bodies, such as `FormData`, get no default
+key. The same method, URL, and body keep one key until a request succeeds. An
+explicit `idempotencyKey` replaces the default key.
+
+`createInvestDataApiClient('kratos')` sends no default key, because the Kratos
+CORS rules reject the header. Clients for every other service key keep the
+default. A direct `new ApiClient(url)` keeps it too. The
+`@global-torque/invest-runtime` context factories `createApiClientForBaseUrl`,
+`createKeyedApiClient`, `createKeyedApiClientForBaseUrl`, and
+`createSdkServiceClient` also keep it. The hook-based `createInvestDataClient`
+never sends a default key, because it passes caller headers unchanged.
+
+If a host's CORS rules reject the header, turn the default off for its client:
+
+```ts
+const client = new ApiClient(url, { defaultIdempotencyKeys: false });
+```
