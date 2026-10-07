@@ -131,6 +131,8 @@ export class ApiClient {
 
   private deduplicationScope: (() => string | null | undefined) | undefined;
 
+  private defaultIdempotencyKeys: boolean;
+
   private applicationKey: string | undefined;
 
   private applicationKeyOrigin: string | undefined;
@@ -145,6 +147,7 @@ export class ApiClient {
       signal?: AbortSignal;
       deduplicateSafeReads?: boolean;
       deduplicationScope?: () => string | null | undefined;
+      defaultIdempotencyKeys?: boolean;
       applicationKey?: string;
     } = {},
   ) {
@@ -156,6 +159,7 @@ export class ApiClient {
     this.signal = options.signal;
     this.deduplicateSafeReads = options.deduplicateSafeReads === true;
     this.deduplicationScope = options.deduplicationScope;
+    this.defaultIdempotencyKeys = options.defaultIdempotencyKeys !== false;
     this.applicationKey = options.applicationKey;
     if (this.applicationKey !== undefined) {
       try {
@@ -305,6 +309,7 @@ export class ApiClient {
           body: method === 'GET' ? undefined : config.body ?? undefined,
           headers,
           idempotencyKey: config.idempotencyKey,
+          defaultIdempotencyKeys: this.defaultIdempotencyKeys,
           signal,
           timeoutMs: config.timeoutMs,
           responseMode: toSdkResponseMode(config.type),

@@ -31,6 +31,7 @@ const createConfig = (origin: string): InvestAppConfig => ({
     static: `${origin}/static`,
     cryptoWalletScan: `${origin}/scan`,
     api: {
+      kratos: `${origin}/kratos`,
       user: `${origin}/user`,
       offer: `${origin}/offer`,
       evm: `${origin}/evm`,
@@ -166,6 +167,29 @@ describe('InvestApplicationContext', () => {
     const keylessHeaders = new Headers(fetchImpl.mock.calls[1]?.[1]?.headers);
     expect(keyedHeaders.get('X-API-Key')).toBe('tahoe_sandbox_public_key');
     expect(keylessHeaders.has('X-API-Key')).toBe(false);
+  });
+
+  it('sends a default Idempotency-Key on compatibility POSTs, except to Kratos', async () => {
+    const fetchImpl = vi.fn<typeof fetch>().mockImplementation(
+      async () =>
+        new Response(JSON.stringify({ ok: true }), {
+          status: 200,
+          headers: { 'content-type': 'application/json' },
+        }),
+    );
+    const context = createInvestApplicationContext({
+      appConfig: createConfig('https://one.example.test'),
+      apiClientHooks: createHooks('request-one'),
+      fetch: fetchImpl,
+    });
+
+    await context.createApiClient('kratos').post('/self-service/login?flow=1', { method: 'password' });
+    await context.createApiClient('user').post('/auth/profile', { name: 'Ada' });
+
+    const kratosHeaders = new Headers(fetchImpl.mock.calls[0]?.[1]?.headers);
+    const userHeaders = new Headers(fetchImpl.mock.calls[1]?.[1]?.headers);
+    expect(kratosHeaders.has('idempotency-key')).toBe(false);
+    expect(userHeaders.get('idempotency-key')).toBeTruthy();
   });
 
   it('creates direct typed SDK clients with explicit auth and response validation', async () => {

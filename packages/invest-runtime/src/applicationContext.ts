@@ -387,19 +387,29 @@ export class InvestApplicationContext {
 
   createApiClient(key: InvestDataApiKey): ApiClient {
     this.assertActive();
-    return this.createApiClientForBaseUrl(
+    // Kratos CORS rejects the Idempotency-Key header, so its client sends no default key.
+    return this.createCompatibilityApiClient(
       this.dataClientConfig.apiUrls?.[key] ?? "",
+      key !== "kratos",
     );
   }
 
   createApiClientForBaseUrl(baseUrl: string): ApiClient {
     this.assertActive();
+    return this.createCompatibilityApiClient(baseUrl, true);
+  }
+
+  private createCompatibilityApiClient(
+    baseUrl: string,
+    defaultIdempotencyKeys: boolean,
+  ): ApiClient {
     return new ApiClient(baseUrl, {
       allowedRedirectOrigins: this.dataClientConfig.allowedRedirectOrigins,
       allowInsecureOrigins: this.allowInsecureSdkOrigins,
       hooks: () => this.apiHooks(),
       fetch: this.fetchImpl,
       signal: this.abortController.signal,
+      defaultIdempotencyKeys,
     });
   }
 

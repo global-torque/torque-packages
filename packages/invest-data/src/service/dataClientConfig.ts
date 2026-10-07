@@ -134,6 +134,8 @@ export function createInvestDataApiClient(
     allowInsecureOrigins: options.allowInsecureOrigins,
     deduplicateSafeReads: options.deduplicateSafeReads,
     deduplicationScope: options.deduplicationScope,
+    // Kratos CORS rejects the Idempotency-Key header, so its client sends no default key.
+    defaultIdempotencyKeys: key !== 'kratos',
   });
 }
 

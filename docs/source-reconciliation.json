@@ -202,7 +202,7 @@
     }
   },
   "externalPackages": {
-    "@global-torque/sdk": "0.3.1",
+    "@global-torque/sdk": "https://github.com/global-torque/sdk/releases/download/v0.5.0/global-torque-sdk-0.5.0.tgz",
     "@global-torque/client-error-handling": "0.1.0",
     "@global-torque/design-tokens": "0.3.0",
     "@global-torque/ui-kit": "0.1.4",

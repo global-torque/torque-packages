@@ -3,7 +3,14 @@
 ## 0.4.15 candidate
 
 - Reissued the framework cohort with the shared UI portal-layer and exact
-  dependency pins; runtime contracts are unchanged.
+  dependency pins.
+- Moved to `@global-torque/sdk` 0.5.0 from its GitHub release tarball. Eligible
+  POST requests from context-owned clients now send the SDK default
+  `Idempotency-Key` header. The invest-data README section
+  "Default idempotency keys" describes which POST requests get the default key.
+  `createApiClient('kratos')` turns the default off, because the Kratos CORS
+  rules reject the header. `createApiClientForBaseUrl` keeps its signature and
+  the default.
 
 ## 0.4.14 candidate
 

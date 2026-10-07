@@ -9,6 +9,12 @@
   `@global-torque/ui-kit@0.1.4` packages. Mobile Sheets remain at their
   existing layer. Remove the bridge only after the released UI pair and the
   real-consumer browser gate prove the shared ownership.
+- Behavior change: moved `invest-data` and `invest-runtime` to
+  `@global-torque/sdk` 0.5.0, whose transport sends a default `Idempotency-Key`
+  header on eligible POST requests. Added the `ApiClient` option
+  `defaultIdempotencyKeys`. The Kratos clients from
+  `createInvestDataApiClient('kratos')` and `createApiClient('kratos')` turn the
+  default off, because the Kratos CORS rules reject the header.
 
 ## 0.4.14 candidate
 
