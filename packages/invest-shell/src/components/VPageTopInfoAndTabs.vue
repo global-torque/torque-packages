@@ -112,7 +112,6 @@ const handleTabChange = (nextTab: string | number) => {
     </section>
     <Tabs
       v-if="!hideTabs"
-      variant="line"
       :model-value="tab"
       class="v-page-top-info-and-tabs__tabs"
       @update:model-value="handleTabChange"
@@ -121,6 +120,8 @@ const handleTabChange = (nextTab: string | number) => {
         <div class="v-page-top-info-and-tabs__tab-viewport">
           <TabsList
             ref="tabsListRef"
+            variant="line"
+            class="relative max-w-full justify-start overflow-x-auto no-scrollbar pb-1.25 group-data-horizontal/tabs:h-auto"
             :class="{ 'v-page-top-info-and-tabs__retained-underline': retainUnderlineExtent }"
             :style="retainUnderlineExtent ? { '--page-tabs-underline-width': underlineWidth } : undefined"
             @scroll="updateUnderlineExtent"

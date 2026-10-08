@@ -1,5 +1,33 @@
 # Changelog
 
+## Unreleased
+
+- `invest-features`, `invest-widgets` and `invest-shell` now require
+  `@global-torque/ui-kit` 0.4.0 and `@global-torque/ui-primitives` 0.2.0. Both
+  are GitHub release tarballs, not npm packages. UI Kit 0.4.0 pins
+  ui-primitives 0.2.0 exactly, so consumers need a pnpm override that maps
+  `@global-torque/ui-primitives` to the 0.2.0 tarball. `invest-features` and
+  `invest-shell` import `toast` from `vue-sonner`, now a direct dependency,
+  because the ui-primitives `./sonner` entry no longer exports it.
+- `invest-shell` accepts `@global-torque/design-tokens` `>=0.2.1 <0.5.0` and
+  tests against 0.4.0.
+- Alerts show success and warning as the standard alert, because
+  ui-primitives 0.2.0 has only the `default` and `destructive` variants. The
+  icon still shows the status.
+- Line tabs set `variant="line"` on `TabsList`, because `Tabs` and
+  `VUrlSyncedTabs` no longer accept a variant. `VPageTopInfoAndTabs` and the
+  offer details tabs keep horizontal scrolling with a hidden scrollbar.
+- Sidebar07 uses the standard ui-primitives sidebar behavior: it writes the
+  `sidebar_state` cookie, Ctrl/Cmd+B toggles it, a width of 768px or less is
+  mobile, and the mobile sheet focuses its first focusable element.
+- Removed the 18 control and table metric tokens from
+  `invest-shell/styles/geometry.css`. ui-primitives 0.2.0 and ui-kit 0.4.0 do
+  not read them.
+- Removed the `invest-shell` `test:css-browser` check, its CI job, its release
+  step and report variable, and the `@playwright/test` dev dependency that
+  only it used. It depended on ui-kit 0.1.4 and ui-primitives 0.1.3 source
+  files.
+
 ## 0.4.15 candidate
 
 - Reissued the seven-package cohort with the shared UI portal-layer contract:

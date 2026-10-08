@@ -178,14 +178,12 @@ overrides:
   postcss@>=8.0.0 <8.5.23: 8.5.23
   svgo@>=3.0.0 <3.3.5: 3.3.5
   undici@>=7.0.0 <7.29.0: 7.29.0
+  '@global-torque/ui-primitives': https://github.com/global-torque/vue-ui/releases/download/ui-primitives-v0.2.0/global-torque-ui-primitives-0.2.0.tgz
 
 importers:
 
   .:
     devDependencies:
-      '@playwright/test':
-        specifier: 1.63.0
-        version: 1.63.0
       '@types/node':
         specifier: ^24.13.5
         version: 24.13.5
@@ -315,11 +313,11 @@ importers:
         specifier: 0.4.15
         version: link:../invest-widgets
       '@global-torque/ui-kit':
-        specifier: 0.1.4
-        version: 0.1.4(reka-ui@2.10.4(vue@3.5.42(typescript@6.0.3)))(sass@1.104.1)(typescript@6.0.3)(vue@3.5.42(typescript@6.0.3))
+        specifier: https://github.com/global-torque/vue-ui/releases/download/v0.4.0/global-torque-ui-kit-0.4.0.tgz
+        version: https://github.com/global-torque/vue-ui/releases/download/v0.4.0/global-torque-ui-kit-0.4.0.tgz(reka-ui@2.10.4(vue@3.5.42(typescript@6.0.3)))(sass@1.104.1)(typescript@6.0.3)(vue@3.5.42(typescript@6.0.3))
       '@global-torque/ui-primitives':
-        specifier: 0.1.3
-        version: 0.1.3(reka-ui@2.10.4(vue@3.5.42(typescript@6.0.3)))(typescript@6.0.3)(vue@3.5.42(typescript@6.0.3))
+        specifier: https://github.com/global-torque/vue-ui/releases/download/ui-primitives-v0.2.0/global-torque-ui-primitives-0.2.0.tgz
+        version: https://github.com/global-torque/vue-ui/releases/download/ui-primitives-v0.2.0/global-torque-ui-primitives-0.2.0.tgz(reka-ui@2.10.4(vue@3.5.42(typescript@6.0.3)))(typescript@6.0.3)(vue@3.5.42(typescript@6.0.3))
       '@lucide/vue':
         specifier: ^1.46.0
         version: 1.46.0(vue@3.5.42(typescript@6.0.3))
@@ -338,6 +336,9 @@ importers:
       uuid:
         specifier: ^14.0.1
         version: 14.0.2
+      vue-sonner:
+        specifier: ^2.0.9
+        version: 2.0.9
     devDependencies:
       '@vitejs/plugin-vue':
         specifier: ^6.0.9
@@ -464,11 +465,11 @@ importers:
         specifier: 0.4.15
         version: link:../invest-widgets
       '@global-torque/ui-kit':
-        specifier: 0.1.4
-        version: 0.1.4(reka-ui@2.10.4(vue@3.5.42(typescript@6.0.3)))(sass@1.104.1)(typescript@6.0.3)(vue@3.5.42(typescript@6.0.3))
+        specifier: https://github.com/global-torque/vue-ui/releases/download/v0.4.0/global-torque-ui-kit-0.4.0.tgz
+        version: https://github.com/global-torque/vue-ui/releases/download/v0.4.0/global-torque-ui-kit-0.4.0.tgz(reka-ui@2.10.4(vue@3.5.42(typescript@6.0.3)))(sass@1.104.1)(typescript@6.0.3)(vue@3.5.42(typescript@6.0.3))
       '@global-torque/ui-primitives':
-        specifier: 0.1.3
-        version: 0.1.3(reka-ui@2.10.4(vue@3.5.42(typescript@6.0.3)))(typescript@6.0.3)(vue@3.5.42(typescript@6.0.3))
+        specifier: https://github.com/global-torque/vue-ui/releases/download/ui-primitives-v0.2.0/global-torque-ui-primitives-0.2.0.tgz
+        version: https://github.com/global-torque/vue-ui/releases/download/ui-primitives-v0.2.0/global-torque-ui-primitives-0.2.0.tgz(reka-ui@2.10.4(vue@3.5.42(typescript@6.0.3)))(typescript@6.0.3)(vue@3.5.42(typescript@6.0.3))
       '@lucide/vue':
         specifier: ^1.46.0
         version: 1.46.0(vue@3.5.42(typescript@6.0.3))
@@ -478,13 +479,13 @@ importers:
       reka-ui:
         specifier: ^2.10.1
         version: 2.10.4(vue@3.5.42(typescript@6.0.3))
+      vue-sonner:
+        specifier: ^2.0.9
+        version: 2.0.9
     devDependencies:
       '@global-torque/design-tokens':
-        specifier: 0.3.0
-        version: 0.3.0
-      '@playwright/test':
-        specifier: 1.63.0
-        version: 1.63.0
+        specifier: https://github.com/global-torque/design-tokens/releases/download/v0.4.0/global-torque-design-tokens-0.4.0.tgz
+        version: https://github.com/global-torque/design-tokens/releases/download/v0.4.0/global-torque-design-tokens-0.4.0.tgz
       '@vitejs/plugin-vue':
         specifier: ^6.0.9
         version: 6.0.9(vite@8.3.0(@types/node@24.13.5)(esbuild@0.28.2)(sass@1.104.1))(vue@3.5.42(typescript@6.0.3))
@@ -531,11 +532,11 @@ importers:
         specifier: workspace:*
         version: link:../invest-core
       '@global-torque/ui-kit':
-        specifier: 0.1.4
-        version: 0.1.4(reka-ui@2.10.4(vue@3.5.42(typescript@6.0.3)))(sass@1.104.1)(typescript@6.0.3)(vue@3.5.42(typescript@6.0.3))
+        specifier: https://github.com/global-torque/vue-ui/releases/download/v0.4.0/global-torque-ui-kit-0.4.0.tgz
+        version: https://github.com/global-torque/vue-ui/releases/download/v0.4.0/global-torque-ui-kit-0.4.0.tgz(reka-ui@2.10.4(vue@3.5.42(typescript@6.0.3)))(sass@1.104.1)(typescript@6.0.3)(vue@3.5.42(typescript@6.0.3))
       '@global-torque/ui-primitives':
-        specifier: 0.1.3
-        version: 0.1.3(reka-ui@2.10.4(vue@3.5.42(typescript@6.0.3)))(typescript@6.0.3)(vue@3.5.42(typescript@6.0.3))
+        specifier: https://github.com/global-torque/vue-ui/releases/download/ui-primitives-v0.2.0/global-torque-ui-primitives-0.2.0.tgz
+        version: https://github.com/global-torque/vue-ui/releases/download/ui-primitives-v0.2.0/global-torque-ui-primitives-0.2.0.tgz(reka-ui@2.10.4(vue@3.5.42(typescript@6.0.3)))(typescript@6.0.3)(vue@3.5.42(typescript@6.0.3))
       '@lucide/vue':
         specifier: ^1.46.0
         version: 1.46.0(vue@3.5.42(typescript@6.0.3))
@@ -1438,12 +1439,9 @@ packages:
     resolution: {integrity: sha512-kK8yLE/2dPEfhCAfCKglbZs8FrXb9sN2c9cs43QiPVZ1ogZFCb9xIUrCNXdOl8QAWuPqw5vp6rMfYeWxWJ1cmQ==}
     engines: {node: '>=22'}
 
-  '@global-torque/design-tokens@0.2.0':
-    resolution: {integrity: sha512-x9SwKmA8pRoFrAqgo8vOqRZmOFbKAzMDbsaUCLqBHrYUXVHuPrZDDLYQK3dpkO3wl9zU2Hf2wFrFB8aWCPXxSQ==}
-    engines: {node: '>=22'}
-
-  '@global-torque/design-tokens@0.3.0':
-    resolution: {integrity: sha512-eh5fRUsWYcoM+c0O3EoTP52ABQ1MRyafJWzhsyA7x7qxF3Trub7e8PiYDUtnfmpXNmQbvD5uu63iGM8/VP7TsA==}
+  '@global-torque/design-tokens@https://github.com/global-torque/design-tokens/releases/download/v0.4.0/global-torque-design-tokens-0.4.0.tgz':
+    resolution: {integrity: sha512-Nl0GuFSaiypjH/HlcP74zvB3C/EZBI+hLE6NtYWCSem/v7rvo869aDXdE+LbAdTzfzDu6RZfqMY2boVdXhj8Lg==, tarball: https://github.com/global-torque/design-tokens/releases/download/v0.4.0/global-torque-design-tokens-0.4.0.tgz}
+    version: 0.4.0
     engines: {node: '>=22'}
 
   '@global-torque/sdk@https://github.com/global-torque/sdk/releases/download/v0.5.0/global-torque-sdk-0.5.0.tgz':
@@ -1451,16 +1449,18 @@ packages:
     version: 0.5.0
     engines: {node: '>=22'}
 
-  '@global-torque/ui-kit@0.1.4':
-    resolution: {integrity: sha512-4EDEOhrFR9EpxJiLpqn1yA5Qx2YCgE6lotZPeeNmYf1+zrw9GxsZW7gGKIrF4c7vAfbzEgsOr6hGON8P3t2Uiw==}
+  '@global-torque/ui-kit@https://github.com/global-torque/vue-ui/releases/download/v0.4.0/global-torque-ui-kit-0.4.0.tgz':
+    resolution: {integrity: sha512-KtNUZyJ1/uxnfzHK7aVQ0YBo9sdblCGzxRhgqA0Kj4VqUvQRphLH7tQT8/SyLPc4y/dw0ukbrdgOmX1NO+ZnPA==, tarball: https://github.com/global-torque/vue-ui/releases/download/v0.4.0/global-torque-ui-kit-0.4.0.tgz}
+    version: 0.4.0
     engines: {node: '>=22.12.0'}
     peerDependencies:
       reka-ui: ^2.10.1
       sass: ^1.101.0
       vue: ^3.5.39
 
-  '@global-torque/ui-primitives@0.1.3':
-    resolution: {integrity: sha512-VGUFTGfn7vn7xIUPntI1M2jL0B95ghQ0YT1d3g1/JnH40ioFAcyeN8nHolbgsgkmkL/Bhh/PsvHpRQTygYmbdQ==}
+  '@global-torque/ui-primitives@https://github.com/global-torque/vue-ui/releases/download/ui-primitives-v0.2.0/global-torque-ui-primitives-0.2.0.tgz':
+    resolution: {integrity: sha512-JklQcnhVnn4LHe2VxayX+tJACSg9g7I7G6whMgzN/j8KkG1UEbBuKnkGWoWKPD7GH6B43FbtzFzE0iZuayKOrQ==, tarball: https://github.com/global-torque/vue-ui/releases/download/ui-primitives-v0.2.0/global-torque-ui-primitives-0.2.0.tgz}
+    version: 0.2.0
     engines: {node: '>=22.12.0'}
     peerDependencies:
       reka-ui: ^2.10.1
@@ -1528,6 +1528,11 @@ packages:
 
   '@lucide/vue@1.46.0':
     resolution: {integrity: sha512-xp4mUamXKM/jYCve8TOcEcuikidFh3Jn9gs0THCeEKn/fAdeU0mKhPqk0fmIwn42fI4CwGLRWrLneLA69h8Nqw==}
+    peerDependencies:
+      vue: '>=3.0.1'
+
+  '@lucide/vue@1.52.0':
+    resolution: {integrity: sha512-Gwr6c14jhY6BscoFU+B9OKsr7lg8RTAKOLgW0e61kkFwkt9Q7CZmB9AyJcvhoqapEJgRg2bFoeAcO+cqpgKzEQ==}
     peerDependencies:
       vue: '>=3.0.1'
 
@@ -1742,11 +1747,6 @@ packages:
 
   '@peculiar/x509@1.12.3':
     resolution: {integrity: sha512-+Mzq+W7cNEKfkNZzyLl6A6ffqc3r21HGZUezgfKxpZrkORfOqgRXnS80Zu0IV6a9Ue9QBJeKD7kN0iWfc3bhRQ==}
-
-  '@playwright/test@1.63.0':
-    resolution: {integrity: sha512-oxMK4vllB9RK5NQ2l1pq1IfOf2AvnEuj/vYGDj0H2nMtmtZpKtCwt/l00GEO6xjGfpBNAvjovvYdCm50dRQkpQ==}
-    engines: {node: '>=20'}
-    hasBin: true
 
   '@protobufjs/aspromise@1.1.2':
     resolution: {integrity: sha512-j+gKExEuLmKwvz3OgROXtrJ2UG2x8Ch2YZUxahh+s1F2HZ+wAceUNLkvy6zKCPVRkU++ZWQrdxsUeQXmcg4uoQ==}
@@ -3670,8 +3670,8 @@ packages:
     resolution: {integrity: sha512-q4IGxMv56jCqT4OCRCADBoDP3LO4MhmTXjFbphHPXs4g3j9Xg5RDnxqN8IF/3vIWEU+VCnUq+7JUg/cfy2E6Qw==}
     hasBin: true
 
-  maska@3.2.1:
-    resolution: {integrity: sha512-YXMSyY6QPhf+knXWpHEWMswFQMGzYv5rjIOSPgjLibKkA8AlfBf2HT7XHJoTL6Pm1obXQ+tsM1AnyC/AkcVGnQ==}
+  maska@3.2.2:
+    resolution: {integrity: sha512-qhhoeKXYLsDOxfB70nybuGJmB+XsNb/xhKBBQGMMnT5Hw4+lhdeQmgwlkHYoMIUcppcnLHW6LppPPpGewrv9WQ==}
 
   math-intrinsics@1.1.0:
     resolution: {integrity: sha512-/IXtbwEk5HTPyEwyKX6hGkYXxM9nbj64B+ilVJnC/R6B0pH5G4V3b0pVbL7DBj4tkhBAppbQUlf6F6Xl9LHu1g==}
@@ -3921,16 +3921,6 @@ packages:
 
   pkg-types@2.3.3:
     resolution: {integrity: sha512-j/lCFdcppV0JxWpCEITdbDltBxPP6cHT+yNJ6Go2OgoSA9518X847X9z0p6LtA4Nc16+eQzCZjRrWanTGvHJ5w==}
-
-  playwright-core@1.63.0:
-    resolution: {integrity: sha512-rYCsBF/M5HjUch52bbtVONEFjv6Xu8sm8h72dNlR5bzIE1fvC/bxgspzkjSfU+MweEMmPM8KJebG6nnyxo5mCg==}
-    engines: {node: '>=20'}
-    hasBin: true
-
-  playwright@1.63.0:
-    resolution: {integrity: sha512-+7ziBLidS4NaNCdt57SUDT+wYmmd5fmiQejUic/kb+YsYSCPyOOE9sebzMjNmQrsnNpDJqd4WHvV/8lfKfUDUg==}
-    engines: {node: '>=20'}
-    hasBin: true
 
   possible-typed-array-names@1.1.0:
     resolution: {integrity: sha512-/+5VFTchJDoVj3bhoqi6UeymcD00DAwb1nJwamzPvHEszJ4FpF6SNNbUbOS8yI56qHzdV8eK0qEfOSiodkTdxg==}
@@ -4220,8 +4210,8 @@ packages:
   tabbable@6.5.0:
     resolution: {integrity: sha512-wieBHXygIm7OyQOu5hQlkk62/WyCFYGlWg7L6/ZCUZwx0o398Zkn4pVmMyfYhfMG8kGrj/Krt8eIk6UKC6VzwA==}
 
-  tailwind-merge@3.6.0:
-    resolution: {integrity: sha512-uxL7qAVQriqRQPAyK3pj66VqskWqoZ37PW94jwOTwNfq/z9oyu1V+eqrZqtR2+fCiXdYOZe/Modt8GtvqNzu+w==}
+  tailwind-merge@3.7.0:
+    resolution: {integrity: sha512-XPPUyAc+cvspz3lHTcR/QgPfW2A0lv/xQNIjX3HGhLR+Nq2lHaLq5MtTesHn8GUr3W3DguT2KT5x3NVgRtYwmA==}
 
   thread-stream@3.2.0:
     resolution: {integrity: sha512-zLBvqpwr4Esa0kRjcrzGU6zL25lePWaCLMx0RQFrmteozIfeNdaMLpG5U7PeHzvlFkAWaRKA9/KVW4F60iB+qw==}
@@ -4613,8 +4603,8 @@ packages:
       '@vue/composition-api':
         optional: true
 
-  vue-input-otp@0.3.2:
-    resolution: {integrity: sha512-QMl1842WB6uNAsK4+mZXIskb00TOfahH3AQt8rpRecbtQnOp+oHSUbL/Z3wekfy6pAl+hyN3e1rCUSkCMzbDLQ==}
+  vue-input-otp@0.4.0:
+    resolution: {integrity: sha512-LW+nsZmeXFVdfmPPtoGAXd3vd3T8UBjvwqs6ER4NB7TIoxTuj/reT61HNGe0NyvYDtAHZwjcTmOIX/99f4gpvA==}
     peerDependencies:
       vue: ^3.2.0
 
@@ -5650,9 +5640,7 @@ snapshots:
 
   '@global-torque/client-error-handling@0.1.0': {}
 
-  '@global-torque/design-tokens@0.2.0': {}
-
-  '@global-torque/design-tokens@0.3.0': {}
+  '@global-torque/design-tokens@https://github.com/global-torque/design-tokens/releases/download/v0.4.0/global-torque-design-tokens-0.4.0.tgz': {}
 
   '@global-torque/sdk@https://github.com/global-torque/sdk/releases/download/v0.5.0/global-torque-sdk-0.5.0.tgz(typescript@6.0.3)(zod@4.6.2)':
     dependencies:
@@ -5692,19 +5680,19 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@global-torque/ui-kit@0.1.4(reka-ui@2.10.4(vue@3.5.42(typescript@6.0.3)))(sass@1.104.1)(typescript@6.0.3)(vue@3.5.42(typescript@6.0.3))':
+  '@global-torque/ui-kit@https://github.com/global-torque/vue-ui/releases/download/v0.4.0/global-torque-ui-kit-0.4.0.tgz(reka-ui@2.10.4(vue@3.5.42(typescript@6.0.3)))(sass@1.104.1)(typescript@6.0.3)(vue@3.5.42(typescript@6.0.3))':
     dependencies:
-      '@global-torque/ui-primitives': 0.1.3(reka-ui@2.10.4(vue@3.5.42(typescript@6.0.3)))(typescript@6.0.3)(vue@3.5.42(typescript@6.0.3))
+      '@global-torque/ui-primitives': https://github.com/global-torque/vue-ui/releases/download/ui-primitives-v0.2.0/global-torque-ui-primitives-0.2.0.tgz(reka-ui@2.10.4(vue@3.5.42(typescript@6.0.3)))(typescript@6.0.3)(vue@3.5.42(typescript@6.0.3))
       '@internationalized/date': 3.12.4
-      '@lucide/vue': 1.46.0(vue@3.5.42(typescript@6.0.3))
-      '@vueuse/core': 14.4.0(vue@3.5.42(typescript@6.0.3))
+      '@lucide/vue': 1.52.0(vue@3.5.42(typescript@6.0.3))
+      '@vueuse/core': 15.0.0(vue@3.5.42(typescript@6.0.3))
       ajv: 8.20.0
       ajv-formats: 3.0.1(ajv@8.20.0)
-      maska: 3.2.1
+      maska: 3.2.2
       reka-ui: 2.10.4(vue@3.5.42(typescript@6.0.3))
       sass: 1.104.1
       vue: 3.5.42(typescript@6.0.3)
-      vue-input-otp: 0.3.2(typescript@6.0.3)(vue@3.5.42(typescript@6.0.3))
+      vue-input-otp: 0.4.0(typescript@6.0.3)(vue@3.5.42(typescript@6.0.3))
     transitivePeerDependencies:
       - '@nuxt/kit'
       - '@nuxt/schema'
@@ -5712,20 +5700,19 @@ snapshots:
       - nuxt
       - typescript
 
-  '@global-torque/ui-primitives@0.1.3(reka-ui@2.10.4(vue@3.5.42(typescript@6.0.3)))(typescript@6.0.3)(vue@3.5.42(typescript@6.0.3))':
+  '@global-torque/ui-primitives@https://github.com/global-torque/vue-ui/releases/download/ui-primitives-v0.2.0/global-torque-ui-primitives-0.2.0.tgz(reka-ui@2.10.4(vue@3.5.42(typescript@6.0.3)))(typescript@6.0.3)(vue@3.5.42(typescript@6.0.3))':
     dependencies:
-      '@global-torque/design-tokens': 0.2.0
       '@internationalized/date': 3.12.4
-      '@lucide/vue': 1.46.0(vue@3.5.42(typescript@6.0.3))
-      '@vueuse/core': 14.4.0(vue@3.5.42(typescript@6.0.3))
+      '@lucide/vue': 1.52.0(vue@3.5.42(typescript@6.0.3))
+      '@vueuse/core': 15.0.0(vue@3.5.42(typescript@6.0.3))
       class-variance-authority: 0.7.1
       clsx: 2.1.1
       embla-carousel-vue: 8.6.0(vue@3.5.42(typescript@6.0.3))
       reka-ui: 2.10.4(vue@3.5.42(typescript@6.0.3))
-      tailwind-merge: 3.6.0
+      tailwind-merge: 3.7.0
       tw-animate-css: 1.4.0
       vue: 3.5.42(typescript@6.0.3)
-      vue-input-otp: 0.3.2(typescript@6.0.3)(vue@3.5.42(typescript@6.0.3))
+      vue-input-otp: 0.4.0(typescript@6.0.3)(vue@3.5.42(typescript@6.0.3))
       vue-sonner: 2.0.9
     transitivePeerDependencies:
       - '@nuxt/kit'
@@ -5800,6 +5787,10 @@ snapshots:
   '@juggle/resize-observer@3.4.0': {}
 
   '@lucide/vue@1.46.0(vue@3.5.42(typescript@6.0.3))':
+    dependencies:
+      vue: 3.5.42(typescript@6.0.3)
+
+  '@lucide/vue@1.52.0(vue@3.5.42(typescript@6.0.3))':
     dependencies:
       vue: 3.5.42(typescript@6.0.3)
 
@@ -6029,10 +6020,6 @@ snapshots:
       reflect-metadata: 0.2.2
       tslib: 2.8.1
       tsyringe: 4.10.0
-
-  '@playwright/test@1.63.0':
-    dependencies:
-      playwright: 1.63.0
 
   '@protobufjs/aspromise@1.1.2': {}
 
@@ -8374,7 +8361,7 @@ snapshots:
       punycode.js: 2.3.1
       uc.micro: 3.0.0
 
-  maska@3.2.1: {}
+  maska@3.2.2: {}
 
   math-intrinsics@1.1.0: {}
 
@@ -8645,12 +8632,6 @@ snapshots:
       confbox: 0.3.1
       exsolve: 1.1.1
       pathe: 2.0.3
-
-  playwright-core@1.63.0: {}
-
-  playwright@1.63.0:
-    dependencies:
-      playwright-core: 1.63.0
 
   possible-typed-array-names@1.1.0: {}
 
@@ -8990,7 +8971,7 @@ snapshots:
 
   tabbable@6.5.0: {}
 
-  tailwind-merge@3.6.0: {}
+  tailwind-merge@3.7.0: {}
 
   thread-stream@3.2.0:
     dependencies:
@@ -9269,7 +9250,7 @@ snapshots:
     dependencies:
       vue: 3.5.42(typescript@6.0.3)
 
-  vue-input-otp@0.3.2(typescript@6.0.3)(vue@3.5.42(typescript@6.0.3)):
+  vue-input-otp@0.4.0(typescript@6.0.3)(vue@3.5.42(typescript@6.0.3)):
     dependencies:
       '@vueuse/core': 12.8.2(typescript@6.0.3)
       reka-ui: 2.10.4(vue@3.5.42(typescript@6.0.3))

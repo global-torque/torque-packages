@@ -7,7 +7,7 @@ import { useRepositoryAuth } from '../data/auth.repository.ts';
 import { useFormValidation } from '@global-torque/ui-kit/form-validation';
 import { JSONSchemaType } from 'ajv/dist/types/json-schema';
 import { codeRule, composeInvestmentFormSchema, createInvestmentAjv, errorMessageRule, prepareInvestmentFormData } from '@global-torque/invest-core/form-validation';
-import { toast } from '@global-torque/ui-primitives/sonner';
+import { toast } from 'vue-sonner';
 import { SELFSERVICE } from '@global-torque/domain-types/authConstants';
 import type { IAuthFlow } from '@global-torque/domain-types/authTypes';
 import { oryErrorHandling } from '@global-torque/invest-runtime/error/oryErrorHandling';

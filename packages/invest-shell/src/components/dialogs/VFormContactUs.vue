@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ChevronDown } from '@lucide/vue';
-import ChevronDownApproved from '@global-torque/invest-widgets/icons/images/chevron-down.svg?component';
 import { Button } from '@global-torque/ui-primitives/button';
 import { VFormGroup, VFormInput, VFormSelect, VFormTextarea } from '@global-torque/ui-kit/form';
 import { contactUsSubjects, useContactUsForm } from './useContactUsForm';
@@ -102,17 +100,7 @@ const {
         :content-position="subjectPosition"
         placeholder="Select a subject"
         :disabled="pending"
-      >
-        <template #icon>
-          <span
-            class="invest-form-select-icon"
-            aria-hidden="true"
-          >
-            <ChevronDown class="invest-form-select-icon__outline size-4" />
-            <ChevronDownApproved class="invest-form-select-icon__approved size-[14px]" />
-          </span>
-        </template>
-      </VFormSelect>
+      />
     </VFormGroup>
     <VFormGroup
       label="Message"

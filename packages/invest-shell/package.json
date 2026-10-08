@@ -11,8 +11,7 @@
   "scripts": {
     "css:budget": "node scripts/check-css-budget.mjs",
     "typecheck": "vue-tsc --noEmit -p tsconfig.json",
-    "test:run": "node scripts/check-css-contract.mjs && node --test scripts/check-css-budget.test.mjs && NODE_OPTIONS=\"${NODE_OPTIONS:+$NODE_OPTIONS }--no-experimental-webstorage\" vitest run",
-    "test:css-browser": "node scripts/check-css-browser.mjs"
+    "test:run": "node scripts/check-css-contract.mjs && node --test scripts/check-css-budget.test.mjs && NODE_OPTIONS=\"${NODE_OPTIONS:+$NODE_OPTIONS }--no-experimental-webstorage\" vitest run"
   },
   "exports": {
     ".": "./src/index.ts",
@@ -28,18 +27,18 @@
     "./error-pages": "./src/error-pages.ts"
   },
   "dependencies": {
-    "@global-torque/ui-kit": "0.1.4",
-    "@global-torque/ui-primitives": "0.1.3",
+    "@global-torque/ui-kit": "https://github.com/global-torque/vue-ui/releases/download/v0.4.0/global-torque-ui-kit-0.4.0.tgz",
+    "@global-torque/ui-primitives": "https://github.com/global-torque/vue-ui/releases/download/ui-primitives-v0.2.0/global-torque-ui-primitives-0.2.0.tgz",
     "@lucide/vue": "^1.46.0",
     "@vueuse/core": "^15.0.0",
     "@global-torque/domain-types": "0.4.15",
     "@global-torque/invest-core": "0.4.15",
     "@global-torque/invest-runtime": "0.4.15",
-    "@global-torque/invest-widgets": "0.4.15"
+    "@global-torque/invest-widgets": "0.4.15",
+    "vue-sonner": "^2.0.9"
   },
   "devDependencies": {
-    "@playwright/test": "1.63.0",
-    "@global-torque/design-tokens": "0.3.0",
+    "@global-torque/design-tokens": "https://github.com/global-torque/design-tokens/releases/download/v0.4.0/global-torque-design-tokens-0.4.0.tgz",
     "@vue/server-renderer": "^3.5.39",
     "@vitejs/plugin-vue": "^6.0.9",
     "@vue/test-utils": "^2.5.1",
@@ -54,7 +53,7 @@
     "vue-router": "^5.1.0"
   },
   "peerDependencies": {
-    "@global-torque/design-tokens": ">=0.2.1 <0.4.0",
+    "@global-torque/design-tokens": ">=0.2.1 <0.5.0",
     "ajv": "^8.20.0",
     "pinia": "^3.0.4 || ^4.0.3",
     "reka-ui": "^2.10.1",

@@ -1,5 +1,32 @@
 # Changelog
 
+## Unreleased
+
+- Requires `@global-torque/ui-kit` 0.4.0 and `@global-torque/ui-primitives`
+  0.2.0, which are GitHub release tarballs. UI Kit 0.4.0 pins ui-primitives
+  0.2.0 exactly, so consumers need a pnpm override that maps
+  `@global-torque/ui-primitives` to the 0.2.0 tarball.
+- Imports `toast` from `vue-sonner`, now a direct dependency, because the
+  ui-primitives `./sonner` entry no longer exports it.
+- Accepts `@global-torque/design-tokens` `>=0.2.1 <0.5.0` and tests against
+  0.4.0.
+- `VGlobalAlert` shows success and warning, and `VOfflineStatusBanner` shows
+  its reconnected state, as the standard alert. The icon still shows the
+  status.
+- `VPageTopInfoAndTabs` sets the line variant on `TabsList`. Its list keeps
+  horizontal scrolling with a hidden scrollbar and room for the active-tab
+  indicator.
+- Sidebar07 uses the standard ui-primitives sidebar behavior: it writes the
+  `sidebar_state` cookie, Ctrl/Cmd+B toggles it, a width of 768px or less is
+  mobile, and the mobile sheet focuses its first focusable element.
+- The contact form subject select shows the standard chevron.
+- Removed the 18 control and table metric tokens from `styles/geometry.css`.
+  ui-primitives 0.2.0 and ui-kit 0.4.0 do not read them.
+- Removed the `test:css-browser` script and its `check-css-browser.mjs` check,
+  which depended on ui-kit 0.1.4 and ui-primitives 0.1.3 source files. Removed
+  `scripts/css-contract-package-roots.mjs` and the `@playwright/test` dev
+  dependency, which only that check used.
+
 ## 0.4.15 candidate
 
 - Added a temporary shell bridge for the published UI package pair so dialogs,

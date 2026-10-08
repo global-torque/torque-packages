@@ -81,7 +81,7 @@ vi.mock('@global-torque/invest-runtime/navigation', () => ({
 // No need to mock general scroll here; not asserted in tests
 
 // Mock the dependencies
-vi.mock('@global-torque/ui-primitives/sonner', () => ({
+vi.mock('vue-sonner', () => ({
   // sonner's toast is a function with variant methods; all record on one mock
   get toast() { return Object.assign(vi.fn, { error: vi.fn, success: vi.fn, info: vi.fn, dismiss: vi.fn }); },
 }));

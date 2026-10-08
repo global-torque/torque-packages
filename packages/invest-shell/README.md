@@ -132,14 +132,14 @@ Sidebar07 composes the public `@global-torque/ui-primitives/sidebar` provider,
 Sidebar and navigation components. The former `./sidebar` facade is removed.
 Its existing props, navigation events and named slots remain supported; side
 and collapsible types derive from the primitive `SidebarProps` contract.
-The investor provider disables persistence and the new keyboard shortcut,
-starts collapsed, and preserves 18rem expanded/mobile and 4.3rem collapsed
-widths. Mobile means strictly below 768px; returning to desktop closes the
-sheet. The custom primitive Button trigger keeps the approved avatar/icons
-and restores focus after mobile close. The rail is inside Sidebar and takes
+The investor provider uses the primitive `sidebar_state` cookie and Ctrl/Cmd+B
+shortcut, starts collapsed, and preserves 18rem expanded/mobile and 4.3rem
+collapsed widths. Mobile means a width of 768px or less. The custom primitive
+Button trigger keeps the approved avatar/icons and restores focus after mobile
+close. The rail is inside Sidebar and takes
 part in the Tab sequence. Investor-only geometry is in `styles/components.css`.
 
-The mobile Sheet initially focuses its dialog container and keeps keyboard
+The mobile Sheet focuses its first focusable element and keeps keyboard
 focus inside. A custom trigger opened while focus-visible retains its expansion
 outline beneath the translucent panel until close; pointer opening adds no
 outline. This decoration does not retain actual focus outside the dialog.

@@ -14,7 +14,7 @@ const {
 } = storeToRefs(globalAlertStore);
 const icons: Record<string, typeof CircleAlert> = { success: CircleCheck, info: Info, warning: TriangleAlert };
 const icon = computed(() => icons[variant.value ?? 'error'] ?? CircleAlert);
-const alertTones: Record<string, 'default' | 'success' | 'warning' | 'destructive'> = { error: 'destructive', success: 'success', warning: 'warning' };
+const alertTones: Record<string, 'default' | 'destructive'> = { error: 'destructive' };
 const alertVariant = computed(() => alertTones[variant.value ?? 'error'] ?? 'default');
 </script>
 

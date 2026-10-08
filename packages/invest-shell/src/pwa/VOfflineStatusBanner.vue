@@ -53,7 +53,6 @@ const bannerText = computed(() => (
     data-testid="offline-status-banner"
   >
     <Alert
-      :variant="isReconnected ? 'success' : 'default'"
       class="v-offline-status-banner__alert"
     >
       <component :is="alertIcon(isReconnected ? 'success' : 'info')" />
