@@ -42,8 +42,6 @@ const isAuthorized = computed(() => Boolean(props.user));
   <SidebarProvider
     v-if="isAuthorized"
     v-model:open="effectiveOpen"
-    :persist-state="false"
-    :keyboard-shortcut="false"
     :style="{ '--sidebar-width': '18rem', '--sidebar-width-icon': '4.3rem', flexDirection: props.side === 'right' ? 'row-reverse' : undefined }"
     class="AppSidebar app-sidebar group/sidebar-wrapper flex min-h-screen w-full text-slate-950"
     :data-state="effectiveOpen ? 'expanded' : 'collapsed'"

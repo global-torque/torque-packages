@@ -47,12 +47,13 @@ const { signIn } = useOfferSignIn();
 
 <template>
   <VUrlSyncedTabs
-    :variant="compactTabs ? 'default' : 'line'"
     :default-value="tabOptions[0].value"
     class="OffersDetailsContent offer-details-content with-default-distance"
   >
     <TabsList
-      class="offer-details-content__tabs-list"
+      :variant="compactTabs ? 'default' : 'line'"
+      class="offer-details-content__tabs-list max-w-full justify-start overflow-x-auto overflow-y-hidden no-scrollbar"
+      :class="{ 'pb-1.25 group-data-horizontal/tabs:h-auto': !compactTabs }"
     >
       <TabsTrigger
         v-for="(tab, tabIndex) in tabOptions"

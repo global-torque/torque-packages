@@ -3,7 +3,7 @@
 import {
   computed, defineAsyncComponent, hydrateOnVisible, PropType, ref,
 } from 'vue';
-import { toast } from '@global-torque/ui-primitives/sonner';
+import { toast } from 'vue-sonner';
 import VFormFooterSkeleton from './VFormFooterSkeleton.vue';
 import { useInvestApplicationContext } from '@global-torque/invest-runtime/application-context';
 import type { InvestStaticContactConfig } from '@global-torque/invest-core/app/config';

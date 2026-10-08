@@ -41,14 +41,6 @@ const isCollapsed = computed(() => !sidebar.isMobile.value && sidebar.state.valu
 const showSidebarHeader = computed(() => (
   !sidebar.isMobile.value || props.showHeaderOnMobile
 ));
-
-function focusMobilePanel(event: Event) {
-  if (!(event.target instanceof HTMLElement)) return;
-  // Start inside the dialog without selecting a profile action. Sheet retains
-  // its focus trap and subsequent keyboard navigation between controls.
-  event.preventDefault();
-  event.target.focus({ preventScroll: true });
-}
 </script>
 
 <template>
@@ -64,7 +56,6 @@ function focusMobilePanel(event: Event) {
     :collapsible="primitiveCollapsible"
     class="Sidebar07Shell sidebar-07-shell"
     :class="{ 'is--desktop-collapsed': sidebar.state.value === 'collapsed' }"
-    @open-auto-focus="focusMobilePanel"
   >
     <SidebarHeader v-if="showSidebarHeader">
       <slot

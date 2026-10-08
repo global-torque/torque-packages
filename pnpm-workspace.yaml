@@ -10,6 +10,10 @@ overrides:
   'postcss@>=8.0.0 <8.5.23': '8.5.23'
   'svgo@>=3.0.0 <3.3.5': '3.3.5'
   'undici@>=7.0.0 <7.29.0': '7.29.0'
+  '@global-torque/ui-primitives': 'https://github.com/global-torque/vue-ui/releases/download/ui-primitives-v0.2.0/global-torque-ui-primitives-0.2.0.tgz'
+
+# ui-kit 0.4.0 depends on ui-primitives 0.2.0, which exists only as the GitHub release tarball the override above supplies; allow that tarball as a subdependency.
+blockExoticSubdeps: false
 
 catalog:
   '@vitejs/plugin-vue': '^6.0.9'
@@ -36,4 +40,3 @@ minimumReleaseAgeExclude:
   - '@vueuse/metadata@15.0.0'
   - '@vueuse/shared@15.0.0'
   - 'prettier@3.9.7'
-  - '@global-torque/design-tokens@0.3.0'

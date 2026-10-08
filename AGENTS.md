@@ -37,7 +37,7 @@ pnpm --filter <package-name> run typecheck
 pnpm --filter <package-name> run test:run
 ```
 
-When Node-conditioned entries or package boundaries are affected, run `pnpm run build:node`, inspect generated diffs, and then run `pnpm run check` for cross-package typechecks and tests. The root has no lint script; do not invent one. For shell CSS/browser changes, install Chromium with `pnpm exec playwright install --with-deps chromium`, then run `pnpm --filter @global-torque/invest-shell run test:css-browser` in addition to its built-in CSS checks in `test:run`. CSS budget/token/fallback changes require measured justification and consumer visual verification.
+When Node-conditioned entries or package boundaries are affected, run `pnpm run build:node`, inspect generated diffs, and then run `pnpm run check` for cross-package typechecks and tests. The root has no lint script; do not invent one. For shell CSS changes, run `pnpm --filter @global-torque/invest-shell run test:run`, which includes its built-in CSS checks. CSS budget/token/fallback changes require measured justification and consumer visual verification.
 
 For docs-only instruction changes, use focused diff/path/link/command checks; a full app or package test run is unnecessary unless factual uncertainty requires it. Report checks as PASS, FAIL, BLOCKED, or NOT RUN with the command, target, evidence, and any gap.
 

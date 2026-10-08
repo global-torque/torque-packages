@@ -65,7 +65,6 @@ const otpSubmitButtonText = computed(() =>
       <div class="v-dialog-wallet-auth__body is--margin-top-20">
         <Alert
           v-if="shouldShowOperationCodeAlert"
-          variant="warning"
           class="v-dialog-wallet-auth__operation-alert">
           <TriangleAlertIcon />
           <AlertTitle>Operation cannot be reversed</AlertTitle>

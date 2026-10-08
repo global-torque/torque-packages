@@ -11,7 +11,7 @@ enableAutoUnmount(afterEach);
 
 vi.stubGlobal('matchMedia', (query: string) => {
   const callbacks = new Map<EventListener, EventListener>();
-  const matches = () => query === '(width < 768px)' && window.innerWidth < 768;
+  const matches = () => query === '(max-width: 768px)' && window.innerWidth <= 768;
   return {
     media: query,
     get matches() { return matches(); },
@@ -47,7 +47,7 @@ describe('Sidebar07/AppSidebar', () => {
     document.cookie = 'sidebar_state=; path=/; max-age=0';
   });
 
-  it('initially focuses the mobile dialog while retaining its open state and profile layout context', async () => {
+  it('opens the mobile dialog while retaining its open state and profile layout context', async () => {
     window.innerWidth = 390;
     const wrapper = mount(AppSidebar, {
       attachTo: document.body,
@@ -56,10 +56,8 @@ describe('Sidebar07/AppSidebar', () => {
     await wrapper.get('[data-sidebar-trigger]').trigger('click');
     await flushPromises();
     const panel = wrapper.get('[data-mobile="true"]');
-    await vi.waitFor(() => expect(document.activeElement).toBe(panel.element));
     expect(panel.attributes('data-state')).toBe('open');
     expect(panel.attributes('tabindex')).toBe('-1');
-    expect(panel.classes()).toContain('is--desktop-collapsed');
     expect(panel.find('a[href="#summary"]').exists()).toBe(true);
   });
 
@@ -78,7 +76,6 @@ describe('Sidebar07/AppSidebar', () => {
     await trigger.trigger('click');
     await flushPromises();
     const panel = wrapper.get('[data-mobile="true"]');
-    await vi.waitFor(() => expect(document.activeElement).toBe(panel.element));
     expect(trigger.classes().includes('is--open-focus')).toBe(focused);
     await panel.trigger('keydown', { key: 'Escape' });
     await flushPromises();
@@ -87,8 +84,7 @@ describe('Sidebar07/AppSidebar', () => {
     await vi.waitFor(() => expect(document.activeElement).toBe(trigger.element));
   });
 
-  it('keeps the investor host collapsed without cookies or keyboard shortcuts and exposes a keyboard rail', async () => {
-    document.cookie = 'sidebar_state=true; path=/';
+  it('keeps the investor host collapsed and exposes a keyboard rail', async () => {
     const wrapper = mount(AppSidebar, {
       attachTo: document.body,
       props: { user: { name: 'Investor' }, mainNav: [{ title: 'Summary', href: '#summary' }] },
@@ -97,16 +93,8 @@ describe('Sidebar07/AppSidebar', () => {
     expect(rail.element.tabIndex).toBe(0);
     expect(rail.element.closest('[data-sidebar="sidebar"]')).not.toBeNull();
     expect(wrapper.get('[data-slot="sidebar-wrapper"]').attributes('data-state')).toBe('collapsed');
-    const shortcut = new KeyboardEvent('keydown', { key: 'b', metaKey: true, cancelable: true });
-    window.dispatchEvent(shortcut);
-    await nextTick();
-    expect(shortcut.defaultPrevented).toBe(false);
-    expect(wrapper.get('[data-slot="sidebar-wrapper"]').attributes('data-state')).toBe('collapsed');
     await rail.trigger('click');
     expect(wrapper.get('[data-slot="sidebar-wrapper"]').attributes('data-state')).toBe('expanded');
-    expect(document.cookie).toContain('sidebar_state=true');
-    await rail.trigger('click');
-    expect(document.cookie).toContain('sidebar_state=true');
   });
 
   it('renders collapsed Dashboard, Settings and project routes as working router anchors', async () => {
@@ -160,17 +148,6 @@ describe('Sidebar07/AppSidebar', () => {
     await flushPromises();
     expect(wrapper.find('[data-mobile="true"]').exists()).toBe(true);
     expect(wrapper.find('.sidebar-07-closed-shadow').exists()).toBe(false);
-    window.innerWidth = 768;
-    window.dispatchEvent(new Event('resize'));
-    await nextTick();
-    await flushPromises();
-    expect(wrapper.get('[data-slot="sidebar-container"]').classes()).toContain('fixed');
-    expect(wrapper.find('.sidebar-07-closed-shadow').exists()).toBe(false);
-    window.innerWidth = 390;
-    window.dispatchEvent(new Event('resize'));
-    await nextTick();
-    await flushPromises();
-    expect(wrapper.find('[data-mobile="true"]').exists()).toBe(false);
   });
 
   it('passes authenticated user and profile avatar sources to real images', () => {

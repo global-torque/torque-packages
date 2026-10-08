@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased
+
+- Requires `@global-torque/ui-kit` 0.4.0 and `@global-torque/ui-primitives`
+  0.2.0, which are GitHub release tarballs. UI Kit 0.4.0 pins ui-primitives
+  0.2.0 exactly, so consumers need a pnpm override that maps
+  `@global-torque/ui-primitives` to the 0.2.0 tarball.
+- The wallet authorization dialog shows its irreversible-operation warning as
+  the standard alert, because ui-primitives 0.2.0 has no `warning` variant.
+  The warning icon still shows the status.
+
 ## 0.4.15 candidate
 
 - Reissued the widget cohort against the published UI package pair while the

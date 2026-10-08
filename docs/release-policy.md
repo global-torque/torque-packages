@@ -4,7 +4,7 @@ Each package has explicit source exports, package files, MIT metadata, runtime
 dependencies, singleton peers, and public repository metadata. The workspace
 root remains private. A pushed stable `framework-vX.Y.Z` tag is the release
 identity. The release workflow requires every package version to equal the tag,
-runs the repository and browser checks, packs once with `pnpm pack`, creates
+runs the repository checks, packs once with `pnpm pack`, creates
 the GitHub Release, and uses GitHub artifact attestations for source provenance.
 The npm publication workflow downloads and verifies those tagged assets and
 publishes the same tarballs with npm trusted publishing and provenance.
@@ -12,10 +12,11 @@ The publish loop addresses each downloaded archive with an explicit `./` local
 path and clears `NODE_AUTH_TOKEN` before npm runs so trusted OIDC remains the
 active registry authentication path.
 
-The selected `@global-torque/ui-kit@0.1.4` and
-`@global-torque/design-tokens@0.3.0` dependencies are published registry
-packages. Candidate creation installs them through the committed frozen
-lockfile; no draft transport or derived lockfile overlay is supported.
+The selected `@global-torque/ui-kit` 0.4.0, `@global-torque/ui-primitives`
+0.2.0 and `@global-torque/design-tokens` 0.4.0 dependencies are GitHub release
+tarballs. A workspace override maps the exact ui-primitives 0.2.0 dependency of
+ui-kit to its tarball. Candidate creation installs them through the committed
+frozen lockfile; no draft transport or derived lockfile overlay is supported.
 
 Candidate 0.4.15 reissues the seven-package cohort with a temporary shared UI
 portal-layer bridge for the published `@global-torque/ui-primitives@0.1.3`
@@ -46,7 +47,7 @@ accent hook and host `--primary` fallback for both login text and its arrow
 asset, preserving the 0.4.0 mobile-header pixels while retaining the 0.4.6
 geometry recovery.
 The retained historical compatibility evidence remains available for audit;
-new releases use the normal package tests, Chromium CSS contract, GitHub
+new releases use the normal package tests, GitHub
 attestation, and pinned real-consumer Git dependencies instead of a custom
 receipt format.
 
@@ -135,7 +136,7 @@ its package bytes and provenance are not replaced. The earlier
 canonical `0.2.0` package artifacts or rollback proof exist.
 
 Before attestation, the release workflow builds the Node helpers and runs the
-package and Chromium CSS checks on Node 24. It creates the GitHub Release but
+package checks on Node 24. It creates the GitHub Release but
 does not publish npm packages or deploy apps. The provenance workflow verifies
 the tagged release and GitHub attestations. The separate manual
 `.github/workflows/publish.yml` workflow is the only npm publication path. It downloads and verifies the tagged tarballs, then publishes each exact archive once sequentially in dependency order with npm trusted publishing. It never builds or repacks source, retries, resumes, compares registry contents, or uses a fallback credential path; `NODE_AUTH_TOKEN` is unset before npm runs. A failed or partial cohort is abandoned and requires a new package version and immutable release tag.

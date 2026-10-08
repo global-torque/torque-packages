@@ -1,5 +1,18 @@
 # Changelog
 
+## Unreleased
+
+- Requires `@global-torque/ui-kit` 0.4.0 and `@global-torque/ui-primitives`
+  0.2.0, which are GitHub release tarballs. UI Kit 0.4.0 pins ui-primitives
+  0.2.0 exactly, so consumers need a pnpm override that maps
+  `@global-torque/ui-primitives` to the 0.2.0 tarball.
+- Imports `toast` from `vue-sonner`, now a direct dependency, because the
+  ui-primitives `./sonner` entry no longer exports it.
+- Offer details set the line tab variant on `TabsList`, because
+  `VUrlSyncedTabs` no longer accepts a variant. The pill and line tab lists
+  scroll horizontally with a hidden scrollbar again, so the tabs no longer
+  overflow narrow phones.
+
 ## 0.4.15 candidate
 
 - Reissued the feature cohort against the published UI package pair while the

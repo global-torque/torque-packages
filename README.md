@@ -93,7 +93,7 @@ CI runs on pull requests and pushes to `master` using Node 24.21.0. It runs
 `pnpm run build:node` and `pnpm run check` (typechecks and package tests).
 Pushing a stable `framework-vX.Y.Z` tag runs the release workflow. It requires
 the root and all seven package versions to match the tag, runs the package
-checks and Node builds, runs the Chromium CSS contract, packs each package with
+checks and Node builds, packs each package with
 `pnpm pack`, attests the tarballs, and creates the GitHub Release. Publication
 is a separate trusted-OIDC workflow that downloads and verifies those exact
 release tarballs before passing them to `npm publish --provenance`; it never
@@ -131,10 +131,10 @@ plain Node while browser bundlers and TypeScript continue to use the source
 entries. The Node build compiles only those four entries once during candidate
 packing; generated output is ignored and is never a source of browser SFCs.
 
-The framework release uses the public `@global-torque/ui-kit@0.1.4`
-dependency. Run
+The framework release uses the `@global-torque/ui-kit` 0.4.0 and
+`@global-torque/ui-primitives` 0.2.0 GitHub release tarballs. Run
 `pnpm install --frozen-lockfile`, then `pnpm run build:node` followed by
-`pnpm run check`. The frozen lockfile supplies the published UI Kit dependency.
+`pnpm run check`. The frozen lockfile supplies both UI tarballs.
 
 Create a release by pushing a matching version tag:
 

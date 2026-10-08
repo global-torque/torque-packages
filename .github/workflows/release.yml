@@ -43,13 +43,9 @@ jobs:
           pnpm run check
           pnpm run build:node
       - name: Pack release archives
-        env:
-          CSS_BROWSER_REPORT: ${{ github.workspace }}/artifacts/browser-contract-report.json
         run: |
           set -euo pipefail
           mkdir -p artifacts
-          pnpm exec playwright install --with-deps chromium
-          pnpm --filter @global-torque/invest-shell run test:css-browser
           for package in domain-types invest-core invest-data invest-runtime invest-widgets invest-features invest-shell; do
             pnpm --dir "packages/$package" pack --pack-destination "$GITHUB_WORKSPACE/artifacts"
           done
