@@ -24,6 +24,11 @@ The shell declares its four internal framework dependencies at the exact matchin
   and session contact details through `useContactUsSessionPrefill`.
 - PWA policy/test constants and registration bridge exports.
 
+`VHeaderPWA` accepts an optional `brandName` for the accessible logo label. The
+value is trimmed and falls back to the installed application brand title when
+omitted or blank. The resolved name is passed to both the responsive header and
+the PWA logo.
+
 ## Boundary Rules
 
 - Do not own app route tables, route-level page components, redirects, or final

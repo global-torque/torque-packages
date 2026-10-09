@@ -66,12 +66,14 @@ vi.mock('vue-router', () => ({
 }));
 vi.mock('../../components/VHeaderBar/VHeaderGuest.vue', () => ({
   default: {
-    template: '<div data-testid="guest-header"><slot name="leading" /><slot name="logo" /><slot /><slot name="pwa" /><slot name="mobile" /></div>',
+    props: ['brandName'],
+    template: '<div data-testid="guest-header" :data-brand-name="brandName"><slot name="leading" /><slot name="logo" /><slot /><slot name="pwa" /><slot name="mobile" /></div>',
   },
 }));
 vi.mock('../../components/VHeaderBar/VHeaderAuthorized.vue', () => ({
   default: {
-    template: '<div data-testid="authorized-header"><slot name="leading" /><slot name="logo" /><slot /><slot name="pwa" /><slot name="mobile" /></div>',
+    props: ['brandName'],
+    template: '<div data-testid="authorized-header" :data-brand-name="brandName"><slot name="leading" /><slot name="logo" /><slot /><slot name="pwa" /><slot name="mobile" /></div>',
   },
 }));
 
@@ -93,7 +95,6 @@ const mountHeader = (
       VButton: {
         template: '<button><slot /></button>',
       },
-      VLogo: true,
       VHeaderProfilePWA: {
         template: '<div data-testid="profile-menu" />',
       },
@@ -143,6 +144,22 @@ describe('VHeaderPWA', () => {
     const wrapper = mountHeader('', '/offers');
     expect(wrapper.find('[data-testid="guest-header"]').exists()).toBe(true);
     expect(wrapper.text()).toContain('Log in');
+  });
+
+  it('resolves an explicit brand name for the header and native logo', () => {
+    const wrapper = mountHeader('', '/', false, { brandName: '  Acme Capital  ' });
+
+    expect(wrapper.find('[data-testid="guest-header"]').attributes('data-brand-name'))
+      .toBe('Acme Capital');
+    expect(wrapper.get('.v-logo').attributes('aria-label')).toBe('Acme Capital logo');
+  });
+
+  it('falls back to the configured brand name for blank or absent values', () => {
+    const blankWrapper = mountHeader('', '/', false, { brandName: '   ' });
+    const absentWrapper = mountHeader('', '/');
+
+    expect(blankWrapper.get('.v-logo').attributes('aria-label')).toBe('Global Torque logo');
+    expect(absentWrapper.get('.v-logo').attributes('aria-label')).toBe('Global Torque logo');
   });
 
   it('shows notifications icon when logged in', () => {

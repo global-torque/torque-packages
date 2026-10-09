@@ -78,6 +78,8 @@
 
 ## 0.4.15 candidate
 
+- Added the optional `VHeaderPWA.brandName` accessible-label override with a
+  trimmed application-brand fallback for the PWA header and logo.
 - Added a temporary shell bridge for the published UI package pair so dialogs,
   menus, popovers, tooltips, comboboxes and selects cover the fixed header while
   mobile Sheets retain their lower layer. Remove it only after the released UI

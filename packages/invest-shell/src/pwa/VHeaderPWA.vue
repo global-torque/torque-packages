@@ -86,6 +86,10 @@ const props = defineProps({
     type: String,
     default: '',
   },
+  brandName: {
+    type: String,
+    default: undefined,
+  },
   suppressAuthenticatedAccountControls: {
     type: Boolean,
     default: false,
@@ -108,6 +112,7 @@ const profilesStore = useProfilesStore();
 const { selectedUserProfileId } = storeToRefs(profilesStore);
 const applicationConfig = useInvestApplicationContext().appConfig;
 const IS_STATIC_SITE = String(applicationConfig.isStaticSite ?? '') ?? '';
+const resolvedBrandName = computed(() => props.brandName?.trim() || applicationConfig.brand.title);
 
 const isMobileSidebarOpen = defineModel<boolean>();
 
@@ -335,6 +340,7 @@ const headerComponent = computed(() => (
     :is-mobile-p-w-a="isMobileAppShell"
     :show-profile-link="false"
     :url-profile="urlProfile"
+    :brand-name="resolvedBrandName"
     :user-logged-in="userLoggedIn"
     class="VHeaderInvest v-header-invest"
   >
@@ -379,7 +385,7 @@ const headerComponent = computed(() => (
       <VLogo
         v-else
         :href="urlHome"
-        :brand-name="applicationConfig.brand.title"
+        :brand-name="resolvedBrandName"
         :show-desktop="false"
         class="v-header__logo v-header-invest__pwa-logo"
       />
