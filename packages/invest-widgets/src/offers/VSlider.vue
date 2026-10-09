@@ -4,8 +4,6 @@ import Fade from 'embla-carousel-fade';
 import { computed } from 'vue';
 import { Carousel, CarouselContent, CarouselNext, CarouselPrevious, type CarouselApi } from '@global-torque/ui-primitives/carousel';
 import { ArrowLeft, ArrowRight } from '@lucide/vue';
-import ArrowLeftApproved from '../icons/images/arrow-left.svg?component';
-import ArrowRightApproved from '../icons/images/arrow-right.svg?component';
 
 interface Props {
   variant?: 'default' | 'autoplay';
@@ -60,10 +58,6 @@ if (props.fade) {
       class="v-slider__prev"
     >
       <ArrowLeft class="v-slider__icon-outline" />
-      <ArrowLeftApproved
-        class="v-slider__icon-approved size-[18px]"
-        aria-hidden="true"
-      />
       <span class="sr-only">Previous Slide</span>
     </CarouselPrevious>
     <CarouselNext
@@ -71,10 +65,6 @@ if (props.fade) {
       class="v-slider__next"
     >
       <ArrowRight class="v-slider__icon-outline" />
-      <ArrowRightApproved
-        class="v-slider__icon-approved size-[18px]"
-        aria-hidden="true"
-      />
       <span class="sr-only">Next Slide</span>
     </CarouselNext>
     <CarouselContent class="v-slider__content">
@@ -90,34 +80,16 @@ if (props.fade) {
   width: 100%;
 
   &__content {
-    margin-left: var(--ui-slider-track-margin, -1rem);
+    margin-left: -1rem;
   }
 
   &__prev,
   &__next {
-    width: var(--ui-slider-control-size, 2rem);
-    height: var(--ui-slider-control-size, 2rem);
-    padding: var(--ui-slider-control-padding, revert-layer);
-    border-radius: var(--ui-slider-control-radius, revert-layer);
-    border-color: var(--ui-slider-control-border, revert-layer);
-    background: var(--ui-slider-control-background, revert-layer);
-    color: var(--ui-slider-control-color, revert-layer);
-    box-shadow: var(--ui-slider-control-shadow, revert-layer);
-    translate: var(--ui-slider-control-translate, revert-layer);
-
-    &:hover {
-      background: var(--ui-slider-control-hover-background, revert-layer);
-      color: var(--ui-slider-control-hover-color, revert-layer);
-    }
-
-    &:disabled {
-      opacity: var(--ui-slider-control-disabled-opacity, revert-layer);
-    }
+    width: 2rem;
+    height: 2rem;
   }
 
-  &__icon-outline { display: var(--ui-slider-outline-icon-display, block); }
-
-  &__icon-approved { display: var(--ui-slider-approved-icon-display, none); }
+  &__icon-outline { display: block; }
 
   &:not(.is--autoplay, .is--no-buttons) {
     margin-top: 10px;

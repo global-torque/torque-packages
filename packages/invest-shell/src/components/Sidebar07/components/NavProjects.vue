@@ -81,8 +81,8 @@ function handleSelect(item: SidebarNavItem) {
             <SidebarMenuButton
               :as="resolveLinkTag(item)"
               :class="[
-                'group-data-[collapsible=icon]:size-[var(--ui-sidebar-collapsed-control-size,40px)]!',
-                'group-data-[collapsible=icon]:p-[var(--ui-sidebar-nav-padding,12px)]!',
+                'group-data-[collapsible=icon]:size-[40px]!',
+                'group-data-[collapsible=icon]:p-[12px]!',
                 props.showActions && !isCollapsed ? 'pr-2' : '',
               ]"
               :is-active="Boolean(item.active)"

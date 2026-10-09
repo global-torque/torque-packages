@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, nextTick, PropType, ref, watch } from 'vue';
-import { useResizeObserver, useScroll } from '@vueuse/core';
+import { computed, PropType, ref, watch } from 'vue';
+import { useResizeObserver } from '@vueuse/core';
 import {
   type RouteLocationRaw,
   useRoute,
@@ -38,17 +38,12 @@ const route = useRoute();
 const router = useRouter();
 const tabsListRef = ref<InstanceType<typeof TabsList>>();
 const tabsElement = computed<HTMLElement | undefined>(() => tabsListRef.value?.$el);
-const { arrivedState, measure } = useScroll(tabsElement, { observe: true });
 const underlineWidth = ref('100%');
 
 function updateUnderlineExtent() {
   const element = tabsElement.value;
   if (!props.retainUnderlineExtent || !element) return;
   underlineWidth.value = `${element.scrollWidth}px`;
-  // The underline participates in scrollWidth after Vue applies its new width.
-  void nextTick(() => {
-    if (props.retainUnderlineExtent && tabsElement.value === element) measure();
-  });
 }
 
 watch([tabsElement, () => props.retainUnderlineExtent], () => {
@@ -78,7 +73,6 @@ useResizeObserver(computed(() => tabsElement.value
   ? [tabsElement.value, ...Array.from(tabsElement.value.children) as HTMLElement[]]
   : []), () => {
   updateUnderlineExtent();
-  measure();
   centerSelectedTab();
 });
 
@@ -140,16 +134,6 @@ const handleTabChange = (nextTab: string | number) => {
               </template>
             </TabsTrigger>
           </TabsList>
-          <span
-            v-if="tabsElement && !arrivedState.left"
-            class="v-page-top-info-and-tabs__edge v-page-top-info-and-tabs__edge--left"
-            aria-hidden="true"
-          />
-          <span
-            v-if="tabsElement && !arrivedState.right"
-            class="v-page-top-info-and-tabs__edge v-page-top-info-and-tabs__edge--right"
-            aria-hidden="true"
-          />
         </div>
       </div>
       <div class="v-page-top-info-and-tabs__tabs-content">
@@ -173,22 +157,18 @@ const handleTabChange = (nextTab: string | number) => {
 <style lang="scss">
 .v-page-top-info-and-tabs {
   width: 100%;
-  background-color: var(--ui-color-canvas, var(--muted));
+  background-color: var(--muted);
   position: relative;
   // height: calc(64px + 100%);
   // padding-top: 64px;
   margin-bottom: 90px;
-
-  &__tabs {
-    display: var(--ui-page-tabs-display, revert-layer);
-  }
 
   &__tab-viewport {
     position: relative;
     width: 100%;
 
     [data-slot='tabs-trigger'] {
-      z-index: var(--ui-tabs-trigger-layer, 10);
+      z-index: 10;
     }
   }
 
@@ -201,27 +181,7 @@ const handleTabChange = (nextTab: string | number) => {
       bottom: 0;
       left: 0;
       width: var(--page-tabs-underline-width, 100%);
-      border-bottom: 2px solid var(--ui-color-border-muted, var(--input));
-    }
-  }
-
-  &__edge {
-    display: var(--ui-tabs-edge-display, none);
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 40px;
-    pointer-events: none;
-    z-index: 5;
-
-    &--left {
-      left: 0;
-      background: linear-gradient(to right, var(--ui-color-surface, var(--card)) 0%, var(--ui-tabs-edge-background, color-mix(in srgb, var(--card) 80%, transparent)) 50%, transparent 100%);
-    }
-
-    &--right {
-      right: 0;
-      background: linear-gradient(to left, var(--ui-color-surface, var(--card)) 0%, var(--ui-tabs-edge-background, color-mix(in srgb, var(--card) 80%, transparent)) 50%, transparent 100%);
+      border-bottom: 2px solid var(--input);
     }
   }
   // @media screen and (max-width: 768px){
@@ -238,7 +198,7 @@ const handleTabChange = (nextTab: string | number) => {
   }
 
   &__tabs-content {
-    background: var(--ui-color-surface, var(--background));
+    background: var(--background);
     padding-bottom: 40px;
     height: 100%;
 
@@ -248,6 +208,15 @@ const handleTabChange = (nextTab: string | number) => {
 
     @media screen and (width > 768px){
       min-height: 1000px;
+    }
+  }
+
+  // Under the line tabs the panel starts 40px down: the Tabs gap (8px) plus
+  // this padding. Narrower screens keep the 24px rules. The hideTabs branch
+  // has no tabs, so it gets no offset.
+  &__tabs &__tabs-content {
+    @media screen and (width >= 768px) {
+      padding-top: 32px;
     }
   }
 

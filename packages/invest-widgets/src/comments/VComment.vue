@@ -11,7 +11,7 @@ defineProps({
   title: String,
   background: {
     type: String,
-    default: 'var(--ui-color-subtle, var(--accent))',
+    default: 'var(--accent)',
   },
   tag: String,
 });

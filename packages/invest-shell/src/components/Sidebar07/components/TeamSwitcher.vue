@@ -133,9 +133,9 @@ function handleCustomSelect(value: string | number) {
             as="button"
             :class="[
               'team-switcher__trigger',
-              'group-data-[collapsible=icon]:w-[var(--ui-sidebar-collapsed-control-size,100%)]!',
-              'group-data-[collapsible=icon]:h-[var(--ui-sidebar-collapsed-control-size,40px)]!',
-              'group-data-[collapsible=icon]:p-[var(--ui-sidebar-profile-padding,0px)]!',
+              'group-data-[collapsible=icon]:w-[100%]!',
+              'group-data-[collapsible=icon]:h-[40px]!',
+              'group-data-[collapsible=icon]:p-[0px]!',
             ]"
             :size="triggerSize"
             type="button"
@@ -248,7 +248,7 @@ function handleCustomSelect(value: string | number) {
     border-radius: 2px;
 
     &[data-state='open'] {
-      background: var(--ui-color-canvas, var(--muted));
+      background: var(--muted);
     }
   }
 
@@ -271,17 +271,16 @@ function handleCustomSelect(value: string | number) {
   }
 
   &__avatar {
-    position: var(--ui-chrome-avatar-position, relative);
-    line-height: var(--ui-chrome-avatar-line-height, revert-layer);
-    background: var(--ui-color-canvas, var(--muted));
-    color: var(--color-text-soft, var(--foreground));
+    position: relative;
+    background: var(--muted);
+    color: var(--foreground);
     font-size: 14px;
     font-weight: 500;
 
     [data-slot='avatar-fallback'] {
-      font-weight: var(--ui-header-avatar-weight, 500);
-      color: var(--ui-color-text-secondary, inherit);
-      border-radius: var(--ui-investor-avatar-fallback-radius, calc(infinity * 1px));
+      font-weight: 500;
+      color: inherit;
+      border-radius: calc(infinity * 1px);
     }
   }
 
@@ -349,13 +348,8 @@ function handleCustomSelect(value: string | number) {
     transition: color 0.2s ease, transform 0.2s ease;
   }
 
-  // the attributes keep the panel and the rows ahead of the surface's menu
-  // rules (components.css)
   &__content[data-slot='dropdown-menu-content'] {
-    position: var(--ui-profile-menu-position, revert-layer);
-    will-change: var(--ui-profile-menu-will-change, revert-layer);
-    overflow: var(--ui-profile-menu-overflow, revert-layer);
-    border-color: var(--ui-color-canvas, var(--muted));
+    border-color: var(--muted);
     min-width: 296px;
     padding: 8px 0;
     z-index: 1120;
@@ -363,7 +357,7 @@ function handleCustomSelect(value: string | number) {
 
   &__content-label {
     padding: 4px 12px 8px;
-    color: var(--ui-color-text-disabled, var(--muted-foreground));
+    color: var(--muted-foreground);
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.18em;

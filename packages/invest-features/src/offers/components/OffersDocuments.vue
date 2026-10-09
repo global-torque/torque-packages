@@ -3,9 +3,6 @@ import { computed, ref, watch, type PropType } from 'vue';
 import type { IFilerItemFormatted } from '@global-torque/invest-core/filer/documentFormatter';
 import { VTableDocumentItem } from '@global-torque/invest-widgets/filer';
 import { VFormInputSearch } from '@global-torque/ui-kit/form';
-import { Search, X } from '@lucide/vue';
-import SearchApproved from '@global-torque/invest-widgets/icons/images/search.svg?component';
-import ClearApproved from '@global-torque/invest-widgets/icons/images/close.svg?component';
 import { Table, TableBody, TableHead, TableHeader, TableRow } from '@global-torque/ui-primitives/table';
 import { TabsList, TabsTrigger } from '@global-torque/ui-primitives/tabs';
 import { VUrlSyncedTabs } from '@global-torque/ui-kit/url-synced-tabs';
@@ -60,29 +57,7 @@ watch(currentTab, () => {
         v-model="search"
         aria-label="Search documents"
         size="small"
-      >
-        <template #search-icon>
-          <span
-            class="invest-form-search-icon"
-            aria-hidden="true"
-          >
-            <Search
-              class="invest-form-search-icon__outline v-form-input-search__search-icon
-                size-5 text-muted-foreground"
-            />
-            <SearchApproved class="invest-form-search-icon__approved" />
-          </span>
-        </template>
-        <template #clear-icon>
-          <span
-            class="invest-form-search-icon"
-            aria-hidden="true"
-          >
-            <X class="invest-form-search-icon__outline v-form-input-search__close-icon" />
-            <ClearApproved class="invest-form-search-icon__approved invest-form-search-icon__approved--clear" />
-          </span>
-        </template>
-      </VFormInputSearch>
+      />
     </div>
     <Table class="[&_td]:whitespace-normal">
       <TableHeader>

@@ -12,6 +12,23 @@
   `VUrlSyncedTabs` no longer accepts a variant. The pill and line tab lists
   scroll horizontally with a hidden scrollbar again, so the tabs no longer
   overflow narrow phones.
+- `OffersDocuments` and `VNotificationTable` show the ui-kit default search
+  and clear icons. The custom icon pairs depended on the removed
+  `invest-shell` `components.css`.
+- The floating offer details button sits at z-index 40, below the
+  ui-primitives overlays at `z-50`.
+- Components read the shadcn variables directly instead of the removed
+  `invest-shell` `geometry.css` roles. Auth forms use `--shadow-lg`, and the
+  notification header, badge and active tab and the offer side card use
+  `--shadow-sm`.
+- Removed the `--ui-*` hooks. Each rule keeps its former fallback value.
+- Removed the alternate icons that only the removed hooks could show: the
+  filled password icons in the log-in and sign-up forms, the filled sign-up
+  checkbox mark, the second notification sheet close icon and the second
+  notification filter icon.
+- The offer details tab panels start 40px under the tabs again, because the
+  ui-primitives 0.2.0 `TabsContent` has no top padding. Tab panels nested
+  inside them are unchanged.
 
 ## 0.4.15 candidate
 

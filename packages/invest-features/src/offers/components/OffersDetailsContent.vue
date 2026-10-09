@@ -168,6 +168,12 @@ const { signIn } = useOfferSignIn();
       margin-top: 24px !important;
   }
 
+  // Only this component's own panels start 40px under the tabs (the Tabs gap,
+  // 8px, plus this padding), not the tab panels nested inside them.
+  > [data-slot='tabs-content'] {
+    padding-top: 32px;
+  }
+
   &__title {
     margin-bottom: 24px;
   }

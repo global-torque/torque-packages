@@ -1,10 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { VFormInputSearch } from '@global-torque/ui-kit/form';
-import { Search, X } from '@lucide/vue';
-import FilterApproved from '@global-torque/invest-widgets/icons/images/filter.svg?component';
-import SearchApproved from '@global-torque/invest-widgets/icons/images/search.svg?component';
-import ClearApproved from '@global-torque/invest-widgets/icons/images/close.svg?component';
 import { VFilter } from '@global-torque/ui-kit/filter';
 import { computed } from 'vue';
 import { Button } from '@global-torque/ui-primitives/button';
@@ -70,29 +66,7 @@ const onApplyFilter = (items: NotificationFilter[]) => {
             v-model="search"
             :disabled="!showSearch"
             size="small"
-          >
-            <template #search-icon>
-              <span
-                class="invest-form-search-icon"
-                aria-hidden="true"
-              >
-                <Search
-                  class="invest-form-search-icon__outline v-form-input-search__search-icon
-                    size-5 text-muted-foreground"
-                />
-                <SearchApproved class="invest-form-search-icon__approved" />
-              </span>
-            </template>
-            <template #clear-icon>
-              <span
-                class="invest-form-search-icon"
-                aria-hidden="true"
-              >
-                <X class="invest-form-search-icon__outline v-form-input-search__close-icon" />
-                <ClearApproved class="invest-form-search-icon__approved invest-form-search-icon__approved--clear" />
-              </span>
-            </template>
-          </VFormInputSearch>
+          />
         </div>
         <VFilter
           :items="filterSettings"
@@ -116,10 +90,6 @@ const onApplyFilter = (items: NotificationFilter[]) => {
                 fill="currentColor"
               />
             </svg>
-            <FilterApproved
-              class="v-filter__button-icon wd-notification-table__filter-icon--approved"
-              aria-hidden="true"
-            />
           </template>
         </VFilter>
         <span v-if="showFilterPagination">
@@ -173,32 +143,28 @@ const onApplyFilter = (items: NotificationFilter[]) => {
 <style lang="scss">
 .wd-notification-table {
   > [data-slot='table-container'] {
-    padding: var(--ui-investor-table-wrapper-padding, 0);
-    position: var(--ui-notification-table-wrapper-position, revert-layer);
+    padding: 0;
   }
 
   [data-slot='table-body'] > [data-slot='table-row'] {
-    border-top-color: var(--ui-color-border-subtle, var(--border));
+    border-top-color: var(--border);
 
     &:last-child {
-      border-bottom: var(--ui-investor-table-final-row-border, 0);
+      border-bottom: 0;
     }
 
     &:hover {
-      background: var(--ui-color-canvas, var(--muted));
+      background: var(--muted);
     }
   }
 
   [data-slot='tabs-list']:not([data-variant='line']) {
-    position: var(--ui-secondary-tabs-position, revert-layer);
-    background: var(--ui-color-border-subtle, var(--border));
+    background: var(--border);
   }
 
   [data-slot='tabs-trigger']:not([data-variant='line'])[data-state='active'] {
-    background: var(--ui-color-surface, var(--background));
-    box-shadow: var(--ui-shadow-control,
-      0 2px 5px 1px color-mix(in srgb, var(--foreground) 3%, transparent),
-      0 2px 3px -2px color-mix(in srgb, var(--foreground) 15%, transparent));
+    background: var(--background);
+    box-shadow: var(--shadow-sm);
   }
 
   &__content {
@@ -249,14 +215,6 @@ const onApplyFilter = (items: NotificationFilter[]) => {
 
   &__filter {
     --v-filter-dropdown-min-width: 250px;
-  }
-
-  &__filter-icon--default {
-    display: var(--ui-form-outline-icon-display, revert-layer);
-  }
-
-  &__filter-icon--approved {
-    display: var(--ui-form-approved-icon-display, none);
   }
 
   &__mark-all {

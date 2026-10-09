@@ -78,7 +78,7 @@ const handleKeyDown = (event: KeyboardEvent) => {
   &__notification-icon {
     width: 20px;
     height: 20px;
-    color: var(--ui-color-text-disabled, var(--color-text-disabled));
+    color: var(--muted-foreground);
     flex-shrink: 0;
     position: relative;
     // margin: 5px 0;

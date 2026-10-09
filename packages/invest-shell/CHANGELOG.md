@@ -26,6 +26,55 @@
   which depended on ui-kit 0.1.4 and ui-primitives 0.1.3 source files. Removed
   `scripts/css-contract-package-roots.mjs` and the `@playwright/test` dev
   dependency, which only that check used.
+- Breaking: removed `styles/components.css` and its `./styles/components.css`
+  export. Hosts must remove its `@import`. ui-primitives, ui-kit and
+  vue-sonner parts now show their standard look.
+- Moved the Sidebar07 rules into scoped styles in `Sidebar07Shell.vue`. The
+  mobile sheet rules could not match ui-primitives 0.2.0, so they are removed
+  and the mobile sidebar shows the standard sheet look.
+- Moved the mobile menu veil offset into `VHeaderMobile`, and the markdown
+  copy-button and quote images into the legacy `_code.scss` and `_quote.scss`.
+- Removed the portal-layer bridge. The header (41), the PWA footer menu (42),
+  the PWA status stack (43) and the closed mobile sidebar shadow (43) now sit
+  below the ui-primitives overlays at `z-50`.
+- Removed `scripts/check-css-contract.mjs` from `test:run`. The CSS budget
+  measures `geometry.css` and `index.scss` only: 53,914 raw and 10,028 gzip
+  bytes, capped at 54,164 and 10,078.
+- Breaking: removed `styles/geometry.css` and its `./styles/geometry.css`
+  export. Hosts must remove its `@import`.
+- Shell components and the shared styles read the shadcn variables directly.
+  Shadows use the Tailwind scale: `--shadow-sm` for the header bars and code
+  group tabs, `--shadow-lg` for `.is--card`, `--shadow-xl` for the PWA footer
+  menu and `--shadow-2xl` for the closed mobile sidebar. The host Tailwind
+  build must scan the `.vue` files of the torque packages to emit them.
+- Muted text on the dark footer (the disclaimer, the bottom row and the menu
+  group labels) uses `--background` at 70%, so it stays readable on the
+  `--foreground` fill.
+- The footer newsletter email field is a light filled field again: the input
+  group paints `--background` with a `--background` border, and the typed text
+  uses `--foreground`. Invalid and focus states keep the primitive border
+  colors.
+- Removed the `--ui-*` hooks. Each rule keeps its former fallback value. Only
+  the brand logo hooks in `VLogo` remain.
+- The `.is--color-*` and `.is--background-*` utilities read the shadcn
+  variables. Removed the `--vis-*` and `--stroke` variables, because the
+  `invest-widgets` charts now read `--chart-1`, `--chart-2` and
+  `--foreground`.
+- Removed the alternate icons that only the removed hooks could show: the
+  filled `VDropdown` chevron and the second `VDialogContactUs` close icon.
+  Removed the `VPageTopInfoAndTabs` overflow edge gradients for the same
+  reason; the component no longer tracks the tab list scroll position.
+- `VPageTopInfoAndTabs` starts its tab panel 40px under the tabs again from
+  768px up, because the ui-primitives 0.2.0 `TabsContent` has no top padding.
+  Narrower screens and the `hideTabs` layout are unchanged.
+- The header profile menu sizes to its content, at least 14rem wide, and
+  aligns to the end of its trigger. It no longer takes the trigger width.
+- "Log Out" in the header profile menu uses the same item structure and
+  classes as the menu links. `.v-dropdown__item` sets weight 800, full width
+  and start alignment, so a link, a div and a button item look the same. The
+  Sidebar07 team and user menu items also carry this class.
+- The CSS budget now measures `index.scss` only: 48,224 raw and 8,780 gzip
+  bytes, capped at 48,474 and 8,830.
 
 ## 0.4.15 candidate
 

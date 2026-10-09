@@ -135,7 +135,7 @@ const open = defineModel<boolean>();
     width: 20px;
     height: 20px;
     flex-shrink: 0;
-    color: var(--color-text-disabled);
+    color: var(--muted-foreground);
   }
 
   &__label {
@@ -149,7 +149,7 @@ const open = defineModel<boolean>();
   }
 
   &__navigation > &__list + &__list {
-    border-top: 1px solid var(--color-border-strong);
+    border-top: 1px solid var(--input);
     margin-top: 20px;
   }
 
@@ -162,7 +162,7 @@ const open = defineModel<boolean>();
     width: 100%;
 
     &.is--border {
-      border-top: 1px solid var(--color-border-strong);
+      border-top: 1px solid var(--input);
       margin-top: 20px;
     }
   }
@@ -181,4 +181,7 @@ const open = defineModel<boolean>();
     }
   }
 }
+
+// the veil starts under the fixed header too
+[data-slot='sheet-overlay']:has(+ .v-header-mobile__content) { top: 64px; }
 </style>

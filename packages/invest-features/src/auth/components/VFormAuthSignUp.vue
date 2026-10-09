@@ -17,8 +17,6 @@ import VAuthDemoAccountButton from './VAuthDemoAccountButton.vue';
 import { ToggleGroup, ToggleGroupItem } from '@global-torque/ui-primitives/toggle-group';
 import { Spinner } from '@global-torque/ui-primitives/spinner';
 import { Check, Eye, EyeOff } from '@lucide/vue';
-import { EyeIcon, EyeOffIcon } from '@global-torque/invest-widgets/icons';
-import CheckIcon from '@global-torque/invest-widgets/icons/images/check.svg?component';
 
 const signupStore = useSignupStore();
 const {
@@ -347,11 +345,6 @@ watch(
                 class="signup-form__password-icon-outline size-4"
                 aria-hidden="true"
               />
-              <component
-                :is="visible ? EyeIcon : EyeOffIcon"
-                class="signup-form__password-icon-filled"
-                aria-hidden="true"
-              />
             </template>
           </VFormInputPassword>
         </VFormGroup>
@@ -382,11 +375,6 @@ watch(
                 class="signup-form__password-icon-outline size-4"
                 aria-hidden="true"
               />
-              <component
-                :is="visible ? EyeIcon : EyeOffIcon"
-                class="signup-form__password-icon-filled"
-                aria-hidden="true"
-              />
             </template>
           </VFormInputPassword>
         </VFormGroup>
@@ -399,7 +387,6 @@ watch(
       >
         <template #indicator>
           <Check class="signup-form__checkbox-icon-outline size-3.5" aria-hidden="true" />
-          <CheckIcon class="signup-form__checkbox-icon-filled size-3.5" aria-hidden="true" />
         </template>
         <div class="signup-form__checkbox-text is--small">
           I agree with
@@ -549,14 +536,7 @@ watch(
 .signup-form {
   $root: &;
 
-  &__password-icon-outline { display: var(--ui-password-outline-icon-display, block); }
-
-  &__password-icon-filled {
-    display: var(--ui-password-filled-icon-display, none);
-    width: 20px;
-    height: 20px;
-    color: var(--ui-color-text-secondary, currentColor);
-  }
+  &__password-icon-outline { display: block; }
 
   &.is--auth-loading,
   &.is--auth-loading input,
@@ -578,7 +558,7 @@ watch(
   &__signup-label {
     font-size: 14px;
     line-height: 100%;
-    color: var(--ui-color-text-secondary, var(--color-text-strong));
+    color: var(--foreground);
   }
 
   &__checkbox {
@@ -586,11 +566,7 @@ watch(
   }
 
   &__checkbox-icon-outline {
-    display: var(--ui-checkbox-icon-outline-display, block);
-  }
-
-  &__checkbox-icon-filled {
-    display: var(--ui-checkbox-icon-filled-display, none);
+    display: block;
   }
 
   &__btn {
@@ -611,8 +587,8 @@ watch(
 
   &__wrap {
     padding: 40px;
-    background: var(--ui-color-surface, var(--background));
-    box-shadow: var(--ui-shadow-dialog, var(--shadow-dialog));
+    background: var(--background);
+    box-shadow: var(--shadow-lg);
 
     @media screen and (width < 768px){
       padding: 20px;
@@ -620,7 +596,7 @@ watch(
   }
 
   &__checkbox-text {
-    color: var(--ui-color-text-secondary, var(--color-text-strong));
+    color: var(--foreground);
   }
 
   &__login-wrap {
@@ -637,7 +613,7 @@ watch(
   }
 
   &__login-label {
-    color: var(--ui-color-text-secondary, var(--color-text-strong));
+    color: var(--foreground);
   }
 
   &__login-btn {
@@ -673,8 +649,8 @@ watch(
 .signup-invitation-state {
   padding: 40px;
   text-align: center;
-  background: var(--ui-color-surface, var(--background));
-  box-shadow: var(--ui-shadow-dialog, var(--shadow-dialog));
+  background: var(--background);
+  box-shadow: var(--shadow-lg);
 
   p {
     margin: 16px 0 24px;

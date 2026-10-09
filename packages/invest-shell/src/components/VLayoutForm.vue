@@ -56,7 +56,7 @@ const saveHandler = () => {
         class="layout-back-button__left"
       >
         <Button
-          class="gap-[var(--ui-layout-back-gap,8px)]"
+          class="gap-[8px]"
           variant="link"
           size="lg"
           @click.stop="onBackClick"
@@ -155,8 +155,7 @@ const saveHandler = () => {
   }
 
   &__back-icon {
-    width: var(--ui-layout-back-icon-size, 20px);
-    height: var(--ui-layout-back-icon-size, revert-layer);
+    width: 20px;
   }
 
   &__right-footer {

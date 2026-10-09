@@ -127,6 +127,20 @@ const isDisabledButton = computed(() => !isValid.value || props.loading);
   &__input {
     flex: 1 1 auto;
     min-width: 0;
+
+    // The footer is dark, so the transparent primitive input group becomes a
+    // light filled field. Invalid and focus states keep the primitive borders.
+    [data-slot='input-group'] {
+      background: var(--background);
+
+      &:not(:has([data-slot][aria-invalid='true'], [data-slot='input-group-control']:focus-visible)) {
+        border-color: var(--background);
+      }
+    }
+
+    [data-slot='input-group-control'] {
+      color: var(--foreground);
+    }
   }
 
   &__button {

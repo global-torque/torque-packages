@@ -11,7 +11,7 @@
   "scripts": {
     "css:budget": "node scripts/check-css-budget.mjs",
     "typecheck": "vue-tsc --noEmit -p tsconfig.json",
-    "test:run": "node scripts/check-css-contract.mjs && node --test scripts/check-css-budget.test.mjs && NODE_OPTIONS=\"${NODE_OPTIONS:+$NODE_OPTIONS }--no-experimental-webstorage\" vitest run"
+    "test:run": "node --test scripts/check-css-budget.test.mjs && NODE_OPTIONS=\"${NODE_OPTIONS:+$NODE_OPTIONS }--no-experimental-webstorage\" vitest run"
   },
   "exports": {
     ".": "./src/index.ts",
@@ -20,8 +20,6 @@
     "./runtime": "./src/runtime.ts",
     "./pwa": "./src/pwa.ts",
     "./styles": "./src/styles.ts",
-    "./styles/geometry.css": "./src/styles/geometry.css",
-    "./styles/components.css": "./src/styles/components.css",
     "./navigation": "./src/navigation.ts",
     "./directives": "./src/directives.ts",
     "./error-pages": "./src/error-pages.ts"

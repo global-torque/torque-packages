@@ -54,7 +54,7 @@ const isSizeSmall = computed(() => props.size === 'small');
   gap: 8px;
   flex: 1 0 0;
   padding: 16px;
-  border-bottom: 1px solid var(--ui-color-border-subtle, var(--border));
+  border-bottom: 1px solid var(--border);
   width: 100%;
 
   &.is--size-small {
@@ -63,15 +63,15 @@ const isSizeSmall = computed(() => props.size === 'small');
   }
 
   &:first-of-type {
-    border-top: 1px solid var(--ui-color-border-subtle, var(--border));
+    border-top: 1px solid var(--border);
   }
 
   &__title {
-    color: var(--ui-color-text-muted, var(--muted-foreground));
+    color: var(--muted-foreground);
   }
 
   &__text {
-    color: var(--ui-color-text-secondary, var(--foreground));
+    color: var(--foreground);
   }
 }
 </style>

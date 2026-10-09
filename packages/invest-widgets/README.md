@@ -49,9 +49,8 @@ stays in this package and receives behavior only through explicit contracts.
 ## Props And Events
 
 `VBreadcrumbs` retains host-supplied route targets and its default separator slot.
-Its default separator is decorative and controlled by the optional
-`--ui-breadcrumb-separator-content` CSS role (default `>`); custom slot content
-and current-page accessibility attributes are preserved.
+Its default separator is a decorative `>`; custom slot content and current-page
+accessibility attributes are preserved.
 
 | Widget | Props and models | Events |
 | --- | --- | --- |
@@ -100,7 +99,10 @@ prefixes. Social icons and destinations are host-owned: hosts pass a typed
 surfaces. The retired `./icons/social-login` export and its bundled marks are
 not part of public `0.2.3`; authentication and offer views receive required
 typed icon maps from their application owners. An empty host list renders no
-social anchors.
+social anchors. `VSocialLinks` renders a string `icon` as a decorative mask in
+the current text color, so the image must be a single-color shape. A
+cross-origin icon URL must allow CORS, because browsers fetch mask images in
+CORS mode.
 
 ## Migration from curated widgets
 

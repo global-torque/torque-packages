@@ -18,7 +18,7 @@ q {
     font-weight: 350;
     line-height: 36px;
     flex-direction: column; 
-    color: var(--color-text-quote);
+    color: var(--foreground);
 
     p {
         font-style: italic;
@@ -45,6 +45,7 @@ q {
         height: 22.6px;
         z-index: 0;
         border: none;
+        background-image: url('../../../assets/images/sign-left.svg');
         background-size: cover;
     }
 

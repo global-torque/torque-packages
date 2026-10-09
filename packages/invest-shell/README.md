@@ -62,30 +62,20 @@ The shell declares its four internal framework dependencies at the exact matchin
 - `./navigation`: route/menu/link/SEO helpers for app composition.
 - `./pwa`: PWA registration bridge and cache policy/test constants.
 - `./styles`: shared investment SCSS entry point.
-- `./styles/geometry.css` and `./styles/components.css`: shared investor geometry
-  and component presentation consumed before the SCSS entry by app styles.
 
-Hosts should retain this order for the public shell styles. The shell also
-keeps each authenticated design-token primitive as an explicit alias. When the
-host has not loaded the token stylesheet, the alias ends in a CSS-wide `unset`
-value; the consuming property then retains its established
-inherit/currentColor/transparent/none behavior instead of inventing a palette:
+Hosts should retain this order for the public shell styles:
 
 ```css
 @import '@global-torque/design-tokens/css';
 @import '@global-torque/ui-primitives/styles/theme';
-@import '@global-torque/invest-shell/styles/geometry.css';
-@import '@global-torque/invest-shell/styles/components.css';
 @import '@global-torque/invest-shell/styles';
 ```
 
-The control, dialog and raised semantic shadows derive from the host
-`--foreground`, with the public `--ui-shadow-*` hooks taking precedence over
-`--shadow-*`. Outline and non-icon ghost buttons default to no shadow, while
-filled controls retain the foreground-derived control shadow. The header bar
-and offer-details side card use the same foreground-derived control-shadow
-fallback through the public control-shadow hook. Sheet and badge elevations
-remain independent primitive-backed roles.
+Shell components and the shared styles read the shadcn variables directly, such
+as `--foreground`, `--muted-foreground`, `--border` and `--shadow-sm`. The
+shadows are Tailwind theme variables. Tailwind emits one only when its name
+appears in a scanned file, so the host Tailwind build must scan the `.vue` files
+of `invest-shell`, `invest-features` and `invest-widgets`.
 
 ## Validation
 
@@ -98,21 +88,21 @@ pnpm lint:boundaries
 ## CSS Budget
 
 `pnpm --filter @global-torque/invest-shell run css:budget` measures the public
-`geometry.css`, `components.css`, and `index.scss` entries in that order. A
-production Vite build resolves their Sass and CSS imports with minification and
-disk output disabled. The aggregate includes imported styles, but excludes app
-styles, Vue SFC styles, and app Tailwind/design-token generation; it is not an
-application bundle budget.
+`index.scss` entry. A production Vite build resolves its Sass and CSS imports
+with minification and disk output disabled. The aggregate includes imported
+styles, but excludes app styles, Vue SFC styles, and app Tailwind/design-token
+generation; it is not an application bundle budget.
 
-The reviewed aggregate is 98,072 raw bytes, 18,357 gzip bytes, and zero generated
+The reviewed aggregate is 48,224 raw bytes, 8,780 gzip bytes, and zero generated
 dimension selectors. Caps retain 250 raw bytes and 50 gzip bytes of headroom:
-98,322 raw and 18,407 gzip. Tests pin the raw bytes and SHA-256, require resolved
+48,474 raw and 8,830 gzip. Tests pin the raw bytes and SHA-256, require resolved
 imports and zero generated selectors, and enforce gzip only against its cap
 because supported Node/zlib versions can compress identical CSS differently.
 `css-budget.json` records the reference toolchain and keeps the prior
-legacy-entry measurements separate from the comparable target public aggregate
-(70,708 raw / 13,798 gzip). Budget changes require measured justification and
-visual verification; passing this package budget does not establish UI parity.
+legacy-entry measurements and the former three-entry target aggregate
+(70,708 raw / 13,798 gzip) as history. Budget changes require measured
+justification and visual verification; passing this package budget does not
+establish UI parity.
 
 ## Page Tabs
 
@@ -123,8 +113,8 @@ native smooth scrolling, public tab controls and the existing route command.
 
 `VPageTopInfoAndTabs` also accepts `retainUnderlineExtent` (default `false`).
 Opted-in hosts render the primary underline across the measured scroll width,
-retaining that extent when the viewport shrinks until the list unmounts. Existing
-overflow edges follow the resulting scroll bounds; public tab defaults remain unchanged.
+retaining that extent when the viewport shrinks until the list unmounts. Public
+tab defaults remain unchanged.
 
 ## Investor Sidebar
 
@@ -137,7 +127,8 @@ shortcut, starts collapsed, and preserves 18rem expanded/mobile and 4.3rem
 collapsed widths. Mobile means a width of 768px or less. The custom primitive
 Button trigger keeps the approved avatar/icons and restores focus after mobile
 close. The rail is inside Sidebar and takes
-part in the Tab sequence. Investor-only geometry is in `styles/components.css`.
+part in the Tab sequence. Investor-only geometry is in the Sidebar07 component
+styles.
 
 The mobile Sheet focuses its first focusable element and keeps keyboard
 focus inside. A custom trigger opened while focus-visible retains its expansion
@@ -149,13 +140,3 @@ Right-side navigation reserves its content gap on the right. Shell
 dismissible mobile drawer; the host maps this to the primitive offcanvas
 layout while holding desktop state open. Router destinations use the actual
 Vue Router component through the primitive menu button.
-
-The shared component stylesheet consumes optional release roles for native
-button line-height, form-label spacing, and Sidebar icon/avatar geometry.
-Status Button roles fall back to the default preset's original states;
-explicit document badge color classes take precedence over neutral tone hooks.
-Dashboard's CardDonutUnified, VCardGoal and VCardOfferFunded own their nested
-section padding and inter-section gap through `--ui-summary-card-*` roles.
-VTableDefault owns compact-table metrics through `--ui-table-small-*` roles.
-Tahoe Investor supplies these measured values in its wrapper theme; neutral
-primitive defaults and the default brand's existing metrics remain fallbacks.

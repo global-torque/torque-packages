@@ -304,7 +304,7 @@ const onOverlayItemClick = (item: OverlayActionItem) => {
     align-items: center;
     padding: 0 16px;
     background: var(--background);
-    box-shadow: var(--shadow-control);
+    box-shadow: var(--shadow-sm);
     position: relative;
     z-index: 1;
   }
@@ -331,7 +331,7 @@ const onOverlayItemClick = (item: OverlayActionItem) => {
     border: none;
     border-radius: 16px;
     background: transparent;
-    color: var(--color-text-strong);
+    color: var(--foreground);
     font-size: 22px;
     line-height: 1;
     cursor: pointer;
@@ -454,7 +454,7 @@ const onOverlayItemClick = (item: OverlayActionItem) => {
     border: 1px solid var(--border);
     border-radius: 4px;
     background: var(--background);
-    color: var(--color-text-strong);
+    color: var(--foreground);
     flex-shrink: 0;
   }
 

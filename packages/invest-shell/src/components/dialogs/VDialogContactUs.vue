@@ -59,19 +59,6 @@ function accepted() {
             class="v-dialog-contact-us__close-outline size-[18px]"
             aria-hidden="true"
           />
-          <svg
-            class="v-dialog-contact-us__close-approved size-[18px]"
-            viewBox="0 0 20 20"
-            fill="none"
-            aria-hidden="true"
-          >
-            <path
-              d="M15 5L5 15M5 5L15 15"
-              stroke="currentColor"
-              stroke-width="1.5"
-              stroke-linecap="round"
-            />
-          </svg>
         </Button>
       </DialogClose>
     </DialogContent>
@@ -85,14 +72,12 @@ function accepted() {
 }
 
 .v-dialog-contact-us__close {
-  padding: var(--ui-contact-close-padding, 0);
-  border: var(--ui-contact-close-border-width, 0) solid transparent;
+  padding: 0;
+  border: 0 solid transparent;
   font-size: inherit;
-  font-weight: var(--ui-contact-close-weight, inherit);
-  line-height: var(--ui-contact-close-line-height, normal);
+  font-weight: inherit;
+  line-height: normal;
 }
 
-.v-dialog-contact-us__close-outline { display: var(--ui-contact-close-outline-display, block); }
-
-.v-dialog-contact-us__close-approved { display: var(--ui-contact-close-approved-display, none); }
+.v-dialog-contact-us__close-outline { display: block; }
 </style>

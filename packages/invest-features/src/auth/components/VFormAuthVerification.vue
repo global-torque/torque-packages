@@ -79,15 +79,15 @@ const verificationHandler = async () => {
 <style lang="scss">
 .verification-form {
   padding: 40px;
-  background: var(--ui-color-surface, var(--background));
-  box-shadow: var(--ui-shadow-dialog, var(--shadow-dialog));
+  background: var(--background);
+  box-shadow: var(--shadow-lg);
 
   @media screen and (width < 768px){
       padding: 20px;
   }
 
   &__text {
-    color: var(--ui-color-text-muted, var(--color-text-meta));
+    color: var(--muted-foreground);
     margin-top: 4px;
   }
 
@@ -113,7 +113,7 @@ const verificationHandler = async () => {
   }
 
   &__login-label {
-    color: var(--ui-color-text-secondary, var(--color-text-strong));
+    color: var(--foreground);
   }
 
   &__login-btn {

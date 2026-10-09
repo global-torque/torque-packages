@@ -126,7 +126,7 @@ const commentErrorText = computed(() => (
 <style lang="scss">
 .v-form-comments {
   padding-bottom: 60px;
-  border-bottom: 1px solid var(--color-border-strong);
+  border-bottom: 1px solid var(--input);
 
   @media screen and (width < 768px) {
     padding-bottom: 24px;

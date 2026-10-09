@@ -27,6 +27,42 @@
   step and report variable, and the `@playwright/test` dev dependency that
   only it used. It depended on ui-kit 0.1.4 and ui-primitives 0.1.3 source
   files.
+- Breaking: removed `invest-shell/styles/components.css` and its
+  `./styles/components.css` export. Hosts must remove its `@import`.
+  ui-primitives, ui-kit and vue-sonner parts now show their standard look.
+  The rules that styled shell or app classes moved into their owners:
+  Sidebar07 into scoped styles in `Sidebar07Shell.vue`, the profile badge
+  into `ProfileSwitchMenuList`, the mobile menu veil offset into
+  `VHeaderMobile`, and the markdown copy and quote images into the legacy
+  `_code.scss` and `_quote.scss`. The mobile Sidebar07 sheet shows the
+  standard sheet look.
+- Removed the temporary portal-layer bridge at z-index 1100. Fixed shell
+  layers now sit below the ui-primitives overlays at `z-50`: the floating
+  offer button at 40, the header at 41, the PWA footer menu at 42, and the
+  PWA status stack and closed mobile sidebar shadow at 43.
+- `OffersDocuments` and `VNotificationTable` show the ui-kit default search
+  and clear icons instead of custom icon pairs.
+- Removed the `invest-shell` `check-css-contract.mjs` check. The CSS budget
+  measures `geometry.css` and `index.scss`: 53,914 raw and 10,028 gzip bytes.
+- Breaking: removed `invest-shell/styles/geometry.css` and its
+  `./styles/geometry.css` export. Hosts must remove its `@import`.
+- Components and the shared styles read the shadcn variables directly, such
+  as `--foreground`, `--muted-foreground`, `--border` and `--success`.
+  Shadows use the Tailwind `--shadow-sm` to `--shadow-2xl` scale, so the host
+  Tailwind build must scan the `.vue` files of the torque packages.
+- Removed the `--ui-*` hooks from `invest-features`, `invest-widgets` and
+  `invest-shell`. Each rule keeps its former fallback value. Only the brand
+  logo hooks remain.
+- The `.is--color-*` and `.is--background-*` utilities and the charts read
+  the shadcn variables. Charts use `--chart-1` and `--chart-2`.
+- Removed the alternate icons and the tab overflow edges that only the
+  removed hooks could show. The visible outline icons stay.
+- The page tabs (from 768px up) and the offer details tabs start their panel
+  40px under the tabs again, because the ui-primitives 0.2.0 `TabsContent`
+  has no top padding. The header profile menu sizes to its content and
+  aligns to the end of its trigger.
+- The CSS budget now measures `index.scss` only: 48,224 raw and 8,780 gzip
+  bytes.
 
 ## 0.4.15 candidate
 

@@ -86,7 +86,7 @@ const initials = computed(() => {
         >
           <SidebarMenuButton
             as="button"
-            class="nav-user__trigger group-data-[collapsible=icon]:size-10! group-data-[collapsible=icon]:py-0! group-data-[collapsible=icon]:px-[var(--ui-sidebar-user-collapsed-padding,0px)]!"
+            class="nav-user__trigger group-data-[collapsible=icon]:size-10! group-data-[collapsible=icon]:py-0! group-data-[collapsible=icon]:px-[0px]!"
             type="button"
           >
             <Avatar
@@ -195,33 +195,32 @@ const initials = computed(() => {
 .nav-user {
   // The profile image and initials share the compact navigation avatar.
   &__avatar {
-    position: var(--ui-chrome-avatar-position, relative);
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
     width: 30px;
     height: 30px;
-    border: var(--ui-sidebar-avatar-border, none);
+    border: none;
     border-radius: 100%;
-    background: var(--ui-color-border-subtle, var(--border));
-    color: var(--ui-color-text-muted, var(--color-text-meta)) !important;
+    background: var(--border);
+    color: var(--muted-foreground) !important;
     font-size: 14px;
     line-height: 18px;
     font-weight: 500;
     box-shadow: none;
 
     [data-slot='avatar-image'] {
-      border-radius: var(--ui-investor-avatar-image-radius, 0);
-      object-fit: var(--ui-sidebar-avatar-image-fit, fill);
+      border-radius: 0;
+      object-fit: fill;
     }
 
-    [data-slot='avatar-fallback'] { border-radius: var(--ui-investor-avatar-fallback-radius, calc(infinity * 1px)); }
+    [data-slot='avatar-fallback'] { border-radius: calc(infinity * 1px); }
   }
 
   &__trigger {
-    position: var(--ui-sidebar-user-trigger-position, revert-layer);
     width: 100%;
-    min-height: var(--ui-sidebar-user-min-height, 44px);
+    min-height: 44px;
     padding: 0 16px;
     border-radius: 2px;
 
@@ -241,8 +240,6 @@ const initials = computed(() => {
     border-radius: 2px;
   }
 
-  // the attributes keep the panel and the rows ahead of the surface's menu
-  // rules (components.css)
   &__content[data-slot='dropdown-menu-content'] {
     min-width: 264px;
     padding: 8px 0;

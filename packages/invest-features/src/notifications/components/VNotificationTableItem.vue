@@ -175,7 +175,7 @@ const onMessageClick = () => {
   }
 
   &.is--unread td {
-    background-color: var(--ui-color-canvas, var(--muted));
+    background-color: var(--muted);
 
     @media screen and (width > 768px){
       position: relative;
@@ -189,13 +189,13 @@ const onMessageClick = () => {
   }
 
   &__date {
-    color: var(--ui-color-text-muted, var(--color-text-meta));
+    color: var(--muted-foreground);
     margin-bottom: 8px;
     display: block;
   }
 
   &__content {
-    color: var(--ui-color-text-secondary, var(--color-text-strong));
+    color: var(--foreground);
 
     a {
       font-weight: 700;

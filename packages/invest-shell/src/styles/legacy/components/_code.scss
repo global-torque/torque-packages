@@ -123,7 +123,7 @@ div[class*='language-'],
 
 
 [class*='language-'] code .highlighted.warning{
-    background-color: var(--color-warning-accent);
+    background-color: var(--warning);
 }
 
 
@@ -168,13 +168,13 @@ div[class*='language-'],
 
 
 [class*='language-'] code .diff.add{
-    background-color: var(--color-status-success, var(--secondary));
+    background-color: var(--success);
 }
 
 
 [class*='language-'] code .diff.add::before{
     content: '+';
-    color: var(--color-status-success, var(--secondary));
+    color: var(--success);
 }
 
 
@@ -214,6 +214,7 @@ div[class*='language-'].line-numbers-mode{
     width: 40px;
     height: 40px;
     background-color: var(--muted);
+    background-image: url('../../../assets/images/copy.svg');
     opacity: 0;
     cursor: pointer;
     background-position: 50%;
@@ -229,6 +230,10 @@ div[class*='language-'].line-numbers-mode{
 }
 
 
+[class*='language-'] > button.copy.copied,
+[class*='language-'] > button.copy:hover.copied{
+    background-image: url('../../../assets/images/check.svg');
+}
 
 
 [class*='language-'] > span.lang{
@@ -302,7 +307,7 @@ div[class*='language-'].line-numbers-mode{
 .vp-code-group input:checked + label{
     color: var(--foreground);
     background-color: var(--background);
-    box-shadow: var(--shadow-control);
+    box-shadow: var(--shadow-sm);
 }
   
 

@@ -274,7 +274,7 @@ const handleContactUsClick = () => {
     border-radius: 2px;
     border: 1px solid var(--border);
     background: var(--background);
-    box-shadow: var(--ui-shadow-control, var(--shadow-control));
+    box-shadow: var(--shadow-sm);
     margin-bottom: 20px;
   }
 
@@ -304,7 +304,7 @@ const handleContactUsClick = () => {
   }
 
   &__side-details-label {
-    color: var(--color-text-meta);
+    color: var(--muted-foreground);
   }
 
   &__nav-notice {
@@ -317,7 +317,7 @@ const handleContactUsClick = () => {
 
   &__nav-notice-title,
   &__nav-notice-text {
-    color: var(--color-text-strong);
+    color: var(--foreground);
   }
 
   &__nav-notice-text {
@@ -340,7 +340,7 @@ const handleContactUsClick = () => {
   }
 
   &__finalized-nav-label {
-    color: var(--color-text-meta);
+    color: var(--muted-foreground);
   }
 
   &__finalized-nav-value {
@@ -354,12 +354,12 @@ const handleContactUsClick = () => {
 
   &__finalized-nav-amount {
     min-width: 0;
-    color: var(--color-text-strong);
+    color: var(--foreground);
     overflow-wrap: anywhere;
   }
 
   &__finalized-nav-as-of {
-    color: var(--color-text-meta);
+    color: var(--muted-foreground);
     overflow-wrap: anywhere;
   }
 
@@ -371,7 +371,7 @@ const handleContactUsClick = () => {
   }
 
   &__on-chain-title {
-    color: var(--color-text-strong);
+    color: var(--foreground);
     cursor: pointer;
   }
 
@@ -380,7 +380,7 @@ const handleContactUsClick = () => {
   }
 
   &__details-value {
-    color: var(--color-text-strong);
+    color: var(--foreground);
     width: fit-content;
     min-width: 0;
     display: flex;
@@ -418,7 +418,7 @@ const handleContactUsClick = () => {
   }
 
   &__min-invest-label {
-    color: var(--color-text-meta);
+    color: var(--muted-foreground);
     min-width: 141px;
   }
 

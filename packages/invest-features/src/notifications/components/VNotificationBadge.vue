@@ -48,7 +48,7 @@ const {
 
 <style lang="scss">
 .notification-number {
-  --notification-badge-shadow: var(--shadow-badge);
+  --notification-badge-shadow: var(--shadow-sm);
 
   display: inline-flex;
   align-items: center;
@@ -56,15 +56,15 @@ const {
   min-width: 18px;
   height: 18px;
   padding: 0 4px;
-  background: var(--ui-color-negative-accent, var(--destructive));
-  color: var(--ui-color-text-inverse, var(--background));
+  background: var(--destructive);
+  color: var(--background);
   border-radius: 9px;
   font-weight: 700;
   font-size: 11px;
   line-height: 1;
   white-space: nowrap;
   box-shadow: var(--notification-badge-shadow);
-  border: 2px solid var(--ui-color-surface, var(--card));
+  border: 2px solid var(--card);
   z-index: 10;
   box-sizing: border-box;
   flex-shrink: 0;
@@ -90,7 +90,7 @@ const {
   }
 
   &--loading {
-    border: 2px solid var(--ui-color-surface, var(--card));
+    border: 2px solid var(--card);
     box-shadow: var(--notification-badge-shadow);
     pointer-events: none;
   }

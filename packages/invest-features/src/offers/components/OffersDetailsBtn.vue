@@ -234,7 +234,7 @@ onUnmounted(() => {
 
   &__info {
     margin-top: 8px;
-    color: var(--color-text-meta);
+    color: var(--muted-foreground);
   }
 
   &.offer-details-btn--floating {
@@ -242,7 +242,7 @@ onUnmounted(() => {
     left: 0;
     right: 0;
     bottom: 12px;
-    z-index: 90;
+    z-index: 40;
     margin: 0 auto;
   }
 }

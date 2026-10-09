@@ -33,7 +33,7 @@ describe('Notifications sheet', () => {
     expect(content.textContent).toContain('Notifications');
     expect(content.contains(document.activeElement)).toBe(true);
     expect(content.querySelector('a')?.getAttribute('href')).toBe('/notifications');
-    expect(content.querySelector('.v-notification-sidebar__close-approved')).not.toBeNull();
+    expect(controls[0].querySelector('.v-notification-sidebar__close-outline')).not.toBeNull();
     if (action === 'click') (controls[0] as HTMLButtonElement).click();
     else document.activeElement?.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
     await flushPromises();

@@ -11,7 +11,6 @@ import { useGlobalLoader } from '@global-torque/invest-runtime/loader';
 import VAuthDemoAccountButton from './VAuthDemoAccountButton.vue';
 import { Spinner } from '@global-torque/ui-primitives/spinner';
 import { Eye, EyeOff } from '@lucide/vue';
-import { EyeIcon, EyeOffIcon } from '@global-torque/invest-widgets/icons';
 
 const loginStore = useLoginStore();
 const { forgot: urlForgot, signup: urlSignup } = getAuthLinks();
@@ -106,11 +105,6 @@ watch(isGlobalLoading, (active) => {
               class="login-form__password-icon-outline size-4"
               aria-hidden="true"
             />
-            <component
-              :is="visible ? EyeIcon : EyeOffIcon"
-              class="login-form__password-icon-filled"
-              aria-hidden="true"
-            />
           </template>
         </VFormInputPassword>
       </VFormGroup>
@@ -164,14 +158,7 @@ watch(isGlobalLoading, (active) => {
 
 <style lang="scss">
 .login-form {
-  &__password-icon-outline { display: var(--ui-password-outline-icon-display, block); }
-
-  &__password-icon-filled {
-    display: var(--ui-password-filled-icon-display, none);
-    width: 20px;
-    height: 20px;
-    color: var(--ui-color-text-secondary, currentColor);
-  }
+  &__password-icon-outline { display: block; }
 
   &.is--auth-loading,
   &.is--auth-loading input,
@@ -198,7 +185,7 @@ watch(isGlobalLoading, (active) => {
   }
 
   &__signup-label {
-    color: var(--ui-color-text-secondary, var(--color-text-strong));
+    color: var(--foreground);
   }
 
   &__signup-btn {
@@ -218,7 +205,7 @@ watch(isGlobalLoading, (active) => {
   }
 
   &__input-icon {
-    color: var(--color-text-meta);
+    color: var(--muted-foreground);
     width: 20px;
     height: 20px;
     display: flex;
@@ -226,8 +213,8 @@ watch(isGlobalLoading, (active) => {
 
   &__wrap {
     padding: 40px;
-    background: var(--ui-color-surface, var(--background));
-    box-shadow: var(--ui-shadow-dialog, var(--shadow-dialog));
+    background: var(--background);
+    box-shadow: var(--shadow-lg);
 
     @media screen and (width < 768px){
       padding: 20px;

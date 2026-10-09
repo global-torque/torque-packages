@@ -170,7 +170,7 @@ const primaryProfileMenu = computed(() => props.menu || []);
     width: 20px;
     height: 20px;
     flex-shrink: 0;
-    color: var(--color-text-disabled);
+    color: var(--muted-foreground);
   }
 
   &__label {
@@ -193,7 +193,7 @@ const primaryProfileMenu = computed(() => props.menu || []);
     position: absolute;
     right: -8px;
     top: -2px;
-    background-color: var(--ui-color-surface, var(--background));
+    background-color: var(--background);
     border-radius: 100%;
     z-index: 0;
 

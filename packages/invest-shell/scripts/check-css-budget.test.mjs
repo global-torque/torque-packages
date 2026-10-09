@@ -38,8 +38,6 @@ test('counts CSS imported through the production Vite pipeline', async () => {
 test('measures all public shell entries in app order against the reviewed bytes', async () => {
   const policy = JSON.parse(fs.readFileSync(path.join(packageDirectory, 'css-budget.json'), 'utf8'));
   assert.deepEqual(policy.entries, [
-    'src/styles/geometry.css',
-    'src/styles/components.css',
     'src/styles/index.scss',
   ]);
   assert.equal(policy.maximum.rawBytes - policy.current.rawBytes, 250);

@@ -3,7 +3,7 @@
   padding: 8px;
   gap: 8px;
   border-radius: 2px;
-  background: var(--ui-color-surface, var(--background));
-  box-shadow: var(--ui-shadow-dialog, var(--shadow-dialog));
-  border: 1px solid var(--ui-color-canvas, var(--muted));
+  background: var(--background);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--muted);
 }

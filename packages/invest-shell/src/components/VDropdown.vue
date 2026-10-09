@@ -4,7 +4,6 @@ import {
 } from 'reka-ui';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@global-torque/ui-primitives/dropdown-menu';
 import { ChevronDown } from '@lucide/vue';
-import ChevronDownFilled from '@global-torque/invest-widgets/icons/images/chevron-down.svg?component';
 import type { Component } from 'vue';
 import { PropType } from 'vue';
 
@@ -50,15 +49,11 @@ const getComponentProps = (item: IDropdown) => {
         class="v-dropdown__chevron v-dropdown__chevron-outline"
         aria-hidden="true"
       />
-      <ChevronDownFilled
-        v-if="withChevron"
-        class="v-dropdown__chevron v-dropdown__chevron-filled"
-        aria-hidden="true"
-      />
     </DropdownMenuTrigger>
 
     <DropdownMenuContent
       v-bind="contentProps"
+      class="w-auto min-w-56"
     >
       <slot name="content-start" />
       <DropdownMenuItem
@@ -101,7 +96,6 @@ const getComponentProps = (item: IDropdown) => {
 
 .v-dropdown {
   &__trigger {
-    position: var(--ui-dropdown-trigger-position, revert-layer);
     display: flex;
     align-items: center;
     width: fit-content;
@@ -111,23 +105,26 @@ const getComponentProps = (item: IDropdown) => {
   &__chevron {
     width: 14px;
     margin-left: 9px;
-    color: var(--ui-color-text-muted, var(--color-text-meta));
+    color: var(--muted-foreground);
     transition: transform 0.3s;
   }
 
-  &__chevron-outline { display: var(--ui-dropdown-outline-icon-display, block); }
-
-  &__chevron-filled { display: var(--ui-dropdown-filled-icon-display, none); }
+  &__chevron-outline { display: block; }
 
   &__trigger[data-state="open"] &__chevron {
     transform: rotate(180deg);
   }
 
+  // An item renders as a link, a div or a button; the width, weight and
+  // alignment keep all three identical.
   &__item {
     display: flex;
     align-items: center;
     gap: 10px;
+    width: 100%;
     color: inherit;
+    font-weight: 800;
+    text-align: start;
     text-decoration: none;
   }
 
@@ -136,7 +133,7 @@ const getComponentProps = (item: IDropdown) => {
     width: 18px;
     height: 18px;
     flex-shrink: 0;
-    color: var(--ui-color-text-disabled, var(--color-text-disabled));
+    color: var(--muted-foreground);
 
     path{
       fill: currentcolor;

@@ -162,7 +162,7 @@ onBeforeUnmount(() => {
   &__icon {
     width: 20px;
     height: 20px;
-    color: var(--ui-color-text-muted, var(--color-text-meta));
+    color: var(--muted-foreground);
     flex-shrink: 0;
   }
 
@@ -221,7 +221,7 @@ onBeforeUnmount(() => {
     }
 
     &[aria-disabled='true'] {
-      color: var(--color-text-disabled);
+      color: var(--muted-foreground);
       cursor: not-allowed;
     }
   }

@@ -144,7 +144,7 @@ const appBuildTimestamp = applicationContext.appConfig.build?.timestamp ?? '';
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: 140;
+  z-index: 43;
   display: flex;
   flex-direction: column;
   gap: 12px;

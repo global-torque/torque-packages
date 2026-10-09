@@ -88,8 +88,8 @@ function handleSelect(item: SidebarNavItem, options: SelectOptions = {}) {
                 as="button"
                 :class="[
                   'nav-main__button justify-start',
-                  'group-data-[collapsible=icon]:h-[var(--ui-sidebar-collapsed-control-size,40px)]! group-data-[collapsible=icon]:w-[var(--ui-sidebar-nav-collapsed-width,40px)]!',
-                  'group-data-[collapsible=icon]:p-[var(--ui-sidebar-nav-padding,12px)]!',
+                  'group-data-[collapsible=icon]:h-[40px]! group-data-[collapsible=icon]:w-[40px]!',
+                  'group-data-[collapsible=icon]:p-[12px]!',
                 ]"
                 type="button"
                 @click="handleSelect(item, { closeSidebarOnMobile: false })"
@@ -145,7 +145,7 @@ function handleSelect(item: SidebarNavItem, options: SelectOptions = {}) {
             v-else
             :as="resolveLinkTag(item)"
             :class="cn(
-              'nav-main__button justify-start group-data-[collapsible=icon]:h-[var(--ui-sidebar-collapsed-control-size,40px)]! group-data-[collapsible=icon]:w-[var(--ui-sidebar-nav-collapsed-width,40px)]! group-data-[collapsible=icon]:p-[var(--ui-sidebar-nav-padding,12px)]!',
+              'nav-main__button justify-start group-data-[collapsible=icon]:h-[40px]! group-data-[collapsible=icon]:w-[40px]! group-data-[collapsible=icon]:p-[12px]!',
               item.disabled ? 'pointer-events-none opacity-50' : '',
             )"
             :is-active="Boolean(item.active)"
@@ -182,8 +182,6 @@ function handleSelect(item: SidebarNavItem, options: SelectOptions = {}) {
   }
 
   &__button {
-    display: var(--ui-sidebar-nav-display, revert-layer);
-    position: var(--ui-sidebar-nav-position, revert-layer);
     text-decoration: none !important;
   }
 
@@ -192,15 +190,10 @@ function handleSelect(item: SidebarNavItem, options: SelectOptions = {}) {
     height: 18px;
   }
 
-  // Follow the active hover fill's foreground; hosts without the hook keep text-slate-400.
-  [data-sidebar='menu-button'][data-active='true']:hover &__chevron {
-    color: var(--ui-color-accent-foreground, var(--color-slate-400));
-  }
-
   &__submenu {
     margin: 4px 0 0 28px;
     padding-left: 12px;
-    border-left: 1px solid var(--ui-color-border-subtle, var(--border));
+    border-left: 1px solid var(--border);
     display: flex;
     flex-direction: column;
     gap: 4px;
@@ -269,7 +262,7 @@ function handleSelect(item: SidebarNavItem, options: SelectOptions = {}) {
 
   &__subitem.is--active:hover &__subitem-badge {
     background: rgb(from var(--background) r g b / 18%);
-    color: var(--ui-color-text-inverse, var(--background));
+    color: var(--background);
   }
 
   :deep(.v-button__content) {

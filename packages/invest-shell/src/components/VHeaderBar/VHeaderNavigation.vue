@@ -128,22 +128,6 @@ const emit = defineEmits(['click']);
 .v-header-navigation {
   $root: &;
 
-  position: var(--ui-header-navigation-root-position, revert-layer);
-  z-index: var(--ui-header-navigation-layer, revert-layer);
-  width: var(--ui-header-navigation-width, revert-layer);
-  max-width: var(--ui-header-navigation-max-width, revert-layer);
-  flex: var(--ui-header-navigation-flex, revert-layer);
-  justify-content: var(--ui-header-navigation-justify, revert-layer);
-
-  &__list {
-    flex: var(--ui-header-navigation-flex, revert-layer);
-    justify-content: var(--ui-header-navigation-justify, revert-layer);
-  }
-
-  [data-slot='navigation-menu-item'] {
-    position: var(--ui-header-navigation-item-position, revert-layer);
-  }
-
   // a row: the primitive link stacks its children (flex-col), which put the
   // label at the top of the 64 px link
   &__link,
@@ -154,7 +138,7 @@ const emit = defineEmits(['click']);
     gap: 8px;
     text-decoration: none;
     color: inherit;
-    line-height: var(--ui-header-nav-line-height, 20px);
+    line-height: 20px;
   }
 
   &__trigger {
@@ -171,7 +155,7 @@ const emit = defineEmits(['click']);
     height: 20px;
     flex-shrink: 0;
     display: none;
-    color: var(--color-text-disabled);
+    color: var(--muted-foreground);
 
     path{
       fill: currentcolor;

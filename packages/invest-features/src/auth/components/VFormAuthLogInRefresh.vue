@@ -112,7 +112,7 @@ const loginHandler = async () => {
   }
 
   &__signup-label {
-    color: var(--color-text-strong);
+    color: var(--foreground);
   }
 
   &__signup-btn {
@@ -132,7 +132,7 @@ const loginHandler = async () => {
   }
 
   &__input-icon {
-    color: var(--color-text-meta);
+    color: var(--muted-foreground);
     width: 20px;
     height: 20px;
     display: flex;
@@ -141,7 +141,7 @@ const loginHandler = async () => {
   &__wrap {
     padding: 40px;
     background: var(--background);
-    box-shadow: var(--shadow-dialog);
+    box-shadow: var(--shadow-lg);
 
     @media screen and (width < 768px){
       padding: 20px;

@@ -54,20 +54,7 @@ defineProps<{
 
 <style lang="scss">
 .v-chart-tooltip {
-  display: var(--ui-chart-tooltip-display, revert-layer);
-  position: var(--ui-chart-tooltip-position, revert-layer);
-  background: var(--ui-chart-tooltip-background, revert-layer);
-  padding: var(--ui-chart-tooltip-padding, revert-layer);
-  border-width: var(--ui-chart-tooltip-border-width, revert-layer);
-
-  &__header {
-    display: var(--ui-chart-tooltip-display, revert-layer);
-    padding: var(--ui-chart-tooltip-padding, revert-layer);
-  }
-
   &__content {
-    padding: var(--ui-chart-tooltip-padding, revert-layer);
-    width: var(--ui-chart-tooltip-content-width, revert-layer);
     min-width: 180px;
     display: flex;
     flex-direction: column;
