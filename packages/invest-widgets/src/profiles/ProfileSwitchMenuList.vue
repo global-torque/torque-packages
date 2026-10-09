@@ -77,16 +77,16 @@ const handleSelect = async (id: string) => {
     transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
 
     &:hover {
-      background: var(--ui-color-canvas, var(--muted));
+      background: var(--muted);
     }
 
     &.is--active {
-      background: var(--ui-color-canvas, var(--muted));
+      background: var(--muted);
       color: var(--primary);
     }
 
     &.is--create {
-      border-top: 1px solid var(--ui-color-border-subtle, var(--border));
+      border-top: 1px solid var(--border);
     }
   }
 
@@ -105,5 +105,14 @@ const handleSelect = async (id: string) => {
   &.is--overlay {
     gap: 10px;
   }
+}
+</style>
+
+<style scoped>
+/* Profile status used the investor small badge composition. */
+.profile-switch-menu-list__badge[data-slot='badge'] {
+  padding: 8px 12px;
+  font-weight: 800;
+  color: var(--foreground);
 }
 </style>

@@ -33,7 +33,7 @@ defineProps({
   justify-content: center;
   width: 100%;
   height: 100%;
-  background-color: var(--ui-color-surface, var(--card));
+  background-color: var(--card);
 
   &.is--hidden {
     display: none;

@@ -34,7 +34,7 @@ defineProps<{
 <style scoped lang="scss">
 .v-offline-data-unavailable {
   padding: 32px 24px;
-  border: 1px solid color-mix(in srgb, var(--color-border-strong) 70%, transparent);
+  border: 1px solid color-mix(in srgb, var(--input) 70%, transparent);
   border-radius: 20px;
   background:
     linear-gradient(180deg, color-mix(in srgb, var(--background) 98%, transparent) 0%, color-mix(in srgb, var(--muted) 92%, transparent) 100%);
@@ -42,7 +42,7 @@ defineProps<{
 
   &__eyebrow {
     margin-bottom: 12px;
-    color: var(--color-text-meta);
+    color: var(--muted-foreground);
     font-size: 12px;
     font-weight: 700;
     letter-spacing: 0.08em;
@@ -55,12 +55,12 @@ defineProps<{
 
   &__message {
     margin: 0;
-    color: var(--color-surface-inverse-muted);
+    color: var(--foreground);
   }
 
   &__detail {
     margin: 12px 0 0;
-    color: var(--color-text-meta);
+    color: var(--muted-foreground);
   }
 
   @media screen and (width <= 768px) {

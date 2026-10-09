@@ -16,7 +16,7 @@ const props = defineProps({
   },
   activeColor: {
     type: String,
-    default: 'var(--ui-color-warning, var(--color-status-warning))',
+    default: 'var(--warning)',
   },
   showPagination: {
     type: Boolean,
@@ -125,7 +125,7 @@ watch(api, (value) => {
 
   &__item {
     flex: 0 0 100%;
-    padding-left: var(--ui-slider-item-padding, 1rem);
+    padding-left: 1rem;
   }
 
   &__pagination {

@@ -36,7 +36,7 @@ const emit = defineEmits<{
 <style lang="scss">
 .v-header-profile-switch-sidebar-pwa {
   &__header {
-    box-shadow: var(--shadow-control);
+    box-shadow: var(--shadow-sm);
     color: var(--foreground);
   }
 

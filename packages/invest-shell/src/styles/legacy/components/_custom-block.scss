@@ -22,42 +22,42 @@
 }
 
 .custom-block.info{
-  border-left: 2px solid var(--color-accent-strong);
+  border-left: 2px solid var(--primary);
   background: var(--accent);
 }
 
 .custom-block.note{
   border-left: 2px solid var(--chart-4);
-  background: var(--color-highlight-tint);
+  background: color-mix(in srgb, var(--info) 5%, var(--background));
 }
 
 .custom-block.tip{
-  border-left: 2px solid var(--color-text-disabled);
+  border-left: 2px solid var(--muted-foreground);
   background: var(--border);
 }
 
 .custom-block.important{
-  border-left: 2px solid var(--color-status-success, var(--secondary));
-  background: var(--color-positive-tint);
+  border-left: 2px solid var(--success);
+  background: color-mix(in srgb, var(--success) 20%, var(--background));
 }
 
 .custom-block.warning{
-  border-left: 2px solid var(--color-warning-accent);
-  background: var(--color-warning-tint);
+  border-left: 2px solid var(--warning);
+  background: color-mix(in srgb, var(--warning) 10%, var(--background));
 }
 
 .custom-block.danger{
   border-left: 2px solid var(--destructive);
-  background: var(--color-negative-tint);
+  background: color-mix(in srgb, var(--destructive) 10%, var(--background));
 }
 
 .custom-block.caution{
   border-left: 2px solid var(--destructive);
-  background: var(--color-negative-tint);
+  background: color-mix(in srgb, var(--destructive) 10%, var(--background));
 }
 
 .custom-block.details{
-  border-left: 2px solid var(--color-text-disabled);
+  border-left: 2px solid var(--muted-foreground);
   background: var(--border);
 }
 

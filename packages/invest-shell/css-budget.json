@@ -1,11 +1,9 @@
 {
   "schemaVersion": 3,
   "entries": [
-    "src/styles/geometry.css",
-    "src/styles/components.css",
     "src/styles/index.scss"
   ],
-  "measurement": "Unminified aggregate of all CSS assets emitted by a write-free production Vite build of the three public shell stylesheet entries in app import order, resolving Sass and CSS imports.",
+  "measurement": "Unminified aggregate of all CSS assets emitted by a write-free production Vite build of the public shell stylesheet entry, resolving Sass and CSS imports.",
   "scope": "Includes resolved imports. Excludes app styles, Vue SFC styles, and app Tailwind/design-token generation; this is not an application bundle budget.",
   "history": {
     "retiredDimensionGenerators": {
@@ -38,20 +36,20 @@
     }
   },
   "current": {
-    "rawBytes": 97845,
-    "gzipBytes": 18265,
+    "rawBytes": 48224,
+    "gzipBytes": 8780,
     "generatedSelectorOccurrences": 0,
-    "sha256": "e1a13407b6ccfb65c5dd6a01d5944c4b7a7e4c3520aa7ea056e4e5e13059f91d"
+    "sha256": "279575027f44de21124274d43ae5b9a8b450e8ce36a38d9910d0c28a65fdf229"
   },
   "referenceToolchain": {
-    "node": "v24.14.0",
-    "zlib": "1.3.1-e00f703",
-    "vite": "8.1.3",
-    "pnpm": "10.34.5"
+    "node": "v24.21.0",
+    "zlib": "1.3.2.1-motley-8002e91",
+    "vite": "8.3.0",
+    "pnpm": "12.4.2"
   },
   "maximum": {
-    "rawBytes": 98095,
-    "gzipBytes": 18315,
+    "rawBytes": 48474,
+    "gzipBytes": 8830,
     "generatedSelectorOccurrences": 0
   }
 }

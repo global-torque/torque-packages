@@ -224,7 +224,7 @@ const infoItemGroups = computed(() => {
               v-for="(tagInfo, indexInfo) in infoTags"
               :key="indexInfo"
               round
-              background="var(--ui-color-border-muted, var(--input))"
+              background="var(--input)"
               itemprop="keywords"
               class="v-offer-card__tag-info"
               variant="outline"
@@ -260,7 +260,7 @@ const infoItemGroups = computed(() => {
 <style lang="scss">
 .v-offer-card {
   position: relative;
-  border-width: var(--ui-offer-card-border-width, 1px);
+  border-width: 1px;
 
   &__link {
     position: absolute;
@@ -270,19 +270,19 @@ const infoItemGroups = computed(() => {
 
   display: flex;
   flex-direction: column;
-  background: var(--ui-color-surface, var(--background));
-  box-shadow: var(--ui-shadow-dialog, var(--shadow-dialog));
+  background: var(--background);
+  box-shadow: var(--shadow-lg);
   transition: all .3s ease;
   width: 100%;
   cursor: pointer;
   text-decoration: none;
 
   &[data-slot='card'] {
-    border-radius: var(--ui-offer-card-radius, 2px);
+    border-radius: 2px;
   }
 
   &:hover {
-    box-shadow: var(--ui-shadow-raised, var(--shadow-raised));
+    box-shadow: var(--shadow-xl);
   }
 
   &__img-wrap {
@@ -295,15 +295,15 @@ const infoItemGroups = computed(() => {
   }
 
   &__image-frame {
-    display: var(--ui-offer-image-frame-display, contents);
-    overflow: var(--ui-offer-image-overflow, visible);
+    display: contents;
+    overflow: visible;
     align-items: center;
     justify-content: center;
   }
 
   &__image-client {
-    display: var(--ui-offer-image-frame-display, contents);
-    position: var(--ui-offer-image-position, static);
+    display: contents;
+    position: static;
     width: 100%;
     height: 100%;
     min-height: inherit;
@@ -339,19 +339,19 @@ const infoItemGroups = computed(() => {
   }
 
   &__funded {
-    color: var(--ui-color-positive, var(--color-positive-strong));
+    color: var(--success);
     margin-bottom: 8px;
   }
 
   &__details {
-    color: var(--ui-color-text-muted, var(--muted-foreground));
+    color: var(--muted-foreground);
     width: 50%;
     display: flex;
     flex-direction: column;
   }
 
   &__details-number {
-    color: var(--ui-color-text-secondary, var(--foreground));
+    color: var(--foreground);
     margin-top: 0 !important;
   }
 
@@ -362,7 +362,7 @@ const infoItemGroups = computed(() => {
 
   &__description {
     margin-bottom: 16px;
-    color: var(--ui-color-text-secondary, var(--foreground));
+    color: var(--foreground);
     max-height: 36px;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -375,7 +375,6 @@ const infoItemGroups = computed(() => {
   }
 
   &__tag {
-    color: var(--ui-badge-foreground, revert-layer);
     position: absolute;
     top: 12px;
     left: 12px;
@@ -383,7 +382,7 @@ const infoItemGroups = computed(() => {
 
   &__info {
     &:first-of-type {
-      border-top: 1px solid var(--ui-color-border-subtle, var(--border));
+      border-top: 1px solid var(--border);
     }
   }
 

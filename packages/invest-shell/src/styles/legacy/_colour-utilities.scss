@@ -1,35 +1,35 @@
-// Legacy Sass names resolve at runtime; default values preserve the original palette.
-$primary: var(--ui-color-accent, var(--primary));
-$primary-dark: var(--ui-color-accent-strong, var(--color-accent-strong));
-$primary-light: var(--ui-color-subtle, var(--accent));
+// These Sass names resolve at runtime to the shadcn variables.
+$primary: var(--primary);
+$primary-dark: var(--primary);
+$primary-light: var(--accent);
 
-$secondary: var(--color-status-success, var(--ui-color-positive-accent, var(--chart-2)));
-$secondary-dark: var(--ui-color-positive, var(--color-positive-strong));
-$secondary-light: var(--ui-color-positive-background, var(--color-positive-tint));
+$secondary: var(--success);
+$secondary-dark: var(--success);
+$secondary-light: color-mix(in srgb, var(--success) 20%, var(--background));
 
-$red: var(--ui-color-negative-accent, var(--destructive));
-$red-dark: var(--ui-color-negative, var(--chart-5));
-$red-light: var(--ui-color-negative-background, var(--color-negative-tint));
+$red: var(--destructive);
+$red-dark: var(--chart-5);
+$red-light: color-mix(in srgb, var(--destructive) 10%, var(--background));
 
-$purple: var(--ui-color-highlight, var(--color-status-info));
-$purple-dark: var(--ui-color-highlight-strong, var(--color-highlight-strong));
-$purple-light: var(--ui-color-highlight-background, var(--color-highlight-tint));
+$purple: var(--info);
+$purple-dark: var(--info);
+$purple-light: color-mix(in srgb, var(--info) 5%, var(--background));
 
-$yellow: var(--ui-color-warning-accent, var(--color-warning-accent));
-$yellow-dark: var(--ui-color-warning, var(--color-status-warning));
-$yellow-light: var(--ui-color-warning-background, var(--color-warning-tint));
+$yellow: var(--warning);
+$yellow-dark: var(--warning);
+$yellow-light: color-mix(in srgb, var(--warning) 10%, var(--background));
 
-$white: var(--ui-color-surface, var(--card));
-$gray-10: var(--ui-color-canvas, var(--muted));
-$gray-20: var(--ui-color-border-subtle, var(--border));
-$gray-30: var(--ui-color-border-muted, var(--input));
-$gray-40: var(--ui-color-border, var(--color-border-strong));
-$gray-50: var(--ui-color-text-disabled, var(--color-text-disabled));
-$gray-60: var(--ui-color-text-subtle, var(--muted-foreground));
-$gray-70: var(--ui-color-text-muted, var(--color-text-meta));
-$gray-80: var(--ui-color-text-secondary, var(--color-text-strong));
-$gray-90: var(--ui-color-surface-inverse-muted, var(--color-surface-inverse-muted));
-$black: var(--ui-color-text, var(--foreground));
+$white: var(--card);
+$gray-10: var(--muted);
+$gray-20: var(--border);
+$gray-30: var(--input);
+$gray-40: var(--input);
+$gray-50: var(--muted-foreground);
+$gray-60: var(--muted-foreground);
+$gray-70: var(--muted-foreground);
+$gray-80: var(--foreground);
+$gray-90: var(--foreground);
+$black: var(--foreground);
 
 
 .is--background-primary{
@@ -93,7 +93,7 @@ $black: var(--ui-color-text, var(--foreground));
 }
 
 .is--background-black{
-  background-color: var(--ui-color-surface-inverse, var(--foreground));
+  background-color: var(--foreground);
 }
 
 .is--background-white{
@@ -203,7 +203,7 @@ $black: var(--ui-color-text, var(--foreground));
 }
 
 .is--color-white{
-  color: var(--ui-color-text-inverse, var(--background));
+  color: var(--background);
 }
 
 
@@ -248,14 +248,3 @@ $black: var(--ui-color-text, var(--foreground));
 [class*="is--color"] a:not([class*="is--color"]){
     color: inherit;
   }
-
-
-:root {
-    --vis-tooltip-background-color: var(--ui-color-canvas);
-    --vis-primary-color: var(--ui-chart-primary-hsl, 221 100% 50%);
-    --vis-secondary-color: var(--ui-chart-secondary-hsl, 154 69% 55%);
-    --vis-text-color: var(--ui-chart-text-hsl, 210 10% 23%);
-    --vis-area-stroke: var(--ui-chart-primary-hsl, 221 100% 50%);
-    --vis-dark-area-stroke: var(--ui-chart-primary-hsl, 221 100% 50%);
-    --stroke: var(--ui-color-canvas);
-}

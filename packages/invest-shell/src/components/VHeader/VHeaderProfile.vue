@@ -70,7 +70,7 @@ const onLogout = () => {
       v-model:open="isMenuOpen"
       with-chevron
       :menu="menu"
-      :content-props="{ sideOffset: 14 }"
+      :content-props="{ sideOffset: 14, align: 'end' }"
     >
       <VAvatarIdentity
         class="v-header-profile__avatar"
@@ -112,18 +112,23 @@ const onLogout = () => {
       </template>
       <template #content>
         <DropdownMenuItem
-          class="v-header-profile__item"
+          as-child
           data-testid="header-profile-logout"
           @click="onLogout"
         >
-          <LogOutIcon
-            v-if="showLogoutIcon"
-            class="v-header-profile__icon"
-            aria-hidden="true"
-          />
-          <span class="v-header-profile__label">
-            Log Out
-          </span>
+          <button
+            type="button"
+            class="v-dropdown__item"
+          >
+            <LogOutIcon
+              v-if="showLogoutIcon"
+              class="v-dropdown__icon"
+              aria-hidden="true"
+            />
+            <span class="v-dropdown__label">
+              Log Out
+            </span>
+          </button>
         </DropdownMenuItem>
       </template>
     </VDropdown>
@@ -151,12 +156,11 @@ const onLogout = () => {
   }
 
   &__menu-email {
-    color: var(--ui-color-text-muted, var(--color-text-meta));
+    color: var(--muted-foreground);
     margin-top: 2px;
     overflow-wrap: anywhere;
   }
 
-  // the attribute keeps it ahead of the surface's menu-row rule (components.css)
   &__switch-trigger[data-slot='dropdown-menu-sub-trigger'] {
     border: 1px solid var(--border);
     border-radius: 2px;
@@ -164,50 +168,14 @@ const onLogout = () => {
     padding: 12px 14px;
   }
 
-  &__item {
-    padding: 8px 12px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    color: inherit;
-
-    &:hover {
-      background-color: var(--border);
-    }
-
-    &.router-link-active,
-    &.is--active {
-      color: var(--primary);
-    }
-  }
-
   .is--active {
     color: var(--primary);
-  }
-
-  &__icon {
-    width: 18px;
-    height: 18px;
-    flex-shrink: 0;
-    color: var(--ui-color-text-disabled, var(--color-text-disabled));
-
-    path {
-      fill: currentcolor;
-    }
-
-    path[stroke] {
-      stroke: currentcolor;
-    }
-  }
-
-  &__label {
-    flex: 1;
   }
 
   &__divider {
     width: 1px;
     height: 30px;
-    border-left: 1px solid var(--ui-color-border, var(--color-border-strong));
+    border-left: 1px solid var(--input);
   }
 
   &__notification {
@@ -220,7 +188,7 @@ const onLogout = () => {
   &__notification-icon {
     width: 24px;
     height: 24px;
-    color: var(--ui-color-text-disabled, var(--color-text-disabled));
+    color: var(--muted-foreground);
   }
 
   &__notification-dot {
@@ -229,7 +197,7 @@ const onLogout = () => {
     position: absolute;
     right: -2px;
     top: -2px;
-    background-color: var(--ui-color-surface, var(--background));
+    background-color: var(--background);
     border-radius: 100%;
     z-index: 0;
 

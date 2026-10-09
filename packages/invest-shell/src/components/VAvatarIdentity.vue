@@ -32,21 +32,18 @@ defineProps<{
   display: flex;
   align-items: center;
   gap: 5px;
-  color: var(--ui-color-text, inherit);
+  color: inherit;
 
   &__avatar {
-    position: var(--ui-chrome-avatar-position, relative);
-    align-items: var(--ui-avatar-identity-align-items, revert-layer);
-    justify-content: var(--ui-avatar-identity-justify-content, revert-layer);
-    line-height: var(--ui-chrome-avatar-line-height, revert-layer);
-    font-size: var(--ui-avatar-identity-font-size, inherit);
-    border: var(--ui-avatar-identity-border, none);
-    border-radius: var(--ui-avatar-identity-radius, calc(infinity * 1px));
-    background: var(--ui-color-border-subtle, transparent);
+    position: relative;
+    font-size: inherit;
+    border: none;
+    border-radius: calc(infinity * 1px);
+    background: transparent;
 
     :deep([data-slot='avatar-fallback']) {
-      font-weight: var(--ui-header-avatar-weight, 500);
-      border-radius: var(--ui-investor-avatar-fallback-radius, calc(infinity * 1px));
+      font-weight: 500;
+      border-radius: calc(infinity * 1px);
     }
   }
 

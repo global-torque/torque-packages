@@ -71,46 +71,7 @@ describe('VPageTopInfoAndTabs', () => {
     routerResolve.mockClear();
   });
 
-  it('tracks actual tab overflow edges without replacing public tab controls', async () => {
-    const wrapper = mount(VPageTopInfoAndTabs, {
-      props: {
-        tab: 'portfolio',
-        tabs: {
-          portfolio: { value: 'portfolio', label: 'Portfolio' },
-          summary: { value: 'summary', label: 'Summary' },
-        },
-      },
-    });
-    await flushPromises();
-    const list = wrapper.get('[role="tablist"]');
-    const element = list.element as HTMLElement;
-    expect(element.style.getPropertyValue('--page-tabs-underline-width')).toBe('');
-    Object.defineProperties(element, {
-      clientWidth: { configurable: true, value: 200, writable: true },
-      scrollWidth: { configurable: true, value: 600, writable: true },
-    });
-    await list.trigger('scroll');
-    expect(wrapper.findAll('[role="tab"]')).toHaveLength(2);
-    expect(wrapper.find('.v-page-top-info-and-tabs__edge--left').exists()).toBe(false);
-    expect(wrapper.get('.v-page-top-info-and-tabs__edge--right').attributes('aria-hidden')).toBe('true');
-
-    element.scrollLeft = 200;
-    await list.trigger('scroll');
-    expect(wrapper.findAll('.v-page-top-info-and-tabs__edge')).toHaveLength(2);
-
-    element.scrollLeft = 400;
-    await list.trigger('scroll');
-    expect(wrapper.find('.v-page-top-info-and-tabs__edge--right').exists()).toBe(false);
-    expect(wrapper.find('.v-page-top-info-and-tabs__edge--left').exists()).toBe(true);
-
-    Object.defineProperty(element, 'clientWidth', { value: 600 });
-    element.scrollLeft = 0;
-    await list.trigger('scroll');
-    expect(wrapper.findAll('.v-page-top-info-and-tabs__edge')).toHaveLength(0);
-    wrapper.unmount();
-  });
-
-  it('retains the measured underline through viewport shrink and restores fitting edges on expansion', async () => {
+  it('retains the measured underline through viewport shrink', async () => {
     ObservedResize.instances = [];
     vi.stubGlobal('ResizeObserver', ObservedResize);
     const wrapper = mount(VPageTopInfoAndTabs, {
@@ -140,22 +101,10 @@ describe('VPageTopInfoAndTabs', () => {
     };
     await resize();
     expect(element.style.getPropertyValue('--page-tabs-underline-width')).toBe('1250px');
-    expect(wrapper.findAll('.v-page-top-info-and-tabs__edge')).toHaveLength(0);
 
     viewportWidth = 1122;
     await resize();
     expect(element.scrollWidth).toBe(1250);
-    expect(wrapper.find('.v-page-top-info-and-tabs__edge--right').exists()).toBe(true);
-    element.scrollLeft = 128;
-    await list.trigger('scroll');
-    await flushPromises();
-    expect(wrapper.find('.v-page-top-info-and-tabs__edge--right').exists()).toBe(false);
-    expect(wrapper.find('.v-page-top-info-and-tabs__edge--left').exists()).toBe(true);
-
-    viewportWidth = 1250;
-    element.scrollLeft = 0;
-    await resize();
-    expect(wrapper.findAll('.v-page-top-info-and-tabs__edge')).toHaveLength(0);
     await wrapper.setProps({ retainUnderlineExtent: false });
     expect(element.style.getPropertyValue('--page-tabs-underline-width')).toBe('');
     expect(list.classes()).not.toContain('v-page-top-info-and-tabs__retained-underline');

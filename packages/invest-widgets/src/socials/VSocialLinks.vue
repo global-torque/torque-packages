@@ -22,12 +22,12 @@ defineProps({
       rel="noopener noreferrer"
       :aria-label="item.name"
     >
-      <img
+      <span
         v-if="typeof item.icon === 'string'"
-        :src="item.icon"
-        alt=""
         class="social-links__icon"
-      >
+        aria-hidden="true"
+        :style="{ maskImage: `url(${JSON.stringify(item.icon)})` }"
+      />
       <component
         :is="item.icon"
         v-else
@@ -43,7 +43,6 @@ defineProps({
   flex-direction: row;
   align-items: center;
   width: 100%;
-  color: var(--ui-color-text-inverse, var(--background));
 
   @media screen and (max-width: 768px){
     flex-wrap: wrap;
@@ -57,6 +56,14 @@ defineProps({
   &__icon{
     height: 24px;
     width: 24px;
+  }
+
+  // A string icon is a mask, so it paints the inherited text color.
+  span.social-links__icon{
+    background-color: currentColor;
+    mask-repeat: no-repeat;
+    mask-position: center;
+    mask-size: contain;
   }
 
   &__item{

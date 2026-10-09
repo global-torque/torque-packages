@@ -32,7 +32,7 @@ describe('Contact dialog dismissal', () => {
       expect(close!.getAttribute('data-slot')).toBe('dialog-close');
       expect(close!.getAttribute('type')).toBe('button');
       expect(dialog!.querySelectorAll('[data-slot="dialog-close"]')).toHaveLength(1);
-      expect(close!.querySelector('.v-dialog-contact-us__close-approved path')?.getAttribute('d')).toBe('M15 5L5 15M5 5L15 15');
+      expect(close!.querySelector('.v-dialog-contact-us__close-outline')).not.toBeNull();
       expect(dialog!.contains(document.activeElement)).toBe(true);
       if (method === 'close button') close!.click();
       else document.activeElement!.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));

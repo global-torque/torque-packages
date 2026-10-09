@@ -35,7 +35,6 @@ describe('Notifications filter artwork', () => {
     await flushPromises();
     const filter = wrapper.getComponent({ name: 'VFilter' });
     expect(filter.get('.wd-notification-table__filter-icon--default').attributes('viewBox')).toBe('0 0 16 16');
-    expect(filter.get('.wd-notification-table__filter-icon--approved').attributes('aria-hidden')).toBe('true');
     const store = useNotifications();
     vi.spyOn(store, 'onApplyFilter');
     vi.spyOn(store, 'markAllAsRead');

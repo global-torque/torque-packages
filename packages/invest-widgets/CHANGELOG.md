@@ -9,6 +9,23 @@
 - The wallet authorization dialog shows its irreversible-operation warning as
   the standard alert, because ui-primitives 0.2.0 has no `warning` variant.
   The warning icon still shows the status.
+- `ProfileSwitchMenuList` styles its status badge padding, weight and color in
+  a scoped style, which the removed `invest-shell` `components.css` provided.
+- Widgets read the shadcn variables directly instead of the removed
+  `invest-shell` `geometry.css` roles. The offer and info cards and the wallet
+  OTP form use `--shadow-lg`, and the offer card hover uses `--shadow-xl`.
+- Removed the `--ui-*` hooks, including those in the `VSliderAutoplay`,
+  `VSliderCards` and `VComment` prop defaults. Each rule keeps its former
+  fallback value.
+- Charts read the shadcn variables. `defaultColors()` returns `--chart-1` and
+  `--chart-2` mixes, and the area chart axis text uses `--foreground`.
+- `VSlider` no longer renders the alternate arrow icons that only the removed
+  hooks could show. The outline arrows stay.
+- `VSocialLinks` renders a string icon as a decorative `span` with a CSS mask
+  instead of an `img`, so the icon takes the inherited text color. Before, an
+  SVG that paints `currentColor` rendered black and disappeared on the dark
+  footer. The root no longer sets `color`; the host surface supplies it. A
+  cross-origin icon URL must allow CORS.
 
 ## 0.4.15 candidate
 

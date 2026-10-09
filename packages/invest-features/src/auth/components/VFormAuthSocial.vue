@@ -86,8 +86,8 @@ const socialSignin = [
 
   &__item-icon,
   &__item-icon-hover {
-    width: var(--ui-social-auth-icon-size, 20px);
-    height: var(--ui-social-auth-icon-size, 20px);
+    width: 20px;
+    height: 20px;
     transition: all 0.3s ease;
   }
 

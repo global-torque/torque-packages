@@ -123,16 +123,16 @@ const headerDataClasses = computed(() => ({
   width: 100%;
   position: fixed;
   top: 0;
-  z-index: 100;
+  z-index: 41;
   height: 64px;
 
   &.is--fixed {
-    background: var(--ui-color-surface, var(--background));
-    box-shadow: var(--ui-shadow-control, var(--shadow-control));
+    background: var(--background);
+    box-shadow: var(--shadow-sm);
   }
 
   @include media-lte(desktop-md) {
-    box-shadow: var(--ui-shadow-control, var(--shadow-control));
+    box-shadow: var(--shadow-sm);
   }
 
   &__container {

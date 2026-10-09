@@ -101,24 +101,23 @@ const getComponentClass = (item: MenuItem) => {
   }
 
   &__item-not-link {
-    color: var(--muted-foreground);
+    color: color-mix(in srgb, var(--background) 70%, transparent);
     text-transform: uppercase;
   }
 
-  // The footer uses its inverse active role; retain the default brand's
-  // primary value when the release does not supply that role.
+  // The active footer item uses the primary color.
   &__item.is--active {
-    color: var(--ui-color-accent-inverse, var(--primary)) !important;
+    color: var(--primary) !important;
   }
 
   &__item {
     white-space: nowrap;
-    color: var(--ui-color-text-inverse, var(--background));
+    color: var(--background);
     text-decoration: none;
 
     &:hover,
     &.is--active {
-      color: var(--ui-color-accent-inverse, var(--ui-color-accent, var(--primary)));
+      color: var(--primary);
     }
   }
 

@@ -5,7 +5,6 @@ import { storeToRefs } from 'pinia';
 import { ArrowRightIcon } from '@global-torque/invest-widgets/icons';
 import { Sheet, SheetClose, SheetContent, SheetFooter, SheetHeader, SheetTitle } from '@global-torque/ui-primitives/sheet';
 import { X } from '@lucide/vue';
-import CloseIcon from '@global-torque/invest-widgets/icons/images/close.svg?component';
 import VNotificationTable from './VNotificationTable.vue';
 
 defineProps({
@@ -72,10 +71,6 @@ const onClose = () => {
           class="v-notification-sidebar__close-outline size-4"
           aria-hidden="true"
         />
-        <CloseIcon
-          class="v-notification-sidebar__close-approved size-[18px]"
-          aria-hidden="true"
-        />
       </SheetClose>
     </SheetContent>
   </Sheet>
@@ -83,21 +78,19 @@ const onClose = () => {
 
 <style lang="scss">
 [data-slot='sheet-overlay']:has(+ .v-notification-sidebar__content) {
-  z-index: var(--ui-notification-overlay-layer, 50);
-  background: var(--ui-dialog-overlay, color-mix(in srgb, var(--foreground) 40%, transparent));
+  z-index: 50;
+  background: color-mix(in srgb, var(--foreground) 40%, transparent);
 }
 
 .v-notification-sidebar {
 
   &__header {
-    box-shadow: var(--ui-shadow-control, var(--shadow-control));
+    box-shadow: var(--shadow-sm);
     color: var(--foreground);
   }
 
   &__content {
-    display: var(--ui-notification-panel-display, revert-layer);
-    overflow: var(--ui-notification-panel-overflow, revert-layer);
-    background: var(--ui-dialog-background, var(--background));
+    background: var(--background);
     max-width: 700px !important;
     z-index: 101;
 
@@ -133,39 +126,28 @@ const onClose = () => {
     align-items: flex-start;
     gap: 4px;
     align-self: stretch;
-    flex-direction: var(--ui-notification-footer-direction, revert-layer);
-    border-top: 1px solid var(--ui-color-border-subtle, var(--border));
-    background-color: var(--ui-color-surface, var(--background));
+    border-top: 1px solid var(--border);
+    background-color: var(--background);
   }
 
   &__close {
-    padding: var(--ui-notification-close-padding, 0);
-    border: var(--ui-notification-close-border-width, 0) solid transparent;
-    font-weight: var(--ui-notification-close-weight, revert-layer);
-    line-height: var(--ui-notification-close-line-height, revert-layer);
-    flex-shrink: var(--ui-notification-close-shrink, revert-layer);
+    padding: 0;
+    border: 0 solid transparent;
   }
 
   &__close[data-slot='sheet-close']:hover {
-    background: var(--ui-color-accent-subtle-hover, color-mix(in srgb, var(--primary) 12%, var(--background)));
-    color: var(--ui-color-accent-hover, color-mix(in srgb, var(--primary) 78%, black));
+    background: color-mix(in srgb, var(--primary) 12%, var(--background));
+    color: color-mix(in srgb, var(--primary) 78%, black);
   }
 
-  &__close-outline { display: var(--ui-notification-close-outline-display, block); }
-
-  &__close-approved {
-    display: var(--ui-notification-close-approved-display, none);
-    color: var(--primary);
-  }
+  &__close-outline { display: block; }
 
   &__action {
-    gap: var(--ui-notification-action-gap, 8px);
-    position: var(--ui-notification-action-position, revert-layer);
+    gap: 8px;
   }
 
   &__icon {
-    width: var(--ui-notification-action-icon-size, 20px);
-    height: var(--ui-notification-action-icon-size, revert-layer);
+    width: 20px;
   }
 }
 </style>

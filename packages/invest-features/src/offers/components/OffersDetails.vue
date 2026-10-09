@@ -247,12 +247,12 @@ useGlobalLoader().hide();
   }
 
   &__city {
-    color: var(--color-text-strong);
+    color: var(--foreground);
     flex-shrink: 0;
   }
 
   & &__social-links {
-      color: var(--color-text-meta);
+      color: var(--muted-foreground);
       gap: 10px;
       width: auto;
 

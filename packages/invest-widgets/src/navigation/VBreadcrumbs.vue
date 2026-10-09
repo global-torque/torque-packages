@@ -57,7 +57,7 @@ const isLast = (index: number) => index === props.data.length - 1;
    unlayered and beats the primitive's utilities, so the list is reset here. */
 .v-breadcrumb {
   ol {
-    display: var(--ui-breadcrumb-list-display, flex);
+    display: flex;
     list-style: none;
     padding-left: 0;
     gap: 8px;
@@ -66,38 +66,36 @@ const isLast = (index: number) => index === props.data.length - 1;
     line-height: inherit;
 
     @media screen and (width < 768px) {
-      display: var(--ui-breadcrumb-list-mobile-display, flex);
+      display: flex;
     }
   }
 
   [data-slot='breadcrumb-item'] {
-    display: var(--ui-breadcrumb-item-display, inline-flex);
+    display: inline-flex;
   }
 
   [data-slot='breadcrumb-separator'] {
-    display: var(--ui-breadcrumb-separator-display, list-item);
+    display: list-item;
 
     @media screen and (width < 768px) {
-      margin: var(--ui-breadcrumb-separator-mobile-margin, 0);
+      margin: 0;
     }
   }
 
   &__link,
   [data-slot='breadcrumb-page'] {
-    font-size: var(--ui-breadcrumb-label-size, inherit);
+    font-size: inherit;
     line-height: inherit;
   }
 
-  &__link { color: var(--ui-breadcrumb-link-color, revert-layer); }
+  [data-slot='breadcrumb-page'] { font-weight: 400; }
 
-  [data-slot='breadcrumb-page'] { font-weight: var(--ui-breadcrumb-page-weight, 400); }
+  &__default-separator::before { content: '>'; }
 
-  &__default-separator::before { content: var(--ui-breadcrumb-separator-content, '>'); }
-
-  // Keep inactive labels in the host's existing text role.
+  // Inactive labels use the muted foreground.
   [data-slot='breadcrumb-page'],
   [data-slot='breadcrumb-separator'] {
-    color: var(--ui-color-text-disabled, var(--color-text-disabled));
+    color: var(--muted-foreground);
   }
 
   & + * {

@@ -71,20 +71,12 @@ const triggerAriaLabel = computed(() => (isSidebarClosed.value ? 'Open sidebar' 
   >
     <component
       :is="TriggerIcon"
-      class="size-[var(--ui-sidebar-trigger-icon-size,16px)] is--color-gray-70"
+      class="size-[16px] is--color-gray-70"
     />
   </Button>
 </template>
 
 <style scoped lang="scss">
-.v-sidebar-trigger:not(.v-sidebar-trigger--custom)[data-slot='button'] {
-  position: var(--ui-sidebar-trigger-position, revert-layer);
-
-  &:focus-visible {
-    box-shadow: var(--ui-sidebar-trigger-focus-shadow, revert-layer);
-  }
-}
-
 .v-sidebar-trigger--custom[data-slot='button'] {
   display: inline-flex;
   align-items: center;

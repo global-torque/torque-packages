@@ -161,8 +161,8 @@ const secondaryValueSign = computed(() => {
   justify-content: space-between;
   width: 100%;
   padding: 20px 24px;
-  background-color: var(--ui-color-surface, var(--background));
-  box-shadow: var(--ui-shadow-dialog, var(--shadow-dialog));
+  background-color: var(--background);
+  box-shadow: var(--shadow-lg);
   border-radius: 2px;
 
   &__wrap {
@@ -189,7 +189,7 @@ const secondaryValueSign = computed(() => {
       margin-right: 4px;
 
       &.is--positive {
-        color: var(--ui-color-positive, var(--color-positive-strong));
+        color: var(--success);
       }
 
       &.is--negative {
