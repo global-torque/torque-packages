@@ -88,6 +88,21 @@
   which no stylesheet defines. Every remaining compiled rule is unchanged. A
   host that still uses a removed class must define it. The CSS budget now
   measures 40,792 raw and 7,773 gzip bytes, capped at 41,042 and 7,823.
+- The global styles now live in Tailwind's `base` layer, so utilities and
+  component classes override them without `!important`. Hosts must load them
+  after Tailwind so that they still win over its preflight. `index.scss` emits
+  the legacy CSS with `meta.load-css` inside the layer, so it no longer
+  forwards the `pwa-scope` mixin. `_reset.scss` and `_link.scss` drop their
+  own `@layer base` wrappers, which would otherwise nest as `base.base`. The
+  rules, their order and their declarations are unchanged, except that the
+  plain link rule becomes `a:where(:not([data-slot="button"]))`. With the
+  specificity of a plain `a`, it still loses to the shell's class rules, such
+  as `.is--link-2` and `.is--h6__title`, and to the heading `a` rules, and it
+  still wins over the preflight `a`. Because layer order reverses for
+  `!important`, a shell `!important` declaration now wins over `!important`
+  utilities and unlayered app rules. The CSS budget now measures 44,047 raw
+  and 7,788 gzip bytes, capped at 44,297 and 7,838. The raw growth is
+  indentation.
 
 ## 0.4.15 candidate
 

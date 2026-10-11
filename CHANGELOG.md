@@ -70,6 +70,17 @@
   `invest-widgets` drop seven class names that no stylesheet defines. Every
   remaining compiled rule is unchanged. A host that still uses a removed class
   must define it. The CSS budget now measures 40,792 raw and 7,773 gzip bytes.
+- The `invest-shell` global styles now live in Tailwind's `base` layer, so
+  utilities and component classes override them without `!important`. Hosts
+  must load them after Tailwind so that they still win over its preflight.
+  The rules, their order and their declarations are unchanged, except that
+  the plain link rule becomes `a:where(:not([data-slot="button"]))`, so the
+  shell's class rules still win over it. Because layer order reverses for
+  `!important`, a shell `!important` declaration now wins over `!important`
+  utilities and unlayered app rules. `invest-features` `OffersDetails`
+  therefore sets its inline side card margin in its own style instead of
+  overriding `is--margin-top-40`. The CSS budget now measures 44,047 raw and
+  7,788 gzip bytes. The raw growth is indentation.
 
 ## 0.4.15 candidate
 

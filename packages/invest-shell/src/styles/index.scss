@@ -1,9 +1,16 @@
-@forward './legacy/index';
+@use 'sass:meta';
 
-.wd-container,
-.is--container {
-  width: 100%;
-  max-width: 1280px;
-  padding: 0 15px;
-  margin: 0 auto;
+// Every shell rule sits in Tailwind's `base` layer, so utilities and component
+// classes override it without `!important`. `@forward` cannot sit inside a
+// block, so `meta.load-css` emits the legacy CSS inside the layer.
+@layer base {
+  @include meta.load-css('./legacy/index');
+
+  .wd-container,
+  .is--container {
+    width: 100%;
+    max-width: 1280px;
+    padding: 0 15px;
+    margin: 0 auto;
+  }
 }

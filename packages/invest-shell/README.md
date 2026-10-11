@@ -76,6 +76,11 @@ Hosts should retain this order for the public shell styles:
 @import '@global-torque/invest-shell/styles';
 ```
 
+The shared styles sit in Tailwind's `base` layer. Load them after Tailwind, so
+that they win over its preflight. Utilities, component classes and unlayered
+app styles override their normal declarations. A shell `!important`
+declaration wins over `!important` utilities and unlayered app rules.
+
 Shell components and the shared styles read the shadcn variables directly, such
 as `--foreground`, `--muted-foreground`, `--border` and `--shadow-sm`. The
 shadows are Tailwind theme variables. Tailwind emits one only when its name
@@ -98,9 +103,9 @@ with minification and disk output disabled. The aggregate includes imported
 styles, but excludes app styles, Vue SFC styles, and app Tailwind/design-token
 generation; it is not an application bundle budget.
 
-The reviewed aggregate is 40,792 raw bytes, 7,773 gzip bytes, and zero generated
+The reviewed aggregate is 44,047 raw bytes, 7,788 gzip bytes, and zero generated
 dimension selectors. Caps retain 250 raw bytes and 50 gzip bytes of headroom:
-41,042 raw and 7,823 gzip. Tests pin the raw bytes and SHA-256, require resolved
+44,297 raw and 7,838 gzip. Tests pin the raw bytes and SHA-256, require resolved
 imports and zero generated selectors, and enforce gzip only against its cap
 because supported Node/zlib versions can compress identical CSS differently.
 `css-budget.json` records the reference toolchain and keeps the prior

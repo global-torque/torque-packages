@@ -29,6 +29,10 @@
 - The offer details tab panels start 40px under the tabs again, because the
   ui-primitives 0.2.0 `TabsContent` has no top padding. Tab panels nested
   inside them are unchanged.
+- The inline offer details side card (below 980px) sets its own top margin:
+  40px, and 24px below 768px. It no longer uses `is--margin-top-40` with an
+  `!important` override, which stopped working once the `invest-shell` styles
+  moved into the `base` layer. The desktop side card is unchanged.
 
 ## 0.4.15 candidate
 
