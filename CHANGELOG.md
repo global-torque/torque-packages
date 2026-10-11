@@ -63,6 +63,13 @@
   aligns to the end of its trigger.
 - The CSS budget now measures `index.scss` only: 48,224 raw and 8,780 gzip
   bytes.
+- Removed 79 `.is--*` classes from the `invest-shell` legacy styles. No host
+  of the shell styles uses them. Also removed the unloaded `_hover.scss` and
+  the legacy `.is--container` rule, which the later 1280px rule always
+  overrode. Templates in `invest-shell`, `invest-features` and
+  `invest-widgets` drop seven class names that no stylesheet defines. Every
+  remaining compiled rule is unchanged. A host that still uses a removed class
+  must define it. The CSS budget now measures 40,792 raw and 7,773 gzip bytes.
 
 ## 0.4.15 candidate
 

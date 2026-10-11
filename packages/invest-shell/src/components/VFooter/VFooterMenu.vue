@@ -61,7 +61,6 @@ const getComponentClass = (item: MenuItem) => {
         <div
           v-if="menuItem.children && menuItem.children.length > 0"
           class="v-footer-menu__children"
-          :class="{ 'is--two-col': menuItem.children.length > 8 }"
         >
           <template
             v-for="childItem in menuItem.children"
@@ -129,13 +128,6 @@ const getComponentClass = (item: MenuItem) => {
     @include media-lte(tablet) {
       gap: 0;
     }
-
-    // &.is--two-col {
-    //   @include media-gte(mobile) {
-    //     display: grid;
-    //     grid-template-columns: repeat(2, minmax(0, 1fr));
-    //   }
-    // }
 
     #{$root}__item {
       &:not(:first-child) {

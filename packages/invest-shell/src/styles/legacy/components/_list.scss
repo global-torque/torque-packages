@@ -106,13 +106,3 @@ li.with-default-distance + li.with-default-distance{
         margin-top: 0;
     }
 }
-
-.is--list-default {
-    ul li {
-        border: none !important;
-    }
-
-    li + li{
-        margin-top: 8px !important;
-    }
-}

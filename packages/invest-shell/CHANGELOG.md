@@ -75,6 +75,19 @@
   Sidebar07 team and user menu items also carry this class.
 - The CSS budget now measures `index.scss` only: 48,224 raw and 8,780 gzip
   bytes, capped at 48,474 and 8,830.
+- Removed 79 `.is--*` classes from the legacy styles, because no host uses
+  them: 37 colour and background utilities, `.is--display`,
+  `.is--body-italic`, 11 spacing, 5 visibility and 18 layout utilities, and
+  the hooks `.is--cols-auto-left`, `.is--cols-auto-right`, `.is--three`,
+  `.is--page-content`, `.is--no-padding-bottom` and `.is--side-block__content`.
+  Also removed the 11 Sass colour variables and the `_tag.scss` partial that
+  only these classes used, the unloaded `_hover.scss`, and the legacy
+  `.is--container` rule, whose declarations the later 1280px rule always
+  overrode. Templates no longer set `is--no-margin`, `is--body-1`,
+  `is--body-2`, `is--gt-desktop-md-hide`, `is--two-col` or `is--secondary`,
+  which no stylesheet defines. Every remaining compiled rule is unchanged. A
+  host that still uses a removed class must define it. The CSS budget now
+  measures 40,792 raw and 7,773 gzip bytes, capped at 41,042 and 7,823.
 
 ## 0.4.15 candidate
 

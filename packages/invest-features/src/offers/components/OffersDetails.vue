@@ -61,7 +61,7 @@ useGlobalLoader().hide();
 </script>
 
 <template>
-  <div class="OffersDetails offer-details is--no-margin">
+  <div class="OffersDetails offer-details">
     <div class="offer-details__wrap">
       <div class="offer-details__main is--left">
         <Skeleton

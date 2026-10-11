@@ -78,11 +78,6 @@ html.pwa-mobile {
     -webkit-touch-callout: none;
   }
 
-  .is--pwa-allow-pan {
-    // Re-enable panning gestures for elements that need standard scroll behavior
-    touch-action: pan-x pan-y !important;
-  }
-
   // Hide the blue tap highlight that breaks the native feel on iOS
   a, button, input, textarea {
     -webkit-tap-highlight-color: transparent;
