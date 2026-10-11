@@ -1,11 +1,12 @@
 @use '@global-torque/ui-kit/styles/mixins' as *;
 
-// Element default. `index.scss` puts it in Tailwind's `base` layer, so a
-// primitive rendered as a link (`<Button as="a">`, `RouterLink`) keeps its
+// Element default. `index.scss` puts it in Tailwind's `base` layer. Every
+// shadcn primitive part (data-slot) rendered as a link, such as
+// `<Button as="a">`, `RouterLink` or `BreadcrumbLink`, keeps its own
 // utilities. Plain anchors keep this. `:where()` keeps the specificity of a
 // plain `a`, so the shell's class rules still win over it, and it still wins
 // over the preflight `a` because it comes later.
-a:where(:not([data-slot="button"])) {
+a:where(:not([data-slot])) {
   font-weight: 800;
   font-size: inherit;
   line-height: inherit;

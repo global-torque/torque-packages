@@ -53,8 +53,8 @@ const isLast = (index: number) => index === props.data.length - 1;
 
 <style lang="scss">
 /* page spacing the legacy ui-kit breadcrumb root carried; consumers rely on it.
-   The legacy typography `ol { list-style: decimal; padding-left: 23px; color }` is
-   unlayered and beats the primitive's utilities, so the list is reset here. */
+   The `ol` rule sets the breadcrumb's own row, gap, color and text size in
+   place of the primitive list's utilities. */
 .v-breadcrumb {
   ol {
     display: flex;
@@ -86,6 +86,12 @@ const isLast = (index: number) => index === props.data.length - 1;
   [data-slot='breadcrumb-page'] {
     font-size: inherit;
     line-height: inherit;
+  }
+
+  // Breadcrumb links stay primary and bold. The primitive link sets neither.
+  &__link {
+    color: var(--primary);
+    font-weight: 800;
   }
 
   [data-slot='breadcrumb-page'] { font-weight: 400; }

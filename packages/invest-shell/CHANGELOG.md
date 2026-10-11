@@ -103,6 +103,18 @@
   utilities and unlayered app rules. The CSS budget now measures 44,047 raw
   and 7,788 gzip bytes, capped at 44,297 and 7,838. The raw growth is
   indentation.
+- The element rules for `p`, `a`, `ol`, `ul` and `li` no longer apply to
+  shadcn primitive parts, which carry a `data-slot` attribute. For example,
+  `BreadcrumbLink` and `SidebarMenu` keep their own utilities. Each rule uses
+  `:where(:not([data-slot]))`, so its specificity is unchanged. The plain link
+  rule changes from `a:where(:not([data-slot="button"]))` to
+  `a:where(:not([data-slot]))`, so it skips every part, not only buttons.
+  Every other compiled rule is unchanged. The CSS budget now measures 44,133
+  raw and 7,793 gzip bytes, capped at 44,383 and 7,843. The raw growth is the
+  added `:where()` conditions.
+- The `VHeaderNavigation` desktop menu links are bold again. The component
+  sets weight 800 itself, because the plain link rule now skips
+  `NavigationMenuLink`. The triggers and the mobile menu are unchanged.
 
 ## 0.4.15 candidate
 

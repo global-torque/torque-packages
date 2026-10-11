@@ -81,6 +81,16 @@
   therefore sets its inline side card margin in its own style instead of
   overriding `is--margin-top-40`. The CSS budget now measures 44,047 raw and
   7,788 gzip bytes. The raw growth is indentation.
+- The `invest-shell` element rules for paragraphs, links and lists no longer
+  apply to shadcn primitive parts, which carry a `data-slot` attribute. Each
+  rule uses `:where(:not([data-slot]))`, so its specificity is unchanged. The
+  plain link rule now skips every part, not only buttons. Every other
+  compiled rule is unchanged. The CSS budget now measures 44,133 raw and
+  7,793 gzip bytes.
+- `invest-shell` `VHeaderNavigation` makes its desktop menu links bold again,
+  and `invest-widgets` `VBreadcrumbs` makes its links primary and bold again.
+  The plain link rule now skips `NavigationMenuLink` and `BreadcrumbLink`, so
+  each component sets this look itself.
 
 ## 0.4.15 candidate
 
