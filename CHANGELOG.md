@@ -1,6 +1,9 @@
 # Changelog
 
-## Unreleased
+## 0.4.16 candidate
+
+- Expanded the supported Node range to `>=24.21.0`; CI and release workflows
+  remain pinned to Node 24.21.0.
 
 - `invest-features`, `invest-widgets` and `invest-shell` now require
   `@global-torque/ui-kit` 0.4.0 and `@global-torque/ui-primitives` 0.2.0. Both
@@ -114,9 +117,6 @@
   `css:budget` script and its test are gone, and `test:run` runs only Vitest.
 
 ## 0.4.15 candidate
-
-- Expanded the supported Node range to `>=24.21.0`; CI and release workflows
-  remain pinned to Node 24.21.0.
 - Reissued the seven-package cohort with the shared UI portal-layer contract:
   dialogs and ordinary portaled surfaces default to `--ui-dialog-z-index` at
   `1100`, select supports `--ui-select-popup-z-index`, and the shell carries a
