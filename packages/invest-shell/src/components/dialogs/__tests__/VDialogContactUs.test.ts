@@ -22,10 +22,6 @@ vi.mock('@global-torque/ui-kit/query-dialog', () => ({
   }),
 }));
 vi.mock('@global-torque/ui-primitives/dialog', () => ({
-  DialogClose: defineComponent({
-    name: 'DialogClose',
-    template: '<div><slot /></div>',
-  }),
   DialogContent: defineComponent({
     name: 'DialogContent',
     template: '<section><slot /></section>',

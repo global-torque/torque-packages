@@ -42,6 +42,10 @@
   PWA status stack and closed mobile sidebar shadow at 43.
 - `OffersDocuments` and `VNotificationTable` show the ui-kit default search
   and clear icons instead of custom icon pairs.
+- The `invest-shell` Contact Us dialog (`VDialogContactUs`) uses the
+  standard dialog close button, so the "X" sits in the top-right corner like
+  in other dialogs. It now stays within 90% of the viewport height and
+  scrolls, because the old scoped rule never reached the teleported dialog.
 - Removed the `invest-shell` `check-css-contract.mjs` check. The CSS budget
   measures `geometry.css` and `index.scss`: 53,914 raw and 10,028 gzip bytes.
 - Breaking: removed `invest-shell/styles/geometry.css` and its
