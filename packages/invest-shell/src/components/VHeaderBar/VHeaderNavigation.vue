@@ -141,6 +141,11 @@ const emit = defineEmits(['click']);
     line-height: 20px;
   }
 
+  // The primitive link sets no weight, so the header menu links stay bold.
+  &__link {
+    font-weight: 800;
+  }
+
   &__trigger {
     cursor: pointer;
   }

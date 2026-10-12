@@ -441,7 +441,6 @@ const headerComponent = computed(() => (
           type="button"
           :disabled="disabled"
           class="v-header-invest__pwa-auth-btn"
-          :class="{ 'is--secondary': isSignInPage }"
           @click="isSignInPage ? signUpHandler() : signInHandler()"
         >
           {{ isSignInPage ? 'Sign Up' : 'Log In' }}

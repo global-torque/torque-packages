@@ -19,7 +19,7 @@ onMounted(() => {
   const selector = `.${BulletLegend.selectors.item}`;
   nextTick(() => {
     const elements = elRef.value?.querySelectorAll(selector);
-    const classes = ['is--variant-link', 'is--size-small', '!inline-flex', '!mr-2'];
+    const classes = ['!inline-flex', '!mr-2'];
     elements?.forEach((el) => el.classList.add(...classes));
   });
 });

@@ -106,7 +106,6 @@ const headerDataClasses = computed(() => ({
             v-if="shouldShowMobileSidebar"
             v-model="isMobileSidebarOpen"
             :menu="props.menu"
-            :class="{ 'is--gt-desktop-md-hide': props.showMobileSidebar }"
           >
             <slot name="mobile" />
           </VHeaderMobile>

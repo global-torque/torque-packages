@@ -96,13 +96,6 @@ h6 {
 }
 
 // extra classes
-.is--display {
-  font-weight: 900;
-  font-size: 100px;
-  line-height: 100px;
-  font-style: normal;
-}
-
 .is--subheading-2 {
   font-weight: 350;
   font-size: 20px;
@@ -127,12 +120,6 @@ h6 {
   font-size: 16px;
   line-height: 26px;
   font-style: normal;
-}
-
-.is--body-italic {
-  @extend .is--body;
-
-  font-style: italic;
 }
 
 .is--small {

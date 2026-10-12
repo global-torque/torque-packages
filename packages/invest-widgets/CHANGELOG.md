@@ -26,6 +26,10 @@
   SVG that paints `currentColor` rendered black and disappeared on the dark
   footer. The root no longer sets `color`; the host surface supplies it. A
   cross-origin icon URL must allow CORS.
+- The `VBreadcrumbs` links are primary and bold again. The component sets
+  `--primary` and weight 800 itself, because the `invest-shell` plain link
+  rule now skips `BreadcrumbLink`. The current page and the separators are
+  unchanged.
 
 ## 0.4.15 candidate
 

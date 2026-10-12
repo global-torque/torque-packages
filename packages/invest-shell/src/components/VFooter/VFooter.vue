@@ -91,7 +91,7 @@ const contactList = computed(() => ([props.contact]));
 
 <template>
   <!-- eslint-disable vue/no-multiple-template-root -->
-  <div class="VFooter v-footer is--no-margin">
+  <div class="VFooter v-footer">
     <div class="is--container">
       <div class="v-footer__wrap">
         <div class="v-footer__form-wrap">

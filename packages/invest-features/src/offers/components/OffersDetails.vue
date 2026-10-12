@@ -61,7 +61,7 @@ useGlobalLoader().hide();
 </script>
 
 <template>
-  <div class="OffersDetails offer-details is--no-margin">
+  <div class="OffersDetails offer-details">
     <div class="offer-details__wrap">
       <div class="offer-details__main is--left">
         <Skeleton
@@ -135,7 +135,7 @@ useGlobalLoader().hide();
           :loading="loading"
           :offer="offer"
           :transactional="transactional"
-          class="is--lt-desktop-show is--margin-top-40"
+          class="offer-details__side-inline is--lt-desktop-show"
           @invest="emit('invest')"
         />
         <OffersDetailsContent
@@ -284,9 +284,11 @@ useGlobalLoader().hide();
     position: relative;
   }
 
-  .offer-details-side {
+  &__side-inline {
+    margin-top: 40px;
+
     @media screen and (width < 768px) {
-      margin-top: 24px !important;
+      margin-top: 24px;
     }
   }
 }

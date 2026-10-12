@@ -63,6 +63,41 @@
   aligns to the end of its trigger.
 - The CSS budget now measures `index.scss` only: 48,224 raw and 8,780 gzip
   bytes.
+- Removed 79 `.is--*` classes from the `invest-shell` legacy styles. No host
+  of the shell styles uses them. Also removed the unloaded `_hover.scss` and
+  the legacy `.is--container` rule, which the later 1280px rule always
+  overrode. Templates in `invest-shell`, `invest-features` and
+  `invest-widgets` drop seven class names that no stylesheet defines. Every
+  remaining compiled rule is unchanged. A host that still uses a removed class
+  must define it. The CSS budget now measures 40,792 raw and 7,773 gzip bytes.
+- The `invest-shell` global styles now live in Tailwind's `base` layer, so
+  utilities and component classes override them without `!important`. Hosts
+  must load them after Tailwind so that they still win over its preflight.
+  The rules, their order and their declarations are unchanged, except that
+  the plain link rule becomes `a:where(:not([data-slot="button"]))`, so the
+  shell's class rules still win over it. Because layer order reverses for
+  `!important`, a shell `!important` declaration now wins over `!important`
+  utilities and unlayered app rules. `invest-features` `OffersDetails`
+  therefore sets its inline side card margin in its own style instead of
+  overriding `is--margin-top-40`. The CSS budget now measures 44,047 raw and
+  7,788 gzip bytes. The raw growth is indentation.
+- The `invest-shell` element rules for paragraphs, links and lists no longer
+  apply to shadcn primitive parts, which carry a `data-slot` attribute. Each
+  rule uses `:where(:not([data-slot]))`, so its specificity is unchanged. The
+  plain link rule now skips every part, not only buttons. Every other
+  compiled rule is unchanged. The CSS budget now measures 44,133 raw and
+  7,793 gzip bytes.
+- `invest-shell` `VHeaderNavigation` makes its desktop menu links bold again,
+  and `invest-widgets` `VBreadcrumbs` makes its links primary and bold again.
+  The plain link rule now skips `NavigationMenuLink` and `BreadcrumbLink`, so
+  each component sets this look itself.
+- `invest-shell` dialog and sheet titles have the `h2` weight of 900 again,
+  and dialog titles its line height: 54px, or 42px at widths up to 767px. In
+  the base layer, the `font-medium` utility of both titles and the
+  `leading-none` utility of `DialogTitle` won over the `h2` rule. One
+  unlayered rule with zero specificity sets both values on both titles.
+  Every other compiled rule is unchanged. The CSS budget now measures 44,364
+  raw and 7,850 gzip bytes.
 
 ## 0.4.15 candidate
 
