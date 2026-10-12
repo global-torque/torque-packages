@@ -14,7 +14,7 @@ defineProps<{
 </script>
 
 <template>
-  <Card class="VChartTooltip v-chart-tooltip is--small">
+  <Card class="VChartTooltip v-chart-tooltip text-xs/[18px] font-medium">
     <CardHeader
       v-if="title"
       class="v-chart-tooltip__header"

@@ -102,6 +102,11 @@
   unlayered rule with zero specificity sets both values on both titles.
   Every other compiled rule is unchanged. The CSS budget now measures 44,364
   raw and 7,850 gzip bytes.
+- `invest-widgets` `VChartTooltip` keeps its 12px text after the shell styles
+  moved into the base layer. In that layer, the `text-sm` utility of its card
+  won over `is--small` and set 14px text with a 20px line height. The card now
+  sets `text-xs/[18px] font-medium` instead of `is--small`: 12px, weight 500
+  and an 18px line height, as before.
 
 ## 0.4.15 candidate
 

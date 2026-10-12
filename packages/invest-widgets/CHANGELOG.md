@@ -30,6 +30,10 @@
   `--primary` and weight 800 itself, because the `invest-shell` plain link
   rule now skips `BreadcrumbLink`. The current page and the separators are
   unchanged.
+- `VChartTooltip` keeps its 12px text with weight 500 and an 18px line
+  height. Its card sets `text-xs/[18px] font-medium` instead of the
+  `invest-shell` `is--small` class. In the base layer, the card's own
+  `text-sm` utility wins over `is--small`.
 
 ## 0.4.15 candidate
 
