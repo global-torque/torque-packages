@@ -107,6 +107,13 @@
   won over `is--small` and set 14px text with a 20px line height. The card now
   sets `text-xs/[18px] font-medium` instead of `is--small`: 12px, weight 500
   and an 18px line height, as before.
+- `invest-shell` table body rows have the full `--muted` hover tint and the
+  `all 0.3s ease` transition again. In the base layer, the `hover:bg-muted/50`
+  and `transition-colors` utilities of `TableRow` won over the `tbody tr`
+  rule. One unlayered rule with zero specificity sets both values on
+  `TableRow` body rows. Header rows keep the primitive look. Every other
+  compiled rule is unchanged. The CSS budget now measures 44,518 raw and
+  7,878 gzip bytes.
 
 ## 0.4.15 candidate
 
