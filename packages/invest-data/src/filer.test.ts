@@ -1,6 +1,12 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { configureInvestDataClientConfig, resetInvestDataClientConfig } from './service/dataClientConfig.ts';
-import { fetchObjectTree, parseFilerNotificationFields, parseFilerObjectTree, uploadFilerFile } from './filer.ts';
+import {
+  fetchMyObjectTree,
+  fetchObjectTree,
+  parseFilerNotificationFields,
+  parseFilerObjectTree,
+  uploadFilerFile,
+} from './filer.ts';
 
 describe('filer request client', () => {
   beforeEach(() => {
@@ -75,6 +81,79 @@ describe('filer request client', () => {
 
     expect(String(fetchMock.mock.calls[0]?.[0]))
       .toBe('https://files.example.test/api/auth/objects/user/42');
+  });
+
+  it('loads the authenticated account tree without IDs, query parameters, or a request body', async () => {
+    const fetchMock = vi.fn(async (_input: string | URL | Request, _init?: RequestInit) => new Response(JSON.stringify({
+      entities: {
+        folder: {
+          unknown_field: 'preserved',
+          entities: {
+            file: { id: 17, filename: 'account.pdf' },
+          },
+        },
+      },
+    }), {
+      status: 200,
+      headers: { 'content-type': 'application/json' },
+    }));
+    vi.stubGlobal('fetch', fetchMock);
+
+    const result = await fetchMyObjectTree();
+
+    const [input, init] = fetchMock.mock.calls[0] ?? [];
+    expect(String(input)).toBe('https://files.example.test/auth/objects/my');
+    expect(init?.method).toBe('GET');
+    expect(new URL(String(input)).search).toBe('');
+    expect(init?.body).toBeUndefined();
+    expect(result.entities.folder.entities?.file.id).toBe(17);
+  });
+
+  it('accepts an empty account tree and rejects malformed account tree envelopes before parsing', async () => {
+    const fetchMock = vi.fn();
+    vi.stubGlobal('fetch', fetchMock);
+    fetchMock.mockResolvedValueOnce(new Response(JSON.stringify({}), {
+      status: 200,
+      headers: { 'content-type': 'application/json' },
+    }));
+    await expect(fetchMyObjectTree()).resolves.toEqual({ entities: {} });
+
+    for (const malformed of [
+      [],
+      { unexpected: true },
+      { entities: [] },
+      { entities: { folder: [] } },
+      { entities: { folder: { entities: [] } } },
+    ]) {
+      fetchMock.mockResolvedValueOnce(new Response(JSON.stringify(malformed), {
+        status: 200,
+        headers: { 'content-type': 'application/json' },
+      }));
+      await expect(fetchMyObjectTree()).rejects.toThrow('malformed object tree');
+    }
+  });
+
+  it('forwards account-tree request cancellation to the authenticated filer request', async () => {
+    let requestSignal: AbortSignal | undefined;
+    const fetchMock = vi.fn((_input: string | URL | Request, init?: RequestInit) => new Promise<Response>((_resolve, reject) => {
+      requestSignal = init?.signal as AbortSignal | undefined;
+      if (!requestSignal) {
+        reject(new Error('missing request signal'));
+        return;
+      }
+      requestSignal.addEventListener('abort', () => {
+        reject(new DOMException('The request was aborted.', 'AbortError'));
+      }, { once: true });
+    }));
+    vi.stubGlobal('fetch', fetchMock);
+    const controller = new AbortController();
+    const request = fetchMyObjectTree({ signal: controller.signal });
+
+    await vi.waitFor(() => expect(requestSignal).toBeDefined());
+    controller.abort();
+
+    await expect(request).rejects.toMatchObject({ name: 'AbortError' });
+    expect(requestSignal?.aborted).toBe(true);
   });
 
   it.each([

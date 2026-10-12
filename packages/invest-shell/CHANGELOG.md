@@ -139,6 +139,7 @@
 
 - Added the optional `VHeaderPWA.brandName` accessible-label override with a
   trimmed application-brand fallback for the PWA header and logo.
+- Expanded the supported Node range to `>=24.21.0`; CI remains on Node 24.21.0.
 - Added a temporary shell bridge for the published UI package pair so dialogs,
   menus, popovers, tooltips, comboboxes and selects cover the fixed header while
   mobile Sheets retain their lower layer. Remove it only after the released UI

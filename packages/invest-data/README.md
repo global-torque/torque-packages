@@ -65,6 +65,8 @@ package exposes only framework-free clients and repository-state helpers.
   `close_at` validation exclusion, backed by the pinned SDK validator for all
   other fields.
 - `./evm` and `./investDataClient`: EVM endpoint repository factories.
+- `./filer`: authenticated and public filer object-tree requests, including the
+  validated authenticated account tree at `GET /auth/objects/my`.
 - `./redemptions`: validated, offline-aware redemption lifecycle client and
   typed lifecycle result.
 - `./vault`: exact-string investment/redemption intent, investor

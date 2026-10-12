@@ -115,6 +115,8 @@
 
 ## 0.4.15 candidate
 
+- Expanded the supported Node range to `>=24.21.0`; CI and release workflows
+  remain pinned to Node 24.21.0.
 - Reissued the seven-package cohort with the shared UI portal-layer contract:
   dialogs and ordinary portaled surfaces default to `--ui-dialog-z-index` at
   `1100`, select supports `--ui-select-popup-z-index`, and the shell carries a

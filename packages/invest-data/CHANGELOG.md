@@ -2,6 +2,9 @@
 
 ## 0.4.15 candidate
 
+- Expanded the supported Node range to `>=24.21.0`; CI remains on Node 24.21.0.
+- Added `fetchMyObjectTree` for the authenticated `/auth/objects/my` filer
+  tree, with recursive envelope validation and request cancellation.
 - Reissued the framework cohort with the shared UI portal-layer and exact
   dependency pins.
 - Moved to `@global-torque/sdk` 0.5.0 from its GitHub release tarball. Eligible

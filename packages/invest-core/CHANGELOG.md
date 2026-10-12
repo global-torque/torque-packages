@@ -2,6 +2,7 @@
 
 ## 0.4.15 candidate
 
+- Expanded the supported Node range to `>=24.21.0`; CI remains on Node 24.21.0.
 - Reissued the framework cohort with the shared UI portal-layer and exact
   dependency pins; core contracts are unchanged.
 

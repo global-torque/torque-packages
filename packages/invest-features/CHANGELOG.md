@@ -36,6 +36,7 @@
 
 ## 0.4.15 candidate
 
+- Expanded the supported Node range to `>=24.21.0`; CI remains on Node 24.21.0.
 - Reissued the feature cohort against the published UI package pair while the
   Invest Shell carries the removable shared portal-layer bridge.
 

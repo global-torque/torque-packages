@@ -4,7 +4,7 @@
   "version": "0.4.15",
   "description": "Provider-driven reusable investment widgets and chart surfaces.",
   "license": "MIT",
-  "engines": { "node": "^24.21.0" },
+  "engines": { "node": ">=24.21.0" },
   "packageManager": "pnpm@12.4.2",
   "sideEffects": ["**/*.vue", "**/*.css", "**/*.scss"],
   "type": "module",

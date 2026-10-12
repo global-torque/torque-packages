@@ -2,6 +2,9 @@
 
 ## 0.4.15 candidate
 
+- Expanded the supported Node range to `>=24.21.0`; CI remains on Node 24.21.0.
+- Added the separately invalidated authenticated account filer-tree resource
+  to the public filer runtime model.
 - Reissued the framework cohort with the shared UI portal-layer and exact
   dependency pins.
 - Moved to `@global-torque/sdk` 0.5.0 from its GitHub release tarball. Eligible

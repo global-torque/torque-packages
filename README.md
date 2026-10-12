@@ -83,8 +83,9 @@ the `torque-packages` source revision
 `82fe93868d28682211ea21867badcdeb85879970`; no artifact or receipt escaped
 because the candidate failed.
 
-Development and package consumption require Node `^24.21.0`; `.node-version`
-and CI pin 24.21.0. Bootstrap pnpm with `corepack enable` and
+Development and package consumption require Node `>=24.21.0`; CI and release
+workflows remain pinned to Node 24.21.0, while later releases such as Node
+26.10.0 are supported locally. Bootstrap pnpm with `corepack enable` and
 `corepack prepare pnpm@12.4.2 --activate`, then run
 `pnpm install --frozen-lockfile --ignore-scripts`. TypeScript remains 6.0.3;
 TypeScript 7 is deferred until vue-tsc supports its compiler entry point.

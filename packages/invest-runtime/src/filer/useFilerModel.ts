@@ -8,6 +8,7 @@ import type {
   FilerUploadResult,
 } from '@global-torque/domain-types/filerTypes';
 import {
+  fetchMyObjectTree as requestMyObjectTree,
   fetchObjectTree as requestObjectTree,
   parseFilerNotificationFields,
   uploadFilerFile,
@@ -26,11 +27,22 @@ const createQueryKey = (access: FilerAccess, objectName: string, objectId: Filer
   `${access}:${objectName}:${String(objectId)}`
 );
 
+const isAbortError = (error: unknown, signal?: AbortSignal): boolean => (
+  signal?.aborted === true
+  || (error instanceof DOMException && error.name === 'AbortError')
+  || (error instanceof Error && error.name === 'AbortError')
+);
+
 export const useFilerModel = defineStore('filer-model', () => {
   const objectQueries = ref<Record<string, FilerObjectQueryState>>({});
   const pendingQueries = new Map<string, Promise<FilerObjectTree>>();
   const queryVersions = new Map<string, number>();
   const objectInvalidationVersion = ref(0);
+  const myObjectTreeState = ref<FilerObjectQueryState>(createQueryState());
+  const isMyObjectTreeCacheValid = ref(false);
+  const myObjectInvalidationVersion = ref(0);
+  let pendingMyObjectTree: Promise<FilerObjectTree> | null = null;
+  let myObjectTreeGeneration = 0;
   const notificationFieldsState = ref<ActionState<FilerNotificationFields>>({
     data: undefined,
     loading: false,
@@ -84,6 +96,44 @@ export const useFilerModel = defineStore('filer-model', () => {
     return request;
   };
 
+  const fetchMyObjectTree = async (options: { signal?: AbortSignal; force?: boolean } = {}) => {
+    const state = myObjectTreeState.value;
+    if (!options.force && isMyObjectTreeCacheValid.value && state.data !== undefined) {
+      return state.data;
+    }
+    if (!options.force && !options.signal && pendingMyObjectTree) return pendingMyObjectTree;
+
+    const requestGeneration = ++myObjectTreeGeneration;
+    isMyObjectTreeCacheValid.value = false;
+    state.loading = true;
+    state.error = null;
+    const request = (async () => {
+      try {
+        const tree = await requestMyObjectTree({ signal: options.signal });
+        if (myObjectTreeGeneration === requestGeneration) {
+          state.data = tree;
+          state.error = null;
+          isMyObjectTreeCacheValid.value = true;
+        }
+        return tree;
+      }
+      catch (error) {
+        if (myObjectTreeGeneration === requestGeneration && !isAbortError(error, options.signal)) {
+          state.error = error instanceof Error ? error : new Error(String(error));
+        }
+        throw error;
+      }
+      finally {
+        if (myObjectTreeGeneration === requestGeneration) {
+          state.loading = false;
+          pendingMyObjectTree = null;
+        }
+      }
+    })();
+    pendingMyObjectTree = request;
+    return request;
+  };
+
   const uploadFile = (
     file: File,
     options: {
@@ -102,6 +152,26 @@ export const useFilerModel = defineStore('filer-model', () => {
     objectInvalidationVersion.value += 1;
   };
 
+  const resetObjectQueries = () => {
+    const keys = new Set([
+      ...queryVersions.keys(),
+      ...pendingQueries.keys(),
+      ...Object.keys(objectQueries.value),
+    ]);
+    for (const key of keys) queryVersions.set(key, (queryVersions.get(key) ?? 0) + 1);
+    pendingQueries.clear();
+    objectQueries.value = {};
+    objectInvalidationVersion.value += 1;
+  };
+
+  const invalidateMyObjectTree = () => {
+    myObjectTreeGeneration += 1;
+    pendingMyObjectTree = null;
+    myObjectTreeState.value.loading = false;
+    isMyObjectTreeCacheValid.value = false;
+    myObjectInvalidationVersion.value += 1;
+  };
+
   const updateNotificationData = (notification: unknown) => {
     const fields = parseFilerNotificationFields(notification);
     if (!fields) return;
@@ -112,21 +182,18 @@ export const useFilerModel = defineStore('filer-model', () => {
     };
 
     if (fields.object_id !== undefined || fields.source_file_id !== undefined) {
-      for (const [key, state] of Object.entries(objectQueries.value)) {
-        queryVersions.set(key, (queryVersions.get(key) ?? 0) + 1);
-        pendingQueries.delete(key);
-        state.loading = false;
-        state.data = undefined;
-      }
-      objectInvalidationVersion.value += 1;
+      resetObjectQueries();
+      invalidateMyObjectTree();
     }
   };
 
   const resetAll = () => {
-    pendingQueries.clear();
-    queryVersions.clear();
-    objectQueries.value = {};
-    objectInvalidationVersion.value += 1;
+    resetObjectQueries();
+    myObjectTreeGeneration += 1;
+    pendingMyObjectTree = null;
+    myObjectTreeState.value = createQueryState();
+    isMyObjectTreeCacheValid.value = false;
+    myObjectInvalidationVersion.value += 1;
     notificationFieldsState.value = {
       data: undefined,
       loading: false,
@@ -137,10 +204,15 @@ export const useFilerModel = defineStore('filer-model', () => {
   return {
     objectQueries,
     objectInvalidationVersion,
+    myObjectTreeState,
+    isMyObjectTreeCacheValid,
+    myObjectInvalidationVersion,
+    fetchMyObjectTree,
     notificationFieldsState,
     fetchObjectTree,
     getObjectQueryState,
     invalidateObjectTree,
+    resetObjectQueries,
     resetAll,
     updateNotificationData,
     uploadFile,
