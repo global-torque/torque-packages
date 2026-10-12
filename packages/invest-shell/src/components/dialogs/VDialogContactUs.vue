@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { DialogClose, DialogContent, DialogHeader, DialogTitle } from '@global-torque/ui-primitives/dialog';
-import { Button } from '@global-torque/ui-primitives/button';
-import { X } from '@lucide/vue';
+import { DialogContent, DialogHeader, DialogTitle } from '@global-torque/ui-primitives/dialog';
 import { VQueryDialog } from '@global-torque/ui-kit/query-dialog';
 import { toast } from 'vue-sonner';
 import { useInvestApplicationContext } from '@global-torque/invest-runtime/application-context';
@@ -31,8 +29,7 @@ function accepted() {
   >
     <DialogContent
       :aria-describedby="undefined"
-      :show-close-button="false"
-      class="v-dialog-contact-us"
+      class="v-dialog-contact-us max-h-[90dvh] overflow-y-auto"
     >
       <DialogHeader><DialogTitle>Contact Us</DialogTitle></DialogHeader>
       <VFormContactUs
@@ -46,38 +43,6 @@ function accepted() {
         surface="dialog"
         @accepted="accepted"
       />
-      <DialogClose as-child>
-        <Button
-          type="button"
-          variant="link"
-          size="icon-lg"
-          aria-label="Close"
-          class="v-dialog-contact-us__close absolute ring-offset-background
-            focus:ring-ring focus:ring-2 focus:ring-offset-2 focus:outline-hidden focus-visible:ring-2"
-        >
-          <X
-            class="v-dialog-contact-us__close-outline size-[18px]"
-            aria-hidden="true"
-          />
-        </Button>
-      </DialogClose>
     </DialogContent>
   </VQueryDialog>
 </template>
-
-<style scoped lang="scss">
-.v-dialog-contact-us {
-  max-height: 90dvh;
-  overflow-y: auto;
-}
-
-.v-dialog-contact-us__close {
-  padding: 0;
-  border: 0 solid transparent;
-  font-size: inherit;
-  font-weight: inherit;
-  line-height: normal;
-}
-
-.v-dialog-contact-us__close-outline { display: block; }
-</style>

@@ -20,6 +20,10 @@
   `sidebar_state` cookie, Ctrl/Cmd+B toggles it, a width of 768px or less is
   mobile, and the mobile sheet focuses its first focusable element.
 - The contact form subject select shows the standard chevron.
+- The Contact Us dialog (`VDialogContactUs`) uses the standard dialog close
+  button, so the "X" sits in the top-right corner like in other dialogs. It
+  now stays within 90% of the viewport height and scrolls, because the old
+  scoped rule never reached the teleported dialog.
 - Removed the 18 control and table metric tokens from `styles/geometry.css`.
   ui-primitives 0.2.0 and ui-kit 0.4.0 do not read them.
 - Removed the `test:css-browser` script and its `check-css-browser.mjs` check,

@@ -27,12 +27,13 @@ describe('Contact dialog dismissal', () => {
       await flushPromises();
       const dialog = document.querySelector<HTMLElement>('[role="dialog"]');
       expect(dialog).not.toBeNull();
-      const close = dialog!.querySelector<HTMLButtonElement>('button[aria-label="Close"]');
-      expect(close).not.toBeNull();
+      const close = Array.from(dialog!.querySelectorAll<HTMLButtonElement>('button'))
+        .find((button) => button.textContent?.trim() === 'Close');
+      expect(close).toBeDefined();
       expect(close!.getAttribute('data-slot')).toBe('dialog-close');
       expect(close!.getAttribute('type')).toBe('button');
       expect(dialog!.querySelectorAll('[data-slot="dialog-close"]')).toHaveLength(1);
-      expect(close!.querySelector('.v-dialog-contact-us__close-outline')).not.toBeNull();
+      expect(close!.querySelector('svg')).not.toBeNull();
       expect(dialog!.contains(document.activeElement)).toBe(true);
       if (method === 'close button') close!.click();
       else document.activeElement!.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
