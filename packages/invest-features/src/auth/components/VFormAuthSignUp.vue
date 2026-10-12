@@ -441,7 +441,7 @@ watch(
 
       <div
         v-if="!queryFlow"
-        class="signup-form__login-wrap  is--no-margin"
+        class="signup-form__login-wrap"
       >
         <span class="signup-form__login-label is--body">
           Already have an account?

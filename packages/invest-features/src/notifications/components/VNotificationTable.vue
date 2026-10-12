@@ -39,7 +39,7 @@ const onApplyFilter = (items: NotificationFilter[]) => {
 };
 </script>
 <template>
-  <aside class="WdNotificationTable wd-notification-table is--no-margin">
+  <aside class="WdNotificationTable wd-notification-table">
     <div class="wd-notification-table__toolbar">
       <div class="wd-notification-table__toolbar-left">
         <VUrlSyncedTabs

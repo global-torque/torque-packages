@@ -135,7 +135,7 @@ watch(isGlobalLoading, (active) => {
       />
 
       <div
-        class="login-form__signup-wrap  is--no-margin"
+        class="login-form__signup-wrap"
       >
         <span class="login-form__signup-label is--body">
           Don't have an account?

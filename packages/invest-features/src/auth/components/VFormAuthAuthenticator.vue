@@ -66,7 +66,7 @@ const onLogout = () => {
         Verify
       </Button>
 
-      <div class="form-auth-authenticator__signup-wrap  is--no-margin">
+      <div class="form-auth-authenticator__signup-wrap">
         <span class="form-auth-authenticator__signup-label is--body">
           Something's not working?
         </span>

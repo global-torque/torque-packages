@@ -1,18 +1,19 @@
 @use '@global-torque/ui-kit/styles/mixins' as *;
 
-ol {
+// shadcn primitive parts (data-slot) keep their own styles.
+ol:where(:not([data-slot])) {
     list-style: decimal;
     padding-left: 23px;
     color: var(--foreground);
 }
 
-ul {
+ul:where(:not([data-slot])) {
     list-style: disc;
     padding-left: 23px;
     color: var(--foreground);
 }
 
-li {
+li:where(:not([data-slot])) {
     color: inherit;
 }
 
@@ -104,15 +105,5 @@ li.with-default-distance + li.with-default-distance{
 .is--two-col-grid{
     li:nth-child(2){
         margin-top: 0;
-    }
-}
-
-.is--list-default {
-    ul li {
-        border: none !important;
-    }
-
-    li + li{
-        margin-top: 8px !important;
     }
 }

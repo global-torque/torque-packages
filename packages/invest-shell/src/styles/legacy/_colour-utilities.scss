@@ -1,6 +1,5 @@
 // These Sass names resolve at runtime to the shadcn variables.
 $primary: var(--primary);
-$primary-dark: var(--primary);
 $primary-light: var(--accent);
 
 $secondary: var(--success);
@@ -11,93 +10,35 @@ $red: var(--destructive);
 $red-dark: var(--chart-5);
 $red-light: color-mix(in srgb, var(--destructive) 10%, var(--background));
 
-$purple: var(--info);
-$purple-dark: var(--info);
 $purple-light: color-mix(in srgb, var(--info) 5%, var(--background));
 
-$yellow: var(--warning);
-$yellow-dark: var(--warning);
 $yellow-light: color-mix(in srgb, var(--warning) 10%, var(--background));
 
-$white: var(--card);
 $gray-10: var(--muted);
-$gray-20: var(--border);
-$gray-30: var(--input);
-$gray-40: var(--input);
-$gray-50: var(--muted-foreground);
 $gray-60: var(--muted-foreground);
 $gray-70: var(--muted-foreground);
 $gray-80: var(--foreground);
-$gray-90: var(--foreground);
 $black: var(--foreground);
 
 
-.is--background-primary{
-  background-color: $primary;
-}
-
-.is--background-primary-dark{
-  background-color: $primary-dark;
-}
-
 .is--background-primary-light{
   background-color: $primary-light;
-}
-
-.is--background-secondary{
-  background-color: $secondary;
-}
-
-.is--background-secondary-dark{
-  background-color: $secondary-dark;
 }
 
 .is--background-secondary-light{
   background-color: $secondary-light;
 }
 
-.is--background-red{
-  background-color: $red;
-}
-
-.is--background-red-dark{
-  background-color: $red-dark;
-}
-
 .is--background-red-light{
   background-color: $red-light;
-}
-
-.is--background-purple{
-  background-color: $purple;
-}
-
-.is--background-purple-dark{
-  background-color: $purple-dark;
 }
 
 .is--background-purple-light{
   background-color: $purple-light;
 }
 
-.is--background-yellow{
-  background-color: $yellow;
-}
-
-.is--background-yellow-dark{
-  background-color: $yellow-dark;
-}
-
 .is--background-yellow-light{
   background-color: $yellow-light;
-}
-
-.is--background-black{
-  background-color: var(--foreground);
-}
-
-.is--background-white{
-  background-color: $white;
 }
 
 
@@ -105,49 +46,9 @@ $black: var(--foreground);
   background-color: $gray-10;
 }
 
-.is--background-gray-20{
-  background-color: $gray-20;
-}
-
-.is--background-gray-30{
-  background-color: $gray-30;
-}
-
-.is--background-gray-40{
-  background-color: $gray-40;
-}
-
-.is--background-gray-50{
-  background-color: $gray-50;
-}
-
-.is--background-gray-60{
-  background-color: $gray-60;
-}
-
-.is--background-gray-70{
-  background-color: $gray-70;
-}
-
-.is--background-gray-80{
-  background-color: $gray-80;
-}
-
-.is--background-gray-90{
-  background-color: $gray-90;
-}
-
 // COLORS
 .is--color-primary{
   color: $primary;
-}
-
-.is--color-primary-dark{
-  color: $primary-dark;
-}
-
-.is--color-primary-light{
-  color: $primary-light;
 }
 
 .is--color-secondary{
@@ -158,10 +59,6 @@ $black: var(--foreground);
   color: $secondary-dark;
 }
 
-.is--color-secondary-light{
-  color: $secondary-light;
-}
-
 .is--color-red{
   color: $red;
 }
@@ -170,62 +67,10 @@ $black: var(--foreground);
   color: $red-dark;
 }
 
-.is--color-red-light{
-  color: $red-light;
-}
-
-.is--color-purple{
-  color: $purple;
-}
-
-.is--color-purple-dark{
-  color: $purple-dark;
-}
-
-.is--color-purple-light{
-  color: $purple-light;
-}
-
-.is--color-yellow{
-  color: $yellow;
-}
-
-.is--color-yellow-dark{
-  color: $yellow-dark;
-}
-
-.is--color-yellow-light{
-  color: $yellow-light;
-}
-
 .is--color-black{
   color: $black;
 }
 
-.is--color-white{
-  color: var(--background);
-}
-
-
-.is--color-gray-10{
-  color: $gray-10;
-}
-
-.is--color-gray-20{
-  color: $gray-20;
-}
-
-.is--color-gray-30{
-  color: $gray-30;
-}
-
-.is--color-gray-40{
-  color: $gray-40;
-}
-
-.is--color-gray-50{
-  color: $gray-50;
-}
 
 .is--color-gray-60{
   color: $gray-60;
@@ -237,10 +82,6 @@ $black: var(--foreground);
 
 .is--color-gray-80{
   color: $gray-80;
-}
-
-.is--color-gray-90{
-  color: $gray-90;
 }
 
 [class*="is--color"] p:not([class*="is--color"]),

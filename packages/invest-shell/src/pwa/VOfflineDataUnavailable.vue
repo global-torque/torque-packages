@@ -19,12 +19,12 @@ defineProps<{
     <h3 class="v-offline-data-unavailable__title is--h3__title">
       {{ title }}
     </h3>
-    <p class="v-offline-data-unavailable__message is--body-1">
+    <p class="v-offline-data-unavailable__message">
       {{ message }}
     </p>
     <p
       v-if="detail"
-      class="v-offline-data-unavailable__detail is--body-2"
+      class="v-offline-data-unavailable__detail"
     >
       {{ detail }}
     </p>

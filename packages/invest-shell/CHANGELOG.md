@@ -79,6 +79,57 @@
   Sidebar07 team and user menu items also carry this class.
 - The CSS budget now measures `index.scss` only: 48,224 raw and 8,780 gzip
   bytes, capped at 48,474 and 8,830.
+- Removed 79 `.is--*` classes from the legacy styles, because no host uses
+  them: 37 colour and background utilities, `.is--display`,
+  `.is--body-italic`, 11 spacing, 5 visibility and 18 layout utilities, and
+  the hooks `.is--cols-auto-left`, `.is--cols-auto-right`, `.is--three`,
+  `.is--page-content`, `.is--no-padding-bottom` and `.is--side-block__content`.
+  Also removed the 11 Sass colour variables and the `_tag.scss` partial that
+  only these classes used, the unloaded `_hover.scss`, and the legacy
+  `.is--container` rule, whose declarations the later 1280px rule always
+  overrode. Templates no longer set `is--no-margin`, `is--body-1`,
+  `is--body-2`, `is--gt-desktop-md-hide`, `is--two-col` or `is--secondary`,
+  which no stylesheet defines. Every remaining compiled rule is unchanged. A
+  host that still uses a removed class must define it. The CSS budget now
+  measures 40,792 raw and 7,773 gzip bytes, capped at 41,042 and 7,823.
+- The global styles now live in Tailwind's `base` layer, so utilities and
+  component classes override them without `!important`. Hosts must load them
+  after Tailwind so that they still win over its preflight. `index.scss` emits
+  the legacy CSS with `meta.load-css` inside the layer, so it no longer
+  forwards the `pwa-scope` mixin. `_reset.scss` and `_link.scss` drop their
+  own `@layer base` wrappers, which would otherwise nest as `base.base`. The
+  rules, their order and their declarations are unchanged, except that the
+  plain link rule becomes `a:where(:not([data-slot="button"]))`. With the
+  specificity of a plain `a`, it still loses to the shell's class rules, such
+  as `.is--link-2` and `.is--h6__title`, and to the heading `a` rules, and it
+  still wins over the preflight `a`. Because layer order reverses for
+  `!important`, a shell `!important` declaration now wins over `!important`
+  utilities and unlayered app rules. The CSS budget now measures 44,047 raw
+  and 7,788 gzip bytes, capped at 44,297 and 7,838. The raw growth is
+  indentation.
+- The element rules for `p`, `a`, `ol`, `ul` and `li` no longer apply to
+  shadcn primitive parts, which carry a `data-slot` attribute. For example,
+  `BreadcrumbLink` and `SidebarMenu` keep their own utilities. Each rule uses
+  `:where(:not([data-slot]))`, so its specificity is unchanged. The plain link
+  rule changes from `a:where(:not([data-slot="button"]))` to
+  `a:where(:not([data-slot]))`, so it skips every part, not only buttons.
+  Every other compiled rule is unchanged. The CSS budget now measures 44,133
+  raw and 7,793 gzip bytes, capped at 44,383 and 7,843. The raw growth is the
+  added `:where()` conditions.
+- The `VHeaderNavigation` desktop menu links are bold again. The component
+  sets weight 800 itself, because the plain link rule now skips
+  `NavigationMenuLink`. The triggers and the mobile menu are unchanged.
+- `DialogTitle` and `SheetTitle` have the `h2` weight of 900 again, and
+  `DialogTitle` its line height: 54px, or 42px at widths up to 767px. In the
+  base layer, the `font-medium` utility of both titles and the `leading-none`
+  utility of `DialogTitle` won over the `h2` rule. `index.scss` now ends with
+  one unlayered rule,
+  `:where([data-slot="dialog-title"], [data-slot="sheet-title"])`, that sets
+  both values on both titles. It wins over every layered rule, including
+  utilities, and with zero specificity it still loses to unlayered app class
+  rules. The `h2` rule still sets the size. Every other compiled rule is
+  unchanged. The CSS budget now measures 44,364 raw and 7,850 gzip bytes,
+  capped at 44,614 and 7,900.
 
 ## 0.4.15 candidate
 

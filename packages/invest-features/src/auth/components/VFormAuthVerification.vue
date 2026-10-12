@@ -58,7 +58,7 @@ const verificationHandler = async () => {
       Verify Code
     </Button>
 
-    <div class="verification-form__login-wrap is--no-margin">
+    <div class="verification-form__login-wrap">
       <span class="verification-form__login-label is--body">
         Didn't receive the email?
       </span>

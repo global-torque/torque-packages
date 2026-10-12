@@ -1,4 +1,5 @@
-p{
+// shadcn primitive parts (data-slot) keep their own styles.
+p:where(:not([data-slot])){
   color: var(--foreground);
   opacity: 0.9;
 }
