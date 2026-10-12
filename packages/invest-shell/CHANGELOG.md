@@ -115,6 +115,17 @@
 - The `VHeaderNavigation` desktop menu links are bold again. The component
   sets weight 800 itself, because the plain link rule now skips
   `NavigationMenuLink`. The triggers and the mobile menu are unchanged.
+- `DialogTitle` and `SheetTitle` have the `h2` weight of 900 again, and
+  `DialogTitle` its line height: 54px, or 42px at widths up to 767px. In the
+  base layer, the `font-medium` utility of both titles and the `leading-none`
+  utility of `DialogTitle` won over the `h2` rule. `index.scss` now ends with
+  one unlayered rule,
+  `:where([data-slot="dialog-title"], [data-slot="sheet-title"])`, that sets
+  both values on both titles. It wins over every layered rule, including
+  utilities, and with zero specificity it still loses to unlayered app class
+  rules. The `h2` rule still sets the size. Every other compiled rule is
+  unchanged. The CSS budget now measures 44,364 raw and 7,850 gzip bytes,
+  capped at 44,614 and 7,900.
 
 ## 0.4.15 candidate
 

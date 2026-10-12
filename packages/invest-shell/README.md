@@ -81,7 +81,9 @@ that they win over its preflight. Utilities, component classes and unlayered
 app styles override their normal declarations. A shell `!important`
 declaration wins over `!important` utilities and unlayered app rules. The
 paragraph, link and list element rules skip shadcn primitive parts, which
-carry a `data-slot` attribute.
+carry a `data-slot` attribute. One rule stays outside the layer. It keeps the
+`h2` weight and line height on `DialogTitle` and `SheetTitle` over their
+utilities. Unlayered app class rules still override it.
 
 Shell components and the shared styles read the shadcn variables directly, such
 as `--foreground`, `--muted-foreground`, `--border` and `--shadow-sm`. The
@@ -105,9 +107,9 @@ with minification and disk output disabled. The aggregate includes imported
 styles, but excludes app styles, Vue SFC styles, and app Tailwind/design-token
 generation; it is not an application bundle budget.
 
-The reviewed aggregate is 44,133 raw bytes, 7,793 gzip bytes, and zero generated
+The reviewed aggregate is 44,364 raw bytes, 7,850 gzip bytes, and zero generated
 dimension selectors. Caps retain 250 raw bytes and 50 gzip bytes of headroom:
-44,383 raw and 7,843 gzip. Tests pin the raw bytes and SHA-256, require resolved
+44,614 raw and 7,900 gzip. Tests pin the raw bytes and SHA-256, require resolved
 imports and zero generated selectors, and enforce gzip only against its cap
 because supported Node/zlib versions can compress identical CSS differently.
 `css-budget.json` records the reference toolchain and keeps the prior

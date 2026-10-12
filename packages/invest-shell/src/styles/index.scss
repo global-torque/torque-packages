@@ -14,3 +14,18 @@
     margin: 0 auto;
   }
 }
+
+// Dialog and sheet titles keep the `h2` weight and line height they had
+// before the shell styles moved into the base layer. In that layer, the
+// primitives' own `font-medium` and `leading-none` utilities would win. This
+// rule stays unlayered like the old `h2` rule, so it beats layered utilities.
+// `:where()` keeps its specificity at zero, so unlayered app class rules
+// still win.
+:where([data-slot="dialog-title"], [data-slot="sheet-title"]) {
+  font-weight: 900;
+  line-height: 54px;
+
+  @media screen and (width <= 767px) {
+    line-height: 42px;
+  }
+}

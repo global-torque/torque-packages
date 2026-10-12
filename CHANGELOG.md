@@ -91,6 +91,13 @@
   and `invest-widgets` `VBreadcrumbs` makes its links primary and bold again.
   The plain link rule now skips `NavigationMenuLink` and `BreadcrumbLink`, so
   each component sets this look itself.
+- `invest-shell` dialog and sheet titles have the `h2` weight of 900 again,
+  and dialog titles its line height: 54px, or 42px at widths up to 767px. In
+  the base layer, the `font-medium` utility of both titles and the
+  `leading-none` utility of `DialogTitle` won over the `h2` rule. One
+  unlayered rule with zero specificity sets both values on both titles.
+  Every other compiled rule is unchanged. The CSS budget now measures 44,364
+  raw and 7,850 gzip bytes.
 
 ## 0.4.15 candidate
 
