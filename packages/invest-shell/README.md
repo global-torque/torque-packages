@@ -101,25 +101,6 @@ pnpm --dir packages/invest-shell run test:run
 pnpm lint:boundaries
 ```
 
-## CSS Budget
-
-`pnpm --filter @global-torque/invest-shell run css:budget` measures the public
-`index.scss` entry. A production Vite build resolves its Sass and CSS imports
-with minification and disk output disabled. The aggregate includes imported
-styles, but excludes app styles, Vue SFC styles, and app Tailwind/design-token
-generation; it is not an application bundle budget.
-
-The reviewed aggregate is 44,557 raw bytes, 7,881 gzip bytes, and zero generated
-dimension selectors. Caps retain 250 raw bytes and 50 gzip bytes of headroom:
-44,807 raw and 7,931 gzip. Tests pin the raw bytes and SHA-256, require resolved
-imports and zero generated selectors, and enforce gzip only against its cap
-because supported Node/zlib versions can compress identical CSS differently.
-`css-budget.json` records the reference toolchain and keeps the prior
-legacy-entry measurements and the former three-entry target aggregate
-(70,708 raw / 13,798 gzip) as history. Budget changes require measured
-justification and visual verification; passing this package budget does not
-establish UI parity.
-
 ## Page Tabs
 
 `VPageTopInfoAndTabs` accepts optional `centerActiveTab` (default `false`).

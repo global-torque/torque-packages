@@ -46,8 +46,7 @@
   standard dialog close button, so the "X" sits in the top-right corner like
   in other dialogs. It now stays within 90% of the viewport height and
   scrolls, because the old scoped rule never reached the teleported dialog.
-- Removed the `invest-shell` `check-css-contract.mjs` check. The CSS budget
-  measures `geometry.css` and `index.scss`: 53,914 raw and 10,028 gzip bytes.
+- Removed the `invest-shell` `check-css-contract.mjs` check.
 - Breaking: removed `invest-shell/styles/geometry.css` and its
   `./styles/geometry.css` export. Hosts must remove its `@import`.
 - Components and the shared styles read the shadcn variables directly, such
@@ -65,15 +64,13 @@
   40px under the tabs again, because the ui-primitives 0.2.0 `TabsContent`
   has no top padding. The header profile menu sizes to its content and
   aligns to the end of its trigger.
-- The CSS budget now measures `index.scss` only: 48,224 raw and 8,780 gzip
-  bytes.
 - Removed 79 `.is--*` classes from the `invest-shell` legacy styles. No host
   of the shell styles uses them. Also removed the unloaded `_hover.scss` and
   the legacy `.is--container` rule, which the later 1280px rule always
   overrode. Templates in `invest-shell`, `invest-features` and
   `invest-widgets` drop seven class names that no stylesheet defines. Every
   remaining compiled rule is unchanged. A host that still uses a removed class
-  must define it. The CSS budget now measures 40,792 raw and 7,773 gzip bytes.
+  must define it.
 - The `invest-shell` global styles now live in Tailwind's `base` layer, so
   utilities and component classes override them without `!important`. Hosts
   must load them after Tailwind so that they still win over its preflight.
@@ -83,14 +80,12 @@
   `!important`, a shell `!important` declaration now wins over `!important`
   utilities and unlayered app rules. `invest-features` `OffersDetails`
   therefore sets its inline side card margin in its own style instead of
-  overriding `is--margin-top-40`. The CSS budget now measures 44,047 raw and
-  7,788 gzip bytes. The raw growth is indentation.
+  overriding `is--margin-top-40`.
 - The `invest-shell` element rules for paragraphs, links and lists no longer
   apply to shadcn primitive parts, which carry a `data-slot` attribute. Each
   rule uses `:where(:not([data-slot]))`, so its specificity is unchanged. The
   plain link rule now skips every part, not only buttons. Every other
-  compiled rule is unchanged. The CSS budget now measures 44,133 raw and
-  7,793 gzip bytes.
+  compiled rule is unchanged.
 - `invest-shell` `VHeaderNavigation` makes its desktop menu links bold again,
   and `invest-widgets` `VBreadcrumbs` makes its links primary and bold again.
   The plain link rule now skips `NavigationMenuLink` and `BreadcrumbLink`, so
@@ -100,8 +95,7 @@
   the base layer, the `font-medium` utility of both titles and the
   `leading-none` utility of `DialogTitle` won over the `h2` rule. One
   unlayered rule with zero specificity sets both values on both titles.
-  Every other compiled rule is unchanged. The CSS budget now measures 44,364
-  raw and 7,850 gzip bytes.
+  Every other compiled rule is unchanged.
 - `invest-widgets` `VChartTooltip` keeps its 12px text after the shell styles
   moved into the base layer. In that layer, the `text-sm` utility of its card
   won over `is--small` and set 14px text with a 20px line height. The card now
@@ -115,8 +109,9 @@
   the last body row. A table with one body row and no header lost the line
   above that row. One unlayered rule with zero specificity sets the three
   values on `TableRow` body rows. Header rows keep the primitive look. Every
-  other compiled rule is unchanged. The CSS budget now measures 44,557 raw and
-  7,881 gzip bytes.
+  other compiled rule is unchanged.
+- Removed the `invest-shell` CSS budget check. `css-budget.json`, the
+  `css:budget` script and its test are gone, and `test:run` runs only Vitest.
 
 ## 0.4.15 candidate
 

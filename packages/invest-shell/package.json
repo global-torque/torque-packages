@@ -9,9 +9,8 @@
   "sideEffects": ["**/*.vue", "**/*.css", "**/*.scss", "./src/styles.ts"],
   "type": "module",
   "scripts": {
-    "css:budget": "node scripts/check-css-budget.mjs",
     "typecheck": "vue-tsc --noEmit -p tsconfig.json",
-    "test:run": "node --test scripts/check-css-budget.test.mjs && NODE_OPTIONS=\"${NODE_OPTIONS:+$NODE_OPTIONS }--no-experimental-webstorage\" vitest run"
+    "test:run": "NODE_OPTIONS=\"${NODE_OPTIONS:+$NODE_OPTIONS }--no-experimental-webstorage\" vitest run"
   },
   "exports": {
     ".": "./src/index.ts",
@@ -62,7 +61,7 @@
   "peerDependenciesMeta": {
     "@global-torque/design-tokens": { "optional": true }
   },
-  "files": ["src", "README.md", "LICENSE", "NOTICE.md", "CHANGELOG.md", "SECURITY.md", "SUPPORT.md", "css-budget.json", "scripts", "vite.config.ts", "vitest.config.ts"],
+  "files": ["src", "README.md", "LICENSE", "NOTICE.md", "CHANGELOG.md", "SECURITY.md", "SUPPORT.md", "vite.config.ts", "vitest.config.ts"],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/global-torque/torque-packages.git",

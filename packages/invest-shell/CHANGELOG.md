@@ -41,9 +41,7 @@
 - Removed the portal-layer bridge. The header (41), the PWA footer menu (42),
   the PWA status stack (43) and the closed mobile sidebar shadow (43) now sit
   below the ui-primitives overlays at `z-50`.
-- Removed `scripts/check-css-contract.mjs` from `test:run`. The CSS budget
-  measures `geometry.css` and `index.scss` only: 53,914 raw and 10,028 gzip
-  bytes, capped at 54,164 and 10,078.
+- Removed `scripts/check-css-contract.mjs` from `test:run`.
 - Breaking: removed `styles/geometry.css` and its `./styles/geometry.css`
   export. Hosts must remove its `@import`.
 - Shell components and the shared styles read the shadcn variables directly.
@@ -77,8 +75,6 @@
   classes as the menu links. `.v-dropdown__item` sets weight 800, full width
   and start alignment, so a link, a div and a button item look the same. The
   Sidebar07 team and user menu items also carry this class.
-- The CSS budget now measures `index.scss` only: 48,224 raw and 8,780 gzip
-  bytes, capped at 48,474 and 8,830.
 - Removed 79 `.is--*` classes from the legacy styles, because no host uses
   them: 37 colour and background utilities, `.is--display`,
   `.is--body-italic`, 11 spacing, 5 visibility and 18 layout utilities, and
@@ -90,8 +86,7 @@
   overrode. Templates no longer set `is--no-margin`, `is--body-1`,
   `is--body-2`, `is--gt-desktop-md-hide`, `is--two-col` or `is--secondary`,
   which no stylesheet defines. Every remaining compiled rule is unchanged. A
-  host that still uses a removed class must define it. The CSS budget now
-  measures 40,792 raw and 7,773 gzip bytes, capped at 41,042 and 7,823.
+  host that still uses a removed class must define it.
 - The global styles now live in Tailwind's `base` layer, so utilities and
   component classes override them without `!important`. Hosts must load them
   after Tailwind so that they still win over its preflight. `index.scss` emits
@@ -104,18 +99,14 @@
   as `.is--link-2` and `.is--h6__title`, and to the heading `a` rules, and it
   still wins over the preflight `a`. Because layer order reverses for
   `!important`, a shell `!important` declaration now wins over `!important`
-  utilities and unlayered app rules. The CSS budget now measures 44,047 raw
-  and 7,788 gzip bytes, capped at 44,297 and 7,838. The raw growth is
-  indentation.
+  utilities and unlayered app rules.
 - The element rules for `p`, `a`, `ol`, `ul` and `li` no longer apply to
   shadcn primitive parts, which carry a `data-slot` attribute. For example,
   `BreadcrumbLink` and `SidebarMenu` keep their own utilities. Each rule uses
   `:where(:not([data-slot]))`, so its specificity is unchanged. The plain link
   rule changes from `a:where(:not([data-slot="button"]))` to
   `a:where(:not([data-slot]))`, so it skips every part, not only buttons.
-  Every other compiled rule is unchanged. The CSS budget now measures 44,133
-  raw and 7,793 gzip bytes, capped at 44,383 and 7,843. The raw growth is the
-  added `:where()` conditions.
+  Every other compiled rule is unchanged.
 - The `VHeaderNavigation` desktop menu links are bold again. The component
   sets weight 800 itself, because the plain link rule now skips
   `NavigationMenuLink`. The triggers and the mobile menu are unchanged.
@@ -128,8 +119,7 @@
   both values on both titles. It wins over every layered rule, including
   utilities, and with zero specificity it still loses to unlayered app class
   rules. The `h2` rule still sets the size. Every other compiled rule is
-  unchanged. The CSS budget now measures 44,364 raw and 7,850 gzip bytes,
-  capped at 44,614 and 7,900.
+  unchanged.
 - `TableRow` body rows have the full `--muted` hover tint and the
   `all 0.3s ease` transition of the `tbody tr` rule again. The last body row
   has its 1px top line again. In the base layer, the `hover:bg-muted/50` and
@@ -141,8 +131,9 @@
   transition and the hover background. It wins over every layered rule,
   including utilities. Its specificity is zero, plus one pseudo-class for the
   hover, so app rules with higher specificity still win. Header rows keep the
-  primitive look. Every other compiled rule is unchanged. The CSS budget now
-  measures 44,557 raw and 7,881 gzip bytes, capped at 44,807 and 7,931.
+  primitive look. Every other compiled rule is unchanged.
+- Removed the CSS budget check. `css-budget.json`, the `css:budget` script and
+  its test are gone, and `test:run` runs only Vitest.
 
 ## 0.4.15 candidate
 
