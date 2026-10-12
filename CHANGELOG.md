@@ -108,12 +108,15 @@
   sets `text-xs/[18px] font-medium` instead of `is--small`: 12px, weight 500
   and an 18px line height, as before.
 - `invest-shell` table body rows have the full `--muted` hover tint and the
-  `all 0.3s ease` transition again. In the base layer, the `hover:bg-muted/50`
-  and `transition-colors` utilities of `TableRow` won over the `tbody tr`
-  rule. One unlayered rule with zero specificity sets both values on
-  `TableRow` body rows. Header rows keep the primitive look. Every other
-  compiled rule is unchanged. The CSS budget now measures 44,518 raw and
-  7,878 gzip bytes.
+  `all 0.3s ease` transition again. The last body row has its 1px top line
+  again. In the base layer, the `hover:bg-muted/50` and `transition-colors`
+  utilities of `TableRow` won over the `tbody tr` rule. The
+  `[&_tr:last-child]:border-0` utility of `TableBody` removed the top line of
+  the last body row. A table with one body row and no header lost the line
+  above that row. One unlayered rule with zero specificity sets the three
+  values on `TableRow` body rows. Header rows keep the primitive look. Every
+  other compiled rule is unchanged. The CSS budget now measures 44,557 raw and
+  7,881 gzip bytes.
 
 ## 0.4.15 candidate
 

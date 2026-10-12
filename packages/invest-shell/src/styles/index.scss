@@ -32,11 +32,14 @@
 
 // Body rows of `TableRow` keep the full `--muted` hover tint and the 0.3s
 // transition of the old `tbody tr` rule. In the base layer, the primitive's
-// own `hover:bg-muted/50` and `transition-colors` utilities would win. This
+// own `hover:bg-muted/50` and `transition-colors` utilities would win. The
+// rule also keeps the 1px top line that the `TableBody` utility
+// `[&_tr:last-child]:border-0` would remove from the last body row. This
 // rule stays unlayered, so it beats layered utilities. `:where()` keeps its
 // specificity at zero, and the hover adds one pseudo-class, so app rules with
 // higher specificity still win. Header rows keep the primitive look.
 :where(tbody tr[data-slot="table-row"]) {
+  border-top: 1px solid var(--border);
   transition: all 0.3s ease;
 
   &:hover {

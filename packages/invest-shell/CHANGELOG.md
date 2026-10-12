@@ -131,15 +131,18 @@
   unchanged. The CSS budget now measures 44,364 raw and 7,850 gzip bytes,
   capped at 44,614 and 7,900.
 - `TableRow` body rows have the full `--muted` hover tint and the
-  `all 0.3s ease` transition of the `tbody tr` rule again. In the base layer,
-  the `hover:bg-muted/50` and `transition-colors` utilities of `TableRow` won
-  over that rule. `index.scss` now ends with a second unlayered rule,
-  `:where(tbody tr[data-slot="table-row"])`, that sets the transition and the
-  hover background. It wins over every layered rule, including utilities. Its
-  specificity is zero, plus one pseudo-class for the hover, so app rules with
-  higher specificity still win. Header rows keep the primitive look. Every
-  other compiled rule is unchanged. The CSS budget now measures 44,518 raw and
-  7,878 gzip bytes, capped at 44,768 and 7,928.
+  `all 0.3s ease` transition of the `tbody tr` rule again. The last body row
+  has its 1px top line again. In the base layer, the `hover:bg-muted/50` and
+  `transition-colors` utilities of `TableRow` won over that rule. The
+  `[&_tr:last-child]:border-0` utility of `TableBody` removed the top line of
+  the last body row. A table with one body row and no header lost the line
+  above that row. `index.scss` now ends with a second unlayered rule,
+  `:where(tbody tr[data-slot="table-row"])`, that sets the top line, the
+  transition and the hover background. It wins over every layered rule,
+  including utilities. Its specificity is zero, plus one pseudo-class for the
+  hover, so app rules with higher specificity still win. Header rows keep the
+  primitive look. Every other compiled rule is unchanged. The CSS budget now
+  measures 44,557 raw and 7,881 gzip bytes, capped at 44,807 and 7,931.
 
 ## 0.4.15 candidate
 
