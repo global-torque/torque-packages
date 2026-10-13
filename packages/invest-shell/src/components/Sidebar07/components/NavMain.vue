@@ -104,7 +104,7 @@ function handleSelect(item: SidebarNavItem, options: SelectOptions = {}) {
                 </span>
                 <ChevronRight
                   :class="[
-                    'nav-main__chevron -ml-1.5 size-[18px] shrink-0 text-slate-400 transition duration-200',
+                    'nav-main__chevron -ml-1.5 size-[18px] shrink-0 text-muted-foreground transition duration-200',
                     'group-data-[state=open]/collapsible:rotate-90',
                   ]"
                 />
@@ -163,7 +163,7 @@ function handleSelect(item: SidebarNavItem, options: SelectOptions = {}) {
               <span class="min-w-0 flex-1 truncate text-left">{{ item.title }}</span>
               <span
                 v-if="item.badge !== undefined"
-                class="rounded-sm bg-slate-200 px-2 py-0.5 text-[10px] font-semibold text-slate-700"
+                class="rounded-sm bg-border px-2 py-0.5 text-[10px] font-semibold text-foreground"
               >
                 {{ item.badge }}
               </span>

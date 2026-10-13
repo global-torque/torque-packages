@@ -112,6 +112,10 @@
   other compiled rule is unchanged.
 - Removed the `invest-shell` CSS budget check. `css-budget.json`, the
   `css:budget` script and its test are gone, and `test:run` runs only Vitest.
+- The `invest-shell` Sidebar07 menu now reads design-tokens purpose classes,
+  such as `text-foreground` and `bg-border`, instead of default Tailwind slate
+  and rose classes. Hosts that defined `--color-slate-*` overrides for it can
+  delete them.
 
 ## 0.4.15 candidate
 

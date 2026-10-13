@@ -99,7 +99,7 @@ function handleSelect(item: SidebarNavItem) {
                 <span class="min-w-0 flex-1 truncate text-left">{{ item.title }}</span>
                 <span
                   v-if="item.badge !== undefined"
-                  class="rounded-sm bg-slate-200 px-2 py-0.5 text-[10px] font-semibold text-slate-700"
+                  class="rounded-sm bg-border px-2 py-0.5 text-[10px] font-semibold text-foreground"
                 >
                   {{ item.badge }}
                 </span>
@@ -115,9 +115,9 @@ function handleSelect(item: SidebarNavItem) {
                   aria-label="Open project actions"
                   class="
                     flex h-8 w-8 shrink-0 items-center justify-center rounded-sm
-                    text-slate-400 opacity-0 transition hover:bg-slate-100
-                    hover:text-slate-700 group-hover/item:opacity-100
-                    data-[state=open]:bg-slate-100 data-[state=open]:text-slate-700
+                    text-muted-foreground opacity-0 transition hover:bg-background
+                    hover:text-foreground group-hover/item:opacity-100
+                    data-[state=open]:bg-background data-[state=open]:text-foreground
                   "
                   type="button"
                 >
@@ -132,21 +132,21 @@ function handleSelect(item: SidebarNavItem) {
                 :side-offset="6"
               >
                 <DropdownMenuItem
-                  class="flex items-center gap-2 rounded-sm px-3 py-2 text-sm text-slate-700"
+                  class="flex items-center gap-2 rounded-sm px-3 py-2 text-sm text-foreground"
                   @select="emit('action', { action: 'view', item })"
                 >
                   <Folder class="h-4 w-4" />
                   <span>View Project</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                  class="flex items-center gap-2 rounded-sm px-3 py-2 text-sm text-slate-700"
+                  class="flex items-center gap-2 rounded-sm px-3 py-2 text-sm text-foreground"
                   @select="emit('action', { action: 'share', item })"
                 >
                   <Forward class="h-4 w-4" />
                   <span>Share Project</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                  class="flex items-center gap-2 rounded-sm px-3 py-2 text-sm text-rose-600"
+                  class="flex items-center gap-2 rounded-sm px-3 py-2 text-sm text-destructive"
                   @select="emit('action', { action: 'delete', item })"
                 >
                   <Trash2 class="h-4 w-4" />
