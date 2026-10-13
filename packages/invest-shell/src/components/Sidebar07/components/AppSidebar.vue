@@ -43,7 +43,7 @@ const isAuthorized = computed(() => Boolean(props.user));
     v-if="isAuthorized"
     v-model:open="effectiveOpen"
     :style="{ '--sidebar-width': '18rem', '--sidebar-width-icon': '4.3rem', flexDirection: props.side === 'right' ? 'row-reverse' : undefined }"
-    class="AppSidebar app-sidebar group/sidebar-wrapper flex min-h-screen w-full text-slate-950"
+    class="AppSidebar app-sidebar group/sidebar-wrapper flex min-h-screen w-full text-foreground"
     :data-state="effectiveOpen ? 'expanded' : 'collapsed'"
     :data-collapsible="props.collapsible"
     :data-side="props.side"
@@ -152,7 +152,7 @@ const isAuthorized = computed(() => Boolean(props.user));
 
   <div
     v-else
-    class="AppSidebar app-sidebar flex min-h-screen w-full flex-col bg-slate-100/70 text-slate-950"
+    class="AppSidebar app-sidebar flex min-h-screen w-full flex-col bg-background/70 text-foreground"
   >
     <slot name="guest-header">
       <VHeaderGuest

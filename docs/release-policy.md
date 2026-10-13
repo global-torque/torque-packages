@@ -13,7 +13,7 @@ path and clears `NODE_AUTH_TOKEN` before npm runs so trusted OIDC remains the
 active registry authentication path.
 
 The selected `@global-torque/ui-kit` 0.4.0, `@global-torque/ui-primitives`
-0.2.0 and `@global-torque/design-tokens` 0.4.0 dependencies are GitHub release
+0.2.0 and `@global-torque/design-tokens` 0.5.0 dependencies are GitHub release
 tarballs. A workspace override maps the exact ui-primitives 0.2.0 dependency of
 ui-kit to its tarball. Candidate creation installs them through the committed
 frozen lockfile; no draft transport or derived lockfile overlay is supported.

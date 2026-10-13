@@ -8,8 +8,8 @@
   `@global-torque/ui-primitives` to the 0.2.0 tarball.
 - Imports `toast` from `vue-sonner`, now a direct dependency, because the
   ui-primitives `./sonner` entry no longer exports it.
-- Accepts `@global-torque/design-tokens` `>=0.2.1 <0.5.0` and tests against
-  0.4.0.
+- Accepts `@global-torque/design-tokens` `>=0.2.1 <0.6.0` and tests against
+  0.5.0.
 - `VGlobalAlert` shows success and warning, and `VOfflineStatusBanner` shows
   its reconnected state, as the standard alert. The icon still shows the
   status.
@@ -134,6 +134,9 @@
   primitive look. Every other compiled rule is unchanged.
 - Removed the CSS budget check. `css-budget.json`, the `css:budget` script and
   its test are gone, and `test:run` runs only Vitest.
+- The Sidebar07 menu now reads design-tokens purpose classes, such as
+  `text-foreground` and `bg-border`, instead of default Tailwind slate and rose
+  classes. Hosts that defined `--color-slate-*` overrides for it can delete them.
 
 ## 0.4.15 candidate
 
