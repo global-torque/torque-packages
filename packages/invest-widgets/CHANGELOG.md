@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- `VCardInfo` loading skeletons show again. They take their width and height
+  through `style`, because the ui-primitives `Skeleton` has no size props.
+  Before, each skeleton was 0px tall and invisible.
+
 ## 0.4.16 candidate
 
 - Expanded the supported Node range to `>=24.21.0`; CI remains on Node 24.21.0.
