@@ -35,7 +35,7 @@
     "vue-sonner": "^2.0.9"
   },
   "devDependencies": {
-    "@global-torque/design-tokens": "https://github.com/global-torque/design-tokens/releases/download/v0.4.0/global-torque-design-tokens-0.4.0.tgz",
+    "@global-torque/design-tokens": "https://github.com/global-torque/design-tokens/releases/download/v0.5.0/global-torque-design-tokens-0.5.0.tgz",
     "@vue/server-renderer": "3.5.39",
     "@vitejs/plugin-vue": "^6.0.9",
     "@vue/test-utils": "^2.5.1",
@@ -50,7 +50,7 @@
     "vue-router": "^5.1.0"
   },
   "peerDependencies": {
-    "@global-torque/design-tokens": ">=0.2.1 <0.5.0",
+    "@global-torque/design-tokens": ">=0.2.1 <0.6.0",
     "ajv": "^8.20.0",
     "pinia": "^3.0.4 || ^4.0.3",
     "reka-ui": "^2.10.1",
