@@ -2,14 +2,26 @@
 
 ## Unreleased
 
+- The development branch accepts `@global-torque/design-tokens` `>=0.2.1 <0.6.0`
+  and tests against 0.5.0.
+- The Sidebar07 menu now reads design-tokens purpose classes, such as
+  `text-foreground` and `bg-border`, instead of default Tailwind slate and rose
+  classes. Hosts that defined `--color-slate-*` overrides for it can delete them.
+
+## 0.4.16 candidate
+
+- Expanded the supported Node range to `>=24.21.0`; CI remains on Node 24.21.0.
+- Added the optional `VHeaderPWA.brandName` accessible-label override with a
+  trimmed application-brand fallback for the PWA header and logo.
+
 - Requires `@global-torque/ui-kit` 0.4.0 and `@global-torque/ui-primitives`
   0.2.0, which are GitHub release tarballs. UI Kit 0.4.0 pins ui-primitives
   0.2.0 exactly, so consumers need a pnpm override that maps
   `@global-torque/ui-primitives` to the 0.2.0 tarball.
 - Imports `toast` from `vue-sonner`, now a direct dependency, because the
   ui-primitives `./sonner` entry no longer exports it.
-- Accepts `@global-torque/design-tokens` `>=0.2.1 <0.6.0` and tests against
-  0.5.0.
+- Accepts `@global-torque/design-tokens` `>=0.2.1 <0.5.0` and tests against
+  0.4.0.
 - `VGlobalAlert` shows success and warning, and `VOfflineStatusBanner` shows
   its reconnected state, as the standard alert. The icon still shows the
   status.
@@ -134,14 +146,9 @@
   primitive look. Every other compiled rule is unchanged.
 - Removed the CSS budget check. `css-budget.json`, the `css:budget` script and
   its test are gone, and `test:run` runs only Vitest.
-- The Sidebar07 menu now reads design-tokens purpose classes, such as
-  `text-foreground` and `bg-border`, instead of default Tailwind slate and rose
-  classes. Hosts that defined `--color-slate-*` overrides for it can delete them.
 
 ## 0.4.15 candidate
 
-- Added the optional `VHeaderPWA.brandName` accessible-label override with a
-  trimmed application-brand fallback for the PWA header and logo.
 - Added a temporary shell bridge for the published UI package pair so dialogs,
   menus, popovers, tooltips, comboboxes and selects cover the fixed header while
   mobile Sheets retain their lower layer. Remove it only after the released UI

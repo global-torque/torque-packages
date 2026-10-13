@@ -1,8 +1,9 @@
 # Source and release reconciliation
 
-The `0.4.15` candidate reissues the seven-package cohort with a temporary
-shared UI portal-layer bridge for the published
-`@global-torque/ui-primitives@0.1.3` and `@global-torque/ui-kit@0.1.4`
+The `0.4.16` candidate adds the authenticated account filer tree, its runtime
+cache, and Node `>=24.21.0` support. It retains the 0.4.15 seven-package cohort
+with the published `@global-torque/ui-primitives@0.2.0` and
+`@global-torque/ui-kit@0.4.0`
 packages. Dialogs and ordinary portaled surfaces default to
 `--ui-dialog-z-index` at `1100`, select supports `--ui-select-popup-z-index`,
 and Mobile Sheets retain their lower layer. Remove the bridge only after the
@@ -39,9 +40,9 @@ intermediate compatibility, abort signals, and recovery rule are recorded in
 [`source-reconciliation.json`](./source-reconciliation.json).
 
 The candidate consumes the authenticated external
-`@global-torque/design-tokens@0.3.0` archive for producer development. Its
-exact SRI, archive digest, archive inventory digest, source commit/tag and npm
-publish/SLSA attestations are bound in
+`@global-torque/design-tokens@0.4.0` archive for producer development. The
+retained 0.3.0 compatibility evidence, including its SRI, archive digest,
+source commit, tag, and npm attestations, remains bound in
 [`source-reconciliation.json`](./source-reconciliation.json) and must be
 retained with candidate evidence. The compatibility matrix also binds the
 verified `0.2.1` archive, source tag/commit, SRI, inventory and attestation
@@ -59,12 +60,10 @@ public registry version). Each mode runs the same static, Chromium, packed
 consumer, and SSR checks; an absent mode must not install or import the token
 package.
 
-The framework candidate using the public `@global-torque/ui-kit@0.1.4`
-dependency produces exactly eight native GitHub Release assets: seven
-dependency-ordered package `.tgz` archives and `browser-contract-report.json`.
-Only the seven package archives are GitHub-attested; the browser contract report
-is retained as release evidence and is not attested. The published registry
-dependency is installed from the frozen lockfile.
+The framework candidate using `@global-torque/ui-kit@0.4.0` produces exactly
+seven native GitHub Release assets. They are the dependency-ordered package
+`.tgz` archives, and all seven are GitHub-attested. The published dependency is
+installed from the frozen lockfile.
 
 The package owner is responsible for pure domain contracts and investment
 framework behavior. Generic UI, SDK, token, content, Markdown, and error
@@ -86,11 +85,9 @@ producer path mapping, host-owned third-party mark transfer, and FW07 removals
 are recorded in [`asset-inventory.md`](./asset-inventory.md).
 
 Release packing is dependency first. A pushed `framework-vX.Y.Z` tag runs the
-frozen install, package checks, and Node build; installs Chromium; runs the
-browser contract and writes `browser-contract-report.json`; packs each package
-once with `pnpm pack`; runs `test:release-archives` and the packed-archive
-validator; attests only the seven package tarballs; and creates a native
-GitHub Release containing those seven archives plus the browser report. A
+frozen install, package checks, and Node build. It packs each package once with
+`pnpm pack`, runs `test:release-archives` and the packed-archive validator,
+attests the seven package tarballs, and creates a native GitHub Release. A
 failed or changed release receives a new version and tag. The prior
 `framework-v0.2.0` source tag, commit, and failed-run diagnostic history remain
 retained as history; that run failed before installation, build, or packing,
@@ -170,7 +167,7 @@ because the candidate failed. The immutable `framework-v0.4.13` release at
 source commit `7d86d208e32967f177f881ae7ad78d382ca3534f` completed its GitHub
 Release but was superseded before npm rollout when the redemption list contract
 changed; `npmPublished` is false and its tag, release bytes, and attestations
-are never moved, reused, or repacked. Candidate `0.4.15` is the new immutable
+are never moved, reused, or repacked. Candidate `0.4.16` is the new immutable
 release identity; its active candidate and package matrix are finalized when
 the candidate commit is tagged. The `sourceRevision` fields retain upstream
 provenance for the transferred source and are not rewritten as release tags

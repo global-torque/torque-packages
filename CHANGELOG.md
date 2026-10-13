@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+- The development branch accepts `@global-torque/design-tokens` `>=0.2.1 <0.6.0`
+  and tests against 0.5.0.
+- The `invest-shell` Sidebar07 menu now reads design-tokens purpose classes,
+  such as `text-foreground` and `bg-border`, instead of default Tailwind slate
+  and rose classes. Hosts that defined `--color-slate-*` overrides for it can
+  delete them.
+
+## 0.4.16 candidate
+
+- Expanded the supported Node range to `>=24.21.0`; CI and release workflows
+  remain pinned to Node 24.21.0.
+
 - `invest-features`, `invest-widgets` and `invest-shell` now require
   `@global-torque/ui-kit` 0.4.0 and `@global-torque/ui-primitives` 0.2.0. Both
   are GitHub release tarballs, not npm packages. UI Kit 0.4.0 pins
@@ -9,8 +21,8 @@
   `@global-torque/ui-primitives` to the 0.2.0 tarball. `invest-features` and
   `invest-shell` import `toast` from `vue-sonner`, now a direct dependency,
   because the ui-primitives `./sonner` entry no longer exports it.
-- `invest-shell` accepts `@global-torque/design-tokens` `>=0.2.1 <0.6.0` and
-  tests against 0.5.0.
+- `invest-shell` accepts `@global-torque/design-tokens` `>=0.2.1 <0.5.0` and
+  tests against 0.4.0.
 - Alerts show success and warning as the standard alert, because
   ui-primitives 0.2.0 has only the `default` and `destructive` variants. The
   icon still shows the status.
@@ -112,13 +124,8 @@
   other compiled rule is unchanged.
 - Removed the `invest-shell` CSS budget check. `css-budget.json`, the
   `css:budget` script and its test are gone, and `test:run` runs only Vitest.
-- The `invest-shell` Sidebar07 menu now reads design-tokens purpose classes,
-  such as `text-foreground` and `bg-border`, instead of default Tailwind slate
-  and rose classes. Hosts that defined `--color-slate-*` overrides for it can
-  delete them.
 
 ## 0.4.15 candidate
-
 - Reissued the seven-package cohort with the shared UI portal-layer contract:
   dialogs and ordinary portaled surfaces default to `--ui-dialog-z-index` at
   `1100`, select supports `--ui-select-popup-z-index`, and the shell carries a

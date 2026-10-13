@@ -1,6 +1,8 @@
 # Changelog
 
-## Unreleased
+## 0.4.16 candidate
+
+- Expanded the supported Node range to `>=24.21.0`; CI remains on Node 24.21.0.
 
 - Requires `@global-torque/ui-kit` 0.4.0 and `@global-torque/ui-primitives`
   0.2.0, which are GitHub release tarballs. UI Kit 0.4.0 pins ui-primitives
@@ -36,7 +38,6 @@
   `text-sm` utility wins over `is--small`.
 
 ## 0.4.15 candidate
-
 - Reissued the widget cohort against the published UI package pair while the
   Invest Shell carries the removable shared portal-layer bridge.
 
