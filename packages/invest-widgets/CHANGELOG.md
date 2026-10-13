@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- `VCardInfo` loading skeletons show again. They take their width and height
+  through `style`, because the ui-primitives `Skeleton` has no size props.
+  Before, each skeleton was 0px tall and invisible.
+
+## 0.4.16 candidate
+
+- Expanded the supported Node range to `>=24.21.0`; CI remains on Node 24.21.0.
+
 - Requires `@global-torque/ui-kit` 0.4.0 and `@global-torque/ui-primitives`
   0.2.0, which are GitHub release tarballs. UI Kit 0.4.0 pins ui-primitives
   0.2.0 exactly, so consumers need a pnpm override that maps
@@ -34,12 +42,8 @@
   height. Its card sets `text-xs/[18px] font-medium` instead of the
   `invest-shell` `is--small` class. In the base layer, the card's own
   `text-sm` utility wins over `is--small`.
-- `VCardInfo` loading skeletons show again. They take their width and height
-  through `style`, because the ui-primitives `Skeleton` has no size props.
-  Before, each skeleton was 0px tall and invisible.
 
 ## 0.4.15 candidate
-
 - Reissued the widget cohort against the published UI package pair while the
   Invest Shell carries the removable shared portal-layer bridge.
 

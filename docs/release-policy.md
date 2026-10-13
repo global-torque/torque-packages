@@ -12,15 +12,22 @@ The publish loop addresses each downloaded archive with an explicit `./` local
 path and clears `NODE_AUTH_TOKEN` before npm runs so trusted OIDC remains the
 active registry authentication path.
 
-The selected `@global-torque/ui-kit` 0.4.0, `@global-torque/ui-primitives`
-0.2.0 and `@global-torque/design-tokens` 0.5.0 dependencies are GitHub release
-tarballs. A workspace override maps the exact ui-primitives 0.2.0 dependency of
-ui-kit to its tarball. Candidate creation installs them through the committed
-frozen lockfile; no draft transport or derived lockfile overlay is supported.
+The selected `@global-torque/ui-kit` 0.4.0 and
+`@global-torque/ui-primitives` 0.2.0 dependencies are GitHub release tarballs.
+The development branch selects the `@global-torque/design-tokens` 0.5.0 GitHub
+release tarball. The already-published immutable `framework-v0.4.16` candidate
+uses the 0.4.0 tarball and is not rewritten by this branch. Any future release
+of the merged source requires a new package version and immutable framework tag;
+never move, replace, or retag `framework-v0.4.16` or its artifacts. A workspace
+override maps the exact ui-primitives 0.2.0 dependency of ui-kit to its tarball.
+Candidate creation installs the selected development dependencies through the
+committed frozen lockfile; no draft transport or derived lockfile overlay is
+supported.
 
-Candidate 0.4.15 reissues the seven-package cohort with a temporary shared UI
-portal-layer bridge for the published `@global-torque/ui-primitives@0.1.3`
-and `@global-torque/ui-kit@0.1.4` packages. Dialogs and ordinary portaled
+Candidate 0.4.16 adds the authenticated account filer tree, its runtime cache,
+and Node `>=24.21.0` support. It retains the 0.4.15 seven-package cohort with
+the published `@global-torque/ui-primitives@0.2.0` and
+`@global-torque/ui-kit@0.4.0` packages. Dialogs and ordinary portaled
 surfaces default to `--ui-dialog-z-index` at `1100`, select supports
 `--ui-select-popup-z-index`, and Mobile Sheets retain their lower layer. The
 bridge is removable only after the released UI pair owns those layers and the
@@ -127,9 +134,10 @@ because the candidate failed. The immutable `framework-v0.4.13` release at
 source commit `7d86d208e32967f177f881ae7ad78d382ca3534f` completed its GitHub
 Release but was superseded before npm rollout when the redemption list contract
 changed; its tag and release bytes are never moved, reused, or repacked. The
-new ordinary immutable release tag is `framework-v0.4.15` for the `0.4.15` candidate. Push that tag so
-the release workflow checks, packs, attests, and creates the GitHub Release from
-`refs/tags/framework-v0.4.15`. The prior `framework-v0.2.2`
+ordinary immutable release tag is `framework-v0.4.16` for the `0.4.16`
+candidate. Its tag and release bytes remain retained; future source changes
+require a new package version and immutable release tag, not a retag of
+`framework-v0.4.16`. The prior `framework-v0.2.2`
 source tag, commit, and immutable artifact history remain retained for audit;
 its package bytes and provenance are not replaced. The earlier
 `framework-v0.2.0` run failed before installation, build, or packing; no

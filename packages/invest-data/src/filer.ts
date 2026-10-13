@@ -167,6 +167,26 @@ export interface FetchObjectTreeOptions {
   signal?: AbortSignal;
 }
 
+export interface FetchMyObjectTreeOptions {
+  signal?: AbortSignal;
+}
+
+const malformedMyObjectTree = () => new Error('Filer returned a malformed object tree');
+
+const validateMyObjectTreeNode = (value: unknown): void => {
+  if (!isRecord(value)) throw malformedMyObjectTree();
+  if (!('entities' in value)) return;
+  if (!isRecord(value.entities)) throw malformedMyObjectTree();
+  for (const child of Object.values(value.entities)) validateMyObjectTreeNode(child);
+};
+
+const validateMyObjectTree = (value: unknown): void => {
+  if (!isRecord(value)) throw malformedMyObjectTree();
+  if (Object.keys(value).length === 0) return;
+  if (!isRecord(value.entities)) throw malformedMyObjectTree();
+  for (const node of Object.values(value.entities)) validateMyObjectTreeNode(node);
+};
+
 export async function fetchObjectTree(options: FetchObjectTreeOptions): Promise<FilerObjectTree> {
   const filerBaseUrl = requireFilerBaseUrl();
   const apiClient = createInvestDataApiClient('filer', { apiUrls: { filer: filerBaseUrl } });
@@ -175,6 +195,16 @@ export async function fetchObjectTree(options: FetchObjectTreeOptions): Promise<
     `${prefix}/${buildObjectPath(options.objectName, options.objectId)}`,
     { signal: options.signal },
   );
+  return parseFilerObjectTree(response.data);
+}
+
+export async function fetchMyObjectTree(
+  options: FetchMyObjectTreeOptions = {},
+): Promise<FilerObjectTree> {
+  const filerBaseUrl = requireFilerBaseUrl();
+  const apiClient = createInvestDataApiClient('filer', { apiUrls: { filer: filerBaseUrl } });
+  const response = await apiClient.get<unknown>('/auth/objects/my', { signal: options.signal });
+  validateMyObjectTree(response.data);
   return parseFilerObjectTree(response.data);
 }
 

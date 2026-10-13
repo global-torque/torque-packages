@@ -4,11 +4,13 @@ import type { FilerObjectTree } from '@global-torque/domain-types/filerTypes';
 import { useFilerModel } from '../useFilerModel.ts';
 
 const mocks = vi.hoisted(() => ({
+  fetchMyObjectTree: vi.fn(),
   fetchObjectTree: vi.fn(),
   uploadFilerFile: vi.fn(),
 }));
 
 vi.mock('@global-torque/invest-data/filer', () => ({
+  fetchMyObjectTree: mocks.fetchMyObjectTree,
   fetchObjectTree: mocks.fetchObjectTree,
   uploadFilerFile: mocks.uploadFilerFile,
   parseFilerNotificationFields: (value: unknown) => (
@@ -25,6 +27,7 @@ const tree = (id: number): FilerObjectTree => ({
 describe('filer repository', () => {
   beforeEach(() => {
     setActivePinia(createPinia());
+    mocks.fetchMyObjectTree.mockReset();
     mocks.fetchObjectTree.mockReset();
   });
 
@@ -87,6 +90,75 @@ describe('filer repository', () => {
     await request;
 
     expect(repository.getObjectQueryState('private', 'investment', 101).data).toBeUndefined();
+  });
+
+  it('caches an empty authenticated account tree and refreshes it only when forced', async () => {
+    mocks.fetchMyObjectTree.mockResolvedValue({ entities: {} });
+    const repository = useFilerModel();
+
+    await repository.fetchMyObjectTree();
+    await repository.fetchMyObjectTree();
+    await repository.fetchMyObjectTree({ force: true });
+
+    expect(mocks.fetchMyObjectTree).toHaveBeenCalledTimes(2);
+    expect(repository.myObjectTreeState.data).toEqual({ entities: {} });
+    expect(repository.isMyObjectTreeCacheValid).toBe(true);
+  });
+
+  it('retains account data through a failed refresh and invalidates it on filer changes', async () => {
+    const repository = useFilerModel();
+    mocks.fetchMyObjectTree.mockResolvedValueOnce(tree(1));
+    await repository.fetchMyObjectTree();
+    const initialVersion = repository.myObjectInvalidationVersion;
+
+    repository.updateNotificationData({ data: { fields: { source_file_id: 1 } } });
+    expect(repository.myObjectTreeState.data).toEqual(tree(1));
+    expect(repository.isMyObjectTreeCacheValid).toBe(false);
+    expect(repository.myObjectInvalidationVersion).toBe(initialVersion + 1);
+
+    mocks.fetchMyObjectTree.mockRejectedValueOnce(new Error('refresh failed'));
+    await expect(repository.fetchMyObjectTree()).rejects.toThrow('refresh failed');
+    expect(repository.myObjectTreeState.data).toEqual(tree(1));
+    expect(repository.isMyObjectTreeCacheValid).toBe(false);
+    expect(repository.myObjectTreeState.error?.message).toBe('refresh failed');
+  });
+
+  it('resets profile-keyed trees without clearing the authenticated account cache', async () => {
+    mocks.fetchObjectTree.mockResolvedValue(tree(101));
+    mocks.fetchMyObjectTree.mockResolvedValue(tree(1));
+    const repository = useFilerModel();
+    await repository.fetchObjectTree({ access: 'private', objectName: 'investment', objectId: 101 });
+    await repository.fetchMyObjectTree();
+
+    repository.resetObjectQueries();
+
+    expect(repository.getObjectQueryState('private', 'investment', 101).data).toBeUndefined();
+    expect(repository.myObjectTreeState.data).toEqual(tree(1));
+    expect(repository.isMyObjectTreeCacheValid).toBe(true);
+  });
+
+  it('does not let reset or stale account responses write state', async () => {
+    let resolveOld!: (value: FilerObjectTree) => void;
+    mocks.fetchMyObjectTree.mockImplementationOnce(() => new Promise(resolve => { resolveOld = resolve; }));
+    const repository = useFilerModel();
+    const request = repository.fetchMyObjectTree({ force: true });
+
+    repository.resetAll();
+    resolveOld(tree(1));
+    await request;
+
+    expect(repository.myObjectTreeState.data).toBeUndefined();
+    expect(repository.isMyObjectTreeCacheValid).toBe(false);
+  });
+
+  it('rejects aborted account requests without creating a visible repository error', async () => {
+    const abortError = new DOMException('The request was aborted.', 'AbortError');
+    mocks.fetchMyObjectTree.mockRejectedValueOnce(abortError);
+    const repository = useFilerModel();
+
+    await expect(repository.fetchMyObjectTree({ signal: new AbortController().signal })).rejects.toBe(abortError);
+
+    expect(repository.myObjectTreeState.error).toBeNull();
   });
 
 });

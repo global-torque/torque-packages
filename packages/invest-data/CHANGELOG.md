@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.16 candidate
+
+- Expanded the supported Node range to `>=24.21.0`; CI remains on Node 24.21.0.
+- Added `fetchMyObjectTree` for the authenticated `/auth/objects/my` filer
+  tree, with recursive envelope validation and request cancellation.
+
 ## 0.4.15 candidate
 
 - Reissued the framework cohort with the shared UI portal-layer and exact

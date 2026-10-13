@@ -72,6 +72,8 @@ their source behavior.
 - `./loader`: `useGlobalLoader` for Dashboard, Invest, and shared investment
   feature orchestration. Generic UI and Global Torque do not own or consume
   this investment runtime store.
+- `./filer`: filer resource model with profile-keyed object trees and a
+  separately cached authenticated account object tree.
 - Auth, profile, investment, and preload guards are exported through the
   runtime root and their owning public subpaths; there is no `./redirects`
   entrypoint.
