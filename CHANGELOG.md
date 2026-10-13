@@ -116,6 +116,9 @@
   such as `text-foreground` and `bg-border`, instead of default Tailwind slate
   and rose classes. Hosts that defined `--color-slate-*` overrides for it can
   delete them.
+- `invest-widgets` `VCardInfo` loading skeletons show again. They take their
+  width and height through `style`, because the ui-primitives `Skeleton` has
+  no size props. Before, each skeleton was 0px tall and invisible.
 
 ## 0.4.15 candidate
 

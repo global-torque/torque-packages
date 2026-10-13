@@ -78,8 +78,7 @@ const secondaryValueSign = computed(() => {
       <div class="v-card-info__value">
         <Skeleton
           v-if="loading"
-          height="28px"
-          width="100px"
+          :style="{ width: '100px', height: '28px' }"
           class="v-card-info__skeleton"
         />
         <template v-else>
@@ -95,8 +94,7 @@ const secondaryValueSign = computed(() => {
       >
         <Skeleton
           v-if="loading"
-          height="12px"
-          width="150px"
+          :style="{ width: '150px', height: '12px' }"
           class="v-card-info__skeleton"
         />
         <template v-else>
@@ -121,8 +119,7 @@ const secondaryValueSign = computed(() => {
     >
       <Skeleton
         v-if="loading"
-        height="14px"
-        width="100px"
+        :style="{ width: '100px', height: '14px' }"
         class="v-card-info__skeleton"
       />
       <template v-else>

@@ -34,6 +34,9 @@
   height. Its card sets `text-xs/[18px] font-medium` instead of the
   `invest-shell` `is--small` class. In the base layer, the card's own
   `text-sm` utility wins over `is--small`.
+- `VCardInfo` loading skeletons show again. They take their width and height
+  through `style`, because the ui-primitives `Skeleton` has no size props.
+  Before, each skeleton was 0px tall and invisible.
 
 ## 0.4.15 candidate
 
