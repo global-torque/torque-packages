@@ -93,6 +93,12 @@ shadows are Tailwind theme variables. Tailwind emits one only when its name
 appears in a scanned file, so the host Tailwind build must scan the `.vue` files
 of `invest-shell`, `invest-features` and `invest-widgets`.
 
+The shared styles set `--header-height` and `--footer-height` to `4rem` on
+`:root`. The header bar and the Sidebar07 header read `--header-height`. The
+Sidebar07 footer reads `--footer-height`. A host page footer uses
+`min-height: var(--footer-height)`, so that its top line meets the sidebar
+footer line.
+
 ## Validation
 
 ```sh

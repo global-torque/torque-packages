@@ -478,7 +478,7 @@ const headerComponent = computed(() => (
   }
 
   [data-slot='navigation-menu-link'] {
-    height: 64px;
+    height: var(--header-height);
     align-content: center;
     display: flex;
     align-items: center;

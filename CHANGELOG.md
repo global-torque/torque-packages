@@ -11,6 +11,10 @@
 - `invest-widgets` `VCardInfo` loading skeletons show again. They take their
   width and height through `style`, because the ui-primitives `Skeleton` has
   no size props. Before, each skeleton was 0px tall and invisible.
+- The `invest-shell` header bar and Sidebar07 header share `--header-height`,
+  so their divider lines meet. The Sidebar07 footer reads `--footer-height`.
+  Both are `4rem` on `:root`. A host page footer uses
+  `min-height: var(--footer-height)` to meet the sidebar footer line.
 
 ## 0.4.16 candidate
 
