@@ -9,7 +9,6 @@ import {
   onBeforeUnmount,
   onMounted,
   ref,
-  watch,
 } from 'vue';
 
 // yarn add @unovis/ts
@@ -58,98 +57,61 @@ const index = computed(() => props.index as KeyOfT)
 const isMounted = useMounted();
 const rootElement = ref<HTMLElement | null>(null);
 const chartRenderKey = ref(0);
-const hoveredSegmentKey = ref<string>();
 const activeSegmentKey = ref<string>();
+const hoveredSegment = ref<Data>();
 let resizeObserver: ResizeObserver | undefined;
 let intersectionObserver: IntersectionObserver | undefined;
 let visibilityFrame: number | undefined;
 let wasRenderable = false;
-let readoutFadeOut: Animation[] = [];
 const colors = computed(() => (
   props.colors?.length
   ? props.colors
   : defaultColors(props.data.filter((d) => d[props.category]).filter(Boolean).length)
 ));
-const findSegment = (key?: string) => (
-  key === undefined ? undefined : props.data.find((item) => item[index.value] === key)
-);
-// Unovis resets segment opacity on every donut re-render, such as a center label
-// change, so the click emphasis dims the other segments through their fill.
-const segmentColors = computed(() => {
-  const activeKey = activeSegmentKey.value;
-  if (!findSegment(activeKey)) return colors.value;
-
-  return props.data.map((item, i) => {
-    const color = colors.value[i % colors.value.length];
-    return item[index.value] === activeKey
-      ? color
-      : `color-mix(in srgb, ${color} ${props.filterOpacity * 100}%, transparent)`;
-  });
-});
 
 const totalValue = computed(() => props.data.reduce((prev, curr) => prev + curr[props.category], 0));
 const noData = computed(() => props.data.length === 0)
 
-// The hovered segment leads. While nothing is hovered, the clicked segment shows.
-const readoutSegment = computed(() => findSegment(hoveredSegmentKey.value) ?? findSegment(activeSegmentKey.value));
-const centralLabel = computed(() => {
-  if (props.type !== 'donut') return '';
-  if (readoutSegment.value) return valueFormatter(readoutSegment.value[category.value]);
-  return props.showCenter ? valueFormatter(totalValue.value) : '';
+const readout = computed(() => {
+  if (props.type !== 'donut') return undefined;
+
+  const hovered = hoveredSegment.value;
+  if (hovered) {
+    return {
+      key: hovered[index.value],
+      value: valueFormatter(hovered[category.value]),
+      name: String(hovered[index.value]),
+    };
+  }
+
+  return props.showCenter ? { key: 'total', value: valueFormatter(totalValue.value), name: '' } : undefined;
 });
-const centralSubLabel = computed(() => (
-  props.type === 'donut' && readoutSegment.value ? String(readoutSegment.value[index.value]) : ''
-));
 
-const hasDom = () => typeof window !== 'undefined';
-const prefersReducedMotion = () => hasDom() && window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches === true;
-const readoutLabels = () => Array.from(rootElement.value?.querySelectorAll(
-  `.${Donut.selectors.centralLabel}, .${Donut.selectors.centralSubLabel}`,
-) ?? []);
-const stopReadoutFadeOut = () => {
-  readoutFadeOut.forEach((animation) => {
-    animation.onfinish = null;
-    animation.cancel();
-  });
-  readoutFadeOut = [];
-};
-
+// VisDonut redraws the ring whenever a prop gets a new identity, and a redraw
+// resets the click emphasis. So the accessor and the events stay stable.
+const valueAccessor = (d: Data) => d[category.value];
 const events = {
   [Donut.selectors.segment]: {
     mouseover: (d: { data: Data }) => {
-      stopReadoutFadeOut();
-      hoveredSegmentKey.value = d.data[index.value];
+      hoveredSegment.value = d.data;
     },
-    // Unovis clears the center text in the same render, so the hovered key stays
-    // until the text has faded out.
     mouseleave: () => {
-      stopReadoutFadeOut();
-      const labels = readoutLabels();
-      const fallbackKey = findSegment(activeSegmentKey.value)?.[index.value];
-      if (
-        fallbackKey === readoutSegment.value?.[index.value]
-        || !labels.length
-        || prefersReducedMotion()
-        || labels.some((label) => typeof label.animate !== 'function')
-      ) {
-        hoveredSegmentKey.value = undefined;
-        return;
-      }
-
-      readoutFadeOut = labels.map((label) => label.animate(
-        [{ opacity: 1 }, { opacity: 0 }],
-        { duration: 200, easing: 'ease-in', fill: 'forwards' },
-      ));
-      readoutFadeOut[0].onfinish = () => {
-        hoveredSegmentKey.value = undefined;
-      };
+      hoveredSegment.value = undefined;
     },
-    click: (d: { data: Data }) => {
-      const key = d.data[index.value];
-      activeSegmentKey.value = key === activeSegmentKey.value ? undefined : key;
+    click: (d: { data: Data }, ev: MouseEvent, i: number, elements: (SVGElement | HTMLElement)[]) => {
+      if (d?.data?.[index.value] === activeSegmentKey.value) {
+        activeSegmentKey.value = undefined;
+        elements.forEach((el) => { el.style.opacity = '1'; });
+      } else {
+        activeSegmentKey.value = d?.data?.[index.value];
+        elements.forEach((el) => { el.style.opacity = `${props.filterOpacity}`; });
+        elements[i].style.opacity = '1';
+      }
     },
   },
 };
+
+const hasDom = () => typeof window !== 'undefined';
 
 const isRenderable = () => {
   const element = rootElement.value;
@@ -182,17 +144,6 @@ const scheduleRenderableSync = () => {
   });
 };
 
-// The center text fades in, so a new readout does not pop in.
-watch(() => readoutSegment.value?.[index.value], () => {
-  // The new text is in the DOM now, so drop a finished fill-forwards fade-out.
-  stopReadoutFadeOut();
-  if (!centralLabel.value || !hasDom() || prefersReducedMotion()) return;
-
-  readoutLabels().forEach((label) => {
-    label.animate?.([{ opacity: 0 }, { opacity: 1 }], { duration: 200, easing: 'ease-out' });
-  });
-}, { flush: 'post' });
-
 onMounted(() => {
   scheduleRenderableSync();
 
@@ -217,7 +168,6 @@ onBeforeUnmount(() => {
 
   resizeObserver?.disconnect();
   intersectionObserver?.disconnect();
-  stopReadoutFadeOut();
 });
 </script>
 
@@ -244,15 +194,27 @@ onBeforeUnmount(() => {
       class="is--margin-top-10"
     >
       <VisDonut
-        :value="(d: Data) => d[category]"
+        :value="valueAccessor"
         :sort-function="sortFunction"
-        :color="segmentColors"
+        :color="colors"
         :arc-width="type === 'donut' ? 20 : 0"
         :show-background="false"
-        :central-label="centralLabel"
-        :central-sub-label="centralSubLabel"
         :events="events"
       />
+
+      <Transition name="v-shadcn-chart-donut-readout">
+        <div
+          v-if="readout"
+          :key="readout.key"
+          class="v-shadcn-chart-donut__readout"
+        >
+          <span class="v-shadcn-chart-donut__readout-value">{{ readout.value }}</span>
+          <span
+            v-if="readout.name"
+            class="v-shadcn-chart-donut__readout-name"
+          >{{ readout.name }}</span>
+        </div>
+      </Transition>
 
       <slot />
     </VisSingleContainer>
@@ -269,16 +231,49 @@ onBeforeUnmount(() => {
 
 <style lang="scss">
 .v-shadcn-chart-donut {
-  --vis-font-family: var(--font-sans);
-  --vis-donut-central-label-text-color: var(--foreground);
-  --vis-donut-central-label-font-size: 24px;
-  --vis-donut-central-label-font-weight: 700;
-  --vis-donut-central-sub-label-text-color: var(--muted-foreground);
-  --vis-donut-central-sub-label-font-size: 14px;
-
   display: flex;
   flex-direction: column;
   width: 100%;
   min-height: 0;
+
+  .unovis-single-container {
+    position: relative;
+  }
+
+  &__readout {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  &__readout-value {
+    color: var(--foreground);
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  &__readout-name {
+    max-width: 50%;
+    color: var(--muted-foreground);
+    font-size: 14px;
+    line-height: 1.3;
+  }
+}
+
+.v-shadcn-chart-donut-readout-enter-active,
+.v-shadcn-chart-donut-readout-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.v-shadcn-chart-donut-readout-enter-from,
+.v-shadcn-chart-donut-readout-leave-to {
+  opacity: 0;
 }
 </style>

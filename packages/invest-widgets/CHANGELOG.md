@@ -5,13 +5,9 @@
 - `VCardInfo` loading skeletons show again. They take their width and height
   through `style`, because the ui-primitives `Skeleton` has no size props.
   Before, each skeleton was 0px tall and invisible.
-- `DonutChart` shows the hovered or tapped segment's value and name in the
-  donut center instead of a floating tooltip, because the tooltip covered the
-  ring. While no segment is hovered, the center shows the clicked segment.
-  The center text fades in and out over 200 ms unless the user prefers
-  reduced motion. The click emphasis now dims the other segments' fill
-  through the chart colors, so a center update no longer clears it. Removed
-  the `customTooltip` prop.
+- `DonutChart` shows the hovered segment's value and name in its center
+  instead of a floating tooltip, because the tooltip covered the ring. The
+  text fades in and out. Removed the `customTooltip` prop.
 
 ## 0.4.16 candidate
 
