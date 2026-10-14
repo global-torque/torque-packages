@@ -7,6 +7,14 @@
 - The Sidebar07 menu now reads design-tokens purpose classes, such as
   `text-foreground` and `bg-border`, instead of default Tailwind slate and rose
   classes. Hosts that defined `--color-slate-*` overrides for it can delete them.
+- The shared styles set `--header-height` and `--footer-height` to `4rem` on
+  `:root`. The header bar, its navigation links, the content offset below it
+  and the Sidebar07 header read `--header-height`. The Sidebar07 footer reads
+  `--footer-height`. The sidebar header and footer are now at least that tall
+  and center their content. Before, they took their height from their
+  content, so their divider lines did not meet the header bar line or the
+  page footer line. A host page footer uses `min-height: var(--footer-height)`,
+  so that its top line meets the sidebar footer line.
 
 ## 0.4.16 candidate
 

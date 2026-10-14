@@ -13,6 +13,15 @@
     padding: 0 15px;
     margin: 0 auto;
   }
+
+  // Shell band heights. The header bar and the sidebar header read
+  // `--header-height`. The sidebar footer and the host page footer read
+  // `--footer-height`. Both sides of each divider line read one value, so
+  // the lines stay aligned.
+  :root {
+    --header-height: 4rem;
+    --footer-height: 4rem;
+  }
 }
 
 // Dialog and sheet titles keep the `h2` weight and line height they had

@@ -173,8 +173,8 @@ const open = defineModel<boolean>();
 
   // the legacy sheet sits under the fixed header; the burger stays the close control
   &__content {
-    top: 64px;
-    height: calc(100% - 64px);
+    top: var(--header-height);
+    height: calc(100% - var(--header-height));
 
     [data-slot='sheet-close'] {
       display: none;
@@ -183,5 +183,5 @@ const open = defineModel<boolean>();
 }
 
 // the veil starts under the fixed header too
-[data-slot='sheet-overlay']:has(+ .v-header-mobile__content) { top: 64px; }
+[data-slot='sheet-overlay']:has(+ .v-header-mobile__content) { top: var(--header-height); }
 </style>

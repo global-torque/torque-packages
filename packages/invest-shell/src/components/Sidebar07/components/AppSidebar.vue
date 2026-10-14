@@ -144,7 +144,7 @@ const isAuthorized = computed(() => Boolean(props.user));
         </VHeaderAuthorized>
       </slot>
 
-      <div class="flex min-h-0 flex-1 flex-col pt-16">
+      <div class="flex min-h-0 flex-1 flex-col pt-[var(--header-height)]">
         <slot />
       </div>
     </Sidebar07Shell>
@@ -161,7 +161,7 @@ const isAuthorized = computed(() => Boolean(props.user));
       />
     </slot>
 
-    <main class="flex min-h-0 flex-1 flex-col pt-16">
+    <main class="flex min-h-0 flex-1 flex-col pt-[var(--header-height)]">
       <slot />
     </main>
   </div>

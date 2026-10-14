@@ -123,7 +123,7 @@ const headerDataClasses = computed(() => ({
   position: fixed;
   top: 0;
   z-index: 41;
-  height: 64px;
+  height: var(--header-height);
 
   &.is--fixed {
     background: var(--background);
@@ -190,7 +190,7 @@ const headerDataClasses = computed(() => ({
   &.is--pwa {
     @media screen and (width <= 768px) {
       box-sizing: border-box;
-      height: calc(#{64px} + env(safe-area-inset-top));
+      height: calc(var(--header-height) + env(safe-area-inset-top));
       padding-top: env(safe-area-inset-top);
 
       .v-header__container {

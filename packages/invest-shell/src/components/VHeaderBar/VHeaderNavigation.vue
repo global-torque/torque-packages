@@ -190,7 +190,7 @@ const emit = defineEmits(['click']);
       display: flex;
       flex-wrap: wrap;
       gap: 20px 24px;
-      max-height: calc(100vh - 64px - 100px);
+      max-height: calc(100vh - var(--header-height) - 100px);
       overflow-y: auto;
     }
 

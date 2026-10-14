@@ -165,12 +165,13 @@ const showSidebarHeader = computed(() => (
 :deep(.sidebar-07-shell [data-slot='sidebar-footer']) {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 12px;
-  padding: 12px;
+  padding: 0 12px;
   border-color: var(--sidebar-border);
 }
-:deep(.sidebar-07-shell [data-slot='sidebar-header']) { border-bottom-width: 1px; }
-:deep(.sidebar-07-shell [data-slot='sidebar-footer']) { margin-top: auto; border-top-width: 1px; }
+:deep(.sidebar-07-shell [data-slot='sidebar-header']) { min-height: var(--header-height); border-bottom-width: 1px; }
+:deep(.sidebar-07-shell [data-slot='sidebar-footer']) { min-height: var(--footer-height); margin-top: auto; border-top-width: 1px; }
 :deep(.sidebar-07-shell [data-slot='sidebar-content']) { gap: 16px; overflow-y: auto; padding: 16px 12px; }
 :deep(.sidebar-07-shell [data-slot='sidebar-group']) { position: static; gap: 8px; padding: 0; }
 :deep(.sidebar-07-shell [data-slot='sidebar-group-content']) { display: flex; flex-direction: column; gap: 4px; }
