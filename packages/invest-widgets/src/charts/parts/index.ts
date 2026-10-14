@@ -1,6 +1,5 @@
 export { default as VChartCrosshair } from './VChartCrosshair.vue';
 export { default as VChartLegend } from './VChartLegend.vue';
-export { default as VChartSingleTooltip } from './VChartSingleTooltip.vue';
 export { default as VChartTooltip } from './VChartTooltip.vue';
 
 export function defaultColors(count: number = 3) {

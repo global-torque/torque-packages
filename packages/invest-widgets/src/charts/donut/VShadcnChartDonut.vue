@@ -1,11 +1,10 @@
 <script setup lang="ts" generic="T extends Record<string, any>">
 import type { BaseChartProps } from './index';
-import { VChartSingleTooltip, defaultColors } from '../parts';
+import { defaultColors } from '../parts';
 import { Donut } from '@unovis/ts';
 import { VisDonut, VisSingleContainer } from '@unovis/vue';
 import { useMounted } from '@vueuse/core';
 import {
-  type Component,
   computed,
   onBeforeUnmount,
   onMounted,
@@ -33,10 +32,6 @@ const props = withDefaults(defineProps<Pick<BaseChartProps<T>, 'data' | 'colors'
    * Controls the formatting for the label.
    */
   valueFormatter?: (tick: number, i?: number, ticks?: number[]) => string;
-  /**
-   * Render custom tooltip component.
-   */
-  customTooltip?: Component;
   showCenter?: boolean;
   title?: string;
   subtitle?: string;
@@ -63,6 +58,7 @@ const isMounted = useMounted();
 const rootElement = ref<HTMLElement | null>(null);
 const chartRenderKey = ref(0);
 const activeSegmentKey = ref<string>();
+const hoveredSegment = ref<Data>();
 let resizeObserver: ResizeObserver | undefined;
 let intersectionObserver: IntersectionObserver | undefined;
 let visibilityFrame: number | undefined;
@@ -72,14 +68,48 @@ const colors = computed(() => (
   ? props.colors
   : defaultColors(props.data.filter((d) => d[props.category]).filter(Boolean).length)
 ));
-const legendItems = computed(() => props.data.map((item, i) => ({
-  name: item[props.index],
-  color: colors.value[i],
-  inactive: false,
-})));
 
 const totalValue = computed(() => props.data.reduce((prev, curr) => prev + curr[props.category], 0));
 const noData = computed(() => props.data.length === 0)
+
+const readout = computed(() => {
+  if (props.type !== 'donut') return undefined;
+
+  const hovered = hoveredSegment.value;
+  if (hovered) {
+    return {
+      key: hovered[index.value],
+      value: valueFormatter(hovered[category.value]),
+      name: String(hovered[index.value]),
+    };
+  }
+
+  return props.showCenter ? { key: 'total', value: valueFormatter(totalValue.value), name: '' } : undefined;
+});
+
+// VisDonut redraws the ring whenever a prop gets a new identity, and a redraw
+// resets the click emphasis. So the accessor and the events stay stable.
+const valueAccessor = (d: Data) => d[category.value];
+const events = {
+  [Donut.selectors.segment]: {
+    mouseover: (d: { data: Data }) => {
+      hoveredSegment.value = d.data;
+    },
+    mouseleave: () => {
+      hoveredSegment.value = undefined;
+    },
+    click: (d: { data: Data }, ev: MouseEvent, i: number, elements: (SVGElement | HTMLElement)[]) => {
+      if (d?.data?.[index.value] === activeSegmentKey.value) {
+        activeSegmentKey.value = undefined;
+        elements.forEach((el) => { el.style.opacity = '1'; });
+      } else {
+        activeSegmentKey.value = d?.data?.[index.value];
+        elements.forEach((el) => { el.style.opacity = `${props.filterOpacity}`; });
+        elements[i].style.opacity = '1';
+      }
+    },
+  },
+};
 
 const hasDom = () => typeof window !== 'undefined';
 
@@ -163,36 +193,28 @@ onBeforeUnmount(() => {
       :data="data"
       class="is--margin-top-10"
     >
-      <VChartSingleTooltip
-        :selector="Donut.selectors.segment"
-        :index="category"
-        :items="legendItems"
-        :value-formatter="valueFormatter"
-        :custom-tooltip="customTooltip"
-      />
-
       <VisDonut
-        :value="(d: Data) => d[category]"
+        :value="valueAccessor"
         :sort-function="sortFunction"
         :color="colors"
         :arc-width="type === 'donut' ? 20 : 0"
         :show-background="false"
-        :central-label="((type === 'donut') && showCenter) ? valueFormatter(totalValue) : ''"
-        :events="{
-          [Donut.selectors.segment]: {
-            click: (d: Data, ev: PointerEvent, i: number, elements: HTMLElement[]) => {
-              if (d?.data?.[index] === activeSegmentKey) {
-                activeSegmentKey = undefined
-                elements.forEach(el => el.style.opacity = '1')
-              } else {
-                activeSegmentKey = d?.data?.[index]
-                elements.forEach(el => el.style.opacity = `${filterOpacity}`)
-                elements[i].style.opacity = '1'
-              }
-            },
-          },
-        }"
+        :events="events"
       />
+
+      <Transition name="v-shadcn-chart-donut-readout">
+        <div
+          v-if="readout"
+          :key="readout.key"
+          class="v-shadcn-chart-donut__readout"
+        >
+          <span class="v-shadcn-chart-donut__readout-value">{{ readout.value }}</span>
+          <span
+            v-if="readout.name"
+            class="v-shadcn-chart-donut__readout-name"
+          >{{ readout.name }}</span>
+        </div>
+      </Transition>
 
       <slot />
     </VisSingleContainer>
@@ -213,5 +235,45 @@ onBeforeUnmount(() => {
   flex-direction: column;
   width: 100%;
   min-height: 0;
+
+  .unovis-single-container {
+    position: relative;
+  }
+
+  &__readout {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  &__readout-value {
+    color: var(--foreground);
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  &__readout-name {
+    max-width: 50%;
+    color: var(--muted-foreground);
+    font-size: 14px;
+    line-height: 1.3;
+  }
+}
+
+.v-shadcn-chart-donut-readout-enter-active,
+.v-shadcn-chart-donut-readout-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.v-shadcn-chart-donut-readout-enter-from,
+.v-shadcn-chart-donut-readout-leave-to {
+  opacity: 0;
 }
 </style>

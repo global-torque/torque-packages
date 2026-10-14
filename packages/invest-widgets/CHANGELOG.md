@@ -5,6 +5,9 @@
 - `VCardInfo` loading skeletons show again. They take their width and height
   through `style`, because the ui-primitives `Skeleton` has no size props.
   Before, each skeleton was 0px tall and invisible.
+- `DonutChart` shows the hovered segment's value and name in its center
+  instead of a floating tooltip, because the tooltip covered the ring. The
+  text fades in and out. Removed the `customTooltip` prop.
 
 ## 0.4.16 candidate
 
