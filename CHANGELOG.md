@@ -15,6 +15,10 @@
   so their divider lines meet. The Sidebar07 footer reads `--footer-height`.
   Both are `4rem` on `:root`. A host page footer uses
   `min-height: var(--footer-height)` to meet the sidebar footer line.
+- "Log out" in the `invest-shell` Sidebar07 user menu now uses the brand
+  `--primary` instead of the fixed `--destructive` red, so it follows the
+  tenant brand. Its hover background also mixes `--primary` instead of
+  `--destructive`.
 
 ## 0.4.16 candidate
 

@@ -310,10 +310,10 @@ const initials = computed(() => {
     }
 
     &.is--logout {
-      color: var(--destructive);
+      color: var(--primary);
 
       &:hover {
-        background: color-mix(in srgb, var(--destructive) 10%, transparent);
+        background: color-mix(in srgb, var(--primary) 10%, transparent);
       }
     }
   }

@@ -15,6 +15,9 @@
   content, so their divider lines did not meet the header bar line or the
   page footer line. A host page footer uses `min-height: var(--footer-height)`,
   so that its top line meets the sidebar footer line.
+- "Log out" in the Sidebar07 user menu now uses the brand `--primary` instead
+  of the fixed `--destructive` red, so it follows the tenant brand. Its hover
+  background also mixes `--primary` instead of `--destructive`.
 
 ## 0.4.16 candidate
 
