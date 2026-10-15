@@ -8,11 +8,10 @@ import VDialogRefreshSession from '../VDialogRefreshSession.vue';
 const completeSessionRefresh = vi.fn();
 const beginRefreshSessionDialog = vi.fn();
 const dismissRefreshSessionDialog = vi.fn(() => true);
+const mountedWrappers: ReturnType<typeof mount>[] = [];
 const loginStore = reactive({
   beginRefreshSessionDialog,
   dismissRefreshSessionDialog,
-  getErrorText: vi.fn(() => []),
-  getOptions: vi.fn(() => []),
   isDisabledButton: false,
   isFieldRequired: vi.fn(() => false),
   isLoading: false,
@@ -31,8 +30,8 @@ vi.mock('@global-torque/invest-runtime/dialogs', () => ({
   useDialogs: () => ({ completeSessionRefresh }),
 }));
 
-const mountComponent = () =>
-  mount(VDialogRefreshSession, {
+const mountComponent = () => {
+  const wrapper = mount(VDialogRefreshSession, {
     props: {
       modelValue: true,
       socialIcons: {} as never,
@@ -40,17 +39,6 @@ const mountComponent = () =>
     attachTo: document.body,
     global: {
       stubs: {
-        VQueryDialog: {
-          props: ['open', 'queryKey', 'queryValue'],
-          emits: ['update:open'],
-          template: '<div data-testid="query-dialog"><slot /></div>',
-        },
-        DialogContent: {
-          template: '<section v-bind="$attrs" data-testid="dialog-content"><slot /></section>',
-        },
-        Separator: {
-          template: '<span data-testid="separator" />',
-        },
         VFormGroup: {
           template: '<div><slot :is-field-error="false" /></div>',
         },
@@ -66,42 +54,64 @@ const mountComponent = () =>
       },
     },
   });
+  mountedWrappers.push(wrapper);
+  return wrapper;
+};
+
+const flushDialog = async (wrapper: ReturnType<typeof mountComponent>) => {
+  await wrapper.vm.$nextTick();
+  await wrapper.vm.$nextTick();
+  await new Promise((resolve) => setTimeout(resolve, 0));
+  await wrapper.vm.$nextTick();
+};
 
 describe('VDialogRefreshSession', () => {
   afterEach(() => {
+    mountedWrappers.splice(0).forEach((wrapper) => wrapper.unmount());
     completeSessionRefresh.mockReset();
     beginRefreshSessionDialog.mockReset();
     dismissRefreshSessionDialog.mockReset();
     dismissRefreshSessionDialog.mockReturnValue(true);
-    loginStore.getErrorText.mockClear();
     loginStore.isDisabledButton = false;
     loginStore.isLoading = false;
     loginStore.loginPasswordHandler.mockReset();
     loginStore.model.password = '';
     loginStore.sessionEmail = 'session@example.com';
+    document.body.innerHTML = '';
+    window.history.replaceState({}, '', '/');
   });
 
-  it('renders the current session email, password-only form, and focuses password', async () => {
+  it('renders the current session email and focuses password on open and reopen', async () => {
     const wrapper = mountComponent();
-    await wrapper.vm.$nextTick();
-    await wrapper.vm.$nextTick();
-    await new Promise((resolve) => setTimeout(resolve, 0));
+    await flushDialog(wrapper);
 
-    expect(wrapper.get('[data-testid="session-email"]').text()).toBe('session@example.com');
-    expect(wrapper.find('input[type="email"]').exists()).toBe(false);
-    expect(wrapper.findAll('button')).toHaveLength(1);
-    expect(wrapper.get('button[type="submit"]').text()).toContain('Confirm');
-    expect(wrapper.get('input[type="password"]').attributes('autocomplete')).toBe('current-password');
-    await wrapper.get('form').trigger('submit');
+    const sessionEmail = document.querySelector('[data-testid="session-email"]');
+    const password = document.querySelector<HTMLInputElement>('input[type="password"]');
+    const form = document.querySelector<HTMLFormElement>('form');
+    expect(sessionEmail?.textContent).toBe('session@example.com');
+    expect(document.querySelector('input[type="email"]')).toBeNull();
+    expect(document.querySelector<HTMLButtonElement>('button[type="submit"]')?.textContent).toContain('Confirm');
+    expect(password?.getAttribute('autocomplete')).toBe('current-password');
+    expect(document.activeElement).toBe(password);
+    form?.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
     expect(loginStore.loginPasswordHandler).toHaveBeenCalledOnce();
-    expect(document.activeElement).toBe(wrapper.get('input[type="password"]').element);
     expect(beginRefreshSessionDialog).toHaveBeenCalledOnce();
+
+    await wrapper.setProps({ modelValue: false });
+    await flushDialog(wrapper);
+    await wrapper.setProps({ modelValue: true });
+    await flushDialog(wrapper);
+
+    expect(document.activeElement).toBe(document.querySelector('input[type="password"]'));
+    expect(beginRefreshSessionDialog).toHaveBeenCalledTimes(2);
+    wrapper.unmount();
   });
 
   it('dismisses through one false completion path', async () => {
     const wrapper = mountComponent();
 
     await wrapper.setProps({ modelValue: false });
+    await flushDialog(wrapper);
 
     expect(dismissRefreshSessionDialog).toHaveBeenCalledOnce();
     expect(completeSessionRefresh).toHaveBeenCalledOnce();

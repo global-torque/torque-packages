@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Reduced session-refresh state and reused the dialog's built-in autofocus.
+  Removed unused social-refresh/query handling and mock-only tests while
+  preserving duplicate-submit and stale-response protection.
+
 - Simplified the session-refresh Security Check to display the authenticated
   session email as read-only text and accept only a password confirmation. The
   flow preserves fresh Ory refresh CSRF tokens and backend errors, resets

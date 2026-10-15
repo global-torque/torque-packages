@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // @ts-nocheck
-import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
+import { onUnmounted, watch } from 'vue';
 import { DialogContent } from '@global-torque/ui-primitives/dialog';
 import { VQueryDialog } from '@global-torque/ui-kit/query-dialog';
 import type { AuthSocialIcons } from './VFormAuthSocial.vue';
@@ -10,16 +10,11 @@ import { useDialogs } from '@global-torque/invest-runtime/dialogs';
 
 const loginRefreshStore = useLoginRefreshStore();
 const dialogsStore = useDialogs();
-const loginForm = ref<InstanceType<typeof VFormAuthLogInRefresh> | null>(null);
 
 const open = defineModel<boolean>();
 defineProps<{
   socialIcons: AuthSocialIcons;
 }>();
-
-const focusPassword = () => {
-  void nextTick(() => loginForm.value?.focusPassword?.());
-};
 
 const completeOnDismiss = () => {
   if (loginRefreshStore.dismissRefreshSessionDialog()) {
@@ -32,17 +27,12 @@ watch(
   (isOpen, wasOpen) => {
     if (isOpen) {
       loginRefreshStore.beginRefreshSessionDialog();
-      focusPassword();
     } else if (wasOpen === true) {
       completeOnDismiss();
     }
   },
   { immediate: true },
 );
-
-onMounted(() => {
-  if (open.value) focusPassword();
-});
 
 onUnmounted(() => {
   completeOnDismiss();
@@ -64,7 +54,7 @@ onUnmounted(() => {
         </span>
       </div>
 
-      <VFormAuthLogInRefresh ref="loginForm" />
+      <VFormAuthLogInRefresh />
     </DialogContent>
   </VQueryDialog>
 </template>

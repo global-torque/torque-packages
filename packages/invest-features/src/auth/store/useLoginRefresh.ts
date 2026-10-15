@@ -37,17 +37,8 @@ export const useLoginRefreshStore = defineStore('loginRefresh', () => {
     return { id, email };
   };
 
-  const identityKey = (identity: SessionIdentitySnapshot) => `${identity.id}\u0000${identity.email.toLowerCase()}`;
-
-  let observedIdentityKey = identityKey(readSessionIdentity());
   let dialogGeneration = 0;
-  let completedGeneration: number | null = null;
   let dialogOpen = false;
-  let refreshRequestInFlight = false;
-
-  const resetLoginRefreshFlow = () => {
-    void authRepository.getAuthFlow(SELFSERVICE.login, { refresh: true } as any).then((flow) => oryResponseHandling(flow as any));
-  };
 
   const trackLoginRefreshEvent = async (statusCode: number, body?: unknown) => {
     const uiPath = typeof window !== 'undefined' ? window.location.pathname : '';
@@ -66,14 +57,6 @@ export const useLoginRefreshStore = defineStore('loginRefresh', () => {
   const trackLoginRefreshEventSafely = (statusCode: number, body?: unknown) => {
     void trackLoginRefreshEvent(statusCode, body).catch(() => undefined);
   };
-
-  // Query parameters handling
-  const queryParams = computed(() => {
-    if (import.meta.env.SSR) return new Map<string, string>();
-    return new Map(Object.entries(Object.fromEntries(new URLSearchParams(window?.location?.search))));
-  });
-
-  const getQueryParam = (key: string): string | undefined => queryParams.value.get(key);
 
   // Form schema and validation
   const schemaFrontend = computed(
@@ -98,7 +81,7 @@ export const useLoginRefreshStore = defineStore('loginRefresh', () => {
 
   const fieldsPaths = ['password'];
 
-  const { model, validation, isValid, onValidate, scrollToError, formErrors, isFieldRequired, getErrorText, resetValidation, getOptions } = useFormValidation<FormModelSignIn>(
+  const { model, isValid, onValidate, scrollToError, isFieldRequired, getErrorText, resetValidation } = useFormValidation<FormModelSignIn>(
     schemaFrontend,
     schemaBackend,
     { password: '' },
@@ -113,7 +96,7 @@ export const useLoginRefreshStore = defineStore('loginRefresh', () => {
   const isLoading = ref(false);
   const loginError = ref<unknown>(null);
   const sessionEmail = computed(() => readSessionIdentity().email);
-  const isDisabledButton = computed(() => !sessionEmail.value || !isValid.value || isLoading.value || refreshRequestInFlight);
+  const isDisabledButton = computed(() => !sessionEmail.value || !isValid.value || isLoading.value);
   const loginErrorText = computed(() => {
     const responseMessages = getErrorText('password', (loginError.value as any)?.data?.responseJson) ?? [];
     if (responseMessages.length) return responseMessages;
@@ -128,46 +111,31 @@ export const useLoginRefreshStore = defineStore('loginRefresh', () => {
 
   const invalidateDialogGeneration = () => {
     dialogGeneration += 1;
-    completedGeneration = null;
     resetSensitiveState();
   };
 
   const beginRefreshSessionDialog = () => {
     dialogOpen = true;
-    observedIdentityKey = identityKey(readSessionIdentity());
     invalidateDialogGeneration();
   };
 
   const dismissRefreshSessionDialog = () => {
-    const shouldComplete = dialogOpen && completedGeneration !== dialogGeneration;
+    const shouldComplete = dialogOpen;
     dialogOpen = false;
     invalidateDialogGeneration();
     return shouldComplete;
   };
 
-  const syncSessionIdentity = () => {
-    const nextIdentityKey = identityKey(readSessionIdentity());
-    if (nextIdentityKey === observedIdentityKey) return;
-
-    observedIdentityKey = nextIdentityKey;
-    if (completedGeneration === dialogGeneration) return;
-    invalidateDialogGeneration();
-  };
-
-  const isAttemptCurrent = (generation: number, attemptIdentityKey: string) => {
-    syncSessionIdentity();
-    return generation === dialogGeneration && (completedGeneration === generation || attemptIdentityKey === identityKey(readSessionIdentity()));
-  };
-
   watch(
-    () => identityKey(readSessionIdentity()),
-    (nextIdentityKey, previousIdentityKey) => {
-      if (nextIdentityKey === previousIdentityKey || nextIdentityKey === observedIdentityKey) return;
-      observedIdentityKey = nextIdentityKey;
-      if (completedGeneration === dialogGeneration) return;
-      invalidateDialogGeneration();
-    },
+    [
+      () => readSessionIdentity().id,
+      () => readSessionIdentity().email.toLowerCase(),
+    ],
+    () => invalidateDialogGeneration(),
+    { flush: 'sync' },
   );
+
+  const isAttemptCurrent = (generation: number) => generation === dialogGeneration;
 
   // Form validation
   const validateForm = () => {
@@ -186,32 +154,22 @@ export const useLoginRefreshStore = defineStore('loginRefresh', () => {
     csrf_token: authRepository.csrfToken.value,
   });
 
-  const buildSocialLoginRefreshRequestBody = (provider: string) => ({
-    csrf_token: authRepository.csrfToken.value,
-    provider,
-    method: 'oidc' as const,
-  });
-
   const loginPasswordHandler = async () => {
-    syncSessionIdentity();
-    if (refreshRequestInFlight) return;
+    if (isLoading.value) return;
     const currentIdentity = readSessionIdentity();
     if (!currentIdentity.id || !currentIdentity.email) return;
     if (!validateForm()) return;
 
     let loginRefreshRequestBody: ReturnType<typeof buildPasswordLoginRefreshRequestBody> | undefined;
     const attemptGeneration = dialogGeneration;
-    const attemptIdentityKey = identityKey(currentIdentity);
-    refreshRequestInFlight = true;
     isLoading.value = true;
     loginError.value = null;
     try {
       const flowData = await authRepository.getAuthFlow(SELFSERVICE.login, {
         refresh: true,
       });
-      if (!isAttemptCurrent(attemptGeneration, attemptIdentityKey)) return;
+      if (!isAttemptCurrent(attemptGeneration)) return;
       oryResponseHandling(flowData);
-      if (!isAttemptCurrent(attemptGeneration, attemptIdentityKey)) return;
       if (getAuthFlowState.value.error) {
         loginError.value = getAuthFlowState.value.error;
         return;
@@ -219,90 +177,44 @@ export const useLoginRefreshStore = defineStore('loginRefresh', () => {
 
       loginRefreshRequestBody = buildPasswordLoginRefreshRequestBody(currentIdentity.email);
       await authRepository.setLogin(authRepository.flowId.value, loginRefreshRequestBody);
-      if (!isAttemptCurrent(attemptGeneration, attemptIdentityKey)) return;
+      if (!isAttemptCurrent(attemptGeneration)) return;
 
       if (setLoginState.value.error) {
         loginError.value = setLoginState.value.error;
         trackLoginRefreshEventSafely(400, loginRefreshRequestBody);
-        if (!isAttemptCurrent(attemptGeneration, attemptIdentityKey)) return;
         return;
       }
 
       if (setLoginState.value.data?.session) {
         const session = setLoginState.value.data.session;
-        completedGeneration = attemptGeneration;
-        if (!isAttemptCurrent(attemptGeneration, attemptIdentityKey)) return;
-        userSessionStore.updateSession(session);
-        if (!isAttemptCurrent(attemptGeneration, attemptIdentityKey)) return;
-        completeSessionRefresh(true); // Success - complete the session refresh
+        dialogOpen = false;
         resetSensitiveState();
+        userSessionStore.updateSession(session);
+        completeSessionRefresh(true); // Success - complete the session refresh
         trackLoginRefreshEventSafely(200, loginRefreshRequestBody);
       }
     } catch (error) {
-      if (!isAttemptCurrent(attemptGeneration, attemptIdentityKey)) return;
+      if (!isAttemptCurrent(attemptGeneration)) return;
       loginError.value = error;
       await oryErrorHandling(error as any, 'login', () => undefined, 'Failed to login');
-      if (!isAttemptCurrent(attemptGeneration, attemptIdentityKey)) return;
+      if (!isAttemptCurrent(attemptGeneration)) return;
       trackLoginRefreshEventSafely(400, loginRefreshRequestBody ?? buildPasswordLoginRefreshRequestBody(currentIdentity.email));
-    } finally {
-      refreshRequestInFlight = false;
-      isLoading.value = false;
-    }
-  };
-
-  const loginSocialHandler = async (provider: string) => {
-    let loginRefreshRequestBody: ReturnType<typeof buildSocialLoginRefreshRequestBody> | undefined;
-    isLoading.value = true;
-    try {
-      const flowId = getQueryParam('flow');
-      if (!flowId) {
-        const flowData = await authRepository.getAuthFlow(SELFSERVICE.login, {
-          refresh: true,
-        });
-        oryResponseHandling(flowData);
-        if (getAuthFlowState.value.error) return;
-      }
-
-      loginRefreshRequestBody = buildSocialLoginRefreshRequestBody(provider);
-      await authRepository.setLogin(flowId || authRepository.flowId.value, loginRefreshRequestBody);
-
-      // Complete session refresh after successful social login
-      if (setLoginState.value.data?.session) {
-        userSessionStore.updateSession(setLoginState.value.data.session);
-        completeSessionRefresh(true); // Success
-      }
-    } catch (error) {
-      await oryErrorHandling(error as any, 'login', resetLoginRefreshFlow, 'Failed to login');
     } finally {
       isLoading.value = false;
     }
   };
 
   return {
-    queryParams,
     isLoading,
     model,
     sessionEmail,
     loginError,
     loginErrorText,
-    validation,
-    schemaBackend,
-    schemaFrontend,
     isDisabledButton,
-    setLoginState,
     loginPasswordHandler,
-    loginSocialHandler,
     beginRefreshSessionDialog,
     dismissRefreshSessionDialog,
-    onValidate,
-    isValid,
-    getQueryParam,
-    // Form validation helpers
-    formErrors,
     isFieldRequired,
-    getErrorText,
-    getOptions,
-    scrollToError,
   };
 });
 

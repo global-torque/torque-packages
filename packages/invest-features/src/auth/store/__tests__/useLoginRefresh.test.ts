@@ -2,10 +2,8 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { setActivePinia, createPinia } from 'pinia';
 import { useRepositoryAuth } from '../../data/auth.repository.ts';
 import { reactive, ref } from 'vue';
-import { SELFSERVICE } from '@global-torque/domain-types/authConstants';
 import { useLoginRefreshStore } from '../useLoginRefresh.ts';
 
-// Add at the top of your file, before vi.mock:
 export const mockUpdateSession = vi.fn();
 const mockFlowId = { value: 'test-flow-id' };
 const mockCsrfToken = { value: 'test-csrf-token' };
@@ -69,30 +67,19 @@ vi.mock('@global-torque/ui-kit/form-validation', () => ({
   useFormValidation: vi.fn(() => {
     const model = reactive({ password: '' });
     const isValid = ref(true);
-    const validation = ref({});
 
     const onValidate = vi.fn().mockImplementation(() => {
-      const passwordValid = model.password.length >= 8;
-
-      isValid.value = passwordValid;
-      validation.value = {
-        password: !passwordValid ? ['Password must be at least 8 characters'] : [],
-      };
+      isValid.value = model.password.length >= 8;
     });
 
     return {
       model,
-      validation,
       isValid,
       onValidate,
       scrollToError: vi.fn(),
-      formErrors: ref({}),
       isFieldRequired: vi.fn(),
       getErrorText: vi.fn(() => []),
-      getOptions: vi.fn(),
-      getReferenceType: vi.fn(),
       resetValidation: vi.fn(),
-      schemaObject: ref({}),
     } as any;
   }),
 }));
@@ -141,53 +128,6 @@ describe('useLoginRefresh Store', () => {
 
     store = useLoginRefreshStore();
     mockAuthRepository = useRepositoryAuth();
-  });
-
-  describe('Form Validation', () => {
-    it('should validate email and password fields', async () => {
-      const store = useLoginRefreshStore();
-
-      store.model.password = 'validPassword123!';
-      await store.onValidate();
-      expect(store.isValid).toBe(true);
-
-      // Test invalid password
-      store.model.password = 'short';
-      await store.onValidate();
-      expect(store.isValid).toBe(false);
-      expect(store.validation.password.length).toBeGreaterThan(0);
-
-      // Test valid credentials
-      store.model.password = 'validPassword123!';
-      await store.onValidate();
-      expect(store.isValid).toBe(true);
-      expect(store.validation.password.length).toBe(0);
-    });
-
-    it('should handle form validation with backend schema', async () => {
-      const store = useLoginRefreshStore();
-
-      // Mock backend schema
-      const backendSchema = {
-        type: 'object',
-        properties: {
-          password: { type: 'string', minLength: 8 },
-        },
-        required: ['password'],
-      };
-
-      useRepositoryAuth().getSchemaState.value = { data: backendSchema };
-
-      // Test with invalid data
-      store.model.password = '123';
-      await store.onValidate();
-      expect(store.isValid).toBe(false);
-
-      // Test with valid data
-      store.model.password = 'validPassword123!';
-      await store.onValidate();
-      expect(store.isValid).toBe(true);
-    });
   });
 
   describe('Password Login', () => {
@@ -375,6 +315,7 @@ describe('useLoginRefresh Store', () => {
       const first = store.loginPasswordHandler();
       await Promise.resolve();
       store.dismissRefreshSessionDialog();
+      expect(store.model.password).toBe('');
       store.beginRefreshSessionDialog();
       store.model.password = 'new-dialog-password';
       await store.loginPasswordHandler();
@@ -424,72 +365,4 @@ describe('useLoginRefresh Store', () => {
     });
   });
 
-  describe('Social Login', () => {
-    it('should handle social login with existing flow ID', async () => {
-      // Mock URL with flow parameter
-      Object.defineProperty(window, 'location', {
-        value: { search: '?flow=existing-flow-id' },
-        writable: true,
-      });
-
-      await store.loginSocialHandler('google');
-
-      expect(mockAuthRepository.setLogin).toHaveBeenCalledWith(
-        'existing-flow-id',
-        expect.objectContaining({
-          provider: 'google',
-          method: 'oidc',
-          csrf_token: 'test-csrf-token',
-        }),
-      );
-      expect(store.isLoading).toBe(false);
-    });
-
-    it('should handle social login without flow ID', async () => {
-      // Mock URL without flow parameter
-      Object.defineProperty(window, 'location', {
-        value: { search: '' },
-        writable: true,
-      });
-      mockGetAuthFlow.mockImplementationOnce(async () => {
-        mockCsrfToken.value = 'fresh-refresh-social-token';
-      });
-
-      await store.loginSocialHandler('google');
-
-      expect(mockAuthRepository.getAuthFlow).toHaveBeenCalledWith(SELFSERVICE.login, { refresh: true });
-      expect(mockAuthRepository.setLogin).toHaveBeenCalledWith(
-        'test-flow-id',
-        expect.objectContaining({
-          provider: 'google',
-          method: 'oidc',
-          csrf_token: 'fresh-refresh-social-token',
-        }),
-      );
-      expect(store.isLoading).toBe(false);
-    });
-  });
-
-  describe('Query Parameters', () => {
-    it('should handle query parameters correctly', () => {
-      // Mock URL with multiple query parameters
-      Object.defineProperty(window, 'location', {
-        value: { search: '?redirect=/test&source=email' },
-        writable: true,
-      });
-
-      expect(store.getQueryParam('redirect')).toBe('/test');
-      expect(store.getQueryParam('source')).toBe('email');
-    });
-
-    it('should return undefined for non-existent query parameters', () => {
-      // Mock URL with no query parameters
-      Object.defineProperty(window, 'location', {
-        value: { search: '' },
-        writable: true,
-      });
-
-      expect(store.getQueryParam('nonexistent')).toBeUndefined();
-    });
-  });
 });
