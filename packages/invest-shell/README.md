@@ -62,6 +62,7 @@ the PWA logo.
   support message. Late sign-in preserves subject/message while invalidating
   pending guest UI effects. Anonymous dialogs and the public page keep editable
   identity fields and their existing prefill/validation behavior.
+  `toasterProps` holds the shared props for the ui-primitives `Toaster`.
 - `./config`: app config and build display helpers.
 - `./runtime`: runtime bootstrap/install wrappers.
 - `./navigation`: route/menu/link/SEO helpers for app composition.
