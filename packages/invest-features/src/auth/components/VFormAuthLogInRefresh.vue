@@ -1,151 +1,61 @@
 <script setup lang="ts">
+import { nextTick, onMounted, ref } from 'vue';
 import { VFormGroup } from '@global-torque/ui-kit/form';
-import { VFormInput } from '@global-torque/ui-kit/form';
 import { VFormInputPassword } from '@global-torque/ui-kit/form';
 import { Button } from '@global-torque/ui-primitives/button';
 import { useLoginRefreshStore } from '../store/useLoginRefresh.ts';
 import { storeToRefs } from 'pinia';
 import { Spinner } from '@global-torque/ui-primitives/spinner';
 
-const emit = defineEmits(['cancel']);
-
 const loginRefreshStore = useLoginRefreshStore();
-const {
-  isLoading, model, isDisabledButton,
-  setLoginState,
-} = storeToRefs(loginRefreshStore as any) as any;
+const { isLoading, model, isDisabledButton, loginErrorText } = storeToRefs(loginRefreshStore as any) as any;
 
-const loginHandler = async () => {
-  loginRefreshStore.loginPasswordHandler();
+const formElement = ref<HTMLFormElement | null>(null);
+
+const focusPassword = () => {
+  void nextTick(() => {
+    formElement.value?.querySelector<HTMLInputElement>('input[type="password"]')?.focus();
+  });
 };
+
+const loginHandler = () => loginRefreshStore.loginPasswordHandler();
+
+onMounted(focusPassword);
+defineExpose({ focusPassword });
 </script>
 
 <template>
-  <form
-    class="VFormAuthLogInRefresh v-form-auth-login-refresh"
-    novalidate
-    data-testid="v-form-auth-login-refresh"
-    @submit.prevent="loginHandler"
-  >
-    <div class="v-form-auth-login-refresh__wrap">
-      <VFormGroup
-        v-slot="VFormGroupProps"
-        :required="loginRefreshStore.isFieldRequired('email')"
-        :error-text="loginRefreshStore.getErrorText('email', setLoginState.error?.data?.responseJson)"
-        label="Email Address"
-        class="v-form-auth-login-refresh__input"
-        data-testid="email-group"
-      >
-        <VFormInput
-          :model-value="model.email"
-          :is-error="VFormGroupProps.isFieldError"
-          placeholder="Enter Address"
-          name="email"
-          size="large"
-          type="email"
-          data-testid="email"
-          @update:model-value="model.email = $event"
-        />
-      </VFormGroup>
-      <VFormGroup
-        v-slot="VFormGroupProps"
-        :required="loginRefreshStore.isFieldRequired('password')"
-        :error-text="loginRefreshStore.getErrorText('password', setLoginState.error?.data?.responseJson)"
-        label="Password"
-        class="v-form-auth-login-refresh__input"
-        data-testid="password-group"
-      >
-        <VFormInputPassword
-          :model-value="model.password"
-          :is-error="VFormGroupProps.isFieldError"
-          placeholder="Password"
-          name="password"
-          size="large"
-          :reveal-tabbable="false"
-          data-testid="password"
-          @update:model-value="model.password = $event"
-        />
-      </VFormGroup>
+  <form class="VFormAuthLogInRefresh v-form-auth-login-refresh" novalidate data-testid="v-form-auth-login-refresh" ref="formElement" @submit.prevent="loginHandler">
+    <VFormGroup
+      v-slot="VFormGroupProps"
+      :required="loginRefreshStore.isFieldRequired('password')"
+      :error-text="loginErrorText"
+      label="Password"
+      data-testid="password-group"
+    >
+      <VFormInputPassword
+        :model-value="model.password"
+        :is-error="VFormGroupProps.isFieldError"
+        placeholder="Password"
+        name="password"
+        autocomplete="current-password"
+        size="large"
+        :reveal-tabbable="false"
+        data-testid="password"
+        @update:model-value="model.password = $event"
+      />
+    </VFormGroup>
 
-      <Button
-        type="submit"
-        :disabled="isDisabledButton || isLoading"
-        data-testid="signup"
-        class="v-form-auth-login-refresh__btn w-full"
-        size="lg"
-      >
-          <Spinner v-if="isLoading" />
-        Log In
-      </Button>
-
-      <Button
-        type="button"
-        class="is--margin-top-12 w-full"
-        @click.stop.prevent="emit('cancel')"
-        variant="link"
-        size="lg"
-      >
-        Cancel
-      </Button>
-    </div>
+    <Button type="submit" :disabled="isDisabledButton || isLoading" data-testid="confirm" class="w-full" size="lg">
+      <Spinner v-if="isLoading" />
+      Confirm
+    </Button>
   </form>
 </template>
 
 <style lang="scss">
 .v-form-auth-login-refresh {
-  &__forgot {
-    margin-top: 4px;
-    display: block;
-  }
-
-  &__signup-wrap {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 12px;
-    gap: 12px;
-
-    @media screen and (width < 768px){
-      flex-direction: column;
-      margin-top: 20px;
-    }
-  }
-
-  &__signup-label {
-    color: var(--foreground);
-  }
-
-  &__signup-btn {
-    @media screen and (width < 768px){
-      width: 100%;
-    }
-  }
-
-  &__btn {
-    margin-top: 40px;
-  }
-
-  &__input {
-    & + & {
-      margin-top: 20px;
-    }
-  }
-
-  &__input-icon {
-    color: var(--muted-foreground);
-    width: 20px;
-    height: 20px;
-    display: flex;
-  }
-
-  &__wrap {
-    padding: 40px;
-    background: var(--background);
-    box-shadow: var(--shadow-lg);
-
-    @media screen and (width < 768px){
-      padding: 20px;
-    }
-  }
+  display: grid;
+  gap: 24px;
 }
 </style>

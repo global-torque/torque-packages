@@ -12,6 +12,8 @@ package has been retired.
 
 Open-ended offer details render `latest_finalized_nav.nav_usdc_raw` as a dedicated USDC NAV block using the fixed six-decimal NAV contract, independent of the asset token metadata. The presentation includes a normalized ISO timestamp when `valuation_as_of` is valid and is regenerated with each package cohort that changes this contract.
 
+Session refresh uses a password-only Security Check: the active session email is displayed as read-only text, the password is submitted against the current session identity, and the dialog remains available for retry after authentication errors. Dismissed, reopened, or superseded refresh attempts cannot update a newer session state.
+
 ## Ownership
 
 - Dashboard and public invest route-level `View*.vue` pages live in apps.

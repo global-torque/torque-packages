@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased
+
+- Simplified the session-refresh Security Check to display the authenticated
+  session email as read-only text and accept only a password confirmation. The
+  flow preserves fresh Ory refresh CSRF tokens and backend errors, resets
+  sensitive form state across dialog lifetimes, and ignores stale results after
+  dismissal, reopen, or session identity changes. The compact dialog uses one
+  flat form and shows frontend password validation errors before authentication.
+
 ## 0.4.16 candidate
 
 - Expanded the supported Node range to `>=24.21.0`; CI remains on Node 24.21.0.
