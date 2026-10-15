@@ -38,6 +38,8 @@ import ClientOnly from './components/ClientOnly.vue';
 export { ClientOnly };
 import VLoader from './components/VLoader.vue';
 export { VLoader };
+import { toasterProps } from './components/toasterProps.ts';
+export { toasterProps };
 export { default as Sidebar07 } from './components/Sidebar07/components/AppSidebar.vue';
 export type { SidebarNavItem, SidebarTeam, SidebarUser } from './components/Sidebar07/types';
 

@@ -18,6 +18,9 @@
 - "Log out" in the Sidebar07 user menu now uses the brand `--primary` instead
   of the fixed `--destructive` red, so it follows the tenant brand. Its hover
   background also mixes `--primary` instead of `--destructive`.
+- `./components` exports `toasterProps` for `<Toaster v-bind="toasterProps" />`.
+  It puts the close button at the top right, colors each toast type from the
+  design tokens, uses the app font and aligns the icon with the title.
 
 ## 0.4.16 candidate
 
