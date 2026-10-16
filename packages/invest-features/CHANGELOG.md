@@ -2,16 +2,9 @@
 
 ## Unreleased
 
-- Reduced session-refresh state and reused the dialog's built-in autofocus.
-  Removed unused social-refresh/query handling and mock-only tests while
-  preserving duplicate-submit and stale-response protection.
-
-- Simplified the session-refresh Security Check to display the authenticated
-  session email as read-only text and accept only a password confirmation. The
-  flow preserves fresh Ory refresh CSRF tokens and backend errors, resets
-  sensitive form state across dialog lifetimes, and ignores stale results after
-  dismissal, reopen, or session identity changes. The compact dialog uses one
-  flat form and shows frontend password validation errors before authentication.
+- Session refresh displays the active session email as read-only text and
+  confirms it with the existing password, keeping the compact dialog available
+  for retry after authentication errors.
 
 ## 0.4.16 candidate
 

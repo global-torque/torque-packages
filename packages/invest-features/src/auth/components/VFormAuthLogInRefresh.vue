@@ -7,7 +7,7 @@ import { storeToRefs } from 'pinia';
 import { Spinner } from '@global-torque/ui-primitives/spinner';
 
 const loginRefreshStore = useLoginRefreshStore();
-const { isLoading, model, isDisabledButton, loginErrorText } = storeToRefs(loginRefreshStore as any) as any;
+const { isLoading, model, isDisabledButton, setLoginState } = storeToRefs(loginRefreshStore as any) as any;
 
 const loginHandler = () => loginRefreshStore.loginPasswordHandler();
 </script>
@@ -17,7 +17,7 @@ const loginHandler = () => loginRefreshStore.loginPasswordHandler();
     <VFormGroup
       v-slot="VFormGroupProps"
       :required="loginRefreshStore.isFieldRequired('password')"
-      :error-text="loginErrorText"
+      :error-text="loginRefreshStore.getErrorText('password', setLoginState.error?.data?.responseJson)"
       label="Password"
       data-testid="password-group"
     >
@@ -34,7 +34,7 @@ const loginHandler = () => loginRefreshStore.loginPasswordHandler();
       />
     </VFormGroup>
 
-    <Button type="submit" :disabled="isDisabledButton || isLoading" data-testid="confirm" class="w-full" size="lg">
+    <Button type="submit" :disabled="isDisabledButton" data-testid="confirm" class="w-full" size="lg">
       <Spinner v-if="isLoading" />
       Confirm
     </Button>

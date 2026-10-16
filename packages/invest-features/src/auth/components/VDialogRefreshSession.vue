@@ -16,26 +16,22 @@ defineProps<{
   socialIcons: AuthSocialIcons;
 }>();
 
-const completeOnDismiss = () => {
-  if (loginRefreshStore.dismissRefreshSessionDialog()) {
-    dialogsStore.completeSessionRefresh(false);
-  }
-};
-
 watch(
   open,
   (isOpen, wasOpen) => {
-    if (isOpen) {
-      loginRefreshStore.beginRefreshSessionDialog();
-    } else if (wasOpen === true) {
-      completeOnDismiss();
+    if (isOpen !== wasOpen) {
+      loginRefreshStore.resetForm();
+    }
+    if (!isOpen) {
+      dialogsStore.completeSessionRefresh(false);
     }
   },
   { immediate: true },
 );
 
 onUnmounted(() => {
-  completeOnDismiss();
+  loginRefreshStore.resetForm();
+  dialogsStore.completeSessionRefresh(false);
 });
 </script>
 
