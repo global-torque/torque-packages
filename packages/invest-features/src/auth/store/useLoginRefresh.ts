@@ -1,12 +1,10 @@
 // @ts-nocheck
-import {
-  computed, nextTick, ref, toRaw,
-} from 'vue';
+import { computed, nextTick, ref, toRaw, watch } from 'vue';
 import { acceptHMRUpdate, defineStore, storeToRefs } from 'pinia';
 import { useRepositoryAuth } from '../data/auth.repository.ts';
 import { useFormValidation } from '@global-torque/ui-kit/form-validation';
 import { JSONSchemaType } from 'ajv/dist/types/json-schema';
-import { composeInvestmentFormSchema, createInvestmentAjv, emailRule, errorMessageRule, passwordRule, prepareInvestmentFormData } from '@global-torque/invest-core/form-validation';
+import { composeInvestmentFormSchema, createInvestmentAjv, errorMessageRule, passwordRule, prepareInvestmentFormData } from '@global-torque/invest-core/form-validation';
 import { useSessionStore } from '@global-torque/invest-runtime/session';
 import { useDialogs } from '@global-torque/invest-runtime/dialogs';
 import { SELFSERVICE } from '@global-torque/domain-types/authConstants';
@@ -15,28 +13,20 @@ import { oryResponseHandling } from '@global-torque/invest-runtime/error/oryResp
 import { useSendAnalyticsEvent } from '@global-torque/invest-runtime/analytics/useSendAnalyticsEvent';
 
 type FormModelSignIn = {
-  email: string;
   password: string;
-}
-
+};
 
 export const useLoginRefreshStore = defineStore('loginRefresh', () => {
   const authRepository = useRepositoryAuth();
   const { getSchemaState, setLoginState, getAuthFlowState } = storeToRefs(authRepository);
   const userSessionStore = useSessionStore();
-  const useDialogsStore = useDialogs();
-  const { completeSessionRefresh } = useDialogsStore; // Direct access, not storeToRefs
+  const { userSession } = storeToRefs(userSessionStore);
+  const { completeSessionRefresh } = useDialogs();
   const { sendEvent } = useSendAnalyticsEvent();
 
-  const resetLoginRefreshFlow = () => {
-    void authRepository
-      .getAuthFlow(SELFSERVICE.login, { refresh: true } as any)
-      .then((flow) => oryResponseHandling(flow as any));
-  };
-
-  const trackLoginRefreshEvent = async (statusCode: number, body?: unknown) => {
+  const trackLoginRefreshEvent = (statusCode: number, body?: unknown) => {
     const uiPath = typeof window !== 'undefined' ? window.location.pathname : '';
-    await sendEvent({
+    void sendEvent({
       event_type: 'send',
       method: 'POST',
       httpRequestMethod: 'POST',
@@ -45,16 +35,8 @@ export const useLoginRefreshStore = defineStore('loginRefresh', () => {
       httpRequestUrl: `${SELFSERVICE.login}?refresh=true`,
       status_code: statusCode,
       body,
-    });
+    }).catch(() => undefined);
   };
-
-  // Query parameters handling
-  const queryParams = computed(() => {
-    if (import.meta.env.SSR) return new Map<string, string>();
-    return new Map(Object.entries(Object.fromEntries(new URLSearchParams(window?.location?.search))));
-  });
-
-  const getQueryParam = (key: string): string | undefined => queryParams.value.get(key);
 
   // Form schema and validation
   const schemaFrontend = computed(() => ({
@@ -62,12 +44,11 @@ export const useLoginRefreshStore = defineStore('loginRefresh', () => {
     definitions: {
       Auth: {
         properties: {
-          email: emailRule,
           password: passwordRule,
         },
         type: 'object',
         errorMessage: errorMessageRule,
-        required: ['email', 'password'],
+        required: ['password'],
       },
     },
     $ref: '#/definitions/Auth',
@@ -76,26 +57,33 @@ export const useLoginRefreshStore = defineStore('loginRefresh', () => {
   const schemaBackend = computed(() => (
     getSchemaState.value.data ? structuredClone(toRaw(getSchemaState.value.data)) : null));
 
-  const fieldsPaths = ['email', 'password'];
+  const fieldsPaths = ['password'];
 
-  const {
-    model, validation, isValid, onValidate,
-    scrollToError, formErrors, isFieldRequired, getErrorText,
-    getOptions,
-  } = useFormValidation<FormModelSignIn>(
+  const { model, isValid, onValidate, scrollToError, isFieldRequired, getErrorText, resetValidation } = useFormValidation<FormModelSignIn>(
     schemaFrontend,
     schemaBackend,
-    {} as FormModelSignIn,
+    { password: '' },
     fieldsPaths,
     {
       createAjv: createInvestmentAjv,
       composeSchema: composeInvestmentFormSchema,
       prepareData: prepareInvestmentFormData,
-    }
+    },
   );
 
   const isLoading = ref(false);
-  const isDisabledButton = computed(() => !isValid.value || isLoading.value);
+  const sessionEmail = computed(() => userSession.value?.identity?.traits?.email ?? '');
+  const isDisabledButton = computed(() => !sessionEmail.value || !isValid.value || isLoading.value);
+
+  let requestCounter = 0;
+  const resetForm = () => {
+    requestCounter += 1;
+    model.password = '';
+    resetValidation();
+    setLoginState.value.error = null;
+  };
+
+  watch(sessionEmail, resetForm, { flush: 'sync' });
 
   // Form validation
   const validateForm = () => {
@@ -107,113 +95,64 @@ export const useLoginRefreshStore = defineStore('loginRefresh', () => {
     return true;
   };
 
-  const buildPasswordLoginRefreshRequestBody = () => ({
-    identifier: model.email,
+  const buildPasswordLoginRefreshRequestBody = (identifier: string) => ({
+    identifier,
     password: model.password,
     method: 'password' as const,
     csrf_token: authRepository.csrfToken.value,
   });
 
-  const buildSocialLoginRefreshRequestBody = (provider: string) => ({
-    csrf_token: authRepository.csrfToken.value,
-    provider,
-    method: 'oidc' as const,
-  });
-
   const loginPasswordHandler = async () => {
-    if (!validateForm()) return;
+    if (isLoading.value || !sessionEmail.value || !validateForm()) return;
 
     let loginRefreshRequestBody: ReturnType<typeof buildPasswordLoginRefreshRequestBody> | undefined;
+    const email = sessionEmail.value;
+    const requestAtStart = requestCounter;
     isLoading.value = true;
     try {
       const flowData = await authRepository.getAuthFlow(SELFSERVICE.login, { refresh: true });
+      if (requestAtStart !== requestCounter) return;
       oryResponseHandling(flowData);
       if (getAuthFlowState.value.error) {
-        isLoading.value = false;
         return;
       }
 
-      loginRefreshRequestBody = buildPasswordLoginRefreshRequestBody();
+      loginRefreshRequestBody = buildPasswordLoginRefreshRequestBody(email);
       await authRepository.setLogin(authRepository.flowId.value, loginRefreshRequestBody);
+      if (requestAtStart !== requestCounter) return;
 
       if (setLoginState.value.error) {
-        isLoading.value = false;
-        void trackLoginRefreshEvent(400, loginRefreshRequestBody);
+        trackLoginRefreshEvent(400, loginRefreshRequestBody);
         return;
       }
 
       if (setLoginState.value.data?.session) {
         const session = setLoginState.value.data.session;
         userSessionStore.updateSession(session);
-        await trackLoginRefreshEvent(200, loginRefreshRequestBody);
-        completeSessionRefresh(true); // Success - complete the session refresh
+        resetForm();
+        completeSessionRefresh(true);
+        trackLoginRefreshEvent(200, loginRefreshRequestBody);
       }
     } catch (error) {
-      await oryErrorHandling(
-        error as any,
-        'login',
-        resetLoginRefreshFlow,
-        'Failed to login',
-      );
-      completeSessionRefresh(false); // Failure - complete with false
-      void trackLoginRefreshEvent(400, loginRefreshRequestBody ?? buildPasswordLoginRefreshRequestBody());
-    } finally {
-      isLoading.value = false;
-    }
-  };
-
-  const loginSocialHandler = async (provider: string) => {
-    let loginRefreshRequestBody: ReturnType<typeof buildSocialLoginRefreshRequestBody> | undefined;
-    isLoading.value = true;
-    try {
-      const flowId = getQueryParam('flow');
-      if (!flowId) {
-        const flowData = await authRepository.getAuthFlow(SELFSERVICE.login, { refresh: true });
-        oryResponseHandling(flowData);
-        if (getAuthFlowState.value.error) return;
-      }
-
-      loginRefreshRequestBody = buildSocialLoginRefreshRequestBody(provider);
-      await authRepository.setLogin(flowId || authRepository.flowId.value, loginRefreshRequestBody);
-
-      // Complete session refresh after successful social login
-      if (setLoginState.value.data?.session) {
-        userSessionStore.updateSession(setLoginState.value.data.session);
-        completeSessionRefresh(true); // Success
-      }
-    } catch (error) {
-      await oryErrorHandling(
-        error as any,
-        'login',
-        resetLoginRefreshFlow,
-        'Failed to login',
-      );
-      completeSessionRefresh(false); // Failure
+      if (requestAtStart !== requestCounter) return;
+      await oryErrorHandling(error as any, 'login', () => undefined, 'Failed to login');
+      if (requestAtStart !== requestCounter) return;
+      trackLoginRefreshEvent(400, loginRefreshRequestBody ?? buildPasswordLoginRefreshRequestBody(email));
     } finally {
       isLoading.value = false;
     }
   };
 
   return {
-    queryParams,
     isLoading,
     model,
-    validation,
-    schemaBackend,
-    schemaFrontend,
+    sessionEmail,
     isDisabledButton,
-    setLoginState,
     loginPasswordHandler,
-    loginSocialHandler,
-    onValidate,
-    isValid,
-    getQueryParam,
-    // Form validation helpers
-    formErrors,
+    resetForm,
     isFieldRequired,
     getErrorText,
-    getOptions,
-    scrollToError,
+    setLoginState,
   };
 });
 
