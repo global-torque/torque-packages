@@ -91,6 +91,8 @@ The former 1.6.7 barrel patches and MapLibre exclusion have been removed.
 Consumers install the upstream dependency graph; no workspace patch or hidden
 MapLibre override is required. Area/donut rendering, legends, tooltips,
 crosshairs and selection are exercised in detached browser and SSR fixtures.
+`DonutChart` uses a center readout for the total or hovered segment instead of
+a floating tooltip and no longer exposes `customTooltip`.
 Mapping components are not exposed as framework widget APIs.
 
 The `socials` export contains neutral network metadata and standard share URL

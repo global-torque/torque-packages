@@ -4,12 +4,15 @@ This repository is the independent source workspace for the seven investment
 framework packages under the `@global-torque` namespace. The workspace root
 is private; each package is an independently reviewed MIT package candidate.
 
-The current candidate is `0.4.16` for all seven packages. It is source based:
+The current candidate is `0.4.17` for all seven packages. It is source based:
 published files contain the explicit `src` exports and the host application
 provides the Vue/Vite toolchain and singleton peers. The candidate is local and
 non-promotable until the primary maintainer completes the accepted release
-gates. Push the matching `framework-v0.4.16` tag to run the release workflow
-and produce the GitHub Release and attestations. The previously reviewed
+gates. Push the matching `framework-v0.4.17` tag to run the release workflow
+and produce the GitHub Release and attestations. 0.4.17 widens existing EVM
+transaction and notification DTO fields for explicit null evidence, adds
+`IEvmOperationProgressOverlay`, and exposes `latestEvmOperationSnapshot`
+through the public `./websockets` store. The previously reviewed
 `framework-v0.2.2` source tag, commit, and immutable artifacts remain
 retained as history; no canonical `0.2.0` package artifacts were produced.
 The immutable `framework-v0.4.13` release at source commit
@@ -134,14 +137,14 @@ packing; generated output is ignored and is never a source of browser SFCs.
 
 The framework release uses the `@global-torque/ui-kit` 0.4.0 and
 `@global-torque/ui-primitives` 0.2.0 GitHub release tarballs. Run
-`pnpm install --frozen-lockfile`, then `pnpm run build:node` followed by
+`pnpm install --frozen-lockfile --ignore-scripts`, then `pnpm run build:node` followed by
 `pnpm run check`. The frozen lockfile supplies both UI tarballs.
 
 Create a release by pushing a matching version tag:
 
 ```sh
-git tag framework-v0.4.16
-git push origin framework-v0.4.16
+git tag framework-v0.4.17
+git push origin framework-v0.4.17
 ```
 
 Use the `Verify framework release provenance` workflow for an explicit

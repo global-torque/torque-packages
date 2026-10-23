@@ -14,26 +14,27 @@ active registry authentication path.
 
 The selected `@global-torque/ui-kit` 0.4.0 and
 `@global-torque/ui-primitives` 0.2.0 dependencies are GitHub release tarballs.
-The development branch selects the `@global-torque/design-tokens` 0.5.0 GitHub
+Candidate 0.4.17 selects the `@global-torque/design-tokens` 0.5.0 GitHub
 release tarball. The already-published immutable `framework-v0.4.16` candidate
 uses the 0.4.0 tarball and is not rewritten by this branch. Any future release
-of the merged source requires a new package version and immutable framework tag;
+of this source requires a new package version and immutable framework tag;
 never move, replace, or retag `framework-v0.4.16` or its artifacts. A workspace
 override maps the exact ui-primitives 0.2.0 dependency of ui-kit to its tarball.
 Candidate creation installs the selected development dependencies through the
 committed frozen lockfile; no draft transport or derived lockfile overlay is
 supported.
 
-Candidate 0.4.16 adds the authenticated account filer tree, its runtime cache,
-and Node `>=24.21.0` support. It retains the 0.4.15 seven-package cohort with
-the published `@global-torque/ui-primitives@0.2.0` and
-`@global-torque/ui-kit@0.4.0` packages. Dialogs and ordinary portaled
-surfaces default to `--ui-dialog-z-index` at `1100`, select supports
-`--ui-select-popup-z-index`, and Mobile Sheets retain their lower layer. The
-bridge is removable only after the released UI pair owns those layers and the
-real-consumer browser gate proves the replacement; no UI package publication
-or application deployment is implied by this candidate.
-The candidate also moves `invest-data` and `invest-runtime` to the
+Candidate 0.4.17 reissues the seven-package cohort with the post-0.4.16
+Sidebar07 design-token purpose-class fix. Candidate 0.4.16 added the
+authenticated account filer tree, its runtime cache, and Node `>=24.21.0`
+support. It retained the 0.4.15 seven-package cohort with the published
+`@global-torque/ui-primitives@0.2.0` and `@global-torque/ui-kit@0.4.0`
+packages, and removed the temporary portal-layer bridge. No UI package
+publication or application deployment is implied by this candidate.
+Candidate 0.4.17 widens existing EVM transaction and notification DTO fields
+for explicit null evidence, adds `IEvmOperationProgressOverlay`, and exposes
+`latestEvmOperationSnapshot` through the public `./websockets` store.
+The 0.4.16 candidate also moved `invest-data` and `invest-runtime` to the
 `@global-torque/sdk` 0.5.0 GitHub Release archive. That SDK transport sends a
 default `Idempotency-Key` header on eligible POST requests. The Kratos clients
 turn that default off because the Kratos CORS rules reject the header.
@@ -134,10 +135,11 @@ because the candidate failed. The immutable `framework-v0.4.13` release at
 source commit `7d86d208e32967f177f881ae7ad78d382ca3534f` completed its GitHub
 Release but was superseded before npm rollout when the redemption list contract
 changed; its tag and release bytes are never moved, reused, or repacked. The
-ordinary immutable release tag is `framework-v0.4.16` for the `0.4.16`
-candidate. Its tag and release bytes remain retained; future source changes
-require a new package version and immutable release tag, not a retag of
-`framework-v0.4.16`. The prior `framework-v0.2.2`
+immutable release tag `framework-v0.4.16` retains the `0.4.16` candidate.
+Its tag and release bytes remain unchanged. Candidate 0.4.17 requires a new
+`framework-v0.4.17` tag after its release checks pass; future source changes
+require a new package version and immutable release tag, not a retag of an
+existing release. The prior `framework-v0.2.2`
 source tag, commit, and immutable artifact history remain retained for audit;
 its package bytes and provenance are not replaced. The earlier
 `framework-v0.2.0` run failed before installation, build, or packing; no

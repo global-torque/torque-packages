@@ -1,8 +1,8 @@
 # Changelog
 
-## Unreleased
+## 0.4.17 candidate
 
-- The development branch accepts `@global-torque/design-tokens` `>=0.2.1 <0.6.0`
+- Accepts `@global-torque/design-tokens` `>=0.2.1 <0.6.0`
   and tests against 0.5.0.
 - The Sidebar07 menu now reads design-tokens purpose classes, such as
   `text-foreground` and `bg-border`, instead of default Tailwind slate and rose

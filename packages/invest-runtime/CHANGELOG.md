@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.4.17 candidate
+
+- Reissued with the seven-package framework cohort. 0.4.17 widens existing EVM
+  transaction and notification DTO fields for explicit null evidence, adds
+  `IEvmOperationProgressOverlay`, and exposes `latestEvmOperationSnapshot`
+  through the public `./websockets` store.
+- Publish validated canonical `evm_operation` realtime snapshots while preserving notification adapters, invalidations, reconnect behavior, and legacy alias invalidation.
+- Accept provider-shaped nullable receipt evidence and normalize receipt block hashes, token tickers, raw amounts, and pending evidence statuses.
+- Accept only the canonical receipt execution status values `unknown`, `success`, and `reverted`; `success` is the accepted provider status.
+
 ## 0.4.16 candidate
 
 - Expanded the supported Node range to `>=24.21.0`; CI remains on Node 24.21.0.

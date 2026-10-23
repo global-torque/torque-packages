@@ -1,15 +1,17 @@
 # Source and release reconciliation
 
-The `0.4.16` candidate adds the authenticated account filer tree, its runtime
-cache, and Node `>=24.21.0` support. It retains the 0.4.15 seven-package cohort
-with the published `@global-torque/ui-primitives@0.2.0` and
-`@global-torque/ui-kit@0.4.0`
-packages. Dialogs and ordinary portaled surfaces default to
-`--ui-dialog-z-index` at `1100`, select supports `--ui-select-popup-z-index`,
-and Mobile Sheets retain their lower layer. Remove the bridge only after the
-released UI pair owns those layers and the real-consumer browser gate proves
-the replacement; source changes do not publish UI packages or deploy apps.
-The candidate also moves `invest-data` and `invest-runtime` to the
+The `0.4.17` candidate reissues the seven packages from 0.4.16 with the
+post-tag Sidebar07 design-token purpose-class fix and development dependency
+on design-tokens 0.5.0. The retained `0.4.16` release added the authenticated
+account filer tree, its runtime cache, and Node `>=24.21.0` support. It retained
+the 0.4.15 seven-package cohort with the published
+`@global-torque/ui-primitives@0.2.0` and
+`@global-torque/ui-kit@0.4.0` packages. The former portal-layer bridge was
+removed in 0.4.16; source changes do not publish UI packages or deploy apps.
+The 0.4.17 candidate widens existing EVM transaction and notification DTO
+fields for explicit null evidence, adds `IEvmOperationProgressOverlay`, and
+exposes `latestEvmOperationSnapshot` through the public `./websockets` store.
+The 0.4.16 candidate also moved `invest-data` and `invest-runtime` to the
 `@global-torque/sdk` 0.5.0 GitHub Release archive. That SDK transport sends a
 default `Idempotency-Key` header on eligible POST requests. The Kratos clients
 turn that default off because the Kratos CORS rules reject the header.
@@ -40,7 +42,7 @@ intermediate compatibility, abort signals, and recovery rule are recorded in
 [`source-reconciliation.json`](./source-reconciliation.json).
 
 The candidate consumes the authenticated external
-`@global-torque/design-tokens@0.4.0` archive for producer development. The
+`@global-torque/design-tokens@0.5.0` archive for producer development. The
 retained 0.3.0 compatibility evidence, including its SRI, archive digest,
 source commit, tag, and npm attestations, remains bound in
 [`source-reconciliation.json`](./source-reconciliation.json) and must be
@@ -50,15 +52,13 @@ digest used by the consumer parity gate, plus the absent-token fallback case.
 These archives are external inputs; the framework repository never republishes
 them.
 
-The compatibility checks retain all three named modes and are recorded in the
-candidate's native release evidence; no custom receipt is generated. Run the
-detached verifier with
-`CONSUMER_TOKEN_MODE=absent` and no token archive, with
-`CONSUMER_TOKEN_MODE=0.2.1 DESIGN_TOKENS_ARCHIVE=<the reviewed 0.2.1 archive>`,
-and with `CONSUMER_TOKEN_MODE=0.3.0` plus the reviewed 0.3.0 archive (or its
-public registry version). Each mode runs the same static, Chromium, packed
-consumer, and SSR checks; an absent mode must not install or import the token
-package.
+Before tagging 0.4.17, verify the Sidebar07 changes in an isolated consumer
+using the packed candidate archives. Check rendered colors and contrast in
+Chromium with no design tokens installed, with the retained 0.2.1 token cohort,
+and with the selected 0.5.0 token cohort. Retain the screenshots and measured
+results; the package unit tests and tag workflow do not run this visual check.
+The older 0.3.0 compatibility evidence remains bound in the ledger; no custom
+receipt is generated.
 
 The framework candidate using `@global-torque/ui-kit@0.4.0` produces exactly
 seven native GitHub Release assets. They are the dependency-ordered package
@@ -68,7 +68,7 @@ installed from the frozen lockfile.
 The package owner is responsible for pure domain contracts and investment
 framework behavior. Generic UI, SDK, token, content, Markdown, and error
 packages remain external public dependencies owned by their existing
-repositories. `@global-torque/ui-kit@0.1.4` is a selected candidate from
+repositories. `@global-torque/ui-kit@0.4.0` is the selected release from
 `global-torque/vue-ui`; the framework workspace never copies its source.
 
 Asset audit remains a release gate. The pinned producer's
@@ -167,8 +167,9 @@ because the candidate failed. The immutable `framework-v0.4.13` release at
 source commit `7d86d208e32967f177f881ae7ad78d382ca3534f` completed its GitHub
 Release but was superseded before npm rollout when the redemption list contract
 changed; `npmPublished` is false and its tag, release bytes, and attestations
-are never moved, reused, or repacked. Candidate `0.4.16` is the new immutable
-release identity; its active candidate and package matrix are finalized when
+are never moved, reused, or repacked. Candidate `0.4.16` is an immutable
+GitHub release and is not rewritten. Candidate `0.4.17` is the new release
+identity; its active candidate and package matrix are finalized when
 the candidate commit is tagged. The `sourceRevision` fields retain upstream
 provenance for the transferred source and are not rewritten as release tags
 are created.

@@ -6,10 +6,172 @@ import { useIntervalFn, useWebSocket } from '@vueuse/core';
 import { assertNotificationShareFields } from '@global-torque/invest-core/notifications/shareFields';
 import { getInvestRuntimeAdapters } from '../adapters.ts';
 import { useSessionStore } from '@global-torque/invest-runtime/session';
+import {
+  EvmExpectedActionStatuses,
+  EvmReceiptExecutionStatuses,
+  EvmTransactionStatusTypes,
+  type IEvmOperationProgressOverlay,
+} from '@global-torque/domain-types/evmTypes';
 
 const isBrowserOffline = () => (
   typeof navigator !== 'undefined' && navigator.onLine === false
 );
+
+type UnknownRecord = Record<string, unknown>;
+
+const hasOwn = (value: UnknownRecord, key: string) => Object.hasOwn(value, key);
+const isRecord = (value: unknown): value is UnknownRecord => (
+  typeof value === 'object' && value !== null && !Array.isArray(value)
+);
+const isSafeNonnegativeInteger = (value: unknown): value is number => (
+  typeof value === 'number' && Number.isSafeInteger(value) && value >= 0
+);
+const isPositiveInteger = (value: unknown): value is number => (
+  isSafeNonnegativeInteger(value) && value > 0
+);
+const isNullableString = (value: unknown): value is string | null => (
+  value === null || typeof value === 'string'
+);
+const isNullableTimestamp = (value: unknown): value is string | null => (
+  value === null || (typeof value === 'string' && Number.isFinite(Date.parse(value)))
+);
+const isNullableNonnegativeInteger = (value: unknown): value is number | null => (
+  value === null || isSafeNonnegativeInteger(value)
+);
+const isNullablePositiveInteger = (value: unknown): value is number | null => (
+  value === null || isPositiveInteger(value)
+);
+
+const hasProgressFields = (fields: UnknownRecord) => [
+  'object_id',
+  'investment_id',
+  'profile_id',
+  'status',
+  'submission_status',
+  'chain',
+  'transaction_tx',
+  'block_number',
+  'block_timestamp',
+  'receipt_block_hash',
+  'confirmation_count',
+  'confirmation_target',
+  'reorg_count',
+  'last_seen_block',
+  'removed_at',
+  'failure_code',
+  'amount',
+  'amount_raw',
+  'token_address',
+  'token_ticker',
+  'token_name',
+  'token_decimals',
+  'destination_address',
+  'receipt_execution_status',
+  'expected_action_status',
+  'expected_action_failure_code',
+  'created_at',
+  'updated_at',
+].every(key => hasOwn(fields, key));
+
+const normalizeEvmOperationProgressOverlay = (
+  notification: INotification,
+): IEvmOperationProgressOverlay | null => {
+  const fields = notification?.data?.fields;
+  if (!isRecord(fields) || !hasProgressFields(fields)) return null;
+
+  const status = fields.status;
+  const receiptExecutionStatus = fields.receipt_execution_status;
+  const expectedActionStatus = fields.expected_action_status;
+  const normalizedReceiptExecutionStatus = receiptExecutionStatus === null
+    ? EvmReceiptExecutionStatuses.unknown
+    : receiptExecutionStatus;
+  const normalizedExpectedActionStatus = expectedActionStatus === null
+    ? EvmExpectedActionStatuses.not_checked
+    : expectedActionStatus;
+  if (
+    !isPositiveInteger(notification.id)
+    || !isPositiveInteger(notification.data.object_id)
+    || notification.data.object_id !== fields.object_id
+    || !isPositiveInteger(fields.object_id)
+    || !isPositiveInteger(fields.profile_id)
+    || !isNullablePositiveInteger(fields.investment_id)
+    || typeof status !== 'string'
+    || !Object.values(EvmTransactionStatusTypes).includes(status as never)
+    || !isNullableString(fields.submission_status)
+    || typeof fields.chain !== 'string'
+    || !fields.chain.trim()
+    || !isNullableString(fields.transaction_tx)
+    || !isNullableNonnegativeInteger(fields.block_number)
+    || !isNullableTimestamp(fields.block_timestamp)
+    || !isNullableString(fields.receipt_block_hash)
+    || !isNullableNonnegativeInteger(fields.confirmation_count)
+    || !isNullableNonnegativeInteger(fields.confirmation_target)
+    || !isNullableNonnegativeInteger(fields.reorg_count)
+    || !isNullableNonnegativeInteger(fields.last_seen_block)
+    || !isNullableTimestamp(fields.removed_at)
+    || !isNullableString(fields.failure_code)
+    || !isNullableString(fields.amount)
+    || !isNullableString(fields.amount_raw)
+    || !isNullableString(fields.token_address)
+    || !isNullableString(fields.token_ticker)
+    || !isNullableString(fields.token_name)
+    || !isNullableNonnegativeInteger(fields.token_decimals)
+    || !isNullableString(fields.destination_address)
+    || (
+      receiptExecutionStatus !== null
+      && (
+        typeof receiptExecutionStatus !== 'string'
+        || !Object.values(EvmReceiptExecutionStatuses).includes(receiptExecutionStatus as never)
+      )
+    )
+    || (
+      expectedActionStatus !== null
+      && (
+        typeof expectedActionStatus !== 'string'
+        || !Object.values(EvmExpectedActionStatuses).includes(expectedActionStatus as never)
+      )
+    )
+    || !isNullableString(fields.expected_action_failure_code)
+    || typeof fields.created_at !== 'string'
+    || !Number.isFinite(Date.parse(fields.created_at))
+    || typeof fields.updated_at !== 'string'
+    || !Number.isFinite(Date.parse(fields.updated_at))
+  ) {
+    return null;
+  }
+
+  return {
+    notification_id: notification.id,
+    operation_id: fields.object_id,
+    profile_id: fields.profile_id,
+    investment_id: fields.investment_id,
+    status: status as IEvmOperationProgressOverlay['status'],
+    submission_status: fields.submission_status,
+    chain: fields.chain,
+    transaction_tx: fields.transaction_tx,
+    block_number: fields.block_number,
+    block_timestamp: fields.block_timestamp,
+    block_hash: fields.receipt_block_hash,
+    confirmation_count: fields.confirmation_count,
+    confirmation_target: fields.confirmation_target,
+    reorg_count: fields.reorg_count,
+    last_seen_block: fields.last_seen_block,
+    removed_at: fields.removed_at,
+    failure_code: fields.failure_code,
+    amount: fields.amount,
+    amount_raw: fields.amount_raw,
+    token_address: fields.token_address,
+    token_symbol: fields.token_ticker,
+    token_name: fields.token_name,
+    token_decimals: fields.token_decimals,
+    destination_address: fields.destination_address,
+    receipt_execution_status: normalizedReceiptExecutionStatus as IEvmOperationProgressOverlay['receipt_execution_status'],
+    expected_action_status: normalizedExpectedActionStatus as IEvmOperationProgressOverlay['expected_action_status'],
+    expected_action_failure_code: fields.expected_action_failure_code,
+    created_at: fields.created_at,
+    updated_at: fields.updated_at,
+  };
+};
 
 export const useDomainWebSocketStore = defineStore('domainWebsockets', () => {
   const appConfig = useInvestApplicationContext().appConfig;
@@ -17,12 +179,16 @@ export const useDomainWebSocketStore = defineStore('domainWebsockets', () => {
     if (appConfig.isDev) console.debug(message);
   };
   const userSessionStore = useSessionStore();
-  const { userLoggedIn } = storeToRefs(userSessionStore);
+  const { userLoggedIn, userSession } = storeToRefs(userSessionStore);
 
   const isConnectingOrOpen = ref(false);
   const connectionStatus = ref<'CONNECTING' | 'OPEN' | 'CLOSED'>('CLOSED');
   const connectionGeneration = ref(0);
   const lastMessageAt = ref<string | null>(null);
+  const latestEvmOperationSnapshot = ref<{
+    sequence: number;
+    overlay: IEvmOperationProgressOverlay;
+  } | null>(null);
   const evmOperationInvalidation = ref({ operationId: 0, sequence: 0 });
   const evmWalletInvalidation = ref({ walletId: 0, sequence: 0 });
   const investmentRedemptionInvalidation = ref({
@@ -37,6 +203,23 @@ export const useDomainWebSocketStore = defineStore('domainWebsockets', () => {
   let stopStatusWatch: WatchStopHandle | null = null;
   let closeConnection: (() => void) | null = null;
   let hasConnectivityListeners = false;
+
+  // This watcher belongs to the session lifetime, not a particular socket.
+  watch(userLoggedIn, (loggedIn) => {
+    if (!loggedIn) latestEvmOperationSnapshot.value = null;
+  });
+
+  watch(
+    () => userSession.value?.active ? userSession.value.identity.id : null,
+    (identity, previousIdentity) => {
+      if (!identity || !previousIdentity || identity === previousIdentity) return;
+
+      latestEvmOperationSnapshot.value = null;
+      closeConnection?.();
+      cleanupConnection();
+      if (!isBrowserOffline()) void webSocketHandler();
+    },
+  );
 
   const cleanupConnectivityListeners = () => {
     if (typeof window === 'undefined' || !hasConnectivityListeners) {
@@ -143,6 +326,15 @@ export const useDomainWebSocketStore = defineStore('domainWebsockets', () => {
             effectId,
             sequence: evmEffectInvalidation.value.sequence + 1,
           };
+        }
+        if (objectName === 'evm_operation') {
+          const overlay = normalizeEvmOperationProgressOverlay(notification);
+          if (overlay) {
+            latestEvmOperationSnapshot.value = {
+              sequence: (latestEvmOperationSnapshot.value?.sequence ?? 0) + 1,
+              overlay,
+            };
+          }
         }
         break;
       }
@@ -269,6 +461,7 @@ export const useDomainWebSocketStore = defineStore('domainWebsockets', () => {
     connectionStatus,
     connectionGeneration,
     lastMessageAt,
+    latestEvmOperationSnapshot,
     evmOperationInvalidation,
     evmWalletInvalidation,
     investmentRedemptionInvalidation,

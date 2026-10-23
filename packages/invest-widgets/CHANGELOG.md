@@ -1,7 +1,9 @@
 # Changelog
 
-## Unreleased
+## 0.4.17 candidate
 
+- Reissued with the seven-package framework cohort and the post-0.4.16
+  Sidebar07 design-token purpose-class fix.
 - `VCardInfo` loading skeletons show again. They take their width and height
   through `style`, because the ui-primitives `Skeleton` has no size props.
   Before, each skeleton was 0px tall and invisible.

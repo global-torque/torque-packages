@@ -22,6 +22,7 @@ no approved `@global-torque/sdk-runtime` destination.
 - Lifecycle reset registries, full/profile reset helpers, global error handling,
   chunk handling, and runtime install functions.
 - Investment-app global loading state and route/feature loading orchestration.
+- WebSocket invalidation plus canonical, normalized `evm_operation` progress snapshots. Legacy operation aliases continue to invalidate without publishing snapshots.
 - Frontend client error reporting to the current analytics-api/Loki backend via
   runtime analytics adapters.
 - Context-owned restricted application credentials, cached exact-origin direct

@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.4.17 candidate
+
+- Reissued with the seven-package framework cohort and widened existing EVM
+  transaction and notification DTO fields for explicit null evidence.
+- Expanded `IEvmTransactionDataResponse` with nullable operation-progress
+  evidence fields and exported receipt/action evidence enum types. Receipt
+  execution status values are `unknown`, `success`, and `reverted`; `success`
+  is the canonical accepted value.
+- Added the normalized realtime `IEvmOperationProgressOverlay` contract for authenticated EVM operation notifications.
+
 ## 0.4.16 candidate
 
 - Expanded the supported Node range to `>=24.21.0`; CI remains on Node 24.21.0.

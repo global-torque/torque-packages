@@ -29,11 +29,11 @@ This package owns DTOs, status constants, request/response shapes, and data-shap
 - `blogTypes`: public invest content metadata contracts and reviewed content-link slug constants.
 - `distributionsTypes`: distribution response and formatted distribution contracts.
 - `esignTypes`: e-signature request/response contracts.
-- `evmTypes`: EVM wallet, transaction, authorization, withdraw, exchange, and Earn-overlay contracts.
+- `evmTypes`: EVM wallet, transaction, authorization, withdraw, exchange, Earn-overlay, and normalized realtime operation-progress contracts. Receipt execution status values are `unknown`, `success`, and `reverted`; `success` is the canonical accepted value.
 - `filerTypes`: filer item and sign-url response contracts.
 - `investmentTypes`: investment status constants, request/response shapes, document contracts, and formatted investment contracts.
 - `kycTypes`: KYC status constants and raw KYC response/launch contracts.
-- `notificationsTypes`: notification payload, token, data-field, and formatted notification contracts.
+- `notificationsTypes`: notification payload, token, data-field, EVM progress evidence, and formatted notification contracts.
 - `offerTypes`: offer status constants, offer response/comment payload contracts, and formatted offer contracts.
 - `profilesTypes`: profile/user/background-information request and response contracts.
 - `profileTypes`: stable investment profile type constants and unions.

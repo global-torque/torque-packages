@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.17 candidate
+
+- Reissued with the seven-package framework cohort; public contracts are unchanged from 0.4.16.
+
 ## 0.4.16 candidate
 
 - Expanded the supported Node range to `>=24.21.0`; CI remains on Node 24.21.0.

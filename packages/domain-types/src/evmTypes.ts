@@ -24,6 +24,24 @@ export const EvmTransactionStatusTypes = {
 export type EvmTransactionStatusTypes =
   typeof EvmTransactionStatusTypes[keyof typeof EvmTransactionStatusTypes];
 
+export const EvmReceiptExecutionStatuses = {
+  unknown: 'unknown',
+  success: 'success',
+  reverted: 'reverted',
+} as const;
+
+export type EvmReceiptExecutionStatus =
+  typeof EvmReceiptExecutionStatuses[keyof typeof EvmReceiptExecutionStatuses];
+
+export const EvmExpectedActionStatuses = {
+  not_checked: 'not_checked',
+  verified: 'verified',
+  mismatch: 'mismatch',
+} as const;
+
+export type EvmExpectedActionStatus =
+  typeof EvmExpectedActionStatuses[keyof typeof EvmExpectedActionStatuses];
+
 export const EvmTransactionTypes = {
   withdrawal: 'withdrawal',
   deposit: 'deposit',
@@ -198,6 +216,7 @@ export interface IEvmTransactionDataResponse {
   dest_wallet_id: number | null;
   source_wallet_id: number | null;
   investment_id: number | null;
+  profile_id?: number | null;
   investment_redemption_id?: number | null;
   type: EvmTransactionTypes;
   amount_raw?: string;
@@ -209,26 +228,70 @@ export interface IEvmTransactionDataResponse {
   image_link_id?: number | string;
   network: string;
   status: EvmTransactionStatusTypes;
-  submission_status?: string;
+  submission_status?: string | null;
   source?: string;
-  transaction_tx: string;
+  transaction_tx?: string | null;
   scan_tx_url?: string;
   created_at: string;
   updated_at: string;
   address?: string;
-  destination_address?: string;
+  destination_address?: string | null;
   direction?: EvmViewedWalletDirection | null;
   contract_function_selector?: string;
   logical_action?: EvmWalletLogicalAction;
-  token_address?: string;
-  token_decimals?: number;
-  block_number?: number;
-  block_timestamp?: string;
-  confirmation_count?: number;
-  confirmation_target?: number;
-  failure_code?: string;
+  token_address?: string | null;
+  token_decimals?: number | null;
+  block_number?: number | null;
+  block_hash?: string | null;
+  block_timestamp?: string | null;
+  confirmation_count?: number | null;
+  confirmation_target?: number | null;
+  reorg_count?: number | null;
+  last_seen_block?: number | null;
+  removed_at?: string | null;
+  failure_code?: string | null;
+  receipt_execution_status?: EvmReceiptExecutionStatus | null;
+  expected_action_status?: EvmExpectedActionStatus | null;
+  expected_action_failure_code?: string | null;
   type_display?: string;
   description?: string;
+}
+
+/**
+ * A fully normalized, realtime-only operation snapshot. This is deliberately
+ * separate from the REST transaction DTO because notification fields have
+ * explicit-null semantics and carry the notification identity used for order.
+ */
+export interface IEvmOperationProgressOverlay {
+  notification_id: number;
+  operation_id: number;
+  profile_id: number;
+  investment_id: number | null;
+  status: EvmTransactionStatusTypes;
+  submission_status: string | null;
+  chain: string;
+  transaction_tx: string | null;
+  block_number: number | null;
+  block_timestamp: string | null;
+  block_hash: string | null;
+  confirmation_count: number | null;
+  confirmation_target: number | null;
+  reorg_count: number | null;
+  last_seen_block: number | null;
+  removed_at: string | null;
+  failure_code: string | null;
+  amount: string | null;
+  amount_raw: string | null;
+  token_address: string | null;
+  token_symbol: string | null;
+  token_name: string | null;
+  token_decimals: number | null;
+  destination_address: string | null;
+  receipt_execution_status: EvmReceiptExecutionStatus;
+  expected_action_status: EvmExpectedActionStatus;
+  expected_action_failure_code: string | null;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface IEvmWalletTransactionsApiItem {
@@ -271,16 +334,26 @@ export interface IEvmWalletTransactionsApiItem {
   updated_at?: string | null;
   address?: string | null;
   wallet_address?: string | null;
+  destination_address?: string | null;
   counterparty_address?: string | null;
+  profile_id?: number | string | null;
   direction?: string | null;
   contract_function_selector?: string | null;
   logical_action?: string | null;
   token_decimals?: number | string | null;
   block_number?: number | string | null;
   block_timestamp?: string | null;
+  block_hash?: string | null;
+  receipt_block_hash?: string | null;
   confirmation_count?: number | string | null;
   confirmation_target?: number | string | null;
+  reorg_count?: number | string | null;
+  last_seen_block?: number | string | null;
+  removed_at?: string | null;
   failure_code?: string | null;
+  receipt_execution_status?: string | null;
+  expected_action_status?: string | null;
+  expected_action_failure_code?: string | null;
   type_display?: string | null;
   description?: string | null;
 }

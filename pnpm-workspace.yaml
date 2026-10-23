@@ -35,6 +35,16 @@ catalog:
 # Installs are explicit and use --ignore-scripts, including link transactions.
 verifyDepsBeforeRun: false
 
+# Scripts remain disabled, and unknown builders still fail under pnpm's
+# strict default policy.
+allowBuilds:
+  '@firebase/util@1.15.3': false
+  '@parcel/watcher@2.6.0': false
+  'esbuild@0.25.12': false
+  'esbuild@0.28.2': false
+  'protobufjs@7.6.6': false
+  'vue-demi@0.14.10': false
+
 # Exact migration targets reviewed on 2026-09-16; all other releases retain
 # pnpm 12's default 24-hour minimum release age.
 minimumReleaseAgeExclude:

@@ -1,8 +1,13 @@
 # Changelog
 
-## Unreleased
+## 0.4.17 candidate
 
-- The development branch accepts `@global-torque/design-tokens` `>=0.2.1 <0.6.0`
+- Reissues the seven-package cohort from 0.4.16 with the merged post-tag
+  Sidebar07 changes. No 0.4.16 tag or release bytes are replaced.
+- 0.4.17 widens existing EVM transaction and notification DTO fields for
+  explicit null evidence, adds `IEvmOperationProgressOverlay`, and exposes
+  `latestEvmOperationSnapshot` through the public `./websockets` store.
+- `invest-shell` accepts `@global-torque/design-tokens` `>=0.2.1 <0.6.0`
   and tests against 0.5.0.
 - The `invest-shell` Sidebar07 menu now reads design-tokens purpose classes,
   such as `text-foreground` and `bg-border`, instead of default Tailwind slate
@@ -11,6 +16,8 @@
 - `invest-widgets` `VCardInfo` loading skeletons show again. They take their
   width and height through `style`, because the ui-primitives `Skeleton` has
   no size props. Before, each skeleton was 0px tall and invisible.
+- Breaking public contract change: `invest-widgets` `DonutChart` replaces the
+  floating tooltip with a center readout and removes `customTooltip`.
 - The `invest-shell` header bar and Sidebar07 header share `--header-height`,
   so their divider lines meet. The Sidebar07 footer reads `--footer-height`.
   Both are `4rem` on `:root`. A host page footer uses
