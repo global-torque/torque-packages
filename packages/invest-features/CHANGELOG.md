@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- Session refresh displays the active session email as read-only text and
+  confirms it with the existing password, keeping the compact dialog available
+  for retry after authentication errors.
+
 ## 0.4.17 candidate
 
 - Reissued with the seven-package framework cohort; the offer contract update is

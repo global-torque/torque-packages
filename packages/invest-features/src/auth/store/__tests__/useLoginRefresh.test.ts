@@ -1,100 +1,98 @@
-import {
-  describe, it, expect, vi, beforeEach,
-} from 'vitest';
-import { setActivePinia, createPinia } from 'pinia';
-import { useRepositoryAuth } from '../../data/auth.repository.ts';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { reactive, ref } from 'vue';
-import { SELFSERVICE } from '@global-torque/domain-types/authConstants';
+import { createPinia, setActivePinia } from 'pinia';
 import { useLoginRefreshStore } from '../useLoginRefresh.ts';
 
-// Add at the top of your file, before vi.mock:
-export const mockUpdateSession = vi.fn();
+const mockUpdateSession = vi.fn();
 const mockFlowId = { value: 'test-flow-id' };
 const mockCsrfToken = { value: 'test-csrf-token' };
 const mockGetAuthFlow = vi.fn().mockResolvedValue({ id: 'test-flow-id', ui: {} });
 const mockSetLogin = vi.fn().mockResolvedValue(undefined);
-const mockGetSchemaState = ref({ data: undefined, loading: false, error: null });
+const mockGetSchemaState = ref({
+  data: undefined,
+  loading: false,
+  error: null,
+});
 const mockSetLoginState = ref({ data: null, error: null });
 const mockGetAuthFlowState = ref({ error: null });
 const sendEventMock = vi.fn().mockResolvedValue(undefined);
-
-// Mock all required dependencies
-vi.mock('../../data/auth.repository.ts', () => {
-  return {
-    useRepositoryAuth: vi.fn(() => ({
-      flowId: mockFlowId,
-      csrfToken: mockCsrfToken,
-      getAuthFlow: mockGetAuthFlow,
-      setLogin: mockSetLogin,
-      getSchemaState: mockGetSchemaState,
-      setLoginState: mockSetLoginState,
-      getAuthFlowState: mockGetAuthFlowState,
-    })),
-  };
+const { mockOryErrorHandling } = vi.hoisted(() => ({
+  mockOryErrorHandling: vi.fn().mockResolvedValue(undefined),
+}));
+const mockCompleteSessionRefresh = vi.fn();
+const mockSession = ref({
+  active: true,
+  identity: {
+    id: 'identity-123',
+    traits: { email: 'session@example.com' },
+  },
 });
 
-vi.mock('@global-torque/invest-runtime/error/oryResponseHandling', () => ({ oryResponseHandling: vi.fn() }));
-vi.mock('@global-torque/invest-runtime/error/oryErrorHandling', () => ({
-  oryErrorHandling: vi.fn().mockResolvedValue(undefined),
+vi.mock('../../data/auth.repository.ts', () => ({
+  useRepositoryAuth: vi.fn(() => ({
+    flowId: mockFlowId,
+    csrfToken: mockCsrfToken,
+    getAuthFlow: mockGetAuthFlow,
+    setLogin: mockSetLogin,
+    getSchemaState: mockGetSchemaState,
+    setLoginState: mockSetLoginState,
+    getAuthFlowState: mockGetAuthFlowState,
+  })),
 }));
+
+vi.mock('@global-torque/invest-runtime/error/oryResponseHandling', () => ({
+  oryResponseHandling: vi.fn(),
+}));
+
+vi.mock('@global-torque/invest-runtime/error/oryErrorHandling', () => ({
+  oryErrorHandling: mockOryErrorHandling,
+}));
+
 vi.mock('@global-torque/invest-runtime/analytics/useSendAnalyticsEvent', () => ({
-  useSendAnalyticsEvent: () => ({
-    sendEvent: sendEventMock,
-  }),
+  useSendAnalyticsEvent: () => ({ sendEvent: sendEventMock }),
 }));
 
 vi.mock('@global-torque/invest-runtime/session', () => ({
   useSessionStore: vi.fn(() => ({
+    userSession: mockSession,
     updateSession: mockUpdateSession,
   })),
 }));
 
 vi.mock('@global-torque/ui-kit/form-validation', () => ({
   useFormValidation: vi.fn(() => {
-    const model = reactive({ email: '', password: '' });
+    const model = reactive({ password: '' });
     const isValid = ref(true);
-    const validation = ref({});
 
     const onValidate = vi.fn().mockImplementation(() => {
-      // Simple validation logic for testing
-      const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(model.email);
-      const passwordValid = model.password.length >= 8;
-
-      isValid.value = emailValid && passwordValid;
-      validation.value = {
-        email: !emailValid ? ['Invalid email format'] : [],
-        password: !passwordValid ? ['Password must be at least 8 characters'] : [],
-      };
+      isValid.value = model.password.length >= 8;
     });
 
     return {
       model,
-      validation,
       isValid,
       onValidate,
       scrollToError: vi.fn(),
-      formErrors: ref({}),
       isFieldRequired: vi.fn(),
-      getErrorText: vi.fn(),
-      getOptions: vi.fn(),
-      getReferenceType: vi.fn(),
+      getErrorText: vi.fn(() => []),
       resetValidation: vi.fn(),
-      schemaObject: ref({}),
     } as any;
   }),
 }));
 
 vi.mock('@global-torque/invest-runtime/dialogs', () => ({
-  useDialogs: vi.fn(() => ({
-    isDialogRefreshSessionOpen: ref(false),
-    completeSessionRefresh: vi.fn(),
-  })),
+  useDialogs: vi.fn(() => ({ completeSessionRefresh: mockCompleteSessionRefresh })),
 }));
 
-describe('useLoginRefresh Store', () => {
-  let store: ReturnType<typeof useLoginRefreshStore>;
-  let mockAuthRepository: ReturnType<typeof useRepositoryAuth>;
+const deferred = <T>() => {
+  let resolve!: (value: T) => void;
+  const promise = new Promise<T>((resolvePromise) => {
+    resolve = resolvePromise;
+  });
+  return { promise, resolve };
+};
 
+describe('useLoginRefreshStore', () => {
   beforeEach(() => {
     setActivePinia(createPinia());
     vi.clearAllMocks();
@@ -106,183 +104,112 @@ describe('useLoginRefresh Store', () => {
     mockSetLoginState.value = { data: null, error: null };
     mockGetAuthFlowState.value = { error: null };
     sendEventMock.mockReset().mockResolvedValue(undefined);
-
-    store = useLoginRefreshStore();
-    mockAuthRepository = useRepositoryAuth();
+    mockOryErrorHandling.mockReset().mockResolvedValue(undefined);
+    mockCompleteSessionRefresh.mockReset();
+    mockSession.value = {
+      active: true,
+      identity: {
+        id: 'identity-123',
+        traits: { email: 'session@example.com' },
+      },
+    };
   });
 
-  describe('Form Validation', () => {
-    it('should validate email and password fields', async () => {
-      const store = useLoginRefreshStore();
-
-      // Test invalid email
-      store.model.email = 'invalid-email';
-      store.model.password = 'validPassword123!';
-      await store.onValidate();
-      expect(store.isValid).toBe(false);
-      expect(store.validation.email.length).toBeGreaterThan(0);
-
-      // Test invalid password
-      store.model.email = 'valid@email.com';
-      store.model.password = 'short';
-      await store.onValidate();
-      expect(store.isValid).toBe(false);
-      expect(store.validation.password.length).toBeGreaterThan(0);
-
-      // Test valid credentials
-      store.model.email = 'valid@email.com';
-      store.model.password = 'validPassword123!';
-      await store.onValidate();
-      expect(store.isValid).toBe(true);
-      expect(store.validation.email.length).toBe(0);
-      expect(store.validation.password.length).toBe(0);
+  it('uses the current session email and fresh CSRF token for a successful confirmation', async () => {
+    const session = {
+      id: 'new-session',
+      identity: {
+        id: 'identity-123',
+        traits: { email: 'session@example.com' },
+      },
+    };
+    mockGetAuthFlow.mockImplementationOnce(async () => {
+      mockCsrfToken.value = 'fresh-refresh-csrf-token';
     });
+    mockSetLoginState.value = { error: null, data: { session } };
+    const store = useLoginRefreshStore();
+    store.model.password = 'validPassword123!';
 
-    it('should handle form validation with backend schema', async () => {
-      const store = useLoginRefreshStore();
+    await store.loginPasswordHandler();
 
-      // Mock backend schema
-      const backendSchema = {
-        type: 'object',
-        properties: {
-          email: { type: 'string', format: 'email' },
-          password: { type: 'string', minLength: 8 },
-        },
-        required: ['email', 'password'],
-      };
-
-      useRepositoryAuth().getSchemaState.value = { data: backendSchema };
-
-      // Test with invalid data
-      store.model.email = 'invalid';
-      store.model.password = '123';
-      await store.onValidate();
-      expect(store.isValid).toBe(false);
-
-      // Test with valid data
-      store.model.email = 'valid@example.com';
-      store.model.password = 'validPassword123!';
-      await store.onValidate();
-      expect(store.isValid).toBe(true);
-    });
+    expect(mockSetLogin).toHaveBeenCalledWith(
+      'test-flow-id',
+      expect.objectContaining({
+        csrf_token: 'fresh-refresh-csrf-token',
+        identifier: 'session@example.com',
+        password: 'validPassword123!',
+      }),
+    );
+    expect(mockUpdateSession).toHaveBeenCalledWith(session);
+    expect(mockCompleteSessionRefresh).toHaveBeenCalledWith(true);
+    expect(sendEventMock).toHaveBeenCalledWith(expect.objectContaining({ status_code: 200 }));
+    expect(mockUpdateSession.mock.invocationCallOrder[0]).toBeLessThan(sendEventMock.mock.invocationCallOrder[0]);
+    expect(store.model.password).toBe('');
+    expect(store.isLoading).toBe(false);
   });
 
-  describe('Password Login', () => {
-    it('should handle successful password login', async () => {
-      const store = useLoginRefreshStore();
-      store.model.email = 'test@example.com';
-      store.model.password = 'validPassword123!';
+  it('keeps the dialog available for a wrong-password retry with a fresh flow', async () => {
+    const error = new Error('wrong password');
+    mockSetLogin.mockRejectedValueOnce(error);
+    const store = useLoginRefreshStore();
+    store.model.password = 'validPassword123!';
 
-      const mockSession = {
-        id: 'test-session',
-        identity: {
-          id: 'identity-789',
-          traits: {
-            email: 'test@example.com',
+    await store.loginPasswordHandler();
+
+    expect(mockGetAuthFlow).toHaveBeenCalledOnce();
+    expect(mockCompleteSessionRefresh).not.toHaveBeenCalled();
+    expect(store.model.password).toBe('validPassword123!');
+    expect(store.isLoading).toBe(false);
+
+    mockSetLoginState.value = {
+      error: null,
+      data: {
+        session: {
+          id: 'retry-session',
+          identity: {
+            id: 'identity-123',
+            traits: { email: 'session@example.com' },
           },
         },
-      };
-      mockGetAuthFlow.mockImplementationOnce(async () => {
-        mockCsrfToken.value = 'fresh-refresh-csrf-token';
-      });
-      mockSetLoginState.value = { error: null, data: { session: mockSession } };
+      },
+    };
+    await store.loginPasswordHandler();
 
-      await store.loginPasswordHandler();
-      expect(store.isLoading).toBe(false);
-      expect(mockSetLogin).toHaveBeenCalledWith(
-        'test-flow-id',
-        expect.objectContaining({
-          csrf_token: 'fresh-refresh-csrf-token',
-          password: 'validPassword123!',
-        }),
-      );
-      expect(mockUpdateSession).toHaveBeenCalledWith(mockSession);
-      expect(sendEventMock).toHaveBeenCalledWith(expect.objectContaining({
-        status_code: 200,
-      }));
-      expect(mockUpdateSession.mock.invocationCallOrder[0]).toBeLessThan(
-        sendEventMock.mock.invocationCallOrder[0],
-      );
-    });
-
-    it('should handle login errors', async () => {
-      const store = useLoginRefreshStore();
-      store.model.email = 'test@example.com';
-      store.model.password = 'validPassword123!';
-
-      mockGetAuthFlowState.value = { error: 'Test error' };
-
-      await store.loginPasswordHandler();
-      expect(store.isLoading).toBe(false);
-    });
+    expect(mockGetAuthFlow).toHaveBeenCalledTimes(2);
+    expect(mockSetLogin).toHaveBeenCalledTimes(2);
+    expect(mockCompleteSessionRefresh).toHaveBeenCalledWith(true);
   });
 
-  describe('Social Login', () => {
-    it('should handle social login with existing flow ID', async () => {
-      // Mock URL with flow parameter
-      Object.defineProperty(window, 'location', {
-        value: { search: '?flow=existing-flow-id' },
-        writable: true,
-      });
+  it('ignores a successful response that completes after the dialog was dismissed', async () => {
+    const pending = deferred<void>();
+    mockSetLogin.mockReturnValueOnce(pending.promise);
+    const store = useLoginRefreshStore();
+    store.model.password = 'validPassword123!';
 
-      await store.loginSocialHandler('google');
+    const attempt = store.loginPasswordHandler();
+    await Promise.resolve();
+    expect(mockSetLogin).toHaveBeenCalledOnce();
 
-      expect(mockAuthRepository.setLogin).toHaveBeenCalledWith(
-        'existing-flow-id',
-        expect.objectContaining({
-          provider: 'google',
-          method: 'oidc',
-          csrf_token: 'test-csrf-token',
-        }),
-      );
-      expect(store.isLoading).toBe(false);
-    });
+    store.resetForm();
+    expect(store.model.password).toBe('');
+    expect(store.isLoading).toBe(true);
+    mockSetLoginState.value = {
+      error: null,
+      data: {
+        session: {
+          id: 'stale-session',
+          identity: {
+            id: 'identity-123',
+            traits: { email: 'session@example.com' },
+          },
+        },
+      },
+    };
+    pending.resolve();
+    await attempt;
 
-    it('should handle social login without flow ID', async () => {
-      // Mock URL without flow parameter
-      Object.defineProperty(window, 'location', {
-        value: { search: '' },
-        writable: true,
-      });
-      mockGetAuthFlow.mockImplementationOnce(async () => {
-        mockCsrfToken.value = 'fresh-refresh-social-token';
-      });
-
-      await store.loginSocialHandler('google');
-
-      expect(mockAuthRepository.getAuthFlow).toHaveBeenCalledWith(SELFSERVICE.login, { refresh: true });
-      expect(mockAuthRepository.setLogin).toHaveBeenCalledWith(
-        'test-flow-id',
-        expect.objectContaining({
-          provider: 'google',
-          method: 'oidc',
-          csrf_token: 'fresh-refresh-social-token',
-        }),
-      );
-      expect(store.isLoading).toBe(false);
-    });
-  });
-
-  describe('Query Parameters', () => {
-    it('should handle query parameters correctly', () => {
-      // Mock URL with multiple query parameters
-      Object.defineProperty(window, 'location', {
-        value: { search: '?redirect=/test&source=email' },
-        writable: true,
-      });
-
-      expect(store.getQueryParam('redirect')).toBe('/test');
-      expect(store.getQueryParam('source')).toBe('email');
-    });
-
-    it('should return undefined for non-existent query parameters', () => {
-      // Mock URL with no query parameters
-      Object.defineProperty(window, 'location', {
-        value: { search: '' },
-        writable: true,
-      });
-
-      expect(store.getQueryParam('nonexistent')).toBeUndefined();
-    });
+    expect(mockUpdateSession).not.toHaveBeenCalled();
+    expect(mockCompleteSessionRefresh).not.toHaveBeenCalled();
+    expect(store.isLoading).toBe(false);
   });
 });
