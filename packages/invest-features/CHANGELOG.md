@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- Session refresh displays the active session email as read-only text and
+  confirms it with the existing password, keeping the compact dialog available
+  for retry after authentication errors.
+
 ## 0.4.16 candidate
 
 - Expanded the supported Node range to `>=24.21.0`; CI remains on Node 24.21.0.
