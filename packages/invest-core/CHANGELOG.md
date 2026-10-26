@@ -2,7 +2,12 @@
 
 ## 0.4.17 candidate
 
-- Reissued with the seven-package framework cohort; public contracts are unchanged from 0.4.16.
+- Reissued with the seven-package framework cohort; the offer contract update is
+  documented below.
+- Breaking offer contract update: `isRegD506cOffer` accepts the ordered route
+  array and returns true when it contains `US_REG_D_506C`; `OfferFormatter`
+  preserves canonical regulatory arrays and their order instead of projecting a
+  scalar value.
 
 ## 0.4.16 candidate
 

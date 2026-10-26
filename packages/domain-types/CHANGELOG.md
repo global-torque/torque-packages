@@ -4,6 +4,9 @@
 
 - Reissued with the seven-package framework cohort and widened existing EVM
   transaction and notification DTO fields for explicit null evidence.
+- Breaking offer contract update: `IOffer.reg_type`, `IOffer.offer_jurisdiction`,
+  and `IOffer.offering_mode` are ordered `string[]` fields under their existing
+  names. Scalar consumers must migrate; array values and order are preserved.
 - Expanded `IEvmTransactionDataResponse` with nullable operation-progress
   evidence fields and exported receipt/action evidence enum types. Receipt
   execution status values are `unknown`, `success`, and `reverted`; `success`

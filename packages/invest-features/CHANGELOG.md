@@ -2,7 +2,17 @@
 
 ## 0.4.17 candidate
 
-- Reissued with the seven-package framework cohort; public contracts are unchanged from 0.4.16.
+- Reissued with the seven-package framework cohort; the offer contract update is
+  documented below.
+- Breaking offer contract update: the `./offers` repository and formatter path
+  consume and preserve ordered `reg_type`, `offer_jurisdiction`, and
+  `offering_mode` arrays under their existing names. Investor eligibility remains
+  independent and is not route-derived; SDK/Tahoe activation and rollout are
+  separate concerns.
+- Center the semantic investment profile type heading and its Individual, Entity,
+  and Trust chooser cards.
+- Normalize same-app KYC navigation against the router history base to avoid
+  duplicate dashboard path segments while preserving query and redirect values.
 
 ## 0.4.16 candidate
 

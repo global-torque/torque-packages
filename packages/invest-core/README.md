@@ -41,7 +41,10 @@ source based.
 - `investment/rawAmount`: exact raw-token decimal conversion, comparison, and
   presentation helpers that never use floating-point arithmetic.
 - `kyc/status`, `kyc/kycAlert`, `kyc/thirdPartyScreen`: KYC status compatibility re-export from `domain-types` plus normalized view models.
-- `offer/metrics`: offer funding percent, minimum investment, Reg D 506(c), recency, and funding-completion calculations.
+- `offer/metrics`: offer funding percent, minimum investment, Reg D 506(c)
+  membership in route arrays, recency, and funding-completion calculations.
+- `offer/formatter`: formatted offer values while retaining canonical regulatory
+  arrays and their order.
 - `profiles/formatting`: profile date and phone display formatters.
 - `repository/formatterCache`: generic formatter memoization helper.
 - `wallet/auth`, `wallet/setupError`: wallet-auth normalization and setup-required error classification.

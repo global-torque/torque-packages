@@ -491,27 +491,29 @@ watch(
     <p class="signup-profile-choice__description">
       Your account is created. Choose the investment profile you want to set up.
     </p>
-    <p class="text-sm font-medium">
+    <h3 class="text-center">
       Investment profile type
-    </p>
-    <ToggleGroup
-      v-model="selectedProfileType"
-      type="single"
-      variant="outline"
-      aria-label="Investment profile type"
-      :disabled="signupStep === 'resolving'"
-      class="flex-wrap justify-start"
-    >
-      <ToggleGroupItem
-        v-for="option in profileOptions"
-        :key="option.value"
-        :value="option.value"
-        class="h-auto flex-col items-start px-4 py-3 text-left"
+    </h3>
+    <div class="flex justify-center" data-testid="profile-type-chooser">
+      <ToggleGroup
+        v-model="selectedProfileType"
+        type="single"
+        variant="outline"
+        aria-label="Investment profile type"
+        :disabled="signupStep === 'resolving'"
+        class="flex-wrap justify-center"
       >
-        <strong>{{ option.label }}</strong>
-        <span class="text-xs text-muted-foreground">{{ option.description }}</span>
-      </ToggleGroupItem>
-    </ToggleGroup>
+        <ToggleGroupItem
+          v-for="option in profileOptions"
+          :key="option.value"
+          :value="option.value"
+          class="h-auto flex-col items-start px-4 py-3 text-left"
+        >
+          <strong>{{ option.label }}</strong>
+          <span class="text-xs text-muted-foreground">{{ option.description }}</span>
+        </ToggleGroupItem>
+      </ToggleGroup>
+    </div>
     <p v-if="continuationError" role="alert">{{ continuationError }}</p>
     <div class="signup-profile-choice__actions">
       <Button

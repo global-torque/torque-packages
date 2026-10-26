@@ -492,7 +492,9 @@ export class OfferFormatter {
       instagram: '',
       telegram: '',
       mastodon: '',
-      reg_type: '',
+      reg_type: [],
+      offer_jurisdiction: [],
+      offering_mode: [],
     };
   }
 

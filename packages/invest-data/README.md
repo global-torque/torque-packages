@@ -13,7 +13,13 @@ helpers.
   and body fields are redacted while useful request context is retained.
 - SDK-read compatibility error projection that preserves bounded protocol
   response bodies, plus narrowly normalized, revalidated offer list/detail
-  responses during the backend deployment transition.
+  responses during the backend deployment transition. The temporary
+  SDK/Tahoe read boundary returns canonical arrays for `reg_type`,
+  `offer_jurisdiction`, and `offering_mode`: valid arrays are copied with their
+  values and order preserved, legacy non-empty scalars become singleton arrays,
+  and omitted properties become empty arrays. Malformed arrays, empty scalars,
+  and other scalar/object values are rejected; it is not canonical scalar
+  output.
 - An SDK Vault-resource compatibility facade that preserves the legacy
   `ApiClient` hooks and domain return shapes for position and redemption calls.
 - Explicit data-client config for API base URLs, scanner URLs, app links,
@@ -61,9 +67,9 @@ package exposes only framework-free clients and repository-state helpers.
 - `./service/types`: legacy service request/response types.
 - `./repository`: pure `ActionState` and state-transition helpers.
 - `./migration/sdkReadCompatibility`: SDK-read error projection plus narrowly
-  scoped deployed-offer normalization for exact decimal strings and temporary
-  `close_at` validation exclusion, backed by the pinned SDK validator for all
-  other fields.
+  scoped deployed-offer normalization for exact decimal strings, temporary
+  `close_at` validation exclusion, and transitional regulatory-array read
+  compatibility, backed by the pinned SDK validator for all other fields.
 - `./evm` and `./investDataClient`: EVM endpoint repository factories.
 - `./filer`: authenticated and public filer object-tree requests, including the
   validated authenticated account tree at `GET /auth/objects/my`.
@@ -90,6 +96,20 @@ setInvestDataClientConfig({
 const walletClient = createInvestDataApiClient('wallet');
 const wallet = await walletClient.get('/auth/wallet/1150');
 ```
+
+## SDK/Tahoe offer-read compatibility
+
+During the temporary SDK/Tahoe activation transition, the read boundary accepts
+ordered regulatory arrays and legacy non-empty scalar or missing values. For
+`reg_type`, `offer_jurisdiction`, and `offering_mode`, it copies valid non-empty
+arrays without changing values or order, wraps non-empty scalars in singleton
+arrays, and fills omitted properties with empty arrays. Explicit empty,
+duplicate, non-string, or empty-string arrays; empty scalar strings; and
+`null`, `undefined`, or other scalar/object values are rejected. Only the
+private projection used to validate against the pinned legacy SDK may reduce a
+valid array to its first scalar; returned offer values remain arrays under the
+existing field names. This adapter does not activate, deploy, or publish the
+SDK/Tahoe path.
 
 Both the legacy `ApiClient` and the hook-based `createInvestDataClient` keep
 the package framework-free while preserving failed request context. HTTP

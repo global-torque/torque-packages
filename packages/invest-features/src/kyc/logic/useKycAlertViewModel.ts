@@ -24,6 +24,19 @@ const resolveCurrentRedirectTarget = (routeFullPath?: string | null): string | u
   return typeof window !== 'undefined' ? window.location.href : undefined;
 };
 
+const normalizePathForHistoryBase = (pathname: string, historyBase: string): string => {
+  const normalizedPathname = pathname.startsWith('/') ? pathname : `/${pathname}`;
+  const normalizedBase = `/${historyBase.trim().replace(/^\/+|\/+$/g, '')}`;
+
+  if (normalizedBase === '/') return normalizedPathname;
+  if (normalizedPathname === normalizedBase) return '/';
+  if (normalizedPathname.startsWith(`${normalizedBase}/`)) {
+    return normalizedPathname.slice(normalizedBase.length) || '/';
+  }
+
+  return normalizedPathname;
+};
+
 export function useKycAlertViewModel() {
   // Supports use outside component setup (e.g. from a non-router host app);
   // onPrimaryAction falls back to window.location when router is unavailable.
@@ -111,7 +124,8 @@ export function useKycAlertViewModel() {
         if (typeof value === 'string') url.searchParams.set(key, value);
       });
       if (redirect) url.searchParams.set('redirect', redirect);
-      await router.push(`${url.pathname}${url.search}${url.hash}`);
+      const pathname = normalizePathForHistoryBase(url.pathname, router.options.history.base);
+      await router.push(`${pathname}${url.search}${url.hash}`);
       return;
     }
 

@@ -17,8 +17,12 @@ let mockRoute: { fullPath: string; query: Record<string, string> } | null = {
   fullPath: '/dashboard?tab=wallet',
   query: { tab: 'wallet' },
 };
-let mockRouter: { push: typeof mockPush } | null = {
+let mockRouter: {
+  push: typeof mockPush;
+  options: { history: { base: string } };
+} | null = {
   push: mockPush,
+  options: { history: { base: '/dashboard/' } },
 };
 const openContactUsDialog = vi.fn();
 const handlePlaidKyc = vi.fn();
@@ -106,6 +110,7 @@ describe('useKycAlertViewModel', () => {
     };
     mockRouter = {
       push: mockPush,
+      options: { history: { base: '/dashboard/' } },
     };
     mockProfilesStore.selectedUserProfileData.value = {
       isKycApproved: false,
@@ -140,16 +145,37 @@ describe('useKycAlertViewModel', () => {
     expect(viewModel.alertModel.value.show).toBe(false);
   });
 
-  it('navigates to submit KYC with redirect when the init form is required', async () => {
+  it('normalizes KYC navigation against the router history base', async () => {
     mockProfilesStore.selectedUserProfileShowKycInitForm.value = true;
+    mockProfilesStore.selectedUserProfileId.value = 1237;
+    mockRoute = {
+      fullPath: '/profile/1237/account',
+      query: {},
+    };
 
     const viewModel = createViewModel();
     await viewModel.onPrimaryAction();
 
     expect(mockPush).toHaveBeenCalledWith(
-      '/dashboard/profile/123/kyc?tab=wallet&redirect=%2Fdashboard%3Ftab%3Dwallet',
+      '/profile/1237/kyc?redirect=%2Fprofile%2F1237%2Faccount',
     );
     expect(handlePlaidKyc).not.toHaveBeenCalled();
+  });
+
+  it('preserves router query params while normalizing KYC navigation', async () => {
+    mockProfilesStore.selectedUserProfileShowKycInitForm.value = true;
+    mockProfilesStore.selectedUserProfileId.value = 1237;
+    mockRoute = {
+      fullPath: '/profile/1237/account?tab=wallet',
+      query: { tab: 'wallet' },
+    };
+
+    const viewModel = createViewModel();
+    await viewModel.onPrimaryAction();
+
+    expect(mockPush).toHaveBeenCalledWith(
+      '/profile/1237/kyc?tab=wallet&redirect=%2Fprofile%2F1237%2Faccount%3Ftab%3Dwallet',
+    );
   });
 
   it('navigates to submit KYC with the current browser URL when router context is unavailable', async () => {

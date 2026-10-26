@@ -14,6 +14,42 @@ import {
 import { APIError } from '../service/handlers/apiError.ts';
 import { NetworkRequestError } from '../service/handlers/networkRequestError.ts';
 
+type RegulatoryField = 'reg_type' | 'offer_jurisdiction' | 'offering_mode';
+type CompatibilityReader = (offer: Record<string, unknown>) => Record<string, unknown>;
+
+const regulatoryFieldCases: readonly {
+  field: RegulatoryField;
+  values: readonly [string, string];
+}[] = [
+  { field: 'reg_type', values: ['US_REG_D_506C', 'US_REG_S'] },
+  { field: 'offer_jurisdiction', values: ['US', 'EU'] },
+  { field: 'offering_mode', values: ['private_placement', 'offshore'] },
+];
+
+const compatibilityReaders: readonly [string, CompatibilityReader][] = [
+  [
+    'list',
+    (offer) => validateOfferListCompatibilityResponse({
+      count: 1,
+      data: [offer],
+    }).data?.[0] as unknown as Record<string, unknown>,
+  ],
+  [
+    'detail',
+    (offer) => validateOfferDetailCompatibilityResponse(offer) as unknown as Record<string, unknown>,
+  ],
+];
+
+const createOffer = (
+  field: RegulatoryField,
+  value: unknown,
+  includeField = true,
+): Record<string, unknown> => ({
+  id: 7,
+  slug: 'compatibility-offer',
+  ...(includeField ? { [field]: value } : {}),
+});
+
 describe('SDK read compatibility projection', () => {
   it('normalizes deployed offer decimal strings and preserves the pinned list contract', () => {
     const result = validateOfferListCompatibilityResponse({
@@ -86,6 +122,67 @@ describe('SDK read compatibility projection', () => {
       price_per_share: '100',
       min_investment: '10',
     });
+  });
+
+  it.each(regulatoryFieldCases)('preserves $field array values and order on list and detail reads', ({
+    field,
+    values,
+  }) => {
+    for (const [, read] of compatibilityReaders) {
+      const input = [...values];
+      const result = read(createOffer(field, input));
+
+      expect(result[field]).toEqual(input);
+      expect(result[field]).not.toBe(input);
+      expect(Array.isArray(result[field])).toBe(true);
+    }
+  });
+
+  it.each(regulatoryFieldCases)('normalizes a legacy scalar $field value on list and detail reads', ({
+    field,
+    values: [value],
+  }) => {
+    for (const [, read] of compatibilityReaders) {
+      const result = read(createOffer(field, value));
+
+      expect(result[field]).toEqual([value]);
+      expect(Array.isArray(result[field])).toBe(true);
+    }
+  });
+
+  it.each(regulatoryFieldCases)('normalizes a missing $field property to an empty array on list and detail reads', ({
+    field,
+  }) => {
+    for (const [, read] of compatibilityReaders) {
+      const result = read(createOffer(field, undefined, false));
+
+      expect(result[field]).toEqual([]);
+      expect(Array.isArray(result[field])).toBe(true);
+    }
+  });
+
+  it.each(regulatoryFieldCases)('rejects malformed explicit $field values on list and detail reads', ({
+    field,
+  }) => {
+    const malformedValues = [
+      [],
+      ['US_REG_D_506C', 'US_REG_D_506C'],
+      ['US_REG_D_506C', 7],
+      [''],
+      '',
+      undefined,
+      null,
+      7,
+      {},
+    ];
+
+    for (const [, read] of compatibilityReaders) {
+      for (const value of malformedValues) {
+        expect(() => read(createOffer(field, value))).toThrow(
+          /Offer(?:List|Detail)Response response does not satisfy its compatible contract\./,
+        );
+      }
+    }
   });
 
   it('preserves open-ended close_at while excluding it from compatibility validation', () => {

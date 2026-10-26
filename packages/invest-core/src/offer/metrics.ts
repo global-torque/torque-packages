@@ -69,11 +69,8 @@ export function isOfferNewWithinDays(
   return diffDays < dayWindow;
 }
 
-export function isRegD506cOffer(regType?: string | null): boolean {
-  if (!regType) return false;
-
-  const normalized = regType.toLowerCase();
-  return normalized.includes('506(c)') && normalized.includes('reg d');
+export function isRegD506cOffer(regType?: readonly string[] | null): boolean {
+  return regType?.includes('US_REG_D_506C') ?? false;
 }
 
 export const isOfferFundingCompleted = (status?: string | null): boolean => (

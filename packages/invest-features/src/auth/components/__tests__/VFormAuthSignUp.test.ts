@@ -362,9 +362,17 @@ describe('VFormAuthSignUp', () => {
     const wrapper = mountComponent();
     const options = wrapper.findAll('[data-slot="toggle-group-item"]');
     const heading = wrapper.get('#signup-profile-choice-title');
+    const profileTypeHeading = wrapper.get('.signup-profile-choice h3');
+    const chooserWrapper = wrapper.get('[data-testid="profile-type-chooser"]');
+    const chooser = wrapper.get('.signup-profile-choice [data-slot="toggle-group"]');
 
     expect(heading.element.tagName).toBe('H1');
     expect(heading.classes()).toContain('signup-profile-choice__title');
+    expect(profileTypeHeading.text()).toBe('Investment profile type');
+    expect(profileTypeHeading.classes()).toContain('text-center');
+    expect(chooserWrapper.classes()).toContain('flex');
+    expect(chooserWrapper.classes()).toContain('justify-center');
+    expect(chooser.classes()).toContain('justify-center');
     expect(options).toHaveLength(3);
     expect(options.every(option => option.attributes('aria-pressed') === 'false')).toBe(true);
 

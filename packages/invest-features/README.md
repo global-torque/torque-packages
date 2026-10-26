@@ -43,6 +43,14 @@ Open-ended offer details render `latest_finalized_nav.nav_usdc_raw` as a dedicat
 Widget exports in `./accreditation`, `./kyc`, `./notifications`, `./profiles`,
 and `./wallet` come from `@global-torque/invest-widgets`.
 
+## Offer regulatory arrays
+
+The `./offers` repository and its `invest-core` formatter consume the canonical
+`IOffer` regulatory arrays and preserve their values and order through cache
+signatures, repository state, and formatted offers. Investor eligibility stays
+an independent field and is not derived from the selected routes. SDK/Tahoe
+activation and consumer rollout remain separate from this package source.
+
 ## Boundary Rules
 
 - Do not export route-level page components from this package.

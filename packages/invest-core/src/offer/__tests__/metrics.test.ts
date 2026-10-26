@@ -55,8 +55,10 @@ describe('offer metrics', () => {
     expect(isOfferNewWithinDays('2026-04-09T12:00:00.000Z', 2, now)).toBe(true);
     expect(isOfferNewWithinDays('2026-04-07T11:59:00.000Z', 2, now)).toBe(false);
     expect(isOfferNewWithinDays('', 2, now)).toBe(false);
-    expect(isRegD506cOffer('Reg D 506(c)')).toBe(true);
-    expect(isRegD506cOffer('Reg CF')).toBe(false);
+    expect(isRegD506cOffer(['US_REG_D_506C'])).toBe(true);
+    expect(isRegD506cOffer(['US_REG_D_506B', 'US_REG_S'])).toBe(false);
+    expect(isRegD506cOffer(['Reg CF'])).toBe(false);
+    expect(isRegD506cOffer(['US_REG_D_506B', 'US_REG_D_506C'])).toBe(true);
   });
 
   it('detects completed funding statuses', () => {

@@ -51,18 +51,60 @@ const normalizeExactDecimalString = (value: unknown): unknown => {
 
 const normalizeOfferCompatibilityFields = (
   offer: Record<string, unknown>,
-): Record<string, unknown> => ({
-  ...offer,
-  price_per_share: normalizeExactDecimalString(offer.price_per_share),
-  min_investment: normalizeExactDecimalString(offer.min_investment),
-});
+): Record<string, unknown> => {
+  const normalized: Record<string, unknown> = {
+    ...offer,
+    price_per_share: normalizeExactDecimalString(offer.price_per_share),
+    min_investment: normalizeExactDecimalString(offer.min_investment),
+  };
+  for (const field of legacyScalarRegulatoryFields) {
+    normalized[field] = Object.hasOwn(offer, field)
+      ? normalizeRegulatoryField(offer[field])
+      : [];
+  }
+  return normalized;
+};
+
+const legacyScalarRegulatoryFields = [
+  'reg_type',
+  'offer_jurisdiction',
+  'offering_mode',
+] as const;
+
+const isValidRegulatoryArray = (value: unknown): value is string[] => (
+  Array.isArray(value)
+  && value.length > 0
+  && value.every((item) => typeof item === 'string' && item.length > 0)
+  && new Set(value).size === value.length
+);
+
+const normalizeRegulatoryField = (value: unknown): unknown => {
+  if (isValidRegulatoryArray(value)) return [...value];
+  if (typeof value === 'string' && value.length > 0) return [value];
+  return value;
+};
+
+const projectRegulatoryFieldForLegacyValidation = (value: unknown): unknown => {
+  if (isValidRegulatoryArray(value)) return value[0];
+  if (value === '' || value === undefined) return [];
+  return value;
+};
 
 const projectOfferForCompatibilityValidation = (
   offer: unknown,
+  sourceOffer: unknown = offer,
 ): unknown => {
   if (!isRecord(offer)) return offer;
   const contractItem = { ...offer };
+  const source = isRecord(sourceOffer) ? sourceOffer : offer;
   delete contractItem.close_at;
+  for (const field of legacyScalarRegulatoryFields) {
+    if (!Object.hasOwn(source, field)) {
+      delete contractItem[field];
+      continue;
+    }
+    contractItem[field] = projectRegulatoryFieldForLegacyValidation(contractItem[field]);
+  }
   return contractItem;
 };
 
@@ -75,21 +117,24 @@ const projectOfferForCompatibilityValidation = (
 export const validateOfferListCompatibilityResponse = (
   value: unknown,
 ): OfferListResponse => {
-  if (!isRecord(value) || !Array.isArray(value.data)) {
+  if (!isRecord(value)) {
     return validateOfferListResponse(value);
   }
+  const rawItems = value.data;
+  if (!Array.isArray(rawItems)) return validateOfferListResponse(value);
 
+  const normalizedItems = rawItems.map((item) => {
+    if (!isRecord(item)) return item;
+    return normalizeOfferCompatibilityFields(item);
+  });
   const normalizedValue = {
     ...value,
-    data: value.data.map((item) => {
-      if (!isRecord(item)) return item;
-      return normalizeOfferCompatibilityFields(item);
-    }),
+    data: normalizedItems,
   };
   validateOfferListResponse({
     ...normalizedValue,
-    data: normalizedValue.data.map((item) => {
-      const contractItem = projectOfferForCompatibilityValidation(item);
+    data: normalizedValue.data.map((item, index) => {
+      const contractItem = projectOfferForCompatibilityValidation(item, rawItems[index]);
       if (!isRecord(contractItem) || typeof contractItem.created_at !== "string") {
         return contractItem;
       }
@@ -123,7 +168,7 @@ export const validateOfferDetailCompatibilityResponse = (
     ? normalizeOfferCompatibilityFields(value)
     : value;
   validateOfferDetailResponse(
-    projectOfferForCompatibilityValidation(normalizedValue),
+    projectOfferForCompatibilityValidation(normalizedValue, value),
   );
   return normalizedValue as OfferDetailResponse;
 };

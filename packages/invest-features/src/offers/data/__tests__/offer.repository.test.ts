@@ -94,7 +94,7 @@ const createOffer = (overrides: Partial<IOffer> = {}): IOffer => ({
   instagram: '',
   telegram: '',
   mastodon: '',
-  reg_type: 'Reg D 506(c)',
+  reg_type: ['Reg D 506(c)'],
   amount_raised: 25000,
   target_raise: 100000,
   ...overrides,

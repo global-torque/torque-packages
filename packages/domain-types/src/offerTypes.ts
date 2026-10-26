@@ -176,7 +176,9 @@ export interface IOffer {
   instagram?: string;
   telegram?: string;
   mastodon?: string;
-  reg_type?: string;
+  reg_type?: string[];
+  offer_jurisdiction?: string[];
+  offering_mode?: string[];
   amount_raised: number;
   target_raise: number;
   tokenization_engine?: string;

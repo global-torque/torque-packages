@@ -127,7 +127,9 @@ export const useRepositoryOffer = defineStore('repository-offer', () => {
       city: offer.city ?? '',
       amount_raised: offer.amount_raised ?? 0,
       target_raise: offer.target_raise ?? 0,
-      reg_type: offer.reg_type ?? '',
+      reg_type: offer.reg_type ?? [],
+      offer_jurisdiction: offer.offer_jurisdiction ?? [],
+      offering_mode: offer.offering_mode ?? [],
       tokenization_engine: offer.tokenization_engine ?? '',
       tokenization_model: offer.tokenization_model ?? '',
       on_chain_summary: onChainSummary

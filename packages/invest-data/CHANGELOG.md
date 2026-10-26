@@ -2,7 +2,16 @@
 
 ## 0.4.17 candidate
 
-- Reissued with the seven-package framework cohort; public contracts are unchanged from 0.4.16.
+- Reissued with the seven-package framework cohort; the offer read-contract
+  update is documented below.
+- Breaking offer read-contract update: canonical `reg_type`,
+  `offer_jurisdiction`, and `offering_mode` values are ordered arrays. The
+  temporary SDK/Tahoe read boundary copies valid arrays, converts legacy
+  non-empty scalar values to singleton arrays and missing properties to empty
+  arrays, and rejects malformed arrays, empty scalars, and other scalar/object
+  values. Only its private legacy-validator projection may use the first scalar;
+  returned values remain arrays. It is transitional compatibility, not SDK/Tahoe
+  activation.
 
 ## 0.4.16 candidate
 

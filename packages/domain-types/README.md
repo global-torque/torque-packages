@@ -34,7 +34,7 @@ This package owns DTOs, status constants, request/response shapes, and data-shap
 - `investmentTypes`: investment status constants, request/response shapes, document contracts, and formatted investment contracts.
 - `kycTypes`: KYC status constants and raw KYC response/launch contracts.
 - `notificationsTypes`: notification payload, token, data-field, EVM progress evidence, and formatted notification contracts.
-- `offerTypes`: offer status constants, offer response/comment payload contracts, and formatted offer contracts.
+- `offerTypes`: offer status constants, offer response/comment payload contracts, and formatted offer contracts. `IOffer.reg_type`, `IOffer.offer_jurisdiction`, and `IOffer.offering_mode` are ordered `string[]` fields under their existing names.
 - `profilesTypes`: profile/user/background-information request and response contracts.
 - `profileTypes`: stable investment profile type constants and unions.
 - `redemptionDigest`: Global Torque Canonical JSON Grammar v1 encoding, SHA-256 helpers, and
@@ -46,6 +46,14 @@ This package owns DTOs, status constants, request/response shapes, and data-shap
 - `walletTypes`: custodial wallet status constants, funding-source, wallet, transaction, and Plaid response contracts.
 - `vaultTypes`: ERC-7540 deployment, position, redemption, signing, operation,
   and fund-manager fulfillment contracts with exact raw-string amounts.
+
+## Offer regulatory arrays
+
+`IOffer.reg_type`, `IOffer.offer_jurisdiction`, and `IOffer.offering_mode` keep
+their existing field names but are ordered `string[]` values. Array order is
+preserved by the package chain. This is a breaking TypeScript shape change for
+consumers that read any of these fields as scalars; consumers must select or
+iterate values explicitly.
 
 ## Example
 
