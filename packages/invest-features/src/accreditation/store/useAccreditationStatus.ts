@@ -13,6 +13,19 @@ import { useProfilesStore } from '@global-torque/invest-runtime/profiles';
 import { PROFILE_TYPES } from '@global-torque/domain-types/profileTypes';
 import { getInvestDataAppLinks } from '@global-torque/invest-data/service/dataClientConfig';
 
+const normalizePathForHistoryBase = (pathname: string, historyBase: string): string => {
+  const normalizedPathname = pathname.startsWith('/') ? pathname : `/${pathname}`;
+  const normalizedBase = `/${historyBase.trim().replace(/^\/+|\/+$/g, '')}`;
+
+  if (normalizedBase === '/') return normalizedPathname;
+  if (normalizedPathname === normalizedBase) return '/';
+  if (normalizedPathname.startsWith(`${normalizedBase}/`)) {
+    return normalizedPathname.slice(normalizedBase.length) || '/';
+  }
+
+  return normalizedPathname;
+};
+
 export const useAccreditationStatus = defineStore('useAccreditationStatus', () => {
   const router = useRouter();
   const dialogsStore = useDialogs();
@@ -85,7 +98,23 @@ export const useAccreditationStatus = defineStore('useAccreditationStatus', () =
     if (!selectedUserProfileData.value?.escrow_id) {
       router.push(`/profile/${accreditationProfileId.value}/personal-details?accreditation=true`);
     } else {
-      router.push(getInvestDataAppLinks().profileAccreditation(Number(accreditationProfileId.value)));
+      if (typeof window === 'undefined') {
+        return;
+      }
+
+      const profileId = Number(accreditationProfileId.value);
+      const destination = new URL(
+        getInvestDataAppLinks().profileAccreditation(profileId),
+        window.location.href,
+      );
+
+      if (destination.origin !== window.location.origin) {
+        window.location.assign(destination.toString());
+        return;
+      }
+
+      const pathname = normalizePathForHistoryBase(destination.pathname, router.options.history.base);
+      await router.push(`${pathname}${destination.search}${destination.hash}`);
     }
   };
 

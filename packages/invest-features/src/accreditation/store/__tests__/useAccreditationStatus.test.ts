@@ -1,5 +1,5 @@
 import {
-  describe, it, expect, vi, beforeEach,
+  describe, it, expect, vi, beforeEach, afterEach,
 } from 'vitest';
 import { setActivePinia, createPinia } from 'pinia';
 import { useProfilesStore } from '@global-torque/invest-runtime/profiles';
@@ -8,6 +8,12 @@ import { AccreditationTypes } from '@global-torque/domain-types/accreditationTyp
 import { AccreditationTextStatuses } from '@global-torque/invest-core/accreditation/status';
 import { ref } from 'vue';
 import { PROFILE_TYPES } from '@global-torque/domain-types/profileTypes';
+import {
+  getInvestDataClientConfig,
+  resetInvestDataClientConfig,
+  setInvestDataClientConfig,
+  type InvestDataClientConfig,
+} from '@global-torque/invest-data/service/dataClientConfig';
 import { useAccreditationStatus } from '../useAccreditationStatus.ts';
 
 vi.mock('@global-torque/invest-runtime/profiles', () => ({
@@ -23,7 +29,29 @@ vi.mock('@global-torque/invest-runtime/session', () => ({
   })),
 }));
 
-const routerMock = { push: vi.fn() };
+const routerMock = {
+  push: vi.fn(),
+  options: { history: { base: '/dashboard/' } },
+};
+
+const originalWindowLocation = window.location;
+let originalAppConfig: InvestDataClientConfig;
+
+const stubWindowLocation = (href: string) => {
+  const location = new URL(href);
+  const assign = vi.fn();
+
+  Object.defineProperty(window, 'location', {
+    configurable: true,
+    value: {
+      assign,
+      href: location.href,
+      origin: location.origin,
+    },
+  });
+
+  return assign;
+};
 
 vi.mock('vue-router', () => ({
   useRouter: () => routerMock,
@@ -58,9 +86,18 @@ function createMockProfilesStore({
 
 describe('useAccreditationStatus', () => {
   beforeEach(() => {
+    originalAppConfig = getInvestDataClientConfig();
     setActivePinia(createPinia());
     routerMock.push.mockClear();
     vi.clearAllMocks();
+  });
+
+  afterEach(() => {
+    resetInvestDataClientConfig(originalAppConfig);
+    Object.defineProperty(window, 'location', {
+      configurable: true,
+      value: originalWindowLocation,
+    });
   });
 
   it('should initialize with correct default values', () => {
@@ -184,7 +221,18 @@ describe('useAccreditationStatus', () => {
     expect(routerMock.push).toHaveBeenCalledWith('/profile/123/personal-details?accreditation=true');
   });
 
-  it('should handle click when user has escrow_id', async () => {
+  it('normalizes same-origin accreditation navigation against the router history base', async () => {
+    setInvestDataClientConfig({
+      ...originalAppConfig,
+      appUrls: {
+        ...originalAppConfig.appUrls,
+        dashboard: 'https://www.torque.investments/dashboard',
+      },
+    });
+    const assign = stubWindowLocation(
+      'https://www.torque.investments/dashboard/profile/123/account',
+    );
+
     const mockProfilesStore = createMockProfilesStore({
       selectedUserProfileData: {
         accreditation_status: AccreditationTypes.new,
@@ -198,10 +246,45 @@ describe('useAccreditationStatus', () => {
     vi.mocked(useProfilesStore).mockReturnValue(mockProfilesStore);
     vi.mocked(useSessionStore).mockReturnValue(mockSessionStore);
 
-      const store = useAccreditationStatus();
+    const store = useAccreditationStatus();
 
     await store.onClick();
     expect(routerMock.push).toHaveBeenCalledWith('/profile/123/accreditation');
+    expect(assign).not.toHaveBeenCalled();
+  });
+
+  it('hands cross-origin accreditation navigation to the browser', async () => {
+    setInvestDataClientConfig({
+      ...originalAppConfig,
+      appUrls: {
+        ...originalAppConfig.appUrls,
+        dashboard: 'https://dashboard.example.test/dashboard',
+      },
+    });
+    const assign = stubWindowLocation(
+      'https://www.torque.investments/dashboard/profile/123/account',
+    );
+
+    const mockProfilesStore = createMockProfilesStore({
+      selectedUserProfileData: {
+        accreditation_status: AccreditationTypes.new,
+        escrow_id: 'escrow123',
+      },
+      selectedUserProfileId: 123,
+    });
+    const mockSessionStore = {
+      userLoggedIn: ref(true),
+    };
+    vi.mocked(useProfilesStore).mockReturnValue(mockProfilesStore);
+    vi.mocked(useSessionStore).mockReturnValue(mockSessionStore);
+
+    const store = useAccreditationStatus();
+
+    await store.onClick();
+    expect(assign).toHaveBeenCalledWith(
+      'https://dashboard.example.test/dashboard/profile/123/accreditation',
+    );
+    expect(routerMock.push).not.toHaveBeenCalled();
   });
 
   it('should not handle click when user is not logged in', async () => {
