@@ -205,10 +205,6 @@ const handleTabChange = (nextTab: string | number) => {
     @media screen and (width < 768px) {
       padding-top: 24px;
     }
-
-    @media screen and (width > 768px){
-      min-height: 1000px;
-    }
   }
 
   // Under the line tabs the panel starts 40px down: the Tabs gap (8px) plus

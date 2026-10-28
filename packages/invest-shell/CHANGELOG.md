@@ -2,6 +2,7 @@
 
 ## 0.4.17 candidate
 
+- `VPageTopInfoAndTabs` tab panels now size to their content instead of forcing a 1000px desktop minimum height.
 - Legacy table width, row border and hover rules now ignore components marked
   with `data-slot`, so semantic tables inside controls such as the calendar do
   not inherit data-table styling.
