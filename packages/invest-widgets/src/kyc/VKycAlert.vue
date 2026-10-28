@@ -44,7 +44,11 @@ const handleDescriptionAction = (event: Event) => emit('descriptionAction', even
     <component :is="alertIcon(variant)" />
     <AlertTitle>{{ title }}</AlertTitle>
     <AlertDescription>
-      <span v-dompurify-html="description" />
+      <!-- eslint-disable-next-line vuejs-accessibility/no-static-element-interactions, vuejs-accessibility/click-events-have-key-events -->
+      <span
+        v-dompurify-html="description"
+        @click="handleDescriptionAction"
+      />
       {{ ' ' }}
       <Button
         v-if="buttonText"

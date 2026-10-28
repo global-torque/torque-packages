@@ -2,6 +2,9 @@
 
 ## 0.4.17 candidate
 
+- Legacy table width, row border and hover rules now ignore components marked
+  with `data-slot`, so semantic tables inside controls such as the calendar do
+  not inherit data-table styling.
 - Accepts `@global-torque/design-tokens` `>=0.2.1 <0.6.0`
   and tests against 0.5.0.
 - The Sidebar07 menu now reads design-tokens purpose classes, such as

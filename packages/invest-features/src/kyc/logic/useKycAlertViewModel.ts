@@ -134,9 +134,7 @@ export function useKycAlertViewModel() {
 
   const onDescriptionAction = (event: Event) => {
     const target = event.target as HTMLElement | null;
-    const currentTarget = event.currentTarget as HTMLElement | null;
-    const contactTarget = target?.closest('[data-action="contact-us"]')
-      || currentTarget?.querySelector('[data-action="contact-us"]');
+    const contactTarget = target?.closest('[data-action="contact-us"]');
 
     if (!contactTarget) {
       return;

@@ -91,7 +91,6 @@ const isDisabledButton = computed(() => !isValid.value || props.loading);
                 :model-value="model.email"
                 placeholder="Email Address"
                 type="email"
-                size="large"
                 @update:model-value="model.email = $event"
               />
             </div>
@@ -99,7 +98,6 @@ const isDisabledButton = computed(() => !isValid.value || props.loading);
               type="submit"
               :disabled="isDisabledButton || loading"
               class="v-form-footer-subscribe__button"
-              size="lg"
             >
                 <Spinner v-if="loading" />
               Subscribe

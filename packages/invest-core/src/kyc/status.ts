@@ -98,7 +98,7 @@ export const KycAlerts: Record<InvestKycStatus, KycAlertContent> = {
   },
   [InvestKycTypesValue.declined]: {
     title: 'Verification Declined',
-    description: 'Your identity verification was declined. <a href="#contact-us-dialog" class="is--link-1" data-action="contact-us">Contact support</a> and we will help resolve the issue.',
+    description: 'Your identity verification was declined. <a href="#contact-us-dialog" data-action="contact-us">Contact support</a> and we will help resolve the issue.',
     class: 'failed',
   },
   [InvestKycTypesValue.approved]: {

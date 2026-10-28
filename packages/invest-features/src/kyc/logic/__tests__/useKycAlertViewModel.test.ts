@@ -226,10 +226,11 @@ describe('useKycAlertViewModel', () => {
 
     expect(preventDefault).toHaveBeenCalled();
     expect(stopPropagation).toHaveBeenCalled();
+    expect(openContactUsDialog).toHaveBeenCalledTimes(1);
     expect(openContactUsDialog).toHaveBeenCalledWith('dashboard verification');
   });
 
-  it('opens contact us when keyboard activation comes from the rich-text wrapper', () => {
+  it('does not open contact us for plain prose when the current target contains a support link', () => {
     const viewModel = createViewModel();
     const preventDefault = vi.fn();
     const stopPropagation = vi.fn();
@@ -245,9 +246,9 @@ describe('useKycAlertViewModel', () => {
       stopPropagation,
     } as unknown as Event);
 
-    expect(preventDefault).toHaveBeenCalled();
-    expect(stopPropagation).toHaveBeenCalled();
-    expect(openContactUsDialog).toHaveBeenCalledWith('dashboard verification');
+    expect(preventDefault).not.toHaveBeenCalled();
+    expect(stopPropagation).not.toHaveBeenCalled();
+    expect(openContactUsDialog).not.toHaveBeenCalled();
   });
 
   it('reflects Plaid loading in the alert CTA state', () => {

@@ -155,6 +155,11 @@ const emit = defineEmits(['click']);
     color: var(--primary);
   }
 
+  &__link:hover,
+  &__trigger:hover {
+    color: var(--primary);
+  }
+
   &__icon {
     width: 20px;
     height: 20px;
