@@ -4,17 +4,23 @@ packages:
 linkWorkspacePackages: true
 
 overrides:
-  'vue': '3.5.39'
-  '@vue/compiler-dom': '3.5.39'
-  '@vue/compiler-sfc': '3.5.39'
-  '@vue/server-renderer': '3.5.39'
+  'vue': '3.5.44'
+  '@vue/compiler-dom': '3.5.44'
+  '@vue/compiler-sfc': '3.5.44'
+  '@vue/server-renderer': '3.5.44'
   'pinia': '3.0.4'
-  'vitepress@1.6.4>vite': '6.4.3'
-  'fast-uri@>=3.0.0 <3.1.6': '3.1.6'
+  'vitepress@1.6.4>vite': '6.4.4'
+  'fast-uri@>=3.0.0 <3.1.9': '3.1.9'
   'nanoid@>=3.0.0 <3.3.18': '3.3.18'
   'postcss@>=8.0.0 <8.5.23': '8.5.23'
   'svgo@>=3.0.0 <3.3.5': '3.3.5'
   'undici@>=7.0.0 <7.29.0': '7.29.0'
+  'undici@>=8.0.0 <8.12.2': '8.12.3'
+  're2js@>=2.2.0 <2.8.7': '2.8.7'
+  'brace-expansion@>=4.0.0 <5.0.12': '5.0.12'
+  '@grpc/grpc-js@<1.13.6': '1.13.6'
+  'source-map-js@>=1.0.0 <1.2.2': '1.2.2'
+  'zod@^4.0.0': '4.6.7'
   '@global-torque/ui-primitives': 'https://github.com/global-torque/vue-ui/releases/download/ui-primitives-v0.2.0/global-torque-ui-primitives-0.2.0.tgz'
 
 # ui-kit 0.4.0 depends on ui-primitives 0.2.0, which exists only as the GitHub release tarball the override above supplies; allow that tarball as a subdependency.
@@ -26,9 +32,9 @@ catalog:
   '@vueuse/core': '^15.0.0'
   '@vueuse/integrations': '^15.0.0'
   'typescript': '^6.0.2'
-  'vite': '^8.1.3'
-  'vitest': '5.0.1'
-  'vue': '3.5.39'
+  'vite': '^8.3.5'
+  'vitest': '5.0.5'
+  'vue': '3.5.44'
   'vue-router': '^5.1.0'
   'vue-tsc': '^3.3.6'
 
