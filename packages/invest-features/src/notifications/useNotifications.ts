@@ -78,7 +78,11 @@ export const useNotifications = defineStore('notifications', () => {
         validItems.push(notification);
         formattedItems.push(notificationCache.format(notification));
       } catch (error) {
-        reportError(error, `Ignored notification ${notification.id} because its share fields are invalid`);
+        reportError(
+          error,
+          `Ignored notification ${notification.id} because its share fields are invalid`,
+          { source: 'notifications', silent: true },
+        );
       }
     }
     formattedNotifications.value = formattedItems;
