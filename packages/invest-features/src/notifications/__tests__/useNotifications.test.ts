@@ -81,7 +81,11 @@ describe('useNotifications', () => {
     expect(loaded.map(item => item.id)).toEqual([1, 3]);
     expect(store.unreadNotificationsCount).toBe(1);
     expect(store.tableData.map(item => item.id)).toEqual([1]);
-    expect(reportError).toHaveBeenCalledOnce();
+    expect(reportError).toHaveBeenCalledWith(
+      expect.any(TypeError),
+      'Ignored notification 2 because its share fields are invalid',
+      { source: 'notifications', silent: true },
+    );
   });
 
   it('marks one or all rows read through the canonical SDK resource', async () => {
