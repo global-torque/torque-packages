@@ -59,9 +59,13 @@ defineProps({
   width: calc(100% + 30px);
   overflow: hidden;
   margin: 0 -15px;
-  padding: 15px 15px 0;
+  padding: 0 15px;
 
   &__slider {
+    [data-slot='carousel-content'] {
+      padding: 15px 0;
+    }
+
     .v-slider-autoplay {
       &__slider {
         margin: 0 -15px;
