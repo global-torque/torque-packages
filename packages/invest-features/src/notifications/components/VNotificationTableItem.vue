@@ -232,7 +232,8 @@ const onMessageClick = () => {
 
     @media screen and (width <= 768px){
       flex-direction: column;
-      min-width: 300px;
+      width: 100%;
+      min-width: 0;
       align-items: flex-start;
     }
   }

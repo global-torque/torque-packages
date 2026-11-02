@@ -237,6 +237,13 @@ const onApplyFilter = (items: NotificationFilter[]) => {
     @media screen and (width <= 768px){
       width: 100%;
       margin-right: 0;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+
+      [data-slot='tabs-list'] {
+        width: max-content;
+        min-width: 100%;
+      }
     }
   }
 

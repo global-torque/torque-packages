@@ -193,7 +193,7 @@ const handleTabChange = (nextTab: string | number) => {
     margin: 40px 0 45px;
 
     @media screen and (width <= 768px){
-      margin: 26px 0;
+      margin: 16px 0;
     }
   }
 
