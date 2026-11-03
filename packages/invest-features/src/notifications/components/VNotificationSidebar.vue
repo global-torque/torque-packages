@@ -94,6 +94,12 @@ const onClose = () => {
     max-width: 700px !important;
     z-index: 101;
 
+    @media screen and (width < 640px) {
+      &[data-side='right'] {
+        width: 90%;
+      }
+    }
+
     .wd-notification-table__toolbar-left {
       flex-wrap: initial;
 
