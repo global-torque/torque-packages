@@ -63,6 +63,13 @@ defineProps({
     .v-logo__desktop {
       height: auto;
     }
+
+    @media screen and (width <= 767px) {
+      .v-logo__full {
+        height: 40px;
+        max-width: 100%;
+      }
+    }
   }
 }
 </style>
