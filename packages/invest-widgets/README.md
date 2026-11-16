@@ -36,6 +36,8 @@ stays in this package and receives behavior only through explicit contracts.
 
 - `.`: root barrel for all widgets and provider APIs.
 - `./providers`: provider installation, test reset, and provider contracts.
+- `./comments`: `VComment`, `VCommentItems`, `VCommentThread`, and
+  `IOfferComment`.
 - `./accreditation`: `VAccreditationAlert`, `VAccreditationButton`,
   `useAccreditationAlert`, and `useAccreditationButton`.
 - `./kyc`: `VKycAlert`, `VKycActionButton`, and `useKycAlertViewModel`.
@@ -63,6 +65,13 @@ accessibility attributes are preserved.
 | `VDialogWalletAuth` | `v-model:open` | none; dialog commands come from `walletAuth.useDialog()` |
 | `VFormWalletAuthOtp` | `v-model:codeValue`, `description`, input labels/helpers, `isBusy`, `isOtpStep`, `mode`, `submitButtonText` | `submit` |
 | `VWalletAuthOperationSummary` | `intent`, `scanBaseUrl`, `networkLabel` | none |
+
+## Comment Contract
+
+`./comments` receives generic offer comments through `IOfferComment`.
+`content_type` and string `object_id` identify the commented target. Each
+comment `author` must provide `first_name` and `last_name`; `VCommentThread`
+renders that name.
 
 ## Composables And Provider Dependencies
 

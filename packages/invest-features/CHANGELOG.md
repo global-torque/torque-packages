@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Offer comment listing and creation now use the generic `offer.offer` target
+  contract. Created comments are treated as awaiting moderation instead of
+  being immediately reloaded as published comments.
 - Session refresh displays the active session email as read-only text and
   confirms it with the existing password, keeping the compact dialog available
   for retry after authentication errors.

@@ -730,4 +730,50 @@ describe('useRepositoryOffer', () => {
       error: null,
     });
   });
+
+  it('lists comments through the generic offer target contract', async () => {
+    const response = {
+      count: 1,
+      data: [{
+        id: 11,
+        content_type: 'offer.offer',
+        object_id: '7',
+        comment: 'Published question',
+        related: 'none',
+        created_at: '2026-11-16T10:00:00Z',
+        author: { first_name: 'Ada', last_name: 'Lovelace' },
+      }],
+    };
+    apiGetMock.mockResolvedValueOnce({ data: response, headers: new Headers() });
+    const store = useRepositoryOffer();
+
+    await expect(store.getOfferComments(7)).resolves.toEqual(response);
+
+    expect(apiGetMock).toHaveBeenCalledWith('/public/comment', {
+      params: { content_type: 'offer.offer', object_id: '7' },
+    });
+    expect(store.getOfferCommentsState.data).toEqual(response);
+  });
+
+  it('creates a moderated generic offer comment', async () => {
+    const payload = {
+      content_type: 'offer.offer' as const,
+      object_id: '7',
+      comment: 'A question awaiting moderation',
+      related: 'investor',
+    };
+    const response = {
+      id: 12,
+      ...payload,
+      created_at: '2026-11-16T10:00:00Z',
+      author: { first_name: 'Grace', last_name: 'Hopper' },
+    };
+    apiPostMock.mockResolvedValueOnce({ data: response, headers: new Headers() });
+    const store = useRepositoryOffer();
+
+    await expect(store.setOfferComment(payload)).resolves.toEqual(response);
+
+    expect(apiPostMock).toHaveBeenCalledWith('/auth/comment', payload);
+    expect(store.setOfferCommentState.data).toEqual(response);
+  });
 });

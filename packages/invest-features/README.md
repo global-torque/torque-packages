@@ -47,6 +47,10 @@ and `./wallet` come from `@global-torque/invest-widgets`.
 
 ## Offer regulatory arrays
 
+Offer comments use `content_type=offer.offer` and the offer ID serialized as
+`object_id`. Newly submitted comments await moderation and are not expected in
+the published comment list immediately.
+
 The `./offers` repository and its `invest-core` formatter consume the canonical
 `IOffer` regulatory arrays and preserve their values and order through cache
 signatures, repository state, and formatted offers. Investor eligibility stays

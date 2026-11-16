@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+### Breaking
+
+- The `./comments` thread contract now identifies its target with generic
+  `content_type` and string `object_id` fields. Consumers must provide the
+  comment `author` as `{ first_name, last_name }`.
+
 ## 0.4.17 candidate
 
 - Reissued with the seven-package framework cohort and the post-0.4.16

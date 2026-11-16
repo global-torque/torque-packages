@@ -34,7 +34,10 @@ This package owns DTOs, status constants, request/response shapes, and data-shap
 - `investmentTypes`: investment status constants, request/response shapes, document contracts, and formatted investment contracts.
 - `kycTypes`: KYC status constants and raw KYC response/launch contracts.
 - `notificationsTypes`: notification payload, token, data-field, EVM progress evidence, and formatted notification contracts.
-- `offerTypes`: offer status constants, offer response/comment payload contracts, and formatted offer contracts. `IOffer.reg_type`, `IOffer.offer_jurisdiction`, and `IOffer.offering_mode` are ordered `string[]` fields under their existing names.
+- `offerTypes`: offer status constants, generic `offer.offer` comment target,
+  payload and response contracts, and formatted offer contracts.
+  `IOffer.reg_type`, `IOffer.offer_jurisdiction`, and `IOffer.offering_mode` are
+  ordered `string[]` fields under their existing names.
 - `profilesTypes`: profile/user/background-information request and response contracts.
 - `profileTypes`: stable investment profile type constants and unions.
 - `redemptionDigest`: Global Torque Canonical JSON Grammar v1 encoding, SHA-256 helpers, and

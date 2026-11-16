@@ -1,6 +1,7 @@
 // @ts-nocheck
 import {
   IOffer,
+  IOfferComment,
   IOfferData,
   IOfferCommentsResponse,
   IOfferCommentPayload,
@@ -32,7 +33,7 @@ type OfferStates = {
   getOffersState: IOfferData;
   getOfferOneState: IOfferFormatted;
   getOfferCommentsState: IOfferCommentsResponse;
-  setOfferCommentState: { id: number };
+  setOfferCommentState: IOfferComment;
   setOfferCommentOptionsState: OptionsStateData;
 };
 
@@ -398,7 +399,12 @@ export const useRepositoryOffer = defineStore('repository-offer', () => {
   const getOfferComments = async (id: number) => {
     let responseHeaders: Headers | null = null;
     const result = await withActionState(getOfferCommentsState, async () => {
-      const response = await apiClient.get(`/public/comment/${id}`);
+      const response = await apiClient.get('/public/comment', {
+        params: {
+          content_type: 'offer.offer',
+          object_id: String(id),
+        },
+      });
       responseHeaders = response.headers;
       return response.data as IOfferCommentsResponse;
     });
@@ -411,7 +417,7 @@ export const useRepositoryOffer = defineStore('repository-offer', () => {
   const setOfferComment = async (payload: IOfferCommentPayload) =>
     withActionState(setOfferCommentState, async () => {
       const response = await apiClient.post('/auth/comment', payload);
-      return response.data as { id: number };
+      return response.data as IOfferComment;
     });
 
   const setOfferCommentOptions = async () =>

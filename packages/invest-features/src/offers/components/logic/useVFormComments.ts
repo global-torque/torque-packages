@@ -10,8 +10,9 @@ import { useRoute } from 'vitepress';
 import type { JSONSchemaType } from 'ajv/dist/types/json-schema';
 
 export type FormModelOfferComment = {
+  content_type: 'offer.offer';
+  object_id: string;
   comment: string;
-  offer_id: number;
   related: string;
 }
 
@@ -48,7 +49,8 @@ export function useVFormComments(offerId: number) {
     schemaFrontend,
     schemaBackend,
     {
-      offer_id: offerId,
+      content_type: 'offer.offer',
+      object_id: String(offerId),
       related: 'none',
     } as FormModelOfferComment,
     fieldsPaths,
@@ -82,7 +84,6 @@ export function useVFormComments(offerId: number) {
 
     await offerRepository.setOfferComment(model);
     if (setOfferCommentState.value.data?.id) {
-      await offerRepository.getOfferComments(offerId);
       model.comment = '';
     }
   };

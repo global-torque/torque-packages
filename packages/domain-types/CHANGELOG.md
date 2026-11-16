@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- Breaking comment contract update: offer comments use the generic
+  `content_type`/`object_id` target, return `author`, and no longer expose or
+  accept `offer_id` or the legacy `user` response field.
+
 ## 0.4.17 candidate
 
 - Reissued with the seven-package framework cohort and widened existing EVM
