@@ -53,6 +53,11 @@ signatures, repository state, and formatted offers. Investor eligibility stays
 an independent field and is not derived from the selected routes. SDK/Tahoe
 activation and consumer rollout remain separate from this package source.
 
+Offer comments use `GET /public/comment` with the generic `offer.offer` target
+and post the same target to `/auth/comment`. The repository validates the
+returned author-bearing DTO before publishing comment state. Successful posts
+clear the form but do not reload the public list while moderation is pending.
+
 ## Boundary Rules
 
 - Do not export route-level page components from this package.

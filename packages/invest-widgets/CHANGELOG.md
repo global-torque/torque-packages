@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- `VCommentThread` now renders the shared generic offer-comment `author`
+  contract instead of the removed `user` shape.
+
 ## 0.4.17 candidate
 
 - Reissued with the seven-package framework cohort and the post-0.4.16

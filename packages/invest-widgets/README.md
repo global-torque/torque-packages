@@ -64,6 +64,9 @@ accessibility attributes are preserved.
 | `VFormWalletAuthOtp` | `v-model:codeValue`, `description`, input labels/helpers, `isBusy`, `isOtpStep`, `mode`, `submitButtonText` | `submit` |
 | `VWalletAuthOperationSummary` | `intent`, `scanBaseUrl`, `networkLabel` | none |
 
+`VCommentThread` receives the shared `IOfferComment` contract and displays its
+required `author.first_name` and `author.last_name` fields.
+
 ## Composables And Provider Dependencies
 
 All store/runtime behavior enters through `InvestWidgetProviders`:

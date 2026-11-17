@@ -5,6 +5,9 @@
 - Session refresh displays the active session email as read-only text and
   confirms it with the existing password, keeping the compact dialog available
   for retry after authentication errors.
+- Offer comments use the generic `offer.offer` target and validate public and
+  create response DTOs before state succeeds. Posted comments clear the form
+  without reloading the moderation-filtered public list.
 
 ## 0.4.17 candidate
 

@@ -2,6 +2,7 @@
 import {
   IOffer,
   IOfferData,
+  IOfferComment,
   IOfferCommentsResponse,
   IOfferCommentPayload,
 } from '@global-torque/domain-types/offerTypes';
@@ -32,7 +33,7 @@ type OfferStates = {
   getOffersState: IOfferData;
   getOfferOneState: IOfferFormatted;
   getOfferCommentsState: IOfferCommentsResponse;
-  setOfferCommentState: { id: number };
+  setOfferCommentState: IOfferComment;
   setOfferCommentOptionsState: OptionsStateData;
 };
 
@@ -57,6 +58,91 @@ const validReportedCount = (value, minimum) => (
   && value >= minimum
     ? value
     : null
+);
+
+const isRecord = (value: unknown): value is Record<string, unknown> => (
+  typeof value === 'object' && value !== null && !Array.isArray(value)
+);
+
+const isValidDateString = (value: unknown): value is string => (
+  typeof value === 'string' && !Number.isNaN(Date.parse(value))
+);
+
+const parseOfferComment = (
+  value: unknown,
+  expectedObjectId: string,
+  errorMessage: string,
+): IOfferComment => {
+  if (!isRecord(value)) throw new TypeError(errorMessage);
+
+  const {
+    id,
+    content_type: contentType,
+    object_id: objectId,
+    created_at: createdAt,
+    comment,
+    related,
+    author,
+  } = value;
+  if (
+    !Number.isSafeInteger(id)
+    || id <= 0
+    || contentType !== 'offer.offer'
+    || typeof objectId !== 'string'
+    || objectId.length === 0
+    || objectId !== expectedObjectId
+    || !isValidDateString(createdAt)
+    || typeof comment !== 'string'
+    || typeof related !== 'string'
+    || !isRecord(author)
+    || typeof author.first_name !== 'string'
+    || typeof author.last_name !== 'string'
+  ) {
+    throw new TypeError(errorMessage);
+  }
+
+  return {
+    id,
+    content_type: contentType,
+    object_id: objectId,
+    created_at: createdAt,
+    comment,
+    related,
+    author: {
+      first_name: author.first_name,
+      last_name: author.last_name,
+    },
+  };
+};
+
+const parseOfferCommentsResponse = (
+  value: unknown,
+  expectedObjectId: string,
+): IOfferCommentsResponse => {
+  const errorMessage = 'Offer comments response is invalid.';
+  if (
+    !isRecord(value)
+    || !Number.isSafeInteger(value.count)
+    || value.count < 0
+    || !Array.isArray(value.data)
+    || value.count < value.data.length
+  ) {
+    throw new TypeError(errorMessage);
+  }
+
+  return {
+    count: value.count,
+    data: value.data.map(comment => parseOfferComment(comment, expectedObjectId, errorMessage)),
+  };
+};
+
+const parseOfferCommentResponse = (
+  value: unknown,
+  expectedObjectId: string,
+): IOfferComment => parseOfferComment(
+  value,
+  expectedObjectId,
+  'Offer comment response is invalid.',
 );
 
 export const useRepositoryOffer = defineStore('repository-offer', () => {
@@ -398,9 +484,12 @@ export const useRepositoryOffer = defineStore('repository-offer', () => {
   const getOfferComments = async (id: number) => {
     let responseHeaders: Headers | null = null;
     const result = await withActionState(getOfferCommentsState, async () => {
-      const response = await apiClient.get(`/public/comment/${id}`);
+      const response = await apiClient.get('/public/comment', {
+        params: { content_type: 'offer.offer', object_id: String(id) },
+      });
       responseHeaders = response.headers;
-      return response.data as IOfferCommentsResponse;
+      const data: unknown = response.data;
+      return parseOfferCommentsResponse(data, String(id));
     });
     if (responseHeaders) {
       applyOfflineHydrationMeta(getOfferCommentsState, responseHeaders);
@@ -411,7 +500,8 @@ export const useRepositoryOffer = defineStore('repository-offer', () => {
   const setOfferComment = async (payload: IOfferCommentPayload) =>
     withActionState(setOfferCommentState, async () => {
       const response = await apiClient.post('/auth/comment', payload);
-      return response.data as { id: number };
+      const data: unknown = response.data;
+      return parseOfferCommentResponse(data, payload.object_id);
     });
 
   const setOfferCommentOptions = async () =>

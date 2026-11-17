@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- Breaking offer comment update: `IOfferComment` now carries its generic
+  `content_type`, string `object_id`, identifier, and `author`; the former
+  `user` shape and offer-specific payload identifier are removed.
+
 ## 0.4.17 candidate
 
 - Reissued with the seven-package framework cohort and widened existing EVM

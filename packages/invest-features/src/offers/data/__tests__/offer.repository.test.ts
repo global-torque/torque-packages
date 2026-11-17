@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
-import type { IOffer } from '@global-torque/domain-types/offerTypes';
+import type { IOffer, IOfferComment } from '@global-torque/domain-types/offerTypes';
 
 const apiGetMock = vi.hoisted(() => vi.fn());
 const apiPostMock = vi.hoisted(() => vi.fn());
@@ -97,6 +97,22 @@ const createOffer = (overrides: Partial<IOffer> = {}): IOffer => ({
   reg_type: ['Reg D 506(c)'],
   amount_raised: 25000,
   target_raise: 100000,
+  ...overrides,
+});
+
+const createOfferComment = (
+  overrides: Partial<IOfferComment> = {},
+): IOfferComment => ({
+  id: 17,
+  content_type: 'offer.offer',
+  object_id: '7',
+  created_at: '2026-03-01T00:00:00.000Z',
+  comment: 'Is this offer still open?',
+  related: 'none',
+  author: {
+    first_name: 'Ada',
+    last_name: 'Lovelace',
+  },
   ...overrides,
 });
 
@@ -729,5 +745,76 @@ describe('useRepositoryOffer', () => {
       loading: false,
       error: null,
     });
+  });
+
+  it('uses generic comment endpoints and stores recognized comment DTOs', async () => {
+    const comment = createOfferComment();
+    const payload = {
+      content_type: 'offer.offer' as const,
+      object_id: '7',
+      comment: 'Is this offer still open?',
+      related: 'none',
+    };
+    apiGetMock.mockResolvedValueOnce({
+      data: { count: 1, data: [comment] },
+      headers: new Headers(),
+    });
+    apiPostMock.mockResolvedValueOnce({ data: comment, headers: new Headers() });
+    const store = useRepositoryOffer();
+
+    await expect(store.getOfferComments(7)).resolves.toEqual({
+      count: 1,
+      data: [comment],
+    });
+    await expect(store.setOfferComment(payload)).resolves.toEqual(comment);
+
+    expect(apiGetMock).toHaveBeenCalledWith('/public/comment', {
+      params: { content_type: 'offer.offer', object_id: '7' },
+    });
+    expect(apiPostMock).toHaveBeenCalledWith('/auth/comment', payload);
+    expect(store.getOfferCommentsState.data).toEqual({ count: 1, data: [comment] });
+    expect(store.setOfferCommentState.data).toEqual(comment);
+  });
+
+  it('rejects legacy, wrong-target, and malformed comment responses before state succeeds', async () => {
+    const comment = createOfferComment();
+    const { author: _author, ...legacyComment } = comment;
+    const payload = {
+      content_type: 'offer.offer' as const,
+      object_id: '7',
+      comment: 'Is this offer still open?',
+    };
+    apiGetMock
+      .mockResolvedValueOnce({
+        data: {
+          count: 1,
+          data: [{
+            ...legacyComment,
+            user: { first_name: 'Ada', last_name: 'Lovelace' },
+          }],
+        },
+        headers: new Headers(),
+      })
+      .mockResolvedValueOnce({
+        data: { count: 1, data: [createOfferComment({ object_id: '8' })] },
+        headers: new Headers(),
+      });
+    apiPostMock.mockResolvedValueOnce({ data: { id: 17 }, headers: new Headers() });
+    const store = useRepositoryOffer();
+
+    await expect(store.getOfferComments(7)).rejects.toThrow(
+      'Offer comments response is invalid.',
+    );
+    expect(store.getOfferCommentsState.data).toBeUndefined();
+
+    await expect(store.getOfferComments(7)).rejects.toThrow(
+      'Offer comments response is invalid.',
+    );
+    expect(store.getOfferCommentsState.data).toBeUndefined();
+
+    await expect(store.setOfferComment(payload)).rejects.toThrow(
+      'Offer comment response is invalid.',
+    );
+    expect(store.setOfferCommentState.data).toBeUndefined();
   });
 });

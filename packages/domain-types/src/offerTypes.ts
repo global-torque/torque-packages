@@ -196,10 +196,13 @@ export interface IOfferSharesError {
 }
 
 export interface IOfferComment {
+  id: number;
+  content_type: 'offer.offer';
+  object_id: string;
   created_at: string;
   comment: string;
-  related?: string;
-  user: {
+  related: string;
+  author: {
     first_name: string;
     last_name: string;
   };
@@ -211,9 +214,10 @@ export interface IOfferCommentsResponse {
 }
 
 export interface IOfferCommentPayload {
+  content_type: 'offer.offer';
+  object_id: string;
   comment: string;
   related?: string;
-  offer_id: number;
 }
 
 export interface IOfferFormatted extends IOffer {
