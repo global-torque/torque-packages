@@ -23,7 +23,7 @@
     "@vue/server-renderer": "3.5.44",
     "@vue/test-utils": "^2.5.1",
     "esbuild": "0.28.2",
-    "happy-dom": "^20.12.0",
+    "happy-dom": "^21.0.4",
     "jsdom": "^30.0.1",
     "prettier": "3.9.7",
     "sass": "^1.101.0",
