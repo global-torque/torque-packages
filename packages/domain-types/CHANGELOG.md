@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Breaking offer response update: `IOffer.valuation`, `IOffer.amount_raised`,
+  and `IOffer.target_raise` are exact decimal strings.
 - Breaking offer comment update: `IOfferComment` now carries its generic
   `content_type`, string `object_id`, identifier, and `author`; the former
   `user` shape and offer-specific payload identifier are removed.

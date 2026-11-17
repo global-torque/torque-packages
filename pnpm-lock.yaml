@@ -290,8 +290,8 @@ importers:
         specifier: workspace:*
         version: link:../invest-core
       '@global-torque/sdk':
-        specifier: https://github.com/global-torque/sdk/releases/download/v0.5.0/global-torque-sdk-0.5.0.tgz
-        version: https://github.com/global-torque/sdk/releases/download/v0.5.0/global-torque-sdk-0.5.0.tgz(typescript@6.0.3)(zod@4.6.2)
+        specifier: https://github.com/global-torque/sdk/releases/download/v0.6.0/global-torque-sdk-0.6.0.tgz
+        version: https://github.com/global-torque/sdk/releases/download/v0.6.0/global-torque-sdk-0.6.0.tgz(typescript@6.0.3)(zod@4.6.2)
     devDependencies:
       typescript:
         specifier: ^6.0.2
@@ -406,8 +406,8 @@ importers:
         specifier: workspace:*
         version: link:../invest-data
       '@global-torque/sdk':
-        specifier: https://github.com/global-torque/sdk/releases/download/v0.5.0/global-torque-sdk-0.5.0.tgz
-        version: https://github.com/global-torque/sdk/releases/download/v0.5.0/global-torque-sdk-0.5.0.tgz(typescript@6.0.3)(zod@4.6.2)
+        specifier: https://github.com/global-torque/sdk/releases/download/v0.6.0/global-torque-sdk-0.6.0.tgz
+        version: https://github.com/global-torque/sdk/releases/download/v0.6.0/global-torque-sdk-0.6.0.tgz(typescript@6.0.3)(zod@4.6.2)
       '@vueuse/core':
         specifier: ^15.0.0
         version: 15.0.0(vue@3.5.44(typescript@6.0.3))
@@ -1462,9 +1462,9 @@ packages:
     version: 0.5.0
     engines: {node: '>=22'}
 
-  '@global-torque/sdk@https://github.com/global-torque/sdk/releases/download/v0.5.0/global-torque-sdk-0.5.0.tgz':
-    resolution: {integrity: sha512-8E0yUerFgr3mr7i2QXk+DCUh02Vd9TOiGFYt4wEHvoHn6g53jXUQEMu4zt0GGTJRcYoixRHmphmzfPkyWZ00QA==, tarball: https://github.com/global-torque/sdk/releases/download/v0.5.0/global-torque-sdk-0.5.0.tgz}
-    version: 0.5.0
+  '@global-torque/sdk@https://github.com/global-torque/sdk/releases/download/v0.6.0/global-torque-sdk-0.6.0.tgz':
+    resolution: {integrity: sha512-lDtzw7yETOhNfoWALq5VxhTiIbz03aL+T0TeV1dDsBbz6FV7p8num1XiM7oyl2eq+n9K3ze25ER1U70EjTEK1w==, tarball: https://github.com/global-torque/sdk/releases/download/v0.6.0/global-torque-sdk-0.6.0.tgz}
+    version: 0.6.0
     engines: {node: '>=22'}
 
   '@global-torque/ui-kit@https://github.com/global-torque/vue-ui/releases/download/v0.4.0/global-torque-ui-kit-0.4.0.tgz':
@@ -5681,7 +5681,7 @@ snapshots:
 
   '@global-torque/design-tokens@https://github.com/global-torque/design-tokens/releases/download/v0.5.0/global-torque-design-tokens-0.5.0.tgz': {}
 
-  '@global-torque/sdk@https://github.com/global-torque/sdk/releases/download/v0.5.0/global-torque-sdk-0.5.0.tgz(typescript@6.0.3)(zod@4.6.2)':
+  '@global-torque/sdk@https://github.com/global-torque/sdk/releases/download/v0.6.0/global-torque-sdk-0.6.0.tgz(typescript@6.0.3)(zod@4.6.2)':
     dependencies:
       '@alchemy/wallet-apis': 5.3.0(typescript@6.0.3)(viem@2.56.3(typescript@6.0.3)(zod@4.6.2))
       '@turnkey/crypto': 2.12.1

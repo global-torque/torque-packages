@@ -151,7 +151,7 @@ export interface IOffer {
   min_investment: string;
   image_link_id: number;
   total_shares: string;
-  valuation: number;
+  valuation: string;
   subscribed_shares: string;
   confirmed_shares: string;
   fund_structure?: 'open_ended' | 'closed_ended';
@@ -179,8 +179,8 @@ export interface IOffer {
   reg_type?: string[];
   offer_jurisdiction?: string[];
   offering_mode?: string[];
-  amount_raised: number;
-  target_raise: number;
+  amount_raised: string;
+  target_raise: string;
   tokenization_engine?: string;
   tokenization_model?: string;
   on_chain_summary?: OfferOnChainSummary;

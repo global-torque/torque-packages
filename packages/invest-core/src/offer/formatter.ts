@@ -87,11 +87,11 @@ export class OfferFormatter {
   }
 
   get amountRaisedFormatted() {
-    return currency(this.offer.amount_raised);
+    return currency(Number(this.offer.amount_raised));
   }
 
   get targetRaiseFormatted() {
-    return this.offer.target_raise ? currency(this.offer.target_raise) : '-';
+    return this.offer.target_raise ? currency(Number(this.offer.target_raise)) : '-';
   }
 
   get pricePerShareFormatted() {
@@ -152,7 +152,7 @@ export class OfferFormatter {
   }
 
   get valuationFormatted() {
-    return this.offer.valuation ? currency(this.offer.valuation) : '-';
+    return this.offer.valuation ? currency(Number(this.offer.valuation)) : '-';
   }
 
   get preMoneyValuationFormatted(): string {
@@ -430,7 +430,7 @@ export class OfferFormatter {
   private createDefaultOffer(): IOffer {
     return {
       id: 0,
-      amount_raised: 0,
+      amount_raised: '0',
       approved_at: '',
       close_at: '',
       confirmed_shares: '0',
@@ -449,8 +449,8 @@ export class OfferFormatter {
       title: '',
       total_shares: '0',
       fund_structure: 'closed_ended',
-      valuation: 0,
-      target_raise: 0,
+      valuation: '0',
+      target_raise: '0',
       additional_details: '',
       website: '',
       security_type: '',
