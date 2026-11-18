@@ -68,15 +68,20 @@ export const createRepositoryStates = <T extends Record<string, unknown>>(
 export const withActionState = async <T>(
   state: Ref<ActionState<T | undefined>>,
   action: () => Promise<T>,
+  isCurrent: () => boolean = () => true,
 ): Promise<T> => {
   state.value = createLoadingActionState<T | undefined>();
   try {
     const result = await action();
-    state.value = createSuccessActionState(result);
+    if (isCurrent()) {
+      state.value = createSuccessActionState(result);
+    }
     return result;
   }
   catch (error) {
-    state.value = createErrorActionState<T | undefined>(error as Error);
+    if (isCurrent()) {
+      state.value = createErrorActionState<T | undefined>(error as Error);
+    }
     throw error;
   }
 };

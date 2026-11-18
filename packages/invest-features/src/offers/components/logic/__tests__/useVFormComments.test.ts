@@ -77,6 +77,7 @@ describe('useVFormComments', () => {
     let submittedPayload: Record<string, unknown> | undefined;
     mocks.setOfferComment.mockImplementation(async (payload) => {
       submittedPayload = { ...payload };
+      return { id: 17 };
     });
     const viewModel = useVFormComments(42);
     viewModel.model.comment = 'Can I invest from Illinois?';
@@ -91,5 +92,37 @@ describe('useVFormComments', () => {
     });
     expect(viewModel.model.comment).toBe('');
     expect(mocks.getOfferComments).not.toHaveBeenCalled();
+  });
+
+  it('prevents duplicate submits while the normalized response is pending', async () => {
+    let resolveSubmit!: (value: unknown) => void;
+    mocks.setOfferComment.mockReturnValueOnce(new Promise((resolve) => {
+      resolveSubmit = resolve;
+    }));
+    const viewModel = useVFormComments(42);
+    viewModel.model.comment = 'Can I invest from Illinois?';
+
+    const firstSubmit = viewModel.sendQuestion();
+    const secondSubmit = viewModel.sendQuestion();
+
+    expect(mocks.setOfferComment).toHaveBeenCalledTimes(1);
+    expect(viewModel.isSubmitting.value).toBe(true);
+
+    resolveSubmit({ id: 17 });
+    await Promise.all([firstSubmit, secondSubmit]);
+
+    expect(viewModel.isSubmitting.value).toBe(false);
+  });
+
+  it('keeps the draft and exposes an inline error when posting fails', async () => {
+    mocks.setOfferComment.mockRejectedValueOnce(new Error('Unable to post question'));
+    const viewModel = useVFormComments(42);
+    viewModel.model.comment = 'Please keep this draft';
+
+    await viewModel.sendQuestion();
+
+    expect(viewModel.model.comment).toBe('Please keep this draft');
+    expect(viewModel.submitError.value?.message).toBe('Unable to post question');
+    expect(viewModel.isSubmitting.value).toBe(false);
   });
 });

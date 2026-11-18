@@ -8,6 +8,7 @@ import { useFormValidation } from '@global-torque/ui-kit/form-validation';
 import { composeInvestmentFormSchema, createInvestmentAjv, prepareInvestmentFormData } from '@global-torque/invest-core/form-validation';
 import { useRoute } from 'vitepress';
 import type { JSONSchemaType } from 'ajv/dist/types/json-schema';
+import type { IOfferComment } from '@global-torque/domain-types/offerTypes';
 
 export type FormModelOfferComment = {
   content_type: 'offer.offer';
@@ -25,7 +26,9 @@ export function useVFormComments(offerId: number) {
   const userSessionStore = useSessionStore();
   const { userLoggedIn } = storeToRefs(userSessionStore);
 
-  const errorData = computed(() => (setOfferCommentState.value.error as any)?.data?.responseJson);
+  const isSubmitting = ref(false);
+  const submitError = ref<Error | null>(null);
+  const errorData = computed(() => (submitError.value as any)?.data?.responseJson);
   const schemaBackend = computed(() => (
     setOfferCommentOptionsState.value.data as JSONSchemaType<FormModelOfferComment> | undefined
   ));
@@ -76,16 +79,29 @@ export function useVFormComments(offerId: number) {
 
   const isAuth = computed(() => userLoggedIn.value);
 
-  const sendQuestion = async () => {
+  const sendQuestion = async (): Promise<IOfferComment | undefined> => {
+    if (isSubmitting.value) return undefined;
     onValidate();
     if (!isValid.value) {
       scrollToError('VFormComments');
       return;
     }
 
-    await offerRepository.setOfferComment(model);
-    if (setOfferCommentState.value.data?.id) {
-      model.comment = '';
+    submitError.value = null;
+    isSubmitting.value = true;
+    try {
+      const comment = await offerRepository.setOfferComment(model);
+      if (comment?.id) {
+        model.comment = '';
+      }
+      return comment;
+    } catch (error) {
+      submitError.value = error instanceof Error
+        ? error
+        : new Error(String(error));
+      return undefined;
+    } finally {
+      isSubmitting.value = false;
     }
   };
 
@@ -106,6 +122,8 @@ export function useVFormComments(offerId: number) {
     schemaObject,
     schemaBackend,
     isDisabledButton,
+    isSubmitting,
+    submitError,
     disclosureCheckbox,
     relatedOptionsFiltered,
     isAuth,

@@ -776,6 +776,31 @@ describe('useRepositoryOffer', () => {
     expect(store.setOfferCommentState.data).toEqual(comment);
   });
 
+  it('drops stale comment GET results when the active offer changes', async () => {
+    let resolveFirst!: (value: unknown) => void;
+    let resolveSecond!: (value: unknown) => void;
+    apiGetMock
+      .mockReturnValueOnce(new Promise(resolve => { resolveFirst = resolve; }))
+      .mockReturnValueOnce(new Promise(resolve => { resolveSecond = resolve; }));
+    const store = useRepositoryOffer();
+
+    const firstRequest = store.getOfferComments(7);
+    const secondRequest = store.getOfferComments(8);
+    const secondComment = createOfferComment({ id: 18, object_id: '8' });
+    const firstComment = createOfferComment({ object_id: '7' });
+    resolveFirst({ data: { count: 1, data: [firstComment] }, headers: new Headers() });
+    await firstRequest;
+    expect(store.getOfferCommentsState.loading).toBe(true);
+
+    resolveSecond({ data: { count: 1, data: [secondComment] }, headers: new Headers() });
+    await secondRequest;
+
+    expect(store.getOfferCommentsState.data).toEqual({
+      count: 1,
+      data: [secondComment],
+    });
+  });
+
   it('rejects legacy, wrong-target, and malformed comment responses before state succeeds', async () => {
     const comment = createOfferComment();
     const { author: _author, ...legacyComment } = comment;

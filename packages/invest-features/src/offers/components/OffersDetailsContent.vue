@@ -145,8 +145,11 @@ const { signIn } = useOfferSignIn();
     </TabsContent>
     <TabsContent
       :value="OfferTabTypes.comments"
+      force-mount
+      class="offer-details-content__comments"
     >
       <OffersComments
+        :key="offer.id"
         :offer-id="offer.id"
         :offer-name="offer.name"
         :loading="loading"
@@ -159,6 +162,10 @@ const { signIn } = useOfferSignIn();
 <style lang="scss">
 .offer-details-content {
   color: var(--foreground);
+
+  &__comments[data-state='inactive'] {
+    display: none;
+  }
 
   @media screen and (min-width: 980px){
     margin-bottom: 40px;

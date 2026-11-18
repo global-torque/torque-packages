@@ -13,7 +13,9 @@ const state = vi.hoisted(() => ({
   getOfferCommentsState: {
     value: {
       loading: false,
-      data: undefined as undefined | { data: Array<{ id: number; comment: string }> },
+      data: undefined as undefined | {
+        data: Array<{ id: number; object_id: string; comment: string }>;
+      },
     },
   },
   setOfferCommentOptionsState: {
@@ -37,7 +39,7 @@ vi.mock('../../../data/offer.repository.ts', () => ({
   }),
 }));
 
-function mountComposable(props = reactive({ loading: false })) {
+function mountComposable(props = reactive({ loading: false, offerId: 42 })) {
   let viewModel!: ReturnType<typeof useOffersComments>;
 
   mount(defineComponent({
@@ -73,21 +75,61 @@ describe('useOffersComments', () => {
   });
 
   it('exposes comments and merged loading state', () => {
-    const props = reactive({ loading: true });
+    const props = reactive({ loading: true, offerId: 42 });
     state.getOfferCommentsState.value = {
       loading: false,
-      data: {
-        data: [{ id: 1, comment: 'Question' }],
+        data: {
+        data: [{ id: 1, object_id: '42', comment: 'Question' }],
       },
     };
 
     const viewModel = mountComposable(props);
 
-    expect(viewModel.comments.value).toEqual([{ id: 1, comment: 'Question' }]);
+    expect(viewModel.comments.value).toEqual([
+      { id: 1, object_id: '42', comment: 'Question' },
+    ]);
     expect(viewModel.isLoading.value).toBe(true);
 
     props.loading = false;
     state.setOfferCommentOptionsState.value.loading = true;
     expect(viewModel.isLoading.value).toBe(true);
+  });
+
+  it('filters comments to the active offer and merges submitted comments by ID', () => {
+    const props = reactive({ loading: false, offerId: 42 });
+    state.getOfferCommentsState.value = {
+      loading: false,
+      data: {
+        data: [
+          { id: 1, object_id: '41', comment: 'Other offer' },
+          { id: 2, object_id: '42', comment: 'Existing question' },
+        ],
+      },
+    };
+
+    const viewModel = mountComposable(props);
+
+    expect(viewModel.comments.value).toEqual([
+      { id: 2, object_id: '42', comment: 'Existing question' },
+    ]);
+
+    viewModel.addSubmittedComment({
+      id: 2,
+      object_id: '42',
+      comment: 'Updated question',
+    });
+    viewModel.addSubmittedComment({
+      id: 3,
+      object_id: '42',
+      comment: 'New question',
+    });
+
+    expect(viewModel.comments.value).toEqual([
+      { id: 2, object_id: '42', comment: 'Updated question' },
+      { id: 3, object_id: '42', comment: 'New question' },
+    ]);
+
+    props.offerId = 43;
+    expect(viewModel.comments.value).toEqual([]);
   });
 });

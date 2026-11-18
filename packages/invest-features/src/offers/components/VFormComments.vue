@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
+import type { IOfferComment } from '@global-torque/domain-types/offerTypes';
 import { VFormInput } from '@global-torque/ui-kit/form';
 import { Button } from '@global-torque/ui-primitives/button';
 import { VFormCheckbox } from '@global-torque/ui-kit/form';
@@ -8,20 +9,18 @@ import { VFormRadio } from '@global-torque/ui-kit/form';
 import { useVFormComments } from './logic/useVFormComments.ts';
 import { Spinner } from '@global-torque/ui-primitives/spinner';
 
-const props = defineProps({
-  offerId: {
-    type: Number,
-    required: true,
-  },
-  offerName: {
-    type: String,
-    required: true,
-  },
-  loading: {
-    type: Boolean,
-    default: false,
-  },
+const props = withDefaults(defineProps<{
+  offerId: number;
+  offerName: string;
+  loading?: boolean;
+}>(), {
+  loading: false,
 });
+
+const emit = defineEmits<{
+  (event: 'submit-state', value: boolean): void;
+  (event: 'submitted', comment: IOfferComment): void;
+}>();
 
 const {
   model,
@@ -34,6 +33,8 @@ const {
   errorData,
   setOfferCommentState,
   setOfferCommentOptionsState,
+  isSubmitting,
+  submitError,
   isFieldRequired,
   getErrorText,
 } = useVFormComments(props.offerId);
@@ -43,6 +44,17 @@ const commentErrorText = computed(() => (
     .flat()
     .filter((item): item is string => typeof item === 'string' && item.length > 0)
 ));
+
+const submitErrorText = computed(() => (
+  submitError.value?.message || 'Unable to post your question. Please try again.'
+));
+
+watch(isSubmitting, value => emit('submit-state', value), { flush: 'sync' });
+
+const handleSendQuestion = async () => {
+  const submittedComment = await sendQuestion();
+  if (submittedComment) emit('submitted', submittedComment);
+};
 </script>
 
 <template>
@@ -86,15 +98,23 @@ const commentErrorText = computed(() => (
         </Button>
         <Button
           v-else
-          :disabled="isDisabledButton || loading || setOfferCommentState.loading || setOfferCommentOptionsState.loading"
+          :disabled="isDisabledButton || loading || isSubmitting || setOfferCommentOptionsState.loading"
           class="v-form-comments__button"
-          @click="sendQuestion"
+          @click="handleSendQuestion"
           size="lg"
         >
             <Spinner v-if="loading" />
           Post
         </Button>
       </div>
+      <p
+        v-if="submitError"
+        role="alert"
+        aria-live="polite"
+        class="v-form-comments__error"
+      >
+        {{ submitErrorText }}
+      </p>
       <Transition
         name="fade"
         mode="out-in"

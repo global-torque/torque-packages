@@ -333,6 +333,7 @@ export const useRepositoryOffer = defineStore('repository-offer', () => {
     setOfferCommentState: undefined,
     setOfferCommentOptionsState: undefined,
   });
+  let getOfferCommentsRequestId = 0;
 
   const getOffers = async (maxPages = MAX_PUBLIC_OFFER_PAGES) => {
     let responseHeaders: Headers | null = null;
@@ -482,6 +483,7 @@ export const useRepositoryOffer = defineStore('repository-offer', () => {
   };
 
   const getOfferComments = async (id: number) => {
+    const requestId = ++getOfferCommentsRequestId;
     let responseHeaders: Headers | null = null;
     const result = await withActionState(getOfferCommentsState, async () => {
       const response = await apiClient.get('/public/comment', {
@@ -490,8 +492,8 @@ export const useRepositoryOffer = defineStore('repository-offer', () => {
       responseHeaders = response.headers;
       const data: unknown = response.data;
       return parseOfferCommentsResponse(data, String(id));
-    });
-    if (responseHeaders) {
+    }, () => requestId === getOfferCommentsRequestId);
+    if (responseHeaders && requestId === getOfferCommentsRequestId) {
       applyOfflineHydrationMeta(getOfferCommentsState, responseHeaders);
     }
     return result;
@@ -545,6 +547,7 @@ export const useRepositoryOffer = defineStore('repository-offer', () => {
   };
 
   const resetAll = () => {
+    getOfferCommentsRequestId += 1;
     offerCache.clear();
     resetActionStates();
   };

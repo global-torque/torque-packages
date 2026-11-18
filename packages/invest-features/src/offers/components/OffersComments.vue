@@ -1,7 +1,10 @@
 <script setup lang="ts">
+import { ref, watch } from 'vue';
+import type { IOfferComment } from '@global-torque/domain-types/offerTypes';
 import VFormComments from './VFormComments.vue';
 import VCommentItems from '@global-torque/invest-widgets/comments/VCommentItems.vue';
 import { useOffersComments } from './logic/useOffersComments.ts';
+import { Skeleton } from '@global-torque/ui-primitives/skeleton';
 
 const props = withDefaults(defineProps<{
   offerId: number;
@@ -15,8 +18,23 @@ const props = withDefaults(defineProps<{
 
 const {
   comments,
+  commentsLoading,
   isLoading,
+  addSubmittedComment,
 } = useOffersComments(props);
+const isSubmitting = ref(false);
+
+const handleSubmitState = (value: boolean) => {
+  isSubmitting.value = value;
+};
+
+const handleSubmitted = (comment: IOfferComment) => {
+  addSubmittedComment(comment);
+};
+
+watch(() => props.allowSubmission, (allowSubmission) => {
+  if (!allowSubmission) isSubmitting.value = false;
+});
 </script>
 
 <template>
@@ -31,14 +49,29 @@ const {
       :offer-id="offerId"
       :offer-name="offerName"
       :loading="isLoading"
+      @submit-state="handleSubmitState"
+      @submitted="handleSubmitted"
     />
     <VCommentItems
-      v-if="(comments && comments.length > 0) || isLoading"
+      v-if="(comments && comments.length > 0) || commentsLoading || isSubmitting"
       :comments="comments"
-      :loading="isLoading"
+      :loading="commentsLoading"
     />
+    <div
+      v-if="isSubmitting"
+      role="status"
+      aria-live="polite"
+      aria-label="Posting your question"
+      class="offer-comments__pending"
+    >
+      <Skeleton
+        class="offer-comments__skeleton"
+        aria-hidden="true"
+        :style="{ width: '100%', height: '72px' }"
+      />
+    </div>
     <p
-      v-else
+      v-if="comments.length === 0 && !commentsLoading && !isSubmitting"
       class="offer-comments__info"
     >
       There are no questions yet, but you can be the first!
@@ -50,7 +83,11 @@ const {
 .offer-comments {
 
   &__skeleton {
-    margin-top: 20px;
+    width: 100%;
+  }
+
+  &__pending {
+    margin-top: 0;
   }
 
   &__info {
