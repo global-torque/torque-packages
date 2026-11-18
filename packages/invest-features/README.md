@@ -45,6 +45,14 @@ Session refresh displays the active session email as read-only text and confirms
 Widget exports in `./accreditation`, `./kyc`, `./notifications`, `./profiles`,
 and `./wallet` come from `@global-torque/invest-widgets`.
 
+## Notification table composition
+
+`VNotificationTable` accepts optional `row-actions` and `after-row` slots.
+Both receive `{ item: IFormattedNotification }`. `row-actions` renders in the
+item action area. `after-row` renders immediately after that item row. Its
+consumer must provide one complete `TableRow` with one `TableCell` using
+`colspan="2"`. Small notification tables do not render either slot.
+
 ## Offer regulatory arrays
 
 The `./offers` repository and its `invest-core` formatter consume the canonical

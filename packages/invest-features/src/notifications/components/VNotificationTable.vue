@@ -8,6 +8,7 @@ import { CheckIcon } from '@global-torque/invest-widgets/icons';
 import { TabsList, TabsTrigger } from '@global-torque/ui-primitives/tabs';
 import { VUrlSyncedTabs } from '@global-torque/ui-kit/url-synced-tabs';
 import { Table, TableBody, TableEmpty } from '@global-torque/ui-primitives/table';
+import type { IFormattedNotification } from '@global-torque/domain-types/notificationsTypes';
 import { useNotifications, type NotificationFilter } from '../useNotifications.ts';
 import VNotificationTableItem from './VNotificationTableItem.vue';
 import VNotificationTableItemSkeleton from './VNotificationTableItemSkeleton.vue';
@@ -16,6 +17,11 @@ const props = defineProps({
   small: Boolean,
   isStaticSite: String, // is the component external and nee links instead of router
 });
+
+defineSlots<{
+  'row-actions'?: (props: { item: IFormattedNotification }) => unknown;
+  'after-row'?: (props: { item: IFormattedNotification }) => unknown;
+}>();
 
 const notificationsStore = useNotifications();
 const {
@@ -118,13 +124,32 @@ const onApplyFilter = (items: NotificationFilter[]) => {
         />
       </TableBody>
       <TableBody v-else-if="data.length">
-        <VNotificationTableItem
+        <template
           v-for="item in data"
           :key="item.id"
-          :data="item"
-          :search="search"
-          :is-static-site="isStaticSite"
-        />
+        >
+          <VNotificationTableItem
+            :data="item"
+            :search="search"
+            :is-static-site="isStaticSite"
+          >
+            <template
+              v-if="!small && $slots['row-actions']"
+              #actions
+            >
+              <slot
+                name="row-actions"
+                :item="item"
+              />
+            </template>
+          </VNotificationTableItem>
+          <template v-if="!small && $slots['after-row']">
+            <slot
+              name="after-row"
+              :item="item"
+            />
+          </template>
+        </template>
       </TableBody>
       <TableBody v-else>
         <TableEmpty :colspan="2">

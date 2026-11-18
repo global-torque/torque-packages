@@ -12,7 +12,13 @@ vi.mock('../useNotifications.ts', () => ({
     actions: { onSidebarToggle(open: boolean) { this.isSidebarOpen = open; } },
   }),
 }));
-vi.mock('../components/VNotificationTable.vue', () => ({ default: { template: '<div>Updates</div>' } }));
+vi.mock('../components/VNotificationTable.vue', () => ({
+  default: {
+    name: 'VNotificationTable',
+    props: { small: Boolean },
+    template: '<div>Updates</div>',
+  },
+}));
 
 import VNotificationSidebar from '../components/VNotificationSidebar.vue';
 import { useNotifications } from '../useNotifications.ts';
@@ -33,6 +39,10 @@ describe('Notifications sheet', () => {
     expect(content.textContent).toContain('Notifications');
     expect(content.contains(document.activeElement)).toBe(true);
     expect(content.querySelector('a')?.getAttribute('href')).toBe('/notifications');
+    const table = wrapper.getComponent({ name: 'VNotificationTable' });
+    expect(table.props('small')).toBe(true);
+    expect(table.vm.$slots['row-actions']).toBeUndefined();
+    expect(table.vm.$slots['after-row']).toBeUndefined();
     expect(controls[0].querySelector('.v-notification-sidebar__close-outline')).not.toBeNull();
     if (action === 'click') (controls[0] as HTMLButtonElement).click();
     else document.activeElement?.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));

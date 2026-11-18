@@ -22,6 +22,10 @@ const props = defineProps({
   loading: Boolean,
 });
 
+defineSlots<{
+  actions?: () => unknown;
+}>();
+
 const onMarkAsRead = async () => {
   if (!props.data?.id) return;
 
@@ -138,6 +142,7 @@ const onMessageClick = () => {
 
           :style="{ width: '143px', height: '32px' }"
         />
+        <slot name="actions" />
       </div>
       <span
         v-if="data?.isUnread"

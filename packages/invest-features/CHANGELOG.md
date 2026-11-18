@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- `VNotificationTable` now accepts additive `row-actions` and `after-row`
+  slots with an `IFormattedNotification` item scope. Small tables suppress both
+  slots. `after-row` consumers provide their complete two-column table row.
 - Session refresh displays the active session email as read-only text and
   confirms it with the existing password, keeping the compact dialog available
   for retry after authentication errors.
