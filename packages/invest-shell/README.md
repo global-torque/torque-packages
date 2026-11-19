@@ -24,6 +24,10 @@ The shell declares its four internal framework dependencies at the exact matchin
   and session contact details through `useContactUsSessionPrefill`.
 - PWA policy/test constants and registration bridge exports.
 
+`VPwaStatusStack` renders update and offline status surfaces. It does not mount
+the install-prompt composable, so hosts retain native `beforeinstallprompt`
+behavior unless they explicitly opt into `usePwaInstallPrompt`.
+
 `VHeaderPWA` accepts an optional `brandName` for the accessible logo label. The
 value is trimmed and falls back to the installed application brand title when
 omitted or blank. The resolved name is passed to both the responsive header and

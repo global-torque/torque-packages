@@ -67,7 +67,9 @@ their source behavior.
   stores, analytics, notifications, and SEO hooks.
 - `./api-client-hooks`: API-client offline/analytics hook installer.
 - `./pwa`, `./pwa/*`: PWA policy, offline persistence, detector, registration
-  bridge, and composables.
+  bridge, and composables. `usePwaInstallPrompt` is opt-in, and the shared shell
+  status stack does not intercept `beforeinstallprompt`; callers that supply the
+  complete install telemetry option group retain install event tracking.
 - `./session`: `useSessionStore`.
 - `./profiles`: `useProfilesStore` selected-profile coordination.
 - `./loader`: `useGlobalLoader` for Dashboard, Invest, and shared investment

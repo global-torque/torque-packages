@@ -8,19 +8,43 @@ import type { InstallPromptOutcome, InstallPromptState } from './usePwaInstallPr
 
 type MaybeError = unknown;
 
-export interface UsePwaTelemetryOptions {
-  canInstall: Readonly<Ref<boolean>>;
-  installState: Readonly<Ref<InstallPromptState>>;
+export interface UsePwaTelemetryLifecycleOptions {
   isUpdateReady: Readonly<Ref<boolean>>;
   isOfflineReady: Readonly<Ref<boolean>>;
   isOffline: Readonly<Ref<boolean>>;
   isReconnected: Readonly<Ref<boolean>>;
   registrationError: Readonly<Ref<MaybeError>>;
-  promptInstall: () => Promise<InstallPromptOutcome | null>;
-  dismissInstallPrompt: () => void;
   reloadApp: () => Promise<void>;
   dismissUpdateReady: () => void;
   dismissOfflineReady: () => void;
+}
+
+export interface UsePwaTelemetryInstallOptions {
+  canInstall: Readonly<Ref<boolean>>;
+  installState: Readonly<Ref<InstallPromptState>>;
+  promptInstall: () => Promise<InstallPromptOutcome | null>;
+  dismissInstallPrompt: () => void;
+}
+
+export interface UsePwaTelemetryOptions
+  extends UsePwaTelemetryLifecycleOptions, UsePwaTelemetryInstallOptions {}
+
+export type UsePwaTelemetryLifecycleOnlyOptions = UsePwaTelemetryLifecycleOptions & {
+  canInstall?: never;
+  installState?: never;
+  promptInstall?: never;
+  dismissInstallPrompt?: never;
+};
+
+export interface UsePwaTelemetryLifecycleHandlers {
+  handleReloadApp: () => Promise<void>;
+  handleDismissUpdate: () => void;
+  handleDismissOfflineReady: () => void;
+}
+
+export interface UsePwaTelemetryInstallHandlers {
+  handleInstall: () => Promise<void>;
+  handleDismissInstall: () => void;
 }
 
 const getRequestPath = () => {
@@ -85,7 +109,27 @@ const PWA_TELEMETRY_EVENTS = {
 
 type PwaTelemetryEventKey = keyof typeof PWA_TELEMETRY_EVENTS;
 
-export function usePwaTelemetry(options: UsePwaTelemetryOptions) {
+type UsePwaTelemetryInput = UsePwaTelemetryOptions | UsePwaTelemetryLifecycleOnlyOptions;
+type FullUsePwaTelemetryHandlers = UsePwaTelemetryLifecycleHandlers & UsePwaTelemetryInstallHandlers;
+
+const hasInstallTelemetry = (
+  options: UsePwaTelemetryInput,
+): options is UsePwaTelemetryOptions => (
+  options.canInstall != null
+  && options.installState != null
+  && typeof options.promptInstall === 'function'
+  && typeof options.dismissInstallPrompt === 'function'
+);
+
+export function usePwaTelemetry(
+  options: UsePwaTelemetryLifecycleOnlyOptions,
+): UsePwaTelemetryLifecycleHandlers;
+export function usePwaTelemetry(
+  options: UsePwaTelemetryOptions,
+): FullUsePwaTelemetryHandlers;
+export function usePwaTelemetry(
+  options: UsePwaTelemetryInput,
+): UsePwaTelemetryLifecycleHandlers | FullUsePwaTelemetryHandlers {
   const { sendEvent } = useSendAnalyticsEvent({
     serviceName: 'vitepress-pwa',
   });
@@ -101,11 +145,13 @@ export function usePwaTelemetry(options: UsePwaTelemetryOptions) {
     });
   };
 
-  watch(options.installState, (value, oldValue) => {
-    if (value !== 'hidden' && oldValue === 'hidden') {
-      track('installPromptShown');
-    }
-  });
+  if (hasInstallTelemetry(options)) {
+    watch(options.installState, (value, oldValue) => {
+      if (value !== 'hidden' && oldValue === 'hidden') {
+        track('installPromptShown');
+      }
+    });
+  }
 
   watch(options.isUpdateReady, (value, oldValue) => {
     if (value && !oldValue) {
@@ -137,21 +183,6 @@ export function usePwaTelemetry(options: UsePwaTelemetryOptions) {
     }
   });
 
-  const handleInstall = async () => {
-    const outcome = await options.promptInstall();
-
-    if (outcome === 'accepted') {
-      track('installAccepted');
-    } else if (outcome === 'dismissed') {
-      track('installDismissed');
-    }
-  };
-
-  const handleDismissInstall = () => {
-    options.dismissInstallPrompt();
-    track('installDismissed');
-  };
-
   const handleReloadApp = async () => {
     track('updateAccepted');
     await options.reloadApp();
@@ -167,11 +198,30 @@ export function usePwaTelemetry(options: UsePwaTelemetryOptions) {
     track('offlineReadyDismissed');
   };
 
-  return {
-    handleInstall,
-    handleDismissInstall,
+  const lifecycleHandlers = {
     handleReloadApp,
     handleDismissUpdate,
     handleDismissOfflineReady,
+  };
+
+  if (!hasInstallTelemetry(options)) {
+    return lifecycleHandlers;
+  }
+
+  return {
+    ...lifecycleHandlers,
+    handleInstall: async () => {
+      const outcome = await options.promptInstall();
+
+      if (outcome === 'accepted') {
+        track('installAccepted');
+      } else if (outcome === 'dismissed') {
+        track('installDismissed');
+      }
+    },
+    handleDismissInstall: () => {
+      options.dismissInstallPrompt();
+      track('installDismissed');
+    },
   };
 }

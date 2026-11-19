@@ -2,6 +2,10 @@
 
 ## 0.4.17 candidate
 
+- `VPwaStatusStack` now renders update and offline status surfaces without
+  mounting the install-prompt composable. Hosts that need install guidance can
+  opt into `usePwaInstallPrompt` directly, preserving native browser install
+  behavior by default.
 - `VPageTopInfoAndTabs` tab panels now size to their content instead of forcing a 1000px desktop minimum height.
 - Legacy table width, row border and hover rules now ignore components marked
   with `data-slot`, so semantic tables inside controls such as the calendar do

@@ -17,14 +17,17 @@ vi.mock('../../analytics/useSendAnalyticsEvent.ts', () => ({
   }),
 }));
 
-import { usePwaTelemetry } from '../usePwaTelemetry.ts';
+import {
+  usePwaTelemetry,
+  type UsePwaTelemetryLifecycleHandlers,
+} from '../usePwaTelemetry.ts';
 
 const mountTelemetry = (options: Partial<Parameters<typeof usePwaTelemetry>[0]> = {}) => {
   let api!: ReturnType<typeof usePwaTelemetry>;
 
   const wrapper = mount(defineComponent({
     setup() {
-      api = usePwaTelemetry({
+      const telemetryOptions: Parameters<typeof usePwaTelemetry>[0] = {
         canInstall: ref(false),
         installState: ref('hidden'),
         isUpdateReady: ref(false),
@@ -37,6 +40,9 @@ const mountTelemetry = (options: Partial<Parameters<typeof usePwaTelemetry>[0]> 
         reloadApp: async () => {},
         dismissUpdateReady: vi.fn(),
         dismissOfflineReady: vi.fn(),
+      };
+      api = usePwaTelemetry({
+        ...telemetryOptions,
         ...options,
       });
       return () => null;
@@ -69,6 +75,73 @@ describe('usePwaTelemetry', () => {
       event_type: 'open',
       httpRequestUrl: 'pwa://install/prompt-shown',
     }));
+
+    wrapper.unmount();
+  });
+
+  it('tracks lifecycle events without install telemetry options', async () => {
+    const isUpdateReady = ref(false);
+    const isOffline = ref(false);
+    let api!: UsePwaTelemetryLifecycleHandlers;
+
+    const wrapper = mount(defineComponent({
+      setup() {
+        api = usePwaTelemetry({
+          isUpdateReady,
+          isOfflineReady: ref(false),
+          isOffline,
+          isReconnected: ref(false),
+          registrationError: ref(null),
+          reloadApp: async () => {},
+          dismissUpdateReady: vi.fn(),
+          dismissOfflineReady: vi.fn(),
+        });
+        return () => null;
+      },
+    }));
+
+    isUpdateReady.value = true;
+    isOffline.value = true;
+    await nextTick();
+
+    expect(sendEvent).toHaveBeenCalledWith(expect.objectContaining({
+      httpRequestUrl: 'pwa://update/available',
+    }));
+    expect(sendEvent).toHaveBeenCalledWith(expect.objectContaining({
+      httpRequestUrl: 'pwa://offline/entered',
+    }));
+    expect(sendEvent).toHaveBeenCalledTimes(2);
+    expect(api).not.toHaveProperty('handleInstall');
+    expect(api).not.toHaveProperty('handleDismissInstall');
+
+    wrapper.unmount();
+  });
+
+  it('treats explicitly undefined install options as lifecycle-only', () => {
+    let api!: UsePwaTelemetryLifecycleHandlers;
+
+    const wrapper = mount(defineComponent({
+      setup() {
+        api = usePwaTelemetry({
+          canInstall: undefined,
+          installState: undefined,
+          promptInstall: undefined,
+          dismissInstallPrompt: undefined,
+          isUpdateReady: ref(false),
+          isOfflineReady: ref(false),
+          isOffline: ref(false),
+          isReconnected: ref(false),
+          registrationError: ref(null),
+          reloadApp: async () => {},
+          dismissUpdateReady: vi.fn(),
+          dismissOfflineReady: vi.fn(),
+        });
+        return () => null;
+      },
+    }));
+
+    expect(api).not.toHaveProperty('handleInstall');
+    expect(api).not.toHaveProperty('handleDismissInstall');
 
     wrapper.unmount();
   });

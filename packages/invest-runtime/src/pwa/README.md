@@ -9,7 +9,7 @@ This directory is the source of truth for the shared PWA implementation used by 
 - prompt-based service worker update flow with explicit user action
 - offline-ready, update-ready, registration-error, and reconnect status messaging
 - offline read-only support for audited GET surfaces only
-- shared status-stack UI that coordinates install, update, and offline banners
+- shared status-stack UI that coordinates update and offline banners
 - browser-fallback service worker registration bridge plus host-specific Vite PWA bridge wiring
 - local deterministic PWA test hooks for install and update flows on localhost
 
@@ -26,6 +26,7 @@ This directory is the source of truth for the shared PWA implementation used by 
 ### Install flow
 
 - `usePwaInstallPrompt.ts` listens for `beforeinstallprompt`, `appinstalled`, `storage`, and `visibilitychange`
+- `usePwaInstallPrompt.ts` remains an explicit opt-in composable; the shared shell status stack does not mount it, so `beforeinstallprompt` keeps the browser's native behavior until a host takes ownership
 - dismissal is persisted in local storage with a cooldown to avoid re-showing the prompt too aggressively
 - standalone sessions suppress the install prompt
 - iOS Safari falls back to manual “Add to Home Screen” guidance
@@ -59,9 +60,11 @@ This directory is the source of truth for the shared PWA implementation used by 
 
 ### UI composition
 
-- `VPwaStatusStack.vue` is the composition surface for install, update, and offline banners
+- `VPwaStatusStack.vue` is the composition surface for update and offline banners
 - `VPwaInstallPrompt.vue`, `VPwaUpdatePrompt.vue`, and `VOfflineStatusBanner.vue` are presentational components
 - the host shell mounts the stack and controls footer-offset behavior based on whether the mobile footer menu is actually visible
+
+`usePwaTelemetry` accepts lifecycle-only options for update, offline, and service-worker telemetry. Install telemetry remains available when a caller supplies the complete install option group (`canInstall`, `installState`, `promptInstall`, and `dismissInstallPrompt`); partial install groups are not valid.
 
 ## Important files
 

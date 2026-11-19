@@ -2,6 +2,11 @@
 
 ## 0.4.17 candidate
 
+- `usePwaTelemetry` now supports lifecycle-only options for update, offline, and
+  service-worker telemetry. Install telemetry still requires the complete install
+  option group.
+- The shared shell no longer mounts `usePwaInstallPrompt` from its status stack,
+  leaving browser `beforeinstallprompt` behavior native until a host opts in.
 - Reissued with the seven-package framework cohort. 0.4.17 widens existing EVM
   transaction and notification DTO fields for explicit null evidence, adds
   `IEvmOperationProgressOverlay`, and exposes `latestEvmOperationSnapshot`

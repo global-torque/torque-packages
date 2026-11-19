@@ -24,8 +24,6 @@ vi.mock('@global-torque/invest-runtime/application-context', () => ({
 }));
 
 const isStandalone = ref(false);
-const canInstall = ref(false);
-const installState = ref<'hidden' | 'native' | 'manual-ios'>('hidden');
 const isUpdateReady = ref(false);
 const isOfflineReady = ref(false);
 const lifecycleState = ref<'idle' | 'offlineReady' | 'updateReady' | 'reloading' | 'registrationError'>('idle');
@@ -39,15 +37,6 @@ const dismissOfflineBanner = vi.fn();
 vi.mock('@global-torque/invest-runtime/pwa/usePwaStandalone', () => ({
   usePwaStandalone: () => ({
     isStandalone,
-  }),
-}));
-
-vi.mock('@global-torque/invest-runtime/pwa/usePwaInstallPrompt', () => ({
-  usePwaInstallPrompt: () => ({
-    canInstall,
-    installState,
-    promptInstall: vi.fn(),
-    dismissInstallPrompt: vi.fn(),
   }),
 }));
 
@@ -79,8 +68,6 @@ vi.mock('@global-torque/invest-runtime/pwa/usePwaOfflineDataStatus', () => ({
 
 vi.mock('@global-torque/invest-runtime/pwa/usePwaTelemetry', () => ({
   usePwaTelemetry: () => ({
-    handleInstall: vi.fn(),
-    handleDismissInstall: vi.fn(),
     handleReloadApp: vi.fn(),
     handleDismissUpdate: vi.fn(),
     handleDismissOfflineReady: vi.fn(),
@@ -102,9 +89,6 @@ const mountStatusStack = (props: Record<string, unknown> = {}) => shallowMount(V
   } as never,
   global: {
     stubs: {
-      VPwaInstallPrompt: {
-        template: '<div data-testid="install-prompt" />',
-      },
       VPwaUpdatePrompt: {
         props: ['appVersion', 'appBuildTimestamp'],
         template: '<div data-testid="update-prompt">{{ appVersion }}|{{ appBuildTimestamp }}</div>',
@@ -120,8 +104,6 @@ describe('VPwaStatusStack', () => {
   beforeEach(() => {
     dismissOfflineBanner.mockReset();
     isStandalone.value = false;
-    canInstall.value = false;
-    installState.value = 'hidden';
     isUpdateReady.value = false;
     isOfflineReady.value = false;
     lifecycleState.value = 'idle';
@@ -142,39 +124,24 @@ describe('VPwaStatusStack', () => {
     expect(wrapper.find('[data-testid="offline-banner"]').exists()).toBe(false);
   });
 
+  it('leaves eligible browser install events untouched while showing lifecycle status', () => {
+    isUpdateReady.value = true;
+
+    const wrapper = mountStatusStack();
+    const event = new Event('beforeinstallprompt', { cancelable: true });
+
+    window.dispatchEvent(event);
+
+    expect(event.defaultPrevented).toBe(false);
+    expect(wrapper.find('[data-testid="update-prompt"]').exists()).toBe(true);
+  });
+
   it('suppresses web update prompts while offline and keeps the offline banner available', () => {
     isUpdateReady.value = true;
     isOffline.value = true;
 
     const wrapper = mountStatusStack();
 
-    expect(wrapper.find('[data-testid="update-prompt"]').exists()).toBe(false);
-    expect(wrapper.find('[data-testid="offline-banner"]').exists()).toBe(true);
-  });
-
-  it('keeps the install prompt visible on the web alongside update prompt', () => {
-    installState.value = 'native';
-    canInstall.value = true;
-    isUpdateReady.value = true;
-
-    const wrapper = mountStatusStack();
-
-    expect(wrapper.find('.v-pwa-status-stack').exists()).toBe(true);
-    expect(wrapper.find('[data-testid="install-prompt"]').exists()).toBe(true);
-    expect(wrapper.find('[data-testid="update-prompt"]').exists()).toBe(true);
-    expect(wrapper.find('[data-testid="offline-banner"]').exists()).toBe(false);
-  });
-
-  it('keeps the install prompt visible while offline and hides update prompt', () => {
-    installState.value = 'native';
-    canInstall.value = true;
-    isUpdateReady.value = true;
-    isOffline.value = true;
-
-    const wrapper = mountStatusStack();
-
-    expect(wrapper.find('.v-pwa-status-stack').exists()).toBe(true);
-    expect(wrapper.find('[data-testid="install-prompt"]').exists()).toBe(true);
     expect(wrapper.find('[data-testid="update-prompt"]').exists()).toBe(false);
     expect(wrapper.find('[data-testid="offline-banner"]').exists()).toBe(true);
   });

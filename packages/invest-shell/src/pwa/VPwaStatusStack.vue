@@ -4,12 +4,10 @@ import { computed } from 'vue';
 import { useOfflineStatus } from '@global-torque/invest-runtime/pwa/useOfflineStatus';
 import { usePwaBannerDismissals } from '@global-torque/invest-runtime/pwa/usePwaBannerDismissals';
 import { usePwaOfflineDataStatus } from '@global-torque/invest-runtime/pwa/usePwaOfflineDataStatus';
-import { usePwaInstallPrompt } from '@global-torque/invest-runtime/pwa/usePwaInstallPrompt';
 import { usePwaStandalone } from '@global-torque/invest-runtime/pwa/usePwaStandalone';
 import { usePwaTelemetry } from '@global-torque/invest-runtime/pwa/usePwaTelemetry';
 import { usePwaUpdatePrompt } from '@global-torque/invest-runtime/pwa/usePwaUpdatePrompt';
 import VOfflineStatusBanner from './VOfflineStatusBanner.vue';
-import VPwaInstallPrompt from './VPwaInstallPrompt.vue';
 import VPwaUpdatePrompt from './VPwaUpdatePrompt.vue';
 
 const props = withDefaults(defineProps<{
@@ -25,12 +23,6 @@ const { isStandalone } = usePwaStandalone();
 const { isOffline, isReconnected, isShowingCachedContent } = useOfflineStatus();
 const { lastSyncedAt } = usePwaOfflineDataStatus();
 const {
-  canInstall,
-  installState,
-  promptInstall,
-  dismissInstallPrompt,
-} = usePwaInstallPrompt({ testHostname });
-const {
   isUpdateReady,
   isOfflineReady,
   lifecycleState,
@@ -40,28 +32,21 @@ const {
   dismissUpdateReady,
 } = usePwaUpdatePrompt({ testHostname });
 const {
-  handleInstall,
-  handleDismissInstall,
   handleReloadApp,
   handleDismissUpdate,
   handleDismissOfflineReady,
 } = usePwaTelemetry({
-  canInstall,
-  installState,
   isUpdateReady,
   isOfflineReady,
   isOffline,
   isReconnected,
   registrationError,
-  promptInstall,
-  dismissInstallPrompt,
   reloadApp,
   dismissUpdateReady,
   dismissOfflineReady,
 });
 const hasRegistrationError = computed(() => Boolean(registrationError.value));
 const canShowInteractiveUpdatePrompt = computed(() => !isOffline.value);
-const shouldShowInstallPrompt = computed(() => installState.value !== 'hidden');
 const shouldShowOfflineReadyPrompt = computed(() => (
   isStandalone.value
   && isOfflineReady.value
@@ -91,8 +76,7 @@ const shouldShowUpdatePrompt = computed(() => (
   )
 ));
 const shouldRenderStack = computed(() => (
-  shouldShowInstallPrompt.value
-  || shouldShowUpdatePrompt.value
+  shouldShowUpdatePrompt.value
   || shouldShowOfflineBanner.value
 ));
 const shouldOffsetForFooterMenu = computed(() => (
@@ -108,13 +92,6 @@ const appBuildTimestamp = applicationContext.appConfig.build?.timestamp ?? '';
     class="VPwaStatusStack v-pwa-status-stack"
     :class="{ 'is--footer-offset': shouldOffsetForFooterMenu }"
   >
-    <VPwaInstallPrompt
-      v-if="shouldShowInstallPrompt"
-      :can-install="canInstall"
-      :install-state="installState"
-      @install="handleInstall"
-      @dismiss="handleDismissInstall"
-    />
     <VPwaUpdatePrompt
       v-if="shouldShowUpdatePrompt"
       :is-update-ready="isUpdateReady"
