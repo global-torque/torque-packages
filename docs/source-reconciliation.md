@@ -45,6 +45,8 @@ digest used by the consumer parity gate, plus the absent-token fallback case.
 These archives are external inputs; the framework repository never republishes
 them.
 
+Historical 0.4.17 candidate instructions (not a new 0.5.0 release gate):
+
 Before tagging 0.4.17, verify the Sidebar07 changes in an isolated consumer
 using the packed candidate archives. Check rendered colors and contrast in
 Chromium with no design tokens installed, with the retained 0.2.1 token cohort,

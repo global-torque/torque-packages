@@ -308,7 +308,7 @@
       "attestationScope": "The seven package tarballs are GitHub-attested.",
       "transport": "Native GitHub Release assets"
     },
-    "rollout": "Consumers install domain-types, invest-core, invest-data, invest-runtime, invest-widgets, invest-features, and invest-shell only after all seven dependency-ordered packages are published and available on npm; no custom receipt is used",
+    "rollout": "Consumers install coordinated seven-package versions from verified immutable GitHub Release assets using matching consumer pins and a generated lockfile after all seven assets and attestations are verified. npm publication requires separate explicit authorization and is not required for GitHub adoption.",
     "abortSignals": ["missing public artifact", "workspace or private dependency in packed manifest", "digest mismatch", "source or rights review failure", "runtime singleton duplication"],
     "recovery": "failed candidates receive a new version; retain prior immutable package bytes, native GitHub releases and attestations, lockfiles, and application archives for no-recompile rollback; no custom receipt is used"
   }
