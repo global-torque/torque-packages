@@ -2,19 +2,20 @@
 
 Each package has explicit source exports, package files, MIT metadata, runtime
 dependencies, singleton peers, and public repository metadata. The workspace
-root remains private. A pushed stable `framework-vX.Y.Z` tag is the release
-identity. The release workflow requires every package version to equal the tag,
-runs the repository checks, packs once with `pnpm pack`, creates
-the GitHub Release, and uses GitHub artifact attestations for source provenance.
-The npm publication workflow downloads and verifies those tagged assets and
-publishes the same tarballs with npm trusted publishing and provenance.
+root remains private. A pushed stable `framework-vX.Y.Z` tag is the GitHub bridge
+release identity. The bridge workflow requires every package version to equal the
+tag, runs the repository checks, packs once with `pnpm pack`, creates the GitHub
+Release, and uses GitHub artifact attestations for source provenance. It does not
+publish npm packages. A separately authorized npm publication workflow downloads
+and verifies those tagged assets before it publishes the same tarballs with npm
+trusted publishing and provenance.
 The publish loop addresses each downloaded archive with an explicit `./` local
 path and clears `NODE_AUTH_TOKEN` before npm runs so trusted OIDC remains the
 active registry authentication path.
 
 The selected `@global-torque/ui-kit` 0.4.0 and
 `@global-torque/ui-primitives` 0.2.0 dependencies are GitHub release tarballs.
-Candidate 0.4.17 selects the `@global-torque/design-tokens` 0.5.0 GitHub
+Candidate 0.5.0 selects the `@global-torque/design-tokens` 0.5.0 GitHub
 release tarball. The already-published immutable `framework-v0.4.16` candidate
 uses the 0.4.0 tarball and is not rewritten by this branch. Any future release
 of this source requires a new package version and immutable framework tag;
@@ -24,16 +25,12 @@ Candidate creation installs the selected development dependencies through the
 committed frozen lockfile; no draft transport or derived lockfile overlay is
 supported.
 
-Candidate 0.4.17 reissues the seven-package cohort with the post-0.4.16
-Sidebar07 design-token purpose-class fix. Candidate 0.4.16 added the
-authenticated account filer tree, its runtime cache, and Node `>=24.21.0`
-support. It retained the 0.4.15 seven-package cohort with the published
-`@global-torque/ui-primitives@0.2.0` and `@global-torque/ui-kit@0.4.0`
-packages, and removed the temporary portal-layer bridge. No UI package
-publication or application deployment is implied by this candidate.
-Candidate 0.4.17 widens existing EVM transaction and notification DTO fields
-for explicit null evidence, adds `IEvmOperationProgressOverlay`, and exposes
-`latestEvmOperationSnapshot` through the public `./websockets` store.
+Candidate 0.5.0 reissues the seven-package cohort for the parsed-notification
+adapter contract. `RuntimeNotificationsAdapter.updateNotificationsData` now
+receives `INotification` instead of a raw transport string. `invest-data` and
+`invest-runtime` require the published `@global-torque/sdk` 0.6.1 GitHub Release
+archive for the WebSocket transport. No npm publication, UI package publication,
+or application deployment is implied by this GitHub bridge candidate.
 The 0.4.16 candidate also moved `invest-data` and `invest-runtime` to the
 `@global-torque/sdk` 0.5.0 GitHub Release archive. That SDK transport sends a
 default `Idempotency-Key` header on eligible POST requests. The Kratos clients
@@ -136,8 +133,8 @@ source commit `7d86d208e32967f177f881ae7ad78d382ca3534f` completed its GitHub
 Release but was superseded before npm rollout when the redemption list contract
 changed; its tag and release bytes are never moved, reused, or repacked. The
 immutable release tag `framework-v0.4.16` retains the `0.4.16` candidate.
-Its tag and release bytes remain unchanged. Candidate 0.4.17 requires a new
-`framework-v0.4.17` tag after its release checks pass; future source changes
+Its tag and release bytes remain unchanged. Candidate 0.5.0 requires a new
+`framework-v0.5.0` tag after its release checks pass; future source changes
 require a new package version and immutable release tag, not a retag of an
 existing release. The prior `framework-v0.2.2`
 source tag, commit, and immutable artifact history remain retained for audit;

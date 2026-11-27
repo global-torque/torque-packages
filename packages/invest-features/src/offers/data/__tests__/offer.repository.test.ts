@@ -42,7 +42,7 @@ const createOffer = (overrides: Partial<IOffer> = {}): IOffer => ({
   min_investment: '10',
   image_link_id: 20,
   total_shares: '1000',
-  valuation: 500000,
+  valuation: '500000',
   subscribed_shares: '250',
   confirmed_shares: '200',
   status: 'published',
@@ -95,8 +95,8 @@ const createOffer = (overrides: Partial<IOffer> = {}): IOffer => ({
   telegram: '',
   mastodon: '',
   reg_type: ['Reg D 506(c)'],
-  amount_raised: 25000,
-  target_raise: 100000,
+  amount_raised: '25000',
+  target_raise: '100000',
   ...overrides,
 });
 

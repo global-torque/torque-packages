@@ -1,7 +1,7 @@
 {
   "name": "@global-torque/invest-runtime",
   "private": false,
-  "version": "0.4.17",
+  "version": "0.5.0",
   "description": "Investment runtime context, session lifecycle, adapters, and PWA services.",
   "license": "MIT",
   "engines": { "node": ">=24.21.0" },
@@ -54,7 +54,7 @@
     "@capacitor/core": "^8.4.1",
     "@capacitor/local-notifications": "^8.2.0",
     "@global-torque/client-error-handling": "0.1.0",
-    "@global-torque/sdk": "https://github.com/global-torque/sdk/releases/download/v0.6.0/global-torque-sdk-0.6.0.tgz",
+    "@global-torque/sdk": "https://github.com/global-torque/sdk/releases/download/v0.6.1/global-torque-sdk-0.6.1.tgz",
     "@vueuse/core": "^15.0.0",
     "@vueuse/integrations": "^15.0.0",
     "@global-torque/domain-types": "workspace:*",

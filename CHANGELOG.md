@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.5.0 - 2026-11-27
+
+### Breaking
+
+- Runtime and feature notification adapters now receive parsed `INotification`
+  objects instead of raw transport strings.
+
+### Changed
+
+- `invest-data` and `invest-runtime` require the published
+  `@global-torque/sdk` 0.6.1 GitHub Release transport archive.
+
 ## 0.4.17 candidate
 
 - Reissues the seven-package cohort from 0.4.16 with the merged post-tag

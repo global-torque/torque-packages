@@ -114,7 +114,7 @@ export interface RuntimeAnalyticsAdapter {
 }
 
 export interface RuntimeNotificationsAdapter {
-  updateNotificationsData: (data: string) => void;
+  updateNotificationsData: (notification: INotification) => void;
   refreshNotifications: () => Promise<void>;
   formatNotificationHref: (notification: RuntimeNotificationLike) => string;
   fallbackHref: () => string;

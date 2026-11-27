@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.5.0 - 2026-11-27
+
+### Breaking
+
+- `RuntimeNotificationsAdapter.updateNotificationsData` now receives a parsed
+  `INotification`. WebSocket routing validates canonical share fields before
+  handing the object to feature adapters, while those adapters retain their
+  own validation for native-push entry paths.
+
+### Changed
+
+- `./websockets` now uses one lazy `@global-torque/sdk/websocket` client per
+  runtime store. The SDK owns native connection attempts, bounded retry,
+  heartbeat, JSON parsing, and transport cleanup. The runtime supplies its URL,
+  session/offline retry predicate, browser lifecycle, parsed-notification
+  routing, and terminal store cleanup without a second retry or heartbeat loop.
+- Filer model notification ingestion retains loaded filer trees and invalidation
+  versions. It records normalized notification fields only. Explicit filer
+  invalidation and initial reads remain unchanged, and model notification
+  ingestion does not start a business-data read.
+
 ## 0.4.17 candidate
 
 - `usePwaTelemetry` now supports lifecycle-only options for update, offline, and

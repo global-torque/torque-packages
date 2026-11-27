@@ -66,30 +66,44 @@ describe('filer repository', () => {
     expect(repository.getObjectQueryState('private', 'investment', 101).data).toEqual(tree(2));
   });
 
-  it('invalidates cached object trees when a filer object notification arrives', async () => {
+  it('keeps cached filer trees intact when a notification has only identifiers', async () => {
+    mocks.fetchObjectTree.mockResolvedValue(tree(1));
+    mocks.fetchMyObjectTree.mockResolvedValue(tree(2));
+    const repository = useFilerModel();
+    await repository.fetchObjectTree({ access: 'private', objectName: 'investment', objectId: 101 });
+    await repository.fetchMyObjectTree();
+    const initialVersion = repository.objectInvalidationVersion;
+    const initialMyTreeVersion = repository.myObjectInvalidationVersion;
+    mocks.fetchObjectTree.mockClear();
+    mocks.fetchMyObjectTree.mockClear();
+
+    repository.updateNotificationData({
+      data: { fields: { object_id: 101, source_file_id: 1, type: 'file_thumbnail' } },
+    });
+
+    expect(repository.notificationFieldsState.data).toEqual({
+      object_id: 101,
+      source_file_id: 1,
+      type: 'file_thumbnail',
+    });
+    expect(repository.getObjectQueryState('private', 'investment', 101).data).toEqual(tree(1));
+    expect(repository.myObjectTreeState.data).toEqual(tree(2));
+    expect(repository.objectInvalidationVersion).toBe(initialVersion);
+    expect(repository.myObjectInvalidationVersion).toBe(initialMyTreeVersion);
+    expect(mocks.fetchObjectTree).not.toHaveBeenCalled();
+    expect(mocks.fetchMyObjectTree).not.toHaveBeenCalled();
+  });
+
+  it('invalidates cached object trees only through the explicit invalidation action', async () => {
     mocks.fetchObjectTree.mockResolvedValue(tree(1));
     const repository = useFilerModel();
     await repository.fetchObjectTree({ access: 'private', objectName: 'investment', objectId: 101 });
     const initialVersion = repository.objectInvalidationVersion;
 
-    repository.updateNotificationData({ data: { fields: { object_id: 1, type: 'file_thumbnail' } } });
+    repository.invalidateObjectTree('private', 'investment', 101);
 
     expect(repository.getObjectQueryState('private', 'investment', 101).data).toBeUndefined();
     expect(repository.objectInvalidationVersion).toBe(initialVersion + 1);
-  });
-
-  it('does not let an in-flight response repopulate a notification-invalidated query', async () => {
-    let resolveRequest!: (value: FilerObjectTree) => void;
-    mocks.fetchObjectTree.mockImplementation(() => new Promise(resolve => { resolveRequest = resolve; }));
-    const repository = useFilerModel();
-    const request = repository.fetchObjectTree({
-      access: 'private', objectName: 'investment', objectId: 101, force: true,
-    });
-    repository.updateNotificationData({ data: { fields: { object_id: 1, type: 'file_thumbnail' } } });
-    resolveRequest(tree(1));
-    await request;
-
-    expect(repository.getObjectQueryState('private', 'investment', 101).data).toBeUndefined();
   });
 
   it('caches an empty authenticated account tree and refreshes it only when forced', async () => {
@@ -105,19 +119,13 @@ describe('filer repository', () => {
     expect(repository.isMyObjectTreeCacheValid).toBe(true);
   });
 
-  it('retains account data through a failed refresh and invalidates it on filer changes', async () => {
+  it('retains account data through a failed refresh', async () => {
     const repository = useFilerModel();
     mocks.fetchMyObjectTree.mockResolvedValueOnce(tree(1));
     await repository.fetchMyObjectTree();
-    const initialVersion = repository.myObjectInvalidationVersion;
-
-    repository.updateNotificationData({ data: { fields: { source_file_id: 1 } } });
-    expect(repository.myObjectTreeState.data).toEqual(tree(1));
-    expect(repository.isMyObjectTreeCacheValid).toBe(false);
-    expect(repository.myObjectInvalidationVersion).toBe(initialVersion + 1);
 
     mocks.fetchMyObjectTree.mockRejectedValueOnce(new Error('refresh failed'));
-    await expect(repository.fetchMyObjectTree()).rejects.toThrow('refresh failed');
+    await expect(repository.fetchMyObjectTree({ force: true })).rejects.toThrow('refresh failed');
     expect(repository.myObjectTreeState.data).toEqual(tree(1));
     expect(repository.isMyObjectTreeCacheValid).toBe(false);
     expect(repository.myObjectTreeState.error?.message).toBe('refresh failed');

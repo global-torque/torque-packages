@@ -1,20 +1,13 @@
 # Source and release reconciliation
 
-The `0.4.17` candidate reissues the seven packages from 0.4.16 with the
-post-tag Sidebar07 design-token purpose-class fix and development dependency
-on design-tokens 0.5.0. The retained `0.4.16` release added the authenticated
-account filer tree, its runtime cache, and Node `>=24.21.0` support. It retained
-the 0.4.15 seven-package cohort with the published
-`@global-torque/ui-primitives@0.2.0` and
-`@global-torque/ui-kit@0.4.0` packages. The former portal-layer bridge was
-removed in 0.4.16; source changes do not publish UI packages or deploy apps.
-The 0.4.17 candidate widens existing EVM transaction and notification DTO
-fields for explicit null evidence, adds `IEvmOperationProgressOverlay`, and
-exposes `latestEvmOperationSnapshot` through the public `./websockets` store.
-The 0.4.16 candidate also moved `invest-data` and `invest-runtime` to the
-`@global-torque/sdk` 0.5.0 GitHub Release archive. That SDK transport sends a
-default `Idempotency-Key` header on eligible POST requests. The Kratos clients
-turn that default off because the Kratos CORS rules reject the header.
+The `0.5.0` candidate reissues all seven packages for the parsed-notification
+adapter contract. `RuntimeNotificationsAdapter.updateNotificationsData` and
+feature notification adapters now receive parsed `INotification` objects rather
+than raw transport strings. `invest-data` and `invest-runtime` use the published
+`@global-torque/sdk` 0.6.1 GitHub Release archive for the WebSocket transport.
+This is a GitHub bridge candidate. It creates GitHub Release assets and
+attestations after the release checks pass. It does not publish npm packages,
+UI packages, or applications.
 The `0.4.14` candidate reissues the seven-package cohort with the cumulative
 0.4.13 analytics, feature, shell, and runtime changes, then reduces the
 read-only redemption lifecycle contract to its returned status, amount, and
@@ -51,6 +44,8 @@ verified `0.2.1` archive, source tag/commit, SRI, inventory and attestation
 digest used by the consumer parity gate, plus the absent-token fallback case.
 These archives are external inputs; the framework repository never republishes
 them.
+
+Historical 0.4.17 candidate instructions (not a new 0.5.0 release gate):
 
 Before tagging 0.4.17, verify the Sidebar07 changes in an isolated consumer
 using the packed candidate archives. Check rendered colors and contrast in
@@ -168,8 +163,8 @@ source commit `7d86d208e32967f177f881ae7ad78d382ca3534f` completed its GitHub
 Release but was superseded before npm rollout when the redemption list contract
 changed; `npmPublished` is false and its tag, release bytes, and attestations
 are never moved, reused, or repacked. Candidate `0.4.16` is an immutable
-GitHub release and is not rewritten. Candidate `0.4.17` is the new release
-identity; its active candidate and package matrix are finalized when
-the candidate commit is tagged. The `sourceRevision` fields retain upstream
+GitHub release and is not rewritten. Candidate `0.5.0` is the new GitHub bridge
+release identity; its active candidate and package matrix are finalized when the
+candidate commit receives `framework-v0.5.0`. The `sourceRevision` fields retain upstream
 provenance for the transferred source and are not rewritten as release tags
 are created.

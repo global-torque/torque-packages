@@ -1,8 +1,18 @@
 import { useInvestApplicationContext } from '@global-torque/invest-runtime/application-context';
-import { ref, watch, type WatchStopHandle } from 'vue';
+import {
+  getCurrentScope,
+  onScopeDispose,
+  ref,
+  watch,
+  type WatchStopHandle,
+} from 'vue';
 import { INotification } from '@global-torque/domain-types/notificationsTypes';
 import { acceptHMRUpdate, defineStore, storeToRefs } from 'pinia';
-import { useIntervalFn, useWebSocket } from '@vueuse/core';
+import {
+  createWebSocketClient,
+  type WebSocketClient,
+  type WebSocketStatus,
+} from '@global-torque/sdk/websocket';
 import { assertNotificationShareFields } from '@global-torque/invest-core/notifications/shareFields';
 import { getInvestRuntimeAdapters } from '../adapters.ts';
 import { useSessionStore } from '@global-torque/invest-runtime/session';
@@ -199,83 +209,77 @@ export const useDomainWebSocketStore = defineStore('domainWebsockets', () => {
   });
   const evmEffectInvalidation = ref({ operationId: 0, effectId: 0, sequence: 0 });
   let stopUserLoggedInWatch: WatchStopHandle | null = null;
-  let stopDataWatch: WatchStopHandle | null = null;
-  let stopStatusWatch: WatchStopHandle | null = null;
-  let closeConnection: (() => void) | null = null;
-  let hasConnectivityListeners = false;
+  let stopIdentityWatch: WatchStopHandle | null = null;
+  let webSocketClient: WebSocketClient | null = null;
+  let hasBrowserListeners = false;
+  let startupTimeout: number | null = null;
+  let disposed = false;
 
-  // This watcher belongs to the session lifetime, not a particular socket.
-  watch(userLoggedIn, (loggedIn) => {
-    if (!loggedIn) latestEvmOperationSnapshot.value = null;
-  });
-
-  watch(
-    () => userSession.value?.active ? userSession.value.identity.id : null,
-    (identity, previousIdentity) => {
-      if (!identity || !previousIdentity || identity === previousIdentity) return;
-
-      latestEvmOperationSnapshot.value = null;
-      closeConnection?.();
-      cleanupConnection();
-      if (!isBrowserOffline()) void webSocketHandler();
-    },
-  );
-
-  const cleanupConnectivityListeners = () => {
-    if (typeof window === 'undefined' || !hasConnectivityListeners) {
-      return;
+  function updateConnectionStatus(status: WebSocketStatus) {
+    const previousStatus = connectionStatus.value;
+    connectionStatus.value = status;
+    isConnectingOrOpen.value = status === 'CONNECTING' || status === 'OPEN';
+    if (status === 'OPEN' && previousStatus !== 'OPEN') {
+      connectionGeneration.value += 1;
     }
+  }
 
-    window.removeEventListener('online', handleBrowserOnline);
-    window.removeEventListener('offline', handleBrowserOffline);
-    hasConnectivityListeners = false;
-  };
+  function cancelQueuedStartup() {
+    if (startupTimeout !== null) {
+      clearTimeout(startupTimeout);
+      startupTimeout = null;
+    }
+  }
 
-  const cleanupConnection = () => {
-    isConnectingOrOpen.value = false;
-    connectionStatus.value = 'CLOSED';
-    closeConnection = null;
+  function disconnectClient() {
+    cancelQueuedStartup();
+    webSocketClient?.disconnect();
+    updateConnectionStatus('CLOSED');
+  }
 
-    if (stopUserLoggedInWatch) {
-      stopUserLoggedInWatch();
-      stopUserLoggedInWatch = null;
-    }
-    if (stopDataWatch) {
-      stopDataWatch();
-      stopDataWatch = null;
-    }
-    if (stopStatusWatch) {
-      stopStatusWatch();
-      stopStatusWatch = null;
-    }
-  };
+  function handleBeforeUnload() {
+    disconnectClient();
+  }
 
   function handleBrowserOnline() {
-    if (!userLoggedIn.value) {
+    if (disposed || !userLoggedIn.value || startupTimeout !== null) {
       return;
     }
 
     debugLog('browser online: retrying websocket connection');
-    window.setTimeout(() => {
+    startupTimeout = window.setTimeout(() => {
+      startupTimeout = null;
+      if (disposed || !userLoggedIn.value || isBrowserOffline()) return;
       void webSocketHandler();
     }, 0);
   }
 
   function handleBrowserOffline() {
     debugLog('browser offline: closing websocket connection');
-    closeConnection?.();
-    cleanupConnection();
+    disconnectClient();
   }
 
-  const ensureConnectivityListeners = () => {
-    if (typeof window === 'undefined' || hasConnectivityListeners) {
+  function ensureBrowserListeners() {
+    if (typeof window === 'undefined' || hasBrowserListeners) {
       return;
     }
 
+    window.addEventListener('beforeunload', handleBeforeUnload);
     window.addEventListener('online', handleBrowserOnline);
     window.addEventListener('offline', handleBrowserOffline);
-    hasConnectivityListeners = true;
-  };
+    hasBrowserListeners = true;
+  }
+
+  function cleanupBrowserListeners() {
+    if (typeof window === 'undefined' || !hasBrowserListeners) {
+      return;
+    }
+
+    window.removeEventListener('beforeunload', handleBeforeUnload);
+    window.removeEventListener('online', handleBrowserOnline);
+    window.removeEventListener('offline', handleBrowserOffline);
+    hasBrowserListeners = false;
+  }
 
   const handleInternalMessage = (notification: INotification) => {
     getInvestRuntimeAdapters().realtime?.handleInternalNotification(notification);
@@ -356,25 +360,57 @@ export const useDomainWebSocketStore = defineStore('domainWebsockets', () => {
     }
   };
 
-  const handleMessage = (data: string) => {
-    if (!data) return;
-    lastMessageAt.value = new Date().toISOString();
-    debugLog(`ws message: ${data}`);
-    if (data === 'pong') return;
+  const handleMessage = (message: unknown) => {
+    if (disposed || !userLoggedIn.value) return;
     try {
-      const notification = JSON.parse(data) as INotification;
+      const notification = message as INotification;
       assertNotificationShareFields(notification);
-      getInvestRuntimeAdapters().notifications?.updateNotificationsData(data);
+      lastMessageAt.value = new Date().toISOString();
+      getInvestRuntimeAdapters().notifications?.updateNotificationsData(notification);
       if (notification.type === 'internal') handleInternalMessage(notification);
     } catch (e) {
-      console.error('Failed to parse WebSocket message:', e);
+      console.error('Failed to process WebSocket message:', e);
     }
   };
 
-  const webSocketHandler = async (): Promise<void> => {
+  function getWebSocketClient(): WebSocketClient {
+    if (webSocketClient) return webSocketClient;
+
+    const notificationUrl = appConfig.urls.api.notification;
+    const url = `${notificationUrl}/ws`;
+    const websocketUrl = url.replace(/^https:/, 'wss:').replace(/^http:/, 'ws:');
+    debugLog(`connection to ${websocketUrl}`);
+    webSocketClient = createWebSocketClient({
+      url: websocketUrl,
+      reconnect: {
+        shouldRetry: () => !disposed && userLoggedIn.value && !isBrowserOffline(),
+        baseDelayMs: 1000,
+        maxDelayMs: 30000,
+        jitterMs: 500,
+      },
+      heartbeat: {
+        message: '{"Command": "ping"}',
+        responseMessage: 'pong',
+        intervalMs: 60000,
+        timeoutMs: 1000,
+      },
+      onStatusChange: (status) => {
+        if (disposed || !userLoggedIn.value) return;
+        updateConnectionStatus(status);
+      },
+      onMessage: handleMessage,
+    });
+    return webSocketClient;
+  }
+
+  async function webSocketHandler(): Promise<void> {
     debugLog('webSocketHandler called');
-    if (!userLoggedIn.value) {
-      cleanupConnectivityListeners();
+    if (disposed || !userLoggedIn.value) return;
+
+    ensureBrowserListeners();
+
+    if (isBrowserOffline()) {
+      debugLog('webSocketHandler skipped: browser offline');
       return;
     }
 
@@ -383,78 +419,53 @@ export const useDomainWebSocketStore = defineStore('domainWebsockets', () => {
       return;
     }
 
-    ensureConnectivityListeners();
+    updateConnectionStatus('CONNECTING');
+    getWebSocketClient().connect();
+  }
 
-    if (isBrowserOffline()) {
-      debugLog('webSocketHandler skipped: browser offline');
-      return;
-    }
-
-    const notificationUrl = appConfig.urls.api.notification;
-    const url = `${notificationUrl}/ws`;
-    // Support both http and https
-    const uri = url.replace(/^https:/, 'wss:').replace(/^http:/, 'ws:');
-
-    debugLog(`connection to ${uri}`);
-
-    isConnectingOrOpen.value = true;
-
-    const { data, close, status } = useWebSocket(uri, {
-      autoClose: true,
-      autoReconnect: {
-        retries: () => userLoggedIn.value && !isBrowserOffline(),
-        delay: (retries) => (
-          Math.min(30_000, 1000 * (2 ** Math.min(retries, 5)))
-          + Math.floor(Math.random() * 500)
-        ),
-        onFailed() {
-          if (isBrowserOffline()) {
-            debugLog('websocket reconnect retries exhausted while offline');
-          }
-        },
-      },
-      heartbeat: {
-        message: '{"Command": "ping"}',
-        scheduler: callback => useIntervalFn(callback, 60000, { immediate: false }),
-        pongTimeout: 1000,
-      },
-    });
-    closeConnection = close;
-
-    stopUserLoggedInWatch = watch(userLoggedIn, () => {
-      if (!userLoggedIn.value) {
-        close();
-        debugLog(`connection to ${uri} is closed`);
-        cleanupConnection();
-        cleanupConnectivityListeners();
-      }
-    });
-
-    stopDataWatch = watch(
-      () => data.value,
-      (val) => {
-        if (val) handleMessage(val);
-      },
-      { deep: true },
-    );
-    stopStatusWatch = watch(
-      () => status.value,
-      (nextStatus, previousStatus) => {
-        debugLog(`websocket status: ${status.value}`);
-        connectionStatus.value = nextStatus;
-        if (nextStatus === 'OPEN' && previousStatus !== 'OPEN') {
-          connectionGeneration.value += 1;
-        }
-      },
-    );
-  };
-
-  const retryNow = async () => {
-    if (!userLoggedIn.value || isBrowserOffline()) return;
-    closeConnection?.();
-    cleanupConnection();
+  async function retryNow() {
+    if (disposed || !userLoggedIn.value || isBrowserOffline()) return;
+    disconnectClient();
     await webSocketHandler();
-  };
+  }
+
+  function disposeStore() {
+    if (disposed) return;
+    disposed = true;
+    cancelQueuedStartup();
+    webSocketClient?.dispose();
+    webSocketClient = null;
+    updateConnectionStatus('CLOSED');
+    cleanupBrowserListeners();
+    stopUserLoggedInWatch?.();
+    stopUserLoggedInWatch = null;
+    stopIdentityWatch?.();
+    stopIdentityWatch = null;
+    latestEvmOperationSnapshot.value = null;
+  }
+
+  stopUserLoggedInWatch = watch(userLoggedIn, (loggedIn) => {
+    if (loggedIn) return;
+    latestEvmOperationSnapshot.value = null;
+    disconnectClient();
+  });
+
+  stopIdentityWatch = watch(
+    () => userSession.value?.active ? userSession.value.identity.id : null,
+    (identity, previousIdentity) => {
+      if (!identity || !previousIdentity || identity === previousIdentity) return;
+
+      latestEvmOperationSnapshot.value = null;
+      disconnectClient();
+      if (!disposed && userLoggedIn.value && !isBrowserOffline()) {
+        void webSocketHandler();
+      }
+    },
+  );
+
+  if (getCurrentScope()) {
+    onScopeDispose(disposeStore);
+  }
 
   return {
     webSocketHandler,

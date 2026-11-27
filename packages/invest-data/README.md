@@ -119,7 +119,7 @@ aborted.
 
 ## Default idempotency keys
 
-`ApiClient` uses the `@global-torque/sdk` 0.5.0 transport, which sends a
+`ApiClient` uses the `@global-torque/sdk` 0.6.1 transport, which sends a
 default `Idempotency-Key` header on POST requests. A POST gets the default key
 when it has no `idempotencyKey`, does not use `simple: true`, and has a string
 body, such as the JSON that `post()` sends, or no body. The runtime must also

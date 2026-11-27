@@ -1,7 +1,7 @@
 {
   "name": "@global-torque/invest-data",
   "private": false,
-  "version": "0.4.17",
+  "version": "0.5.0",
   "description": "Framework-free investment data clients and repository state helpers.",
   "license": "MIT",
   "engines": { "node": ">=24.21.0" },
@@ -35,7 +35,7 @@
     "test:run": "vitest run"
   },
   "dependencies": {
-    "@global-torque/sdk": "https://github.com/global-torque/sdk/releases/download/v0.6.0/global-torque-sdk-0.6.0.tgz",
+    "@global-torque/sdk": "https://github.com/global-torque/sdk/releases/download/v0.6.1/global-torque-sdk-0.6.1.tgz",
     "@global-torque/domain-types": "workspace:*",
     "@global-torque/invest-core": "workspace:*"
   },

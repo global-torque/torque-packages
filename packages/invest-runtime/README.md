@@ -22,7 +22,17 @@ no approved `@global-torque/sdk-runtime` destination.
 - Lifecycle reset registries, full/profile reset helpers, global error handling,
   chunk handling, and runtime install functions.
 - Investment-app global loading state and route/feature loading orchestration.
-- WebSocket invalidation plus canonical, normalized `evm_operation` progress snapshots. Legacy operation aliases continue to invalidate without publishing snapshots.
+- App-scoped WebSocket integration over `@global-torque/sdk/websocket`, plus
+  invalidation and canonical, normalized `evm_operation` progress snapshots.
+  The SDK owns native connection, retry, heartbeat, and JSON parsing. The runtime
+  owns the app URL conversion, session identity, browser connectivity, and
+  terminal cleanup. It never starts a business-data read. `lastMessageAt`
+  records delivered business notifications, not heartbeat or transport activity.
+  Legacy operation aliases continue to invalidate without publishing snapshots.
+- Filer model notification fields for consumers that already have a direct
+  update contract. Model notification ingestion neither resets nor invalidates
+  cached filer trees, and it never starts a business-data read. Initial loads
+  and explicit filer invalidation actions retain their existing behavior.
 - Frontend client error reporting to the current analytics-api/Loki backend via
   runtime analytics adapters.
 - Context-owned restricted application credentials, cached exact-origin direct
@@ -41,7 +51,8 @@ runtime PWA policy and registration bridge that a host can connect to
 - `@global-torque/invest-core` for pure config and analytics helpers.
 - `@global-torque/invest-data` for API-client hook/config installation.
 - `@global-torque/sdk` for context-owned direct service clients,
-  explicit user-auth strategies, typed results/errors, and transport disposal.
+  explicit user-auth strategies, typed results/errors, framework-free WebSocket
+  transport, and transport disposal.
 - Vue, Pinia, Vue Router types, VueUse browser utilities, Capacitor Firebase
   Messaging/local-notification modules, and generic `ui-kit` toast/global-alert
   helpers.
@@ -88,6 +99,17 @@ their source behavior.
 - `./navigation`: browser navigation with typed query parameters.
 - `./lifecycle` and `./chunk-error-handling`: reset registries and chunk
   recovery.
+- `./websockets`: app-scoped SDK WebSocket integration, connection state,
+  parsed notification routing, and EVM operation invalidation/snapshot state.
+
+## Notification adapter contract
+
+`RuntimeNotificationsAdapter.updateNotificationsData` receives a parsed
+`INotification`, not a transport string. The runtime validates canonical share
+fields before WebSocket routing. Feature adapters retain their field validation
+because native push normalization does not establish that canonical-share
+contract. Reconnect, focus, visibility, timers, and write success do not trigger
+business-data reads from this runtime.
 
 ## Example
 

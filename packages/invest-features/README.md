@@ -45,6 +45,14 @@ Session refresh displays the active session email as read-only text and confirms
 Widget exports in `./accreditation`, `./kyc`, `./notifications`, `./profiles`,
 and `./wallet` come from `@global-torque/invest-widgets`.
 
+## Runtime notification contract
+
+`updateNotificationsData` receives a parsed `INotification` from the runtime,
+not a raw transport string. It retains the canonical-share field guard because
+native-push normalization does not check those fields. Matching notification
+IDs replace the existing row, and internal notifications remain outside the
+visible feed and unread count.
+
 ## Notification table composition
 
 `VNotificationTable` accepts optional `row-actions` and `after-row` slots.
