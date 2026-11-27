@@ -1,7 +1,14 @@
 # Changelog
 
-## Unreleased
+## 0.5.0 - 2026-11-27
 
+### Breaking
+
+- `updateNotificationsData` now receives parsed `INotification` objects instead
+  of raw transport strings. The notification store retains canonical-share field
+  validation, ID replacement, and the internal-feed boundary.
+
+### Changed
 - `VNotificationTable` now accepts additive `row-actions` and `after-row`
   slots with an `IFormattedNotification` item scope. Small tables suppress both
   slots. `after-row` consumers provide their complete two-column table row.

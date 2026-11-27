@@ -180,11 +180,6 @@ export const useFilerModel = defineStore('filer-model', () => {
       loading: false,
       error: null,
     };
-
-    if (fields.object_id !== undefined || fields.source_file_id !== undefined) {
-      resetObjectQueries();
-      invalidateMyObjectTree();
-    }
   };
 
   const resetAll = () => {

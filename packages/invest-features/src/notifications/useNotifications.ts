@@ -114,10 +114,8 @@ export const useNotifications = defineStore('notifications', () => {
     ));
   });
 
-  const updateNotificationsData = (data: string) => {
-    let notification: INotification;
+  const updateNotificationsData = (notification: INotification) => {
     try {
-      notification = JSON.parse(data) as INotification;
       assertNotificationShareFields(notification);
     } catch {
       return;

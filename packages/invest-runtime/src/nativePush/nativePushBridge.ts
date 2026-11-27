@@ -348,9 +348,7 @@ async function handleForegroundPush(
     notifications
   ) {
     try {
-      notifications.updateNotificationsData(
-        JSON.stringify(parseResult.notification),
-      );
+      notifications.updateNotificationsData(parseResult.notification);
     } catch (error) {
       reportError(error, "Failed to update notifications from push", {
         source: "nativePush",

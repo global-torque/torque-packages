@@ -102,12 +102,18 @@ describe('useNotifications', () => {
     expect(store.unreadNotificationsCount).toBe(0);
   });
 
-  it('upserts valid WebSocket rows and ignores invalid payloads', () => {
+  it('upserts parsed notifications by ID, rejects invalid shares, and hides internal rows', () => {
     const store = useNotifications();
-    store.updateNotificationsData(JSON.stringify(notification(5)));
-    store.updateNotificationsData('{invalid');
+    const invalid = notification(7);
+    invalid.data.fields.confirmed_shares = 2 as never;
 
-    expect(store.formattedNotifications.map(item => item.id)).toEqual([5]);
+    store.updateNotificationsData(notification(5, { content: 'Original' }));
+    store.updateNotificationsData(notification(5, { content: 'Replacement' }));
+    store.updateNotificationsData(notification(6, { type: 'internal' }));
+    store.updateNotificationsData(invalid);
+
+    expect(store.formattedNotifications.find(item => item.id === 5)?.content).toBe('Replacement');
+    expect(store.notificationUserData.map(item => item.id)).toEqual([5]);
     expect(store.unreadNotificationsCount).toBe(1);
   });
 

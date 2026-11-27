@@ -507,6 +507,7 @@ describe("nativePushBridge", () => {
       expect(updateNotificationsData).toHaveBeenCalledTimes(1);
       expect(hoisted.localScheduleMock).toHaveBeenCalledTimes(1);
     });
+    expect(updateNotificationsData.mock.calls[0]?.[0]).toMatchObject(validNotification);
     expect(refreshNotifications).not.toHaveBeenCalled();
     expect(hoisted.localScheduleMock.mock.calls[0]?.[0]).toMatchObject({
       notifications: [
